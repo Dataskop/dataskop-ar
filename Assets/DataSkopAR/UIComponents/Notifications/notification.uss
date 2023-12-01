@@ -1,0 +1,80 @@
+.notification {
+    border-radius: 4px;
+    position: relative;
+    top: 0;
+    bottom: 0;
+    left: auto;
+    right: auto;
+    padding: 10px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    opacity: 1;
+    width: 600px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    transition-property: opacity;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
+    border-left-color: rgb(180, 86, 9);
+    border-right-color: rgb(180, 86, 9);
+    border-top-color: rgb(180, 86, 9);
+    border-bottom-color: rgb(180, 86, 9);
+    border-left-width: 4px;
+    border-right-width: 4px;
+    border-top-width: 0;
+    border-bottom-width: 4px;
+    background-color: rgb(245, 245, 245);
+    -unity-background-image-tint-color: rgb(245, 245, 245);
+}
+
+.notification-animation {
+    translate: -680px 0;
+    transition-property: translate;
+    transition-duration: 1s;
+    transition-timing-function: ease-in-out-elastic;
+}
+
+.notification--invisible {
+    opacity: 0;
+}
+
+.notification--black {
+    background-color: rgb(0, 0, 0);
+}
+
+.notification--black .notification__text {
+    color: rgb(255, 255, 255);
+}
+
+.notification--black .icon {
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+}
+
+.notification--white {
+    background-color: rgb(236, 239, 244);
+}
+
+.notification--white .notification__text {
+    color: rgb(46, 52, 64);
+}
+
+.notification--white .icon {
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+}
+
+.notification__text {
+    padding: 0;
+    margin-left: 10px;
+    -unity-font-style: normal;
+    font-size: 28px;
+    -unity-font: url('project://database/Assets/DataSkopAR/UIComponents/MainMenu/Fonts/Inter-Regular.ttf?fileID=12800000&guid=c3cdfb8736a165d448335bd86d03cbbb&type=3#Inter-Regular');
+    width: 80%;
+}

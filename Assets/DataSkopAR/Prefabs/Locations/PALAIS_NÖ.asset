@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e7a340713b30346ba6c7db0849af34, type: 3}
+  m_Name: "PALAIS_N\xD6"
+  m_EditorClassIdentifier: 
+  locationName: "Palais Nieder\xF6sterreich"
+  areas:
+  - areaName: Forschungsfest
+    boundaryPoints:
+    - 48.210046, 16.363946
+    - 48.210498, 16.365292
+    - 48.209907, 16.365652
+    - 48.209420, 16.364372

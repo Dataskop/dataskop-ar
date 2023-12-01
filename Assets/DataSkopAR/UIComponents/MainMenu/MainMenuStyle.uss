@@ -1,0 +1,120 @@
+.screen {
+    flex-grow: 0;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+#txtAPISecret > TextInput {
+    background-color: rgb(245, 245, 245);
+    border-left-color: rgb(180, 86, 9);
+    border-right-color: rgb(180, 86, 9);
+    border-top-color: rgb(180, 86, 9);
+    border-bottom-color: rgb(180, 86, 9);
+    border-left-width: 6px;
+    border-right-width: 6px;
+    border-top-width: 0;
+    border-bottom-width: 6px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    font-size: 28px;
+    -unity-text-align: middle-center;
+    white-space: normal;
+    color: rgb(27, 27, 27);
+    -unity-font: url('project://database/Assets/DataSkopAR/UIComponents/MainMenu/Fonts/Inter-Regular.ttf?fileID=12800000&guid=c3cdfb8736a165d448335bd86d03cbbb&type=3#Inter-Regular');
+    justify-content: center;
+}
+
+.btnPrimary {
+    align-items: center;
+    top: 0;
+    left: 0;
+    position: relative;
+    background-color: rgb(255, 255, 255);
+    font-size: 50px;
+    -unity-font: url('project://database/Assets/DataSkopAR/UIComponents/MainMenu/Fonts/Inter-Regular.ttf?fileID=12800000&guid=c3cdfb8736a165d448335bd86d03cbbb&type=3#Inter-Regular');
+    color: rgb(27, 27, 27);
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 6px;
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    padding-left: 80px;
+    padding-right: 80px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    cursor: url('project://database/Assets/DataSkopAR/UIComponents/MainMenu/Graphics/mouse-pointer.png?fileID=2800000&guid=390b30118e5d6ac4e96fa9122660a79a&type=3#mouse-pointer');
+    flex-shrink: 1;
+    flex-grow: 0;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    -unity-font-style: bold;
+    border-left-color: rgb(0, 80, 150);
+    border-right-color: rgb(0, 80, 150);
+    border-bottom-color: rgb(0, 80, 150);
+    border-top-color: rgb(0, 0, 0);
+}
+
+.normalText {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    -unity-font: url('project://database/Assets/DataSkopAR/UIComponents/MainMenu/Fonts/Inter-Regular.ttf?fileID=12800000&guid=c3cdfb8736a165d448335bd86d03cbbb&type=3#Inter-Regular');
+    color: rgb(60, 60, 60);
+    -unity-text-align: middle-left;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    white-space: normal;
+    font-size: 26px;
+}
+
+.projectName {
+    color: rgb(27, 27, 27);
+    -unity-text-outline-color: rgb(46, 52, 64);
+    font-size: 80px;
+    -unity-font-style: bold;
+    -unity-font: url('project://database/Assets/DataSkopAR/UIComponents/MainMenu/Fonts/Inter-SemiBold.ttf?fileID=12800000&guid=e21d4b0dbb133ed4895db1015703afc9&type=3#Inter-SemiBold');
+}
+
+.btnSecondary {
+    align-items: center;
+    top: 0;
+    left: 0;
+    position: relative;
+    background-color: rgb(180, 86, 9);
+    font-size: 40px;
+    -unity-font: url('project://database/Assets/DataSkopAR/UIComponents/MainMenu/Fonts/Inter-Regular.ttf?fileID=12800000&guid=c3cdfb8736a165d448335bd86d03cbbb&type=3#Inter-Regular');
+    color: rgb(245, 245, 245);
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 6px;
+    cursor: url('project://database/Assets/DataSkopAR/UIComponents/MainMenu/Graphics/mouse-pointer.png?fileID=2800000&guid=390b30118e5d6ac4e96fa9122660a79a&type=3#mouse-pointer');
+    flex-shrink: 1;
+    flex-grow: 0;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+}

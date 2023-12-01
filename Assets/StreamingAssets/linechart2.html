@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Line Chart - Brush</title>
+
+    <script src='./libs/d3.min.js'></script>
+
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        svg .tick>text {
+            font-size: 0.5rem;
+        }
+
+        .line {
+            fill: none;
+            stroke: steelblue;
+            stroke-width: 0.10rem;
+        }
+
+        .dot {
+            fill: #ffab00;
+            stroke: #fff;
+        }
+
+        .grid line {
+            stroke: lightgrey;
+            stroke-opacity: 0.7;
+            shape-rendering: crispEdges;
+        }
+
+        .grid path {
+            stroke-width: 0;
+        }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: grey;
+            stroke-width: 1;
+            shape-rendering: crispEdges;
+        }
+
+        .selection {
+            stroke: steelblue;
+            stroke-dasharray: 3;
+        }
+
+        .overlay {
+            pointer-events: all;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        // Generate some random data that is sorted by time
+        let dataset = Array.from({ length: 40 }, () => ({
+            time: Date.now() - Math.floor(Math.random() * 10000000000),
+            value: Math.floor(Math.random() * 80) + 20
+        })).sort((a, b) => a.time - b.time);
+
+        /**
+         * ===================================================
+         * Variables and Constants
+         * ===================================================
+        */
+        const scaleFactor = 0.95;          // Percentage of screen the visualiaztion should take
+        const margin = { top: 50, right: 50, bottom: 50, left: 90 };
+        let width = window.innerWidth * scaleFactor - margin.left - margin.right;
+        let height = window.innerHeight * scaleFactor - margin.top - margin.bottom;
+
+        /**
+         * ===================================================
+         * Preparation, Generators & Scales
+         * ===================================================
+        */
+        const svg = d3.select('body')
+            .append('svg')
+            .attr('width', width + margin.left + margin.right)
+            .attr('height', height + margin.top + margin.bottom);
+
+
+        // Add clip path in order to hide overlapping lines
+        svg.append("defs")
+            .append("clipPath")
+            .attr("id", "clip")
+            .append("rect")
+            .attr("width", width)
+            .attr("height", height);
+
+        const g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+        const xScale = d3.scaleTime()
+            .domain(d3.extent(dataset, d => d.time))
+            .rangeRound([0, width])
+            .nice();
+
+        const yScale = d3.scaleLinear()
+            .domain([0, d3.max(dataset, d => d.value)])
+            .rangeRound([height, 0])
+            .nice();
+
+        const line = d3.line()
+            .x(d => xScale(d.time))
+            .y(d => yScale(d.value))
+            .curve(d3.curveCatmullRom);
+
+        const xGrid = d3.axisBottom(xScale).ticks(10).tickSize(-height).tickFormat('');
+        const yGrid = d3.axisLeft(yScale).ticks(10).tickSize(-width).tickFormat('');
+
+        const brush = d3.brushX()
+            .extent([[0, 0], [width, height]])
+            .on('end', brushed);
+
+        /**
+         * ===================================================
+         * Drawing
+         * ===================================================
+        */
+        g.append('g')
+            .attr('class', 'grid x-grid')
+            .attr('transform', `translate(0, ${height})`)
+            .call(xGrid);
+
+        g.append('g')
+            .attr('class', 'grid y-grid')
+            .call(yGrid);
+
+        g.append('g')
+            .attr('transform', `translate(0, ${height})`)
+            .attr('class', 'x-axis')
+            .call(d3.axisBottom(xScale))
+            .selectAll('text')
+            .attr("transform", "rotate(-45)")
+            .style("text-anchor", "end");
+
+        g.append('g')
+            .attr('class', 'y-axis')
+            .call(d3.axisLeft(yScale));
+
+        g.append('path')
+            .datum(dataset)
+            .attr('class', 'line')
+            .attr('d', line)
+            .attr('clip-path', 'url(#clip)');
+
+        g.selectAll('.dot')
+            .data(dataset)
+            .enter().append('circle')
+            .attr('class', 'dot')
+            .attr('cx', d => xScale(d.time))
+            .attr('cy', d => yScale(d.value))
+            .attr('r', '0.18rem')
+            .attr('clip-path', 'url(#clip)');
+
+        // Append labels
+        svg.append('text')
+            .attr('text-anchor', 'middle')
+            .attr('transform', `translate(${(margin.left / 2) - 10}, ${(height / 2) + margin.top}) rotate(-90)`)
+            .text('Value')
+            .style('font-size', '1.5rem');
+
+        svg.append('text')
+            .attr('text-anchor', 'middle')
+            .attr('transform', `translate(${(width / 2) + margin.left}, ${height + margin.top + margin.bottom})`)
+            .text('Time')
+            .style('font-size', '1.5rem');
+
+        // Append brush component last to ensure overlaying
+        g.append('g')
+            .attr('class', 'brush')
+            .call(brush);
+
+
+        /**
+         * ===================================================
+         * Other Functions
+         * ===================================================
+        */
+
+        function redraw() {
+            // Redraw the line and dots
+            g.select('.line')
+                .attr('d', line);
+
+            g.selectAll('.dot')
+                .attr('cx', d => xScale(d.time))
+                .attr('cy', d => yScale(d.value));
+
+            // Redraw the axes
+            g.select('.x-axis')
+                .call(d3.axisBottom(xScale))
+                .selectAll('text')
+                .attr("transform", "rotate(-45)")
+                .style("text-anchor", "end");
+
+            g.select('.y-axis')
+                .call(d3.axisLeft(yScale));
+
+            // Redraw the grid
+            g.select('.x-grid')
+                .attr('transform', `translate(0, ${height})`)
+                .call(xGrid);
+
+            g.select('.y-grid')
+                .call(yGrid);
+        }
+
+        function brushed(event) {
+            if (!event.selection) {
+                // If brush is cleared, reset the scales and redraw the chart
+                xScale.domain(d3.extent(dataset, d => d.time));
+                yScale.domain(d3.extent(dataset, d => d.value));
+                redraw();
+                return;
+            }
+
+            const extent = event.selection.map(xScale.invert);
+            const newData = dataset.filter(d => extent[0] <= d.time && d.time <= extent[1]);
+
+            xScale.domain(d3.extent(newData, d => d.time));
+            yScale.domain(d3.extent(newData, d => d.value));
+
+            redraw();
+        }
+
+        // Resize event listener to rescale the visualization
+        window.addEventListener('resize', () => {
+            width = window.innerWidth * scaleFactor - margin.left - margin.right;
+            height = window.innerHeight * scaleFactor - margin.top - margin.bottom;
+
+            // Update svg dimensions
+            svg.attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom);
+
+            // Update scales
+            xScale.rangeRound([0, width]);
+            yScale.rangeRound([height, 0]);
+
+            // Update grid line generators
+            xGrid.tickSize(-height);
+            yGrid.tickSize(-width);
+
+            // Update the brush extent
+            brush.extent([[0, 0], [width, height]]);
+
+            // Update the clip path
+            svg.select("#clip > rect")
+                .attr('width', width)
+                .attr('height', height);
+
+            // Redraw the chart
+            redraw();
+        });
+    </script>
+</body>
+
+</html>

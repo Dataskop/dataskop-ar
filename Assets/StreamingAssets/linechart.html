@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linechart</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        #viz {
+            background-color: transparent;
+            overflow: hidden;
+        }
+
+        #tooltip {
+            position: absolute;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border-radius: 5px;
+            opacity: 0;
+            pointer-events: none;
+            font-family: sans-serif;
+        }
+
+        #tooltip:after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0.5) transparent transparent transparent;
+        }
+
+        #no-data {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            border-bottom: 3px dashed black;
+        }
+
+        .line {
+            fill: none;
+            stroke: steelblue;
+            stroke-width: 3;
+        }
+
+        .dot {
+            fill: darkorange;
+        }
+
+        .x.label,
+        .y.label {
+            font-family: sans-serif;
+            font-size: 1.7em;
+        }
+
+        .x-grid line,
+        .y-grid line,
+        .x-grid path,
+        .y-grid path {
+            stroke: #eee;
+        }
+    </style>
+
+    <script src="./libs/d3.min.js"></script>
+</head>
+
+<body>
+    <div id="no-data">
+        No data chosen!
+    </div>
+
+    <div id="tooltip">
+        <strong>Date:</strong> <span id="tooltip-date"></span><br>
+        <strong>Value:</strong> <span id="tooltip-value"></span>
+    </div>
+
+    <div id="viz"></div>
+
+    <script>
+        // Create dataset for testing purpose
+        let dataset = [
+            { time: Date.now() - 8 * 24 * 60 * 60 * 1000, value: 43 },
+            { time: Date.now() - 7 * 24 * 60 * 60 * 1000, value: 22 },
+            { time: Date.now() - 6 * 24 * 60 * 60 * 1000, value: 55 },
+            { time: Date.now() - 5 * 24 * 60 * 60 * 1000, value: 35 },
+            { time: Date.now() - 4 * 24 * 60 * 60 * 1000, value: 45 },
+            { time: Date.now() - 3 * 24 * 60 * 60 * 1000, value: 10 },
+            { time: Date.now() - 2 * 24 * 60 * 60 * 1000, value: 40 },
+            { time: Date.now() - 1 * 24 * 60 * 60 * 1000, value: 20 },
+            { time: Date.now(), value: 60 },
+        ];
+
+        // Add a flag to track the current state
+        let dataAvailable = false;
+
+        /*  ===========================================================
+            General Setup
+        =========================================================== */
+        // Scaling setup and other variables
+        const margin = { top: 25, right: 15, bottom: 100, left: 100 };
+        const width = window.innerWidth * 0.9;
+        const height = window.innerHeight * 0.9;
+        let boundedW = width - margin.left - margin.right;
+        let boundedH = height - margin.top - margin.bottom;
+
+        /*  ===========================================================
+            Define chart functions
+        =========================================================== */
+        // Create scales
+        const xScale = d3.scaleTime()
+            .domain(d3.extent(dataset, d => d.time))
+            .range([0, boundedW])
+            .nice();
+
+        const xAxis = d3.axisBottom(xScale)
+            .tickFormat(d3.timeFormat("%m/%d, %H:%M%:%S"));
+
+        const maxValue = d3.max(dataset, d => d.value);
+        const buffer = maxValue * 0.1;
+
+        const yScale = d3.scaleLinear()
+            .domain([0, maxValue + buffer])
+            .range([boundedH, 0])
+            .nice();
+
+        const yAxis = d3.axisLeft(yScale)
+
+        // Define the line
+        const valueLine = d3.line()
+            .x(d => xScale(d.time))
+            .y(d => yScale(d.value))
+            .curve(d3.curveNatural);
+
+        // Create grid lines
+        const xGrid = d3.axisBottom(xScale).ticks(10).tickSize(-boundedH).tickFormat('');
+        const yGrid = d3.axisLeft(yScale).ticks(10).tickSize(-boundedW).tickFormat('');
+
+        /*  ===========================================================
+            Actual drawing
+        =========================================================== */
+        // Create a responsive SVG element with viewbox attribute
+        const svg = d3.select("#viz")
+            .append("svg")
+            .attr('viewBox', `0 0 ${width} ${height}`)
+            .attr('preserveAspectRatio', 'xMidYMid meet');      // The "xMidYMid meet" ensures that the SVG content scales and maintains its aspect ratio within the available space
+
+        // Create the actual viz container
+        const bounds = svg.append('g')
+            .attr('class', 'viz')
+            .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+        bounds.append('g')
+            .attr('class', 'grid x-grid')
+            .attr('transform', `translate(0, ${boundedH})`)
+            .call(xGrid);
+
+        bounds.append('g')
+            .attr('class', 'grid y-grid')
+            .call(yGrid);
+
+        // Add the line to the SVG
+        bounds.append("path")
+            .datum(dataset)
+            .attr("class", "line")
+            .attr("d", valueLine);
+
+        // Draw the dots as well
+        bounds.selectAll('.dot')
+            .data(dataset)
+            .enter().append('circle')
+            .attr('class', 'dot')
+            .attr('cx', d => xScale(d.time))
+            .attr('cy', d => yScale(d.value))
+            .attr('r', '0.40rem')
+            .on('touchstart click', function (event, d) {
+                event.preventDefault();
+
+                const x = margin.left + xScale(d.time);
+                const y = margin.top + yScale(d.value);
+
+                // Determine tooltip dimensions
+                const tooltipWidth = parseFloat(d3.select('#tooltip').style('width'));
+                const tooltipHeight = parseFloat(d3.select('#tooltip').style('height'));
+
+                // Constraints
+                let tooltipX = x - tooltipWidth / 2; // Center tooltip to dot by default
+                let tooltipY = y - tooltipHeight - 30; // 30px offset from dot
+
+                // Check right boundary
+                if (tooltipX + tooltipWidth > width) {
+                    tooltipX = width - tooltipWidth;
+                }
+
+                // Check left boundary
+                if (tooltipX < 0) {
+                    tooltipX = 0;
+                }
+
+                // Check top boundary
+                if (tooltipY < 0) {
+                    tooltipY = y + 30; // Place tooltip below the dot if it's too close to the top
+                    d3.select('#tooltip:after').style('top', 'initial').style('bottom', '100%'); // Move arrow to top
+                } else {
+                    d3.select('#tooltip:after').style('top', '100%').style('bottom', 'initial'); // Reset arrow to bottom
+                }
+
+                d3.select('#tooltip')
+                    .style('left', tooltipX + 'px')
+                    .style('top', tooltipY + 'px')
+                    .transition()
+                    .duration(200)
+                    .style('opacity', '1');
+
+                d3.select('#tooltip-date').text(new Date(d.time).toLocaleString());
+                d3.select('#tooltip-value').text(d.value);
+            })
+            .on('touchend mouseleave', function () {
+                d3.select('#tooltip').transition()
+                    .duration(100).style('opacity', '0');
+            });
+
+
+        /*  ===========================================================
+        Peripherals
+        =========================================================== */
+        // The X axis itself
+        const xAxisG = bounds.append('g')
+            .attr('class', 'axis x')
+            .attr('transform', `translate(0, ${boundedH})`)
+            .call(xAxis)
+            .selectAll('text')
+            .attr("transform", "rotate(-45)")
+            .style("text-anchor", "end");
+
+        // Draw Y axis itself
+        const yAxisG = bounds.append('g')
+            .attr('class', 'axis y')
+            .call(yAxis);
+
+        // The Y axis label
+        bounds.append("text")
+            .attr("class", "y label")
+            .attr("text-anchor", "start")
+            .attr("y", -margin.left + 26)
+            .attr("x", -boundedH / 2 - margin.top)
+            .attr("dy", ".75em")
+            .attr("transform", "rotate(-90)")
+            .text("Value");
+
+        /*  ===========================================================
+            Updates and Changes
+        =========================================================== */
+
+        // Function to change the data set when a new one arrives
+        function changeDataSet() {
+            // Update scales
+            xScale.domain(d3.extent(dataset, d => d.time));
+            const newMaxValue = d3.max(dataset, d => d.value);
+            const newBuffer = newMaxValue * 0.1;
+            yScale.domain([0, newMaxValue + newBuffer]);
+
+            // Redraw line with the new dataset
+            bounds.select(".line")
+                .datum(dataset)
+                .transition()
+                .duration(450)
+                .attr("d", valueLine);
+
+            // Redraw the dots
+            const dots = bounds.selectAll('.dot')
+                .data(dataset);
+
+            // Enter new dots
+            dots.enter().append('circle')
+                .attr('class', 'dot')
+                .attr('cx', d => xScale(d.time))
+                .attr('cy', d => yScale(d.value))
+                .attr('r', '0.40rem');
+
+            // Update existing dots
+            dots.transition()
+                .duration(450)
+                .attr('cx', d => xScale(d.time))
+                .attr('cy', d => yScale(d.value));
+
+            // Remove old dots
+            dots.exit().remove();
+
+            // Update and redraw axes with the new scales
+            bounds.select(".axis.x")
+                .transition()
+                .duration(120)
+                .call(xAxis)
+                .selectAll('text')
+                .attr("transform", "rotate(-45)")
+                .style("text-anchor", "end");
+
+            bounds.select('.axis.y')
+                .transition()
+                .duration(120)
+                .call(yAxis);
+
+            // Redraw the grid
+            bounds.select('.x-grid')
+                .transition()
+                .duration(120)
+                .call(xGrid.scale(xScale));
+
+            bounds.select('.y-grid')
+                .transition()
+                .duration(120)
+                .call(yGrid.scale(yScale));
+
+            updateSvgSize();
+        }
+
+
+        /*  ===========================================================
+           Other Things
+        =========================================================== */
+        function updateSvgSize() {
+            if (dataAvailable) {
+                const newWidth = window.innerWidth * 0.9;
+                const newHeight = window.innerHeight * 0.9;
+
+                boundedW = newWidth - margin.left - margin.right;
+                boundedH = newHeight - margin.top - margin.bottom;
+
+                // Update the range of the scales
+                xScale.range([0, boundedW]);
+                yScale.range([boundedH, 0]);
+
+                // Update grid line generators
+                xGrid.tickSize(-height);
+                yGrid.tickSize(-width);
+
+                const fontSize = Math.min(newWidth, newHeight) * 0.015;
+
+                // Apply the new font size to the axes labels
+                d3.selectAll(".axis text").style("font-size", fontSize + "px")
+
+                svg.attr('width', newWidth + 'px');
+                svg.attr('height', newHeight + 'px');
+            } else {
+                noData();
+            }
+        }
+
+        // Initial call to update the orignal visualization
+        updateSvgSize();
+
+        // Call the updateSvgSize function on window resize
+        window.addEventListener('resize', updateSvgSize);
+
+        /*  ===========================================================
+            Unity function
+        =========================================================== */
+        function getData(data) {
+            // Show the viz area
+            d3.select("#no-data").style("display", "none"); // Hide the no data message
+            d3.select("#viz").style("display", "block"); // Show the SVG
+            dataAvailable = true;
+
+            // Transform the data
+            const parsedData = JSON.parse(data);
+            dataset = parsedData.map(e => {
+                return {
+                    time: new Date(e.Timestamp).getTime(), value: +e.Value
+                }
+            });
+
+            // Draw the data
+            changeDataSet();
+        };
+
+        function noData() {
+            d3.select("#no-data").style("display", "block"); // Show the no data message
+            d3.select("#viz").style("display", "none"); // Hide the SVG
+            dataAvailable = false;
+        }
+    </script>
+</body>
+
+</html>

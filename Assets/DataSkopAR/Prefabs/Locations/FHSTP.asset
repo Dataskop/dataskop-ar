@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e7a340713b30346ba6c7db0849af34, type: 3}
+  m_Name: FHSTP
+  m_EditorClassIdentifier: 
+  locationName: "Fachhochschule St. P\xF6lten"
+  areas:
+  - areaName: "Geb\xE4ude A"
+    boundaryPoints:
+    - 48.214237087421374, 15.631645746005479
+    - 48.214058358863326, 15.632487959537576
+    - 48.21352931867516, 15.632219738667484
+    - 48.213582937862085, 15.631704754596898
+    - 48.21372056018482, 15.631321198752662
+  - areaName: "Geb\xE4ude B"
+    boundaryPoints:
+    - 48.213632982382954, 15.631310469901218
+    - 48.21343101668374, 15.632152683433317
+    - 48.21308248992748, 15.63224924295126
+    - 48.212741110140776, 15.632048077291154
+    - 48.21298061242726, 15.631012744718774
