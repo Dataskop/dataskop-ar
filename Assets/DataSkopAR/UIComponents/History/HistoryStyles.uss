@@ -1,0 +1,60 @@
+.history-button {
+    width: 80px;
+    height: 80px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+}
+
+.unity-base-slider__dragger {
+    width: 80px;
+    height: 40px;
+    left: -28px;
+    border-radius: 3px;
+    background-color: rgb(255, 255, 255);
+    border-width: 0;
+    border-left-width: 3px;
+    border-right-width: 3px;
+    border-top-width: 3px;
+    border-bottom-width: 3px;
+    border-left-color: rgb(0, 80, 150);
+    border-right-color: rgb(0, 80, 150);
+    border-top-color: rgb(0, 80, 150);
+    border-bottom-color: rgb(0, 80, 150);
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    align-items: stretch;
+    justify-content: flex-end;
+}
+
+.history-slider-container {
+    align-items: auto;
+    flex-shrink: 0;
+    flex-grow: 0;
+    height: 100%;
+    justify-content: space-around;
+    width: 150px;
+}
+
+.history-container {
+    height: 600px;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    flex-direction: row;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    top: 180px;
+}

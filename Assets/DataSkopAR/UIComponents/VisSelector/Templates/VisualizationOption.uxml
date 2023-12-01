@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/DataSkopAR/UIComponents/VisSelector/VisSelector.uss?fileID=7433441132597879392&amp;guid=766a3ef431cf9d94e91eddf09be3bad5&amp;type=3#VisSelector" />
+    <ui:Button display-tooltip-when-elided="true" name="opt" class="vis-btn" style="background-color: rgb(255, 255, 255);">
+        <ui:VisualElement name="icon" class="vis-icon" />
+    </ui:Button>
+</ui:UXML>

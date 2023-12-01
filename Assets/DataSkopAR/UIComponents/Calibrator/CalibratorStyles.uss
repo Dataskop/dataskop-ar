@@ -1,0 +1,52 @@
+VisualElement {
+}
+
+.calibrator-container {
+    align-items: center;
+    width: 100%;
+    height: auto;
+    background-color: rgba(180, 86, 9, 0.09);
+    top: 75%;
+    justify-content: space-around;
+}
+
+.guide-text {
+    width: 90%;
+    align-items: center;
+    font-size: 36px;
+    -unity-font-style: normal;
+    -unity-text-align: upper-center;
+    color: rgb(255, 255, 255);
+    white-space: normal;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.45);
+}
+
+.calibrator-button {
+    width: 220px;
+    height: 60px;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    font-size: 22px;
+    -unity-text-align: middle-center;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    background-color: rgb(255, 255, 255);
+    border-left-color: rgb(48, 48, 48);
+    border-right-color: rgb(48, 48, 48);
+    border-top-color: rgb(48, 48, 48);
+    border-bottom-color: rgb(48, 48, 48);
+    border-left-width: 3px;
+    border-right-width: 3px;
+    border-top-width: 3px;
+    border-bottom-width: 3px;
+}
+
+.step-text {
+    font-size: 24px;
+    color: rgb(255, 255, 255);
+    -unity-font-style: normal;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.45);
+}

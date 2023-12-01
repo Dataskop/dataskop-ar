@@ -1,0 +1,6 @@
+:root {
+    --dsar-color-white: #fff;
+    --dsar-color-black: #101820;
+    --dsar-color-danger: #f42451;
+    --dsar-color-success: #43d872;
+}

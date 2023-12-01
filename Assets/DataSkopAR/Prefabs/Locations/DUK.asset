@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e7a340713b30346ba6c7db0849af34, type: 3}
+  m_Name: DUK
+  m_EditorClassIdentifier: 
+  locationName: "Donau Universit\xE4t Krems"
+  areas:
+  - areaName: Altbau
+    boundaryPoints:
+    - 48.408210, 15.585016
+    - 48.408274, 15.586974
+    - 48.407729, 15.587023
+    - 48.407640, 15.585660
+    - 48.407440, 15.585617
+    - 48.407412, 15.585166
+  - areaName: Neubau
+    boundaryPoints:
+    - 48.408701, 15.585107
+    - 48.408929, 15.586867
+    - 48.408320, 15.586931
+    - 48.408267, 15.585027
