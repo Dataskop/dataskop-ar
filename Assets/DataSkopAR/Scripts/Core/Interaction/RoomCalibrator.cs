@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
-namespace DataSkopAR {
+namespace DataskopAR {
 
 	public class RoomCalibrator : MonoBehaviour {
 

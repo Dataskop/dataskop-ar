@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DataSkopAR.Interaction;
+using DataskopAR.Interaction;
 using Mapbox.Unity.Map;
 using Mapbox.Unity.Utilities;
 using Mapbox.Utils;
@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
 
-namespace DataSkopAR.Data {
+namespace DataskopAR.Data {
 
 	public class DataPointsManager : MonoBehaviour {
 

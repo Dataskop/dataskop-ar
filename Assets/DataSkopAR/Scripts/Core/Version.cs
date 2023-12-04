@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DataSkopAR {
+namespace DataskopAR {
 
 	public static class Version {
 

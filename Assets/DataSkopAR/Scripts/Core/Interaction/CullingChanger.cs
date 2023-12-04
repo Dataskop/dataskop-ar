@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DataSkopAR.Interaction {
+namespace DataskopAR.Interaction {
 
 	public class CullingChanger : MonoBehaviour {
 

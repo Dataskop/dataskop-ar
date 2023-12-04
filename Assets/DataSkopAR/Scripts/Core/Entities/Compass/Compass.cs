@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace DataSkopAR.Entities {
+namespace DataskopAR.Entities {
 
 	public class Compass : MonoBehaviour {
 

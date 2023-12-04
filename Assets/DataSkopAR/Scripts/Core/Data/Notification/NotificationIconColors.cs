@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace DataSkopAR.Data {
+namespace DataskopAR.Data {
 
 	[Serializable]
 	public struct NotificationIconColors {

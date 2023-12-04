@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DataSkopAR.Data {
+namespace DataskopAR.Data {
 
 	public class AuthorRepository : MonoBehaviour {
 

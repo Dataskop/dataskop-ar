@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using DataSkopAR.Entities.Visualizations;
+using DataskopAR.Entities.Visualizations;
 using UnityEngine;
 
-namespace DataSkopAR.Data {
+namespace DataskopAR.Data {
 
 	public class DataPoint : MonoBehaviour {
 

@@ -1,8 +1,8 @@
 using UnityEngine;
-using DataSkopAR.Data;
+using DataskopAR.Data;
 using Newtonsoft.Json;
 
-namespace DataSkopAR.UI {
+namespace DataskopAR.UI {
 
 	public class VizSpawner : MonoBehaviour {
 

@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace DataSkopAR.Data {
+namespace DataskopAR.Data {
 
 	[UsedImplicitly]
 	public class MeasurementDefinition {

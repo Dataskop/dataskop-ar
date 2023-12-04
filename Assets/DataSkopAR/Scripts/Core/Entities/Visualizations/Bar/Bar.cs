@@ -1,11 +1,11 @@
 using System.Globalization;
 using System.Linq;
-using DataSkopAR.Data;
-using DataSkopAR.Utils;
+using DataskopAR.Data;
+using DataskopAR.Utils;
 using TMPro;
 using UnityEngine;
 
-namespace DataSkopAR.Entities.Visualizations {
+namespace DataskopAR.Entities.Visualizations {
 
 	public class Bar : Visualization {
 

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-namespace DataSkopAR.UI {
+namespace DataskopAR.UI {
 
 	public class InfoCardProjectDataUI : InfoCardComponent {
 

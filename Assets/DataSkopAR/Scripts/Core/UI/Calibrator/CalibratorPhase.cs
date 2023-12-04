@@ -1,4 +1,4 @@
-namespace DataSkopAR.UI {
+namespace DataskopAR.UI {
 
 	public enum CalibratorPhase {
 

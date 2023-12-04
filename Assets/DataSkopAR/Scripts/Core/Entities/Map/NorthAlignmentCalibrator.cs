@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using DataSkopAR.Utils;
+using DataskopAR.Utils;
 using UnityEngine;
 
-namespace DataSkopAR.Entities {
+namespace DataskopAR.Entities {
 
 	/// <summary>
 	///     Responsible for aligning the AR Worlds forward axis to North of earth.
