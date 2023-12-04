@@ -1,12 +1,12 @@
 using System;
-using DataSkopAR.Data;
+using DataskopAR.Data;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using Image = UnityEngine.UI.Image;
 
-namespace DataSkopAR.UI {
+namespace DataskopAR.UI {
 
 	public class CalibratorUI : MonoBehaviour {
 

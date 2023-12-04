@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using DataSkopAR.Data;
-using DataSkopAR.Entities.Visualizations;
-using DataSkopAR.Interaction;
+using DataskopAR.Data;
+using DataskopAR.Entities.Visualizations;
+using DataskopAR.Interaction;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-namespace DataSkopAR.UI {
+namespace DataskopAR.UI {
 
 	public class InfoCardStateManager : MonoBehaviour {
 

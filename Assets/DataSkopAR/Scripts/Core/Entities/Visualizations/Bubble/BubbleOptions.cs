@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DataSkopAR.Entities.Visualizations {
+namespace DataskopAR.Entities.Visualizations {
 
 	[CreateAssetMenu(fileName = "Options", menuName = "VisOptions/Add Bubble Option...", order = 2)]
 	public class BubbleOptions : ScriptableObject {

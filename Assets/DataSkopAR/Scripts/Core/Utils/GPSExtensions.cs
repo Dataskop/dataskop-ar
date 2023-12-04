@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Mapbox.Utils;
 
-namespace DataSkopAR.Utils {
+namespace DataskopAR.Utils {
 
 	// https://stackoverflow.com/a/7199522
 	public static class GPSExtensions {

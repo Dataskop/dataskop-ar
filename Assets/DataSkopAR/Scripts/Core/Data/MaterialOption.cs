@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace DataSkopAR {
+namespace DataskopAR {
 
 	[Serializable]
 	public struct MaterialOption {

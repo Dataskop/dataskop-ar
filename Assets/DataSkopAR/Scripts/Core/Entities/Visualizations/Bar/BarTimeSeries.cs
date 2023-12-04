@@ -1,7 +1,7 @@
-using DataSkopAR.Utils;
+using DataskopAR.Utils;
 using UnityEngine;
 
-namespace DataSkopAR.Entities.Visualizations {
+namespace DataskopAR.Entities.Visualizations {
 
 	public class BarTimeSeries : TimeSeries {
 

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DataSkopAR.Data {
+namespace DataskopAR.Data {
 
 	public class Device {
 

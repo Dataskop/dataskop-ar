@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace DataSkopAR.Data {
+namespace DataskopAR.Data {
 
 	public sealed class ApiRequestHandler {
 

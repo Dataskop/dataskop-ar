@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEngine;
 using static System.Math;
 
-namespace DataSkopAR.Utils {
+namespace DataskopAR.Utils {
 
 	public static class MathExtensions {
 

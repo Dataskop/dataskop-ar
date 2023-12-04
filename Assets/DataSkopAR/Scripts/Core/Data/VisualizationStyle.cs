@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
 
-namespace DataSkopAR.Data {
+namespace DataskopAR.Data {
 
 	[UsedImplicitly]
 	public class VisualizationStyle {

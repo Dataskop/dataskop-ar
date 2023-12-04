@@ -1,7 +1,7 @@
 ﻿using System;
-using DataSkopAR.Data;
+using DataskopAR.Data;
 
-namespace DataSkopAR.Interaction {
+namespace DataskopAR.Interaction {
 
 	public class DataPointTargetedEventArgs : EventArgs {
 

@@ -1,11 +1,11 @@
 ﻿using System.Collections;
-using DataSkopAR.Data;
-using DataSkopAR.Entities.Visualizations;
+using DataskopAR.Data;
+using DataskopAR.Entities.Visualizations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-namespace DataSkopAR.Interaction {
+namespace DataskopAR.Interaction {
 
 	public class DataPointSelector : MonoBehaviour {
 

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
 
-namespace DataSkopAR.Data {
+namespace DataskopAR.Data {
 
 	public class TokenValidator : MonoBehaviour {
 

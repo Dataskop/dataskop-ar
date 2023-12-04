@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using DataSkopAR.Data;
+using DataskopAR.Data;
 using Mapbox.Unity.Map;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-namespace DataSkopAR.UI {
+namespace DataskopAR.UI {
 
 	public class ProjectSelectorUI : MonoBehaviour {
 

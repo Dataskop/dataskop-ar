@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
-namespace DataSkopAR.Data {
+namespace DataskopAR.Data {
 
 	public class DemoBoxHandler : MonoBehaviour {
 

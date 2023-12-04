@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataSkopAR {
+namespace DataskopAR {
 
 	/// <summary>
 	///     Class for receiving Error Codes, keeping track of received errors and sending out an event when receiving Errors.

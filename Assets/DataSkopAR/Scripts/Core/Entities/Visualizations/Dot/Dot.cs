@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Globalization;
 using System.Linq;
-using DataSkopAR.Data;
+using DataskopAR.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DataSkopAR.Entities.Visualizations {
+namespace DataskopAR.Entities.Visualizations {
 
 	public class Dot : Visualization {
 

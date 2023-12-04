@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
 
-namespace DataSkopAR.Entities {
+namespace DataskopAR.Entities {
 
 	/// <summary>
 	///     Responsible for aligning the AR Worlds y-Axis to the real worlds ground level.
