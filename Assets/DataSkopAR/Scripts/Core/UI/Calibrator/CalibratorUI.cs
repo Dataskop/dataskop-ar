@@ -1,5 +1,6 @@
 using System;
 using DataskopAR.Data;
+using DataskopAR.Interaction;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
