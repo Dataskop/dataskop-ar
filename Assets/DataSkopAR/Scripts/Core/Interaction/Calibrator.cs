@@ -9,8 +9,9 @@ namespace DataskopAR.Interaction {
 
 #region Events
 
-		public UnityEvent CalibrationInitialized;
-		public UnityEvent<CalibratorPhase> PhaseChanged;
+		public UnityEvent calibrationInitialized;
+		public UnityEvent<CalibratorPhase> phaseChanged;
+		public UnityEvent calibrationFinished;
 
 #endregion
 
@@ -34,7 +35,7 @@ namespace DataskopAR.Interaction {
 			get => phase;
 			private set {
 				phase = value;
-				PhaseChanged?.Invoke(Phase);
+				phaseChanged?.Invoke(Phase);
 			}
 		}
 
@@ -43,7 +44,7 @@ namespace DataskopAR.Interaction {
 #region Methods
 
 		public void Initiate() {
-			CalibrationInitialized?.Invoke();
+			calibrationInitialized?.Invoke();
 			Phase = CalibratorPhase.Initial;
 		}
 
@@ -76,9 +77,7 @@ namespace DataskopAR.Interaction {
 
 		}
 
-		public void OnCalibrationStepCompleted() {
-			
-		}
+		public void OnCalibrationStepCompleted() { }
 
 #endregion
 

@@ -18,8 +18,7 @@ namespace DataskopAR.Entities {
 		[SerializeField] private AbstractMap map;
 
 		[Header("Events")]
-		[SerializeField] private UnityEvent<bool> onCalibrationToggle;
-		[SerializeField] private UnityEvent onFirstCalibrationChange;
+		[SerializeField] private UnityEvent groundDetected;
 
 #endregion
 
@@ -56,7 +55,7 @@ namespace DataskopAR.Entities {
 					SetRootGroundLevel(GroundLevelYPosition);
 
 					if (!HasCalibrated) {
-						onFirstCalibrationChange?.Invoke();
+						groundDetected?.Invoke();
 						HasCalibrated = true;
 					}
 
@@ -88,14 +87,12 @@ namespace DataskopAR.Entities {
 			IsCalibrating = !IsCalibrating;
 			TogglePlanes(IsCalibrating);
 			arPlaneManager.enabled = IsCalibrating;
-			onCalibrationToggle?.Invoke(IsCalibrating);
 		}
 
 		public void SetGroundLevelCalibrationState(bool newState) {
 			IsCalibrating = newState;
 			TogglePlanes(IsCalibrating);
 			arPlaneManager.enabled = IsCalibrating;
-			onCalibrationToggle?.Invoke(IsCalibrating);
 		}
 
 		public void ResetCalibratedStatus() {
@@ -104,7 +101,11 @@ namespace DataskopAR.Entities {
 		}
 
 		private void TogglePlanes(bool status) {
-			foreach (ARPlane plane in arPlaneManager.trackables) plane.gameObject.SetActive(status);
+
+			foreach (ARPlane plane in arPlaneManager.trackables) {
+				plane.gameObject.SetActive(status);
+			}
+
 		}
 
 		private void OnDisable() {
