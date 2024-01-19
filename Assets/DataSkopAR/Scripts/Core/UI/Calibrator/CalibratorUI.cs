@@ -77,7 +77,7 @@ namespace DataskopAR.UI {
 		}
 
 		public void InitializeCalibration() {
-			PhaseCounter = 0;
+			PhaseCounter = 1;
 			CalibratorPhase = CalibratorPhase.Initial;
 			SetStepCounter(PhaseCounter);
 			SetPhaseText(CalibratorPhase.Initial);
@@ -87,7 +87,7 @@ namespace DataskopAR.UI {
 
 		public void TriggerNextPhase() {
 
-			SetStepCounter(++PhaseCounter);
+			SetStepCounter(PhaseCounter++);
 
 			switch (CalibratorPhase) {
 				case CalibratorPhase.Initial:
