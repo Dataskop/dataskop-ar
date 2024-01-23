@@ -1,5 +1,4 @@
 using System;
-using DataskopAR.Data;
 using DataskopAR.Interaction;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -32,8 +31,6 @@ namespace DataskopAR.UI {
 
 		public Button CalibratorButton { get; set; }
 
-		private CalibratorPhase CalibratorPhase { get; set; }
-
 		private int PhaseCounter { get; set; }
 
 		private Calibrator Calibrator => calibrator;
@@ -62,39 +59,35 @@ namespace DataskopAR.UI {
 			CalibratorRoot.style.visibility = new StyleEnum<Visibility>(isVisible ? Visibility.Visible : Visibility.Hidden);
 		}
 
-		public void InitializeCalibration() {
-			PhaseCounter = 1;
-			CalibratorPhase = CalibratorPhase.Initial;
-			SetStepCounter(PhaseCounter);
-			SetPhaseText(CalibratorPhase.Initial);
-		}
+		public void OnCalibratorPhaseChanged(CalibratorPhase currentPhase) {
 
-		public void OnCalibratorPhaseChanged(CalibratorPhase newPhase) {
-
-			switch (CalibratorPhase) {
+			switch (currentPhase) {
 				case CalibratorPhase.Initial:
-					//SetVisibility(true);
-					SetPhaseText(CalibratorPhase.Initial);
+					SetVisibility(true);
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.NorthAlignStart:
+					SetButtonEnabledStatus(false);
 					break;
 				case CalibratorPhase.NorthAlignFinish:
+					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.GroundStart:
-					SetPhaseText(CalibratorPhase.GroundFinish);
-					subCanvasGroup.alpha = 1;
 					SetButtonEnabledStatus(false);
 					break;
 				case CalibratorPhase.GroundFinish:
-					SetPhaseText(CalibratorPhase.End);
-					subCanvasGroup.alpha = 0;
+					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.RoomStart:
+					subCanvasGroup.alpha = 1;
+					SetButtonEnabledStatus(false);
 					break;
 				case CalibratorPhase.RoomFinish:
+					SetButtonEnabledStatus(true);
+					subCanvasGroup.alpha = 0;
 					break;
 				case CalibratorPhase.End:
+					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.None:
 					SetVisibility(false);
@@ -102,6 +95,8 @@ namespace DataskopAR.UI {
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
+
+			SetPhaseText(currentPhase);
 
 		}
 
