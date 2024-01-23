@@ -4,6 +4,8 @@ namespace DataskopAR.Interaction {
 
 		None,
 		Initial,
+		NorthAlignStart,
+		NorthAlignFinish,
 		GroundStart,
 		GroundFinish,
 		RoomStart,

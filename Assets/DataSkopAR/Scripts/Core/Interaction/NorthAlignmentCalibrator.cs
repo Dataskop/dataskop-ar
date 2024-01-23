@@ -31,6 +31,12 @@ namespace DataskopAR.Interaction {
 
 #region Methods
 
+		public ICalibration Enable() {
+			StartCoroutine(Rotate());
+			IsEnabled = true;
+			return this;
+		}
+
 		private IEnumerator Rotate() {
 
 			List<double> calculatedAngles = new();
@@ -62,12 +68,6 @@ namespace DataskopAR.Interaction {
 			float mapToCamAngle = MathExtensions.GetSignedAngleOnAxis(arCameraTransform, mapTransform, Vector3.up);
 			float calcAngle = 360f - (Input.compass.trueHeading + mapToCamAngle);
 			return calcAngle;
-		}
-
-		public ICalibration Enable() {
-			StartCoroutine(Rotate());
-			IsEnabled = true;
-			return this;
 		}
 
 		public void Disable() {
