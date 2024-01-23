@@ -17,12 +17,12 @@ namespace DataskopAR.Data {
 #region Properties
 
 		/// <summary>
-		///     Keeps track of the best GPS accuracy the device received.
+		/// Keeps track of the best GPS accuracy the device received.
 		/// </summary>
 		private float BestGPSAccuracy { get; set; } = 1000;
 
 		/// <summary>
-		///     Is true, if the initial geo location has been acquired already.
+		/// Is true, if the initial geo location has been acquired already.
 		/// </summary>
 		private bool HasInitialLocationData { get; set; }
 
@@ -38,7 +38,7 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
-		///     Grab initial location accuracy
+		/// Grab initial location accuracy
 		/// </summary>
 		public void InitializeGeoLocation() {
 
@@ -57,7 +57,7 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
-		///     Update Map when user location gps over device is more accurate than latest sample
+		/// Update Map when user location gps over device is more accurate than latest sample
 		/// </summary>
 		private void UpdateGPSLocation(Location userLocation) {
 
@@ -79,7 +79,7 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
-		///     Updates map to the position of the found QR code's lat/long.
+		/// Updates map to the position of the found QR code's lat/long.
 		/// </summary>
 		public void OnQRMarkerTracking(QrResult qrResult) {
 
@@ -104,7 +104,7 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
-		///     Updates the map root to the user position when acquiring a new GPS position.
+		/// Updates the map root to the user position when acquiring a new GPS position.
 		/// </summary>
 		private void UpdateMapRoot() {
 			Vector3 arPos = arCam.transform.position;
