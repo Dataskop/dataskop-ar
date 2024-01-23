@@ -44,32 +44,54 @@ namespace DataskopAR.Interaction {
 
 #region Methods
 
-		public void Initiate() {
-			calibrationInitialized?.Invoke();
-			Phase = CalibratorPhase.Initial;
+		private void Start() {
+			Initialize();
 		}
 
-		public void OnCalibratorProgressButtonPressed() {
+		public void Initialize() {
+
+			if (ActiveCalibration == null) {
+				calibrationInitialized?.Invoke();
+				Phase = CalibratorPhase.Initial;
+			}
+
+		}
+
+		public void OnCalibratorContinued() {
 
 			switch (Phase) {
 
 				case CalibratorPhase.Initial:
+					Phase = CalibratorPhase.NorthAlignStart;
+					ActiveCalibration = northAlignmentCalibrator.Enable();
+					break;
+				case CalibratorPhase.NorthAlignStart:
+					Phase = CalibratorPhase.NorthAlignFinish;
+					ActiveCalibration.Disable();
+					break;
+				case CalibratorPhase.NorthAlignFinish:
 					Phase = CalibratorPhase.GroundStart;
+					ActiveCalibration = groundLevelCalibrator.Enable();
 					break;
 				case CalibratorPhase.GroundStart:
 					Phase = CalibratorPhase.GroundFinish;
+					ActiveCalibration.Disable();
 					break;
 				case CalibratorPhase.GroundFinish:
 					Phase = CalibratorPhase.RoomStart;
+					ActiveCalibration = roomCalibrator.Enable();
 					break;
 				case CalibratorPhase.RoomStart:
 					Phase = CalibratorPhase.RoomFinish;
+					ActiveCalibration.Disable();
 					break;
 				case CalibratorPhase.RoomFinish:
 					Phase = CalibratorPhase.End;
+					ActiveCalibration = null;
 					break;
 				case CalibratorPhase.End:
 					Phase = CalibratorPhase.None;
+					calibrationFinished?.Invoke();
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();

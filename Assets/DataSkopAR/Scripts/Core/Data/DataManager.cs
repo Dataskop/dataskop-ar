@@ -64,7 +64,7 @@ namespace DataskopAR.Data {
 
 #region Methods
 
-		private void Start() {
+		public void Initialize() {
 
 #if UNITY_EDITOR
 
