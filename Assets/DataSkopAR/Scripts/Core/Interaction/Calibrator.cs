@@ -1,4 +1,5 @@
 using System;
+using DataskopAR.Data;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -50,6 +51,10 @@ namespace DataskopAR.Interaction {
 		}
 
 		public void Initialize() {
+
+			if (DataPointsManager.IsDemoScene) {
+				return;
+			}
 
 			if (ActiveCalibration == null) {
 				calibrationInitialized?.Invoke();
