@@ -23,7 +23,7 @@ namespace DataskopAR.Interaction {
 		[SerializeField] private NorthAlignmentCalibrator northAlignmentCalibrator;
 		[SerializeField] private RoomCalibrator roomCalibrator;
 
-		private CalibratorPhase phase;
+		private CalibratorPhase currentPhase;
 
 #endregion
 
@@ -34,13 +34,15 @@ namespace DataskopAR.Interaction {
 		/// <summary>
 		/// The current Calibration Phase.
 		/// </summary>
-		public CalibratorPhase Phase {
-			get => phase;
+		public CalibratorPhase CurrentPhase {
+			get => currentPhase;
 			private set {
-				phase = value;
-				phaseChanged?.Invoke(Phase);
+				currentPhase = value;
+				phaseChanged?.Invoke(CurrentPhase);
 			}
 		}
+
+		public bool IsCalibrating { get; private set; }
 
 #endregion
 
@@ -56,48 +58,52 @@ namespace DataskopAR.Interaction {
 				return;
 			}
 
-			if (ActiveCalibration == null) {
-				calibrationInitialized?.Invoke();
-				Phase = CalibratorPhase.Initial;
+			if (ActiveCalibration != null) {
+				return;
 			}
+
+			calibrationInitialized?.Invoke();
+			CurrentPhase = CalibratorPhase.Initial;
+			IsCalibrating = true;
 
 		}
 
 		public void OnCalibratorContinued() {
 
-			switch (Phase) {
+			switch (CurrentPhase) {
 
 				case CalibratorPhase.Initial:
-					Phase = CalibratorPhase.NorthAlignStart;
+					CurrentPhase = CalibratorPhase.NorthAlignStart;
 					ActiveCalibration = northAlignmentCalibrator.Enable();
 					break;
 				case CalibratorPhase.NorthAlignStart:
-					Phase = CalibratorPhase.NorthAlignFinish;
+					CurrentPhase = CalibratorPhase.NorthAlignFinish;
 					ActiveCalibration.Disable();
 					break;
 				case CalibratorPhase.NorthAlignFinish:
-					Phase = CalibratorPhase.GroundStart;
+					CurrentPhase = CalibratorPhase.GroundStart;
 					ActiveCalibration = groundLevelCalibrator.Enable();
 					break;
 				case CalibratorPhase.GroundStart:
-					Phase = CalibratorPhase.GroundFinish;
+					CurrentPhase = CalibratorPhase.GroundFinish;
 					ActiveCalibration.Disable();
 					break;
 				case CalibratorPhase.GroundFinish:
-					Phase = CalibratorPhase.RoomStart;
+					CurrentPhase = CalibratorPhase.RoomStart;
 					ActiveCalibration = roomCalibrator.Enable();
 					break;
 				case CalibratorPhase.RoomStart:
-					Phase = CalibratorPhase.RoomFinish;
+					CurrentPhase = CalibratorPhase.RoomFinish;
 					ActiveCalibration.Disable();
 					break;
 				case CalibratorPhase.RoomFinish:
-					Phase = CalibratorPhase.End;
+					CurrentPhase = CalibratorPhase.End;
 					ActiveCalibration = null;
 					break;
 				case CalibratorPhase.End:
-					Phase = CalibratorPhase.None;
+					CurrentPhase = CalibratorPhase.None;
 					calibrationFinished?.Invoke();
+					IsCalibrating = false;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
@@ -110,20 +116,19 @@ namespace DataskopAR.Interaction {
 
 			if (ctx.performed) {
 
-				if (ActiveCalibration == null) {
+				if (!IsCalibrating) {
 					return;
 				}
 
 				ActiveCalibration.Disable();
 				ActiveCalibration = null;
-				Phase = CalibratorPhase.None;
+				CurrentPhase = CalibratorPhase.None;
 				calibrationFinished?.Invoke();
+				IsCalibrating = false;
 
 			}
 
 		}
-
-		public void OnCalibrationStepCompleted() { }
 
 #endregion
 
