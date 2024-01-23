@@ -144,8 +144,6 @@ namespace DataskopAR.UI {
 
 			calibrationProgressIndicator.fillAmount += progressValue;
 
-			Debug.Log(progressValue);
-
 			if (calibrationProgressIndicator.fillAmount >= 0.95f) {
 				SetButtonEnabledStatus(true);
 			}
