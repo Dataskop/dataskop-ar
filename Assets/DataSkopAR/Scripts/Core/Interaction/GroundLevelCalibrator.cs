@@ -1,10 +1,9 @@
-using System.Globalization;
 using Mapbox.Unity.Map;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
 
-namespace DataskopAR.Entities {
+namespace DataskopAR.Interaction {
 
 	/// <summary>
 	///     Responsible for aligning the AR Worlds y-Axis to the real worlds ground level.

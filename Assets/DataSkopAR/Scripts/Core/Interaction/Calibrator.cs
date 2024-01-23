@@ -1,5 +1,4 @@
 using System;
-using DataskopAR.Entities;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -27,6 +26,8 @@ namespace DataskopAR.Interaction {
 #endregion
 
 #region Properties
+
+		public ICalibration ActiveCalibration { get; private set; }
 
 		/// <summary>
 		/// The current Calibration Phase.

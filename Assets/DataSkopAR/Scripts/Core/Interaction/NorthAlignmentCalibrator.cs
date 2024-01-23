@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DataskopAR.Utils;
 using UnityEngine;
 
-namespace DataskopAR.Entities {
+namespace DataskopAR.Interaction {
 
 	/// <summary>
 	///     Responsible for aligning the AR Worlds forward axis to North of earth.
