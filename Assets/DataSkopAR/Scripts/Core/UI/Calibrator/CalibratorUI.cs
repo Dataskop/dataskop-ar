@@ -2,8 +2,6 @@ using System;
 using DataskopAR.Data;
 using DataskopAR.Interaction;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using Image = UnityEngine.UI.Image;
 
@@ -13,16 +11,11 @@ namespace DataskopAR.UI {
 
 #region Fields
 
-		[Header("Events")]
-		public UnityEvent onCalibratorPhaseStarted;
-		public UnityEvent onGroundCalibrationStarted;
-		public UnityEvent onGroundCalibrationFinished;
-		public UnityEvent onCalibratorPhaseEnded;
-
 		[Header("References")]
 		[SerializeField] private UIDocument calibratorUiDoc;
 		[SerializeField] private CanvasGroup subCanvasGroup;
 		[SerializeField] private Image calibrationProgressIndicator;
+		[SerializeField] private Calibrator calibrator;
 
 		[Header("Values")]
 		[SerializeField] private int numberOfPhases;
@@ -32,41 +25,40 @@ namespace DataskopAR.UI {
 #region Properties
 
 		public VisualElement CalibratorRoot { get; set; }
+
 		public Label GuideLabel { get; set; }
+
 		public Label StepLabel { get; set; }
+
 		public Button CalibratorButton { get; set; }
+
 		private CalibratorPhase CalibratorPhase { get; set; }
+
 		private int PhaseCounter { get; set; }
+
+		private Calibrator Calibrator => calibrator;
 
 #endregion
 
 #region Methods
 
 		private void OnEnable() {
+
 			CalibratorRoot = calibratorUiDoc.rootVisualElement.Q<VisualElement>("CalibratorContainer");
+			SetVisibility(false);
+
 			GuideLabel = CalibratorRoot.Q<Label>("GuideLabel");
 			StepLabel = CalibratorRoot.Q<Label>("StepText");
+
 			CalibratorButton = CalibratorRoot.Q<Button>("CalibratorButton");
-			CalibratorButton.RegisterCallback<ClickEvent>(e => { TriggerNextPhase(); });
-		}
+			CalibratorButton.RegisterCallback<ClickEvent>(e => { Calibrator.OnCalibratorContinued(); });
 
-		private void Start() {
-
-			InitializeCalibration();
-
-			if (DataPointsManager.IsDemoScene) {
-				SkipCalibration();
-			}
+			PhaseCounter = 0;
+			SetStepCounter(PhaseCounter);
 
 		}
 
-		private void SkipCalibration() {
-			ToggleCalibrator(false);
-			CalibratorPhase = CalibratorPhase.End;
-			TriggerNextPhase();
-		}
-
-		public void ToggleCalibrator(bool isVisible) {
+		public void SetVisibility(bool isVisible) {
 			CalibratorRoot.style.visibility = new StyleEnum<Visibility>(isVisible ? Visibility.Visible : Visibility.Hidden);
 		}
 
@@ -75,36 +67,37 @@ namespace DataskopAR.UI {
 			CalibratorPhase = CalibratorPhase.Initial;
 			SetStepCounter(PhaseCounter);
 			SetPhaseText(CalibratorPhase.Initial);
-			ToggleCalibrator(true);
-			onCalibratorPhaseStarted?.Invoke();
 		}
 
-		public void TriggerNextPhase() {
-
-			SetStepCounter(PhaseCounter++);
+		public void OnCalibratorPhaseChanged(CalibratorPhase newPhase) {
 
 			switch (CalibratorPhase) {
 				case CalibratorPhase.Initial:
-					SetPhaseText(CalibratorPhase.GroundStart);
-					SetButtonEnabledStatus(false);
-					CalibratorPhase = CalibratorPhase.GroundStart;
-					onGroundCalibrationStarted?.Invoke();
+					//SetVisibility(true);
+					SetPhaseText(CalibratorPhase.Initial);
+					SetButtonEnabledStatus(true);
+					break;
+				case CalibratorPhase.NorthAlignStart:
+					break;
+				case CalibratorPhase.NorthAlignFinish:
 					break;
 				case CalibratorPhase.GroundStart:
 					SetPhaseText(CalibratorPhase.GroundFinish);
-					CalibratorPhase = CalibratorPhase.GroundFinish;
-					onGroundCalibrationFinished?.Invoke();
 					subCanvasGroup.alpha = 1;
 					SetButtonEnabledStatus(false);
 					break;
 				case CalibratorPhase.GroundFinish:
 					SetPhaseText(CalibratorPhase.End);
-					CalibratorPhase = CalibratorPhase.End;
 					subCanvasGroup.alpha = 0;
 					break;
+				case CalibratorPhase.RoomStart:
+					break;
+				case CalibratorPhase.RoomFinish:
+					break;
 				case CalibratorPhase.End:
-					onCalibratorPhaseEnded?.Invoke();
-					ToggleCalibrator(false);
+					break;
+				case CalibratorPhase.None:
+					SetVisibility(false);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
@@ -112,21 +105,13 @@ namespace DataskopAR.UI {
 
 		}
 
-		public void SetButtonEnabledStatus(bool isEnabled) {
+		private void SetButtonEnabledStatus(bool isEnabled) {
 			CalibratorButton.SetEnabled(isEnabled);
 		}
 
 		private void SetPhaseText(CalibratorPhase phase) {
-			SetGuideText(CalibratorTextRepository.CalibratorGuideDict[phase]);
-			SetButtonText(CalibratorTextRepository.CalibratorButtonTextDict[phase]);
-		}
-
-		private void SetGuideText(string guideText) {
-			GuideLabel.text = guideText;
-		}
-
-		private void SetButtonText(string buttonText) {
-			CalibratorButton.text = buttonText;
+			GuideLabel.text = CalibratorTextRepository.CalibratorGuideDict[phase];
+			CalibratorButton.text = CalibratorTextRepository.CalibratorButtonTextDict[phase];
 		}
 
 		private void SetStepCounter(int nextPhaseCounter) {
@@ -143,12 +128,8 @@ namespace DataskopAR.UI {
 
 		}
 
-		public void OnCalibrationPhaseChanged(CalibratorPhase newPhase) {
-			//TODO: What happens when the new phase state comes in?
-		}
-
 		private void OnDisable() {
-			CalibratorButton.UnregisterCallback<ClickEvent>(e => { TriggerNextPhase(); });
+			CalibratorButton.UnregisterCallback<ClickEvent>(e => { Calibrator.OnCalibratorContinued(); });
 		}
 
 #endregion
