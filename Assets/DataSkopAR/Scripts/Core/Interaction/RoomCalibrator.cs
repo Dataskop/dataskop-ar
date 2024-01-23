@@ -1,10 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
-using Random = UnityEngine.Random;
 
-namespace DataskopAR {
+namespace DataskopAR.Interaction {
 
-	public class RoomCalibrator : MonoBehaviour {
+	public class RoomCalibrator : MonoBehaviour, ICalibration {
 
 #region Constants
 
@@ -15,7 +14,7 @@ namespace DataskopAR {
 #region Events
 
 		[Header("Events")]
-		public UnityEvent<float> HasMadeCalibrationProgress;
+		public UnityEvent<float> roomScanProgressed;
 
 #endregion
 
@@ -25,19 +24,27 @@ namespace DataskopAR {
 
 		private Vector3 PreviousRotationEuler { get; set; }
 
-		private bool IsWaitingForRotation { get; set; }
+		public float RoomScanProgress { get; set; }
+
+		public bool IsEnabled { get; set; }
 
 #endregion
 
 #region Methods
 
-		private void Start() {
+		public ICalibration Enable() {
 			ArCamera = Camera.main;
+			IsEnabled = true;
+			return this;
+		}
+
+		public void Disable() {
+			IsEnabled = false;
 		}
 
 		private void FixedUpdate() {
 
-			if (IsWaitingForRotation) {
+			if (IsEnabled) {
 				CheckRotationDelta();
 			}
 
@@ -49,18 +56,12 @@ namespace DataskopAR {
 				return;
 			}
 
-			float randomProgressValue = Random.Range(0.05f, 0.15f);
-			HasMadeCalibrationProgress?.Invoke(randomProgressValue);
+			float randomProgressValue = UnityEngine.Random.Range(0.05f, 0.125f);
+			RoomScanProgress += randomProgressValue;
+			roomScanProgressed?.Invoke(RoomScanProgress);
+
 			PreviousRotationEuler = ArCamera.transform.eulerAngles;
 
-		}
-
-		public void OnRoomCalibrationPhaseBegan() {
-			IsWaitingForRotation = true;
-		}
-
-		public void OnCalibrationPhaseEnded() {
-			IsWaitingForRotation = false;
 		}
 
 #endregion
