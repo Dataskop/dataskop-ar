@@ -66,13 +66,6 @@ namespace DataskopAR.UI {
 			TriggerNextPhase();
 		}
 
-		public void SkipCalibrationInput(InputAction.CallbackContext ctx) {
-			if (ctx.performed) {
-				if (CalibratorPhase != CalibratorPhase.End)
-					SkipCalibration();
-			}
-		}
-
 		public void ToggleCalibrator(bool isVisible) {
 			CalibratorRoot.style.visibility = new StyleEnum<Visibility>(isVisible ? Visibility.Visible : Visibility.Hidden);
 		}

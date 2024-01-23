@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 namespace DataskopAR.Interaction {
 
@@ -95,6 +96,23 @@ namespace DataskopAR.Interaction {
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
+
+			}
+
+		}
+
+		public void SkipCalibrationInputReceived(InputAction.CallbackContext ctx) {
+
+			if (ctx.performed) {
+
+				if (ActiveCalibration == null) {
+					return;
+				}
+
+				ActiveCalibration.Disable();
+				ActiveCalibration = null;
+				Phase = CalibratorPhase.None;
+				calibrationFinished?.Invoke();
 
 			}
 
