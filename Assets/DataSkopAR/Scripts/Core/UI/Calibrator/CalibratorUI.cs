@@ -143,6 +143,10 @@ namespace DataskopAR.UI {
 
 		}
 
+		public void OnCalibrationPhaseChanged(CalibratorPhase newPhase) {
+			//TODO: What happens when the new phase state comes in?
+		}
+
 		private void OnDisable() {
 			CalibratorButton.UnregisterCallback<ClickEvent>(e => { TriggerNextPhase(); });
 		}
