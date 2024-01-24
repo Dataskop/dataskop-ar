@@ -1,3 +1,4 @@
+using System;
 using Mapbox.Unity.Map;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,8 +13,7 @@ namespace DataskopAR.Interaction {
 
 #region Events
 
-		[Header("Events")]
-		[SerializeField] private UnityEvent groundDetected;
+		public event Action CalibrationCompleted;
 
 #endregion
 
@@ -58,7 +58,7 @@ namespace DataskopAR.Interaction {
 					SetRootGroundLevel(GroundLevelYPosition);
 
 					if (!HasCalibrated) {
-						groundDetected?.Invoke();
+						CalibrationCompleted?.Invoke();
 						HasCalibrated = true;
 					}
 

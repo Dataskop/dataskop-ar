@@ -67,29 +67,43 @@ namespace DataskopAR.UI {
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.NorthAlignStart:
+					SetStepCounter(1);
+					SetButtonEnabledStatus(true);
+					break;
+				case CalibratorPhase.NorthAlignProcess:
 					SetButtonEnabledStatus(false);
 					break;
 				case CalibratorPhase.NorthAlignFinish:
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.GroundStart:
+					SetStepCounter(1);
+					SetButtonEnabledStatus(true);
+					break;
+				case CalibratorPhase.GroundProcess:
 					SetButtonEnabledStatus(false);
 					break;
 				case CalibratorPhase.GroundFinish:
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.RoomStart:
+					SetStepCounter(1);
+					SetButtonEnabledStatus(true);
+					break;
+				case CalibratorPhase.RoomProcess:
 					subCanvasGroup.alpha = 1;
 					SetButtonEnabledStatus(false);
 					break;
 				case CalibratorPhase.RoomFinish:
-					SetButtonEnabledStatus(true);
 					subCanvasGroup.alpha = 0;
+					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.End:
+					StepLabel.visible = false;
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.None:
+					SetButtonEnabledStatus(false);
 					SetVisibility(false);
 					break;
 				default:
@@ -100,8 +114,9 @@ namespace DataskopAR.UI {
 
 		}
 
-		private void SetButtonEnabledStatus(bool isEnabled) {
-			CalibratorButton.SetEnabled(isEnabled);
+		public void SetButtonEnabledStatus(bool isEnabled) {
+			//CalibratorButton.SetEnabled(isEnabled);
+			CalibratorButton.visible = isEnabled;
 		}
 
 		private void SetPhaseText(CalibratorPhase phase) {
@@ -110,17 +125,16 @@ namespace DataskopAR.UI {
 		}
 
 		private void SetStepCounter(int nextPhaseCounter) {
-			StepLabel.text = $"Step {nextPhaseCounter}/{numberOfPhases}";
+			PhaseCounter += nextPhaseCounter;
+			StepLabel.text = $"Step {PhaseCounter}/{numberOfPhases}";
 		}
 
 		public void OnRoomCalibrationProgressReceived(float progressValue) {
+			calibrationProgressIndicator.fillAmount = progressValue;
+		}
 
-			calibrationProgressIndicator.fillAmount += progressValue;
-
-			if (calibrationProgressIndicator.fillAmount >= 0.95f) {
-				SetButtonEnabledStatus(true);
-			}
-
+		public void OnNorthRotationSampleReceived() {
+			//TODO: What should be displayed in the UI when a sample has been received during calibration?
 		}
 
 		private void OnDisable() {
