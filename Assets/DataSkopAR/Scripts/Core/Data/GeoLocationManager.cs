@@ -37,6 +37,10 @@ namespace DataskopAR.Data {
 			locationProvider.mapManager.OnUpdated += UpdateMapRoot;
 		}
 
+		private void Start() {
+			InitializeGeoLocation();
+		}
+
 		/// <summary>
 		/// Grab initial location accuracy
 		/// </summary>
@@ -49,9 +53,8 @@ namespace DataskopAR.Data {
 			}
 
 			BestGPSAccuracy = gpsAccuracy;
-			locationProvider.mapManager.UpdateMap(locationProvider.DeviceLocationProvider.CurrentLocation.LatitudeLongitude);
-
-			locationProvider.DeviceLocationProvider.CurrentLocation.LatitudeLongitude.ToVector3xz();
+			Debug.Log(locationProvider.DeviceLocationProvider.CurrentLocation.LatitudeLongitude);
+			//locationProvider.mapManager.UpdateMap(locationProvider.DeviceLocationProvider.CurrentLocation.LatitudeLongitude, 18);
 			HasInitialLocationData = true;
 
 		}

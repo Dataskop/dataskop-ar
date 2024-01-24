@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DataskopAR.Utils;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace DataskopAR.Interaction {
 
@@ -9,6 +11,15 @@ namespace DataskopAR.Interaction {
 	///     Responsible for aligning the AR Worlds forward axis to North of earth.
 	/// </summary>
 	public class NorthAlignmentCalibrator : MonoBehaviour, ICalibration {
+
+#region Events
+
+		public event Action CalibrationCompleted;
+
+		[Header("Events")]
+		public UnityEvent rotationSampleCalculated;
+
+#endregion
 
 #region Fields
 
@@ -32,33 +43,32 @@ namespace DataskopAR.Interaction {
 #region Methods
 
 		public ICalibration Enable() {
+
 			StartCoroutine(Rotate());
 			IsEnabled = true;
 			return this;
+
 		}
 
 		private IEnumerator Rotate() {
 
 			List<double> calculatedAngles = new();
 
-			if (Input.compass.enabled) {
+			for (int i = 0; i < rotationSamples; i++) {
 
-				for (int i = 0; i < rotationSamples; i++) {
-
-					if (Input.compass.headingAccuracy < 0) {
-						ErrorHandler.ThrowError(300, this);
-					}
-
-					calculatedAngles.Add(CalculateRotationAngle());
-					yield return timeBetweenSteps;
+				if (Input.compass.headingAccuracy < 0) {
+					ErrorHandler.ThrowError(300, this);
 				}
 
-				float finalAngle = (float)MathExtensions.MeanAngle(calculatedAngles.ToArray());
-				mapTransform.Rotate(Vector3.up, finalAngle);
+				calculatedAngles.Add(CalculateRotationAngle());
+				rotationSampleCalculated?.Invoke();
+				yield return timeBetweenSteps;
 			}
-			else {
-				yield break;
-			}
+
+			float finalAngle = (float)MathExtensions.MeanAngle(calculatedAngles.ToArray());
+			mapTransform.Rotate(Vector3.up, finalAngle);
+
+			CalibrationCompleted?.Invoke();
 
 			yield return new WaitForEndOfFrame();
 

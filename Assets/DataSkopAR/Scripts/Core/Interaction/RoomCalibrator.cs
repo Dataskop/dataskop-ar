@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,6 +17,8 @@ namespace DataskopAR.Interaction {
 
 		[Header("Events")]
 		public UnityEvent<float> roomScanProgressed;
+
+		public event Action CalibrationCompleted;
 
 #endregion
 
@@ -34,34 +38,34 @@ namespace DataskopAR.Interaction {
 
 		public ICalibration Enable() {
 			ArCamera = Camera.main;
+			StartCoroutine(CheckRotationDelta());
 			IsEnabled = true;
 			return this;
 		}
 
+		private IEnumerator CheckRotationDelta() {
+
+			while (RoomScanProgress < 1) {
+
+				if (!(Vector3.Distance(ArCamera.transform.eulerAngles, PreviousRotationEuler) > ProgressDistanceThreshold)) {
+					yield return new WaitForEndOfFrame();
+				}
+				else {
+					float randomProgressValue = UnityEngine.Random.Range(0.05f, 0.125f);
+					RoomScanProgress += randomProgressValue;
+					roomScanProgressed?.Invoke(RoomScanProgress);
+					PreviousRotationEuler = ArCamera.transform.eulerAngles;
+				}
+
+			}
+
+			yield return new WaitForEndOfFrame();
+			CalibrationCompleted?.Invoke();
+
+		}
+
 		public void Disable() {
 			IsEnabled = false;
-		}
-
-		private void FixedUpdate() {
-
-			if (IsEnabled) {
-				CheckRotationDelta();
-			}
-
-		}
-
-		private void CheckRotationDelta() {
-
-			if (!(Vector3.Distance(ArCamera.transform.eulerAngles, PreviousRotationEuler) > ProgressDistanceThreshold)) {
-				return;
-			}
-
-			float randomProgressValue = UnityEngine.Random.Range(0.05f, 0.125f);
-			RoomScanProgress += randomProgressValue;
-			roomScanProgressed?.Invoke(RoomScanProgress);
-
-			PreviousRotationEuler = ArCamera.transform.eulerAngles;
-
 		}
 
 #endregion
