@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using DataskopAR.Data;
 using UnityEngine;
-using UnityEngine.Android;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
