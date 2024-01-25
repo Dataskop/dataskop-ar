@@ -40,12 +40,23 @@ namespace DataskopAR.Interaction {
 			map.OnUpdated += OnMapUpdated;
 		}
 
+		public ICalibration Enable() {
+
+			IsEnabled = true;
+			arPlaneManager.enabled = IsEnabled;
+			TogglePlanes(IsEnabled);
+			return this;
+
+		}
+
 		private void GetLowestPlane(ARPlanesChangedEventArgs e) {
 
-			if (!IsEnabled)
+			if (!IsEnabled) {
 				return;
+			}
 
 			foreach (ARPlane plane in e.added) {
+
 				float yPos = plane.center.y;
 
 				if (yPos < -2f) {
@@ -54,8 +65,9 @@ namespace DataskopAR.Interaction {
 				}
 
 				if (GroundLevelYPosition > yPos) {
+
 					GroundLevelYPosition = yPos;
-					SetRootGroundLevel(GroundLevelYPosition);
+					SetMapRootGroundLevel(GroundLevelYPosition);
 
 					if (!HasCalibrated) {
 						CalibrationCompleted?.Invoke();
@@ -63,11 +75,12 @@ namespace DataskopAR.Interaction {
 					}
 
 				}
+
 			}
 
 		}
 
-		private void SetRootGroundLevel(float newGroundLevel) {
+		private void SetMapRootGroundLevel(float newGroundLevel) {
 
 			Vector3 mapPosition = map.Root.position;
 			mapPosition = new Vector3(mapPosition.x, newGroundLevel, mapPosition.z);
@@ -85,12 +98,7 @@ namespace DataskopAR.Interaction {
 		}
 
 		private void OnMapUpdated() {
-			SetRootGroundLevel(GroundLevelYPosition);
-		}
-
-		public void ResetCalibratedStatus() {
-			HasCalibrated = false;
-			ResetRootGroundLevel();
+			SetMapRootGroundLevel(GroundLevelYPosition);
 		}
 
 		private void TogglePlanes(bool status) {
@@ -98,15 +106,6 @@ namespace DataskopAR.Interaction {
 			foreach (ARPlane plane in arPlaneManager.trackables) {
 				plane.gameObject.SetActive(status);
 			}
-
-		}
-
-		public ICalibration Enable() {
-
-			IsEnabled = true;
-			TogglePlanes(IsEnabled);
-			arPlaneManager.enabled = IsEnabled;
-			return this;
 
 		}
 
