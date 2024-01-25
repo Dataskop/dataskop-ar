@@ -1,10 +1,10 @@
 {
-    "name": "Tests",
-    "rootNamespace": "DataSkop.Tests",
+    "name": "DataskopAR.Tests",
+    "rootNamespace": "DataskopAR.Tests",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "DataSkopAR"
+        "DataskopAR"
     ],
     "includePlatforms": [
         "Editor"
