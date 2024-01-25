@@ -53,7 +53,6 @@ namespace DataskopAR.Data {
 			}
 
 			BestGPSAccuracy = gpsAccuracy;
-			Debug.Log(locationProvider.DeviceLocationProvider.CurrentLocation.LatitudeLongitude);
 			locationProvider.mapManager.UpdateMap(locationProvider.DeviceLocationProvider.CurrentLocation.LatitudeLongitude, 18);
 			HasInitialLocationData = true;
 
