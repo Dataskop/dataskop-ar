@@ -7,9 +7,8 @@ VisualElement {
     font-size: 42px;
     -unity-font-style: normal;
     -unity-text-align: lower-center;
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     white-space: normal;
-    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.75);
     margin-top: 15px;
     margin-bottom: 5px;
     -unity-font-definition: initial;
@@ -52,10 +51,38 @@ VisualElement {
 
 .step-text {
     font-size: 28px;
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     -unity-font-style: normal;
-    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.45);
     padding-bottom: 15px;
     -unity-font-definition: initial;
     -unity-font: url('project://database/Assets/Mapbox/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
+}
+
+.option-button {
+    height: 85px;
+    width: 360px;
+    align-items: stretch;
+    left: auto;
+    background-color: rgb(255, 255, 255);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 4px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    font-size: 36px;
+    color: rgb(0, 0, 0);
+    -unity-font-style: normal;
+    -unity-text-align: middle-center;
+    justify-content: flex-start;
+    margin-top: 75px;
+    margin-bottom: 8px;
+    border-left-color: rgb(0, 80, 150);
+    border-right-color: rgb(0, 80, 150);
+    border-top-color: rgb(0, 80, 150);
+    border-bottom-color: rgb(0, 80, 150);
+    -unity-font-definition: initial;
+    -unity-font: url('project://database/Assets/Mapbox/Fonts/OpenSans-Bold.ttf?fileID=12800000&guid=7dfc2e1472ac84e1bb749a8a9f934483&type=3#OpenSans-Bold');
 }
