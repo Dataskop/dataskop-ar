@@ -17,7 +17,7 @@ namespace DataskopAR.Interaction {
 		public event Action CalibrationCompleted;
 
 		[Header("Events")]
-		public UnityEvent rotationSampleCalculated;
+		public UnityEvent<int, int> rotationSampleTaken;
 
 #endregion
 
@@ -61,7 +61,7 @@ namespace DataskopAR.Interaction {
 				}
 
 				calculatedAngles.Add(CalculateRotationAngle());
-				rotationSampleCalculated?.Invoke();
+				rotationSampleTaken?.Invoke(i, rotationSamples);
 				yield return timeBetweenSteps;
 			}
 

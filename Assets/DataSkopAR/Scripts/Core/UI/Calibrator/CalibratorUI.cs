@@ -1,5 +1,6 @@
 using System;
 using DataskopAR.Interaction;
+using DataskopAR.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Image = UnityEngine.UI.Image;
@@ -31,6 +32,9 @@ namespace DataskopAR.UI {
 
 		public Button CalibratorButton { get; set; }
 
+		private VisualElement NorthAlignmentProgressBar { get; set; }
+		private VisualElement NorthAlignmentProgressContainer { get; set; }
+
 		private int PhaseCounter { get; set; }
 
 		private Calibrator Calibrator => calibrator;
@@ -49,6 +53,9 @@ namespace DataskopAR.UI {
 
 			CalibratorButton = CalibratorRoot.Q<Button>("CalibratorButton");
 			CalibratorButton.RegisterCallback<ClickEvent>(e => { Calibrator.OnCalibratorContinued(); });
+
+			NorthAlignmentProgressBar = CalibratorRoot.Q<VisualElement>("NorthAlignmentProgress");
+			NorthAlignmentProgressContainer = CalibratorRoot.Q<VisualElement>("NorthAlignmentContainer");
 
 			PhaseCounter = 0;
 			SetStepCounter(PhaseCounter);
@@ -71,9 +78,13 @@ namespace DataskopAR.UI {
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.NorthAlignProcess:
+					NorthAlignmentProgressBar.visible = true;
+					NorthAlignmentProgressContainer.visible = true;
 					SetButtonEnabledStatus(false);
 					break;
 				case CalibratorPhase.NorthAlignFinish:
+					NorthAlignmentProgressBar.visible = false;
+					NorthAlignmentProgressContainer.visible = false;
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.GroundStart:
@@ -115,7 +126,6 @@ namespace DataskopAR.UI {
 		}
 
 		public void SetButtonEnabledStatus(bool isEnabled) {
-			//CalibratorButton.SetEnabled(isEnabled);
 			CalibratorButton.visible = isEnabled;
 		}
 
@@ -133,8 +143,8 @@ namespace DataskopAR.UI {
 			calibrationProgressIndicator.fillAmount = progressValue;
 		}
 
-		public void OnNorthRotationSampleReceived() {
-			//TODO: What should be displayed in the UI when a sample has been received during calibration?
+		public void OnNorthRotationSampleReceived(int currentSamples, int maxSamples) {
+			NorthAlignmentProgressBar.style.scale = new Scale(new Vector2(MathExtensions.Map01(currentSamples, 0, maxSamples), 1));
 		}
 
 		private void OnDisable() {
