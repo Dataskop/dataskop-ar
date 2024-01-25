@@ -1,10 +1,10 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/DataSkopAR/UIComponents/Calibrator/CalibratorStyles.uss?fileID=7433441132597879392&amp;guid=30dab59a8d4d5da40a6b9538ed84fc6a&amp;type=3#CalibratorStyles" />
-    <ui:VisualElement name="CalibratorContainer" class="calibrator-container" style="justify-content: space-between; height: 220px; background-color: rgba(106, 106, 105, 0.48);">
+    <ui:VisualElement name="CalibratorContainer" class="calibrator-container" style="justify-content: center; height: auto; background-color: rgba(125, 125, 125, 0.78); width: 90%; left: 5%; top: 70%; align-items: center; border-top-left-radius: 24px; border-bottom-left-radius: 24px; border-top-right-radius: 24px; border-bottom-right-radius: 24px; border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; border-left-color: rgb(229, 229, 229); border-right-color: rgb(229, 229, 229); border-top-color: rgb(229, 229, 229); border-bottom-color: rgb(229, 229, 229); flex-direction: column; transform-origin: bottom; flex-grow: 0; flex-shrink: 0;">
         <ui:VisualElement name="CalibrationImage" style="display: flex; background-image: url(&apos;project://database/Assets/DataSkopAR/Images/tablet.png?fileID=21300000&amp;guid=2cbdf3b46c788364b9a83e6dce520c25&amp;type=3#tablet&apos;); -unity-background-scale-mode: scale-to-fit;" />
-        <ui:Label text="Please calibrate the app first for the best results" display-tooltip-when-elided="true" name="GuideLabel" class="guide-text" />
+        <ui:Label text="CALIBRATION_GUIDE_TEXT_STRING" display-tooltip-when-elided="true" name="GuideLabel" class="guide-text" />
         <ui:VisualElement style="width: 90%; justify-content: center; align-items: center;">
-            <ui:Button text="Start Calibrating" display-tooltip-when-elided="true" name="CalibratorButton" class="calibrator-button" style="font-size: 26px; -unity-font-style: italic;" />
+            <ui:Button text="BUTTON_TEXT" display-tooltip-when-elided="true" name="CalibratorButton" class="calibrator-button" />
             <ui:Label text="Step X/X" display-tooltip-when-elided="true" name="StepText" class="step-text" />
         </ui:VisualElement>
     </ui:VisualElement>
