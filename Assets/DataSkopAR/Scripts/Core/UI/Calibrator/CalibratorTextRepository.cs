@@ -14,8 +14,8 @@ namespace DataskopAR.UI {
 			{ CalibratorPhase.NorthAlignStart, "First we are going to calibrate the north alignment." },
 			{ CalibratorPhase.NorthAlignProcess, "Grabbing north rotation samples..." },
 			{ CalibratorPhase.NorthAlignFinish, "North alignment complete! Continue to the next step." },
-			{ CalibratorPhase.GroundStart, "Grounding your view in the next calibration step." },
-			{ CalibratorPhase.GroundProcess, "Please align the GREEN rectangle with the floor at your feet to continue." },
+			{ CalibratorPhase.GroundStart, "Let's locate the ground in the next calibration step." },
+			{ CalibratorPhase.GroundProcess, "Point your view in the direction of the floor and tap on the green rectangle that will appear on it! Make sure the rectangle is at the height of your floor." },
 			{ CalibratorPhase.GroundFinish, "Ground calibration successful! You're all set for the next step." },
 			{ CalibratorPhase.RoomStart, "Time to capture your surroundings for better AR tracking!" },
 			{ CalibratorPhase.RoomProcess, "Slowly scan the room with your device until the blue progress bar fills up all the way." },
@@ -25,16 +25,16 @@ namespace DataskopAR.UI {
 		};
 
 		public static readonly Dictionary<CalibratorPhase, string> CalibratorButtonTextDict = new() {
-			{ CalibratorPhase.Initial, "Start" },
+			{ CalibratorPhase.Initial, "Calibrate" },
 			{ CalibratorPhase.NorthAlignStart, "Start" },
 			{ CalibratorPhase.NorthAlignProcess, "" },
-			{ CalibratorPhase.NorthAlignFinish, "Continue" },
+			{ CalibratorPhase.NorthAlignFinish, "Next" },
 			{ CalibratorPhase.GroundStart, "Start" },
 			{ CalibratorPhase.GroundProcess, "" },
-			{ CalibratorPhase.GroundFinish, "Continue" },
+			{ CalibratorPhase.GroundFinish, "Next" },
 			{ CalibratorPhase.RoomStart, "Start" },
 			{ CalibratorPhase.RoomProcess, "" },
-			{ CalibratorPhase.RoomFinish, "Continue" },
+			{ CalibratorPhase.RoomFinish, "Next" },
 			{ CalibratorPhase.End, "Finish" },
 			{ CalibratorPhase.None, "" }
 		};
