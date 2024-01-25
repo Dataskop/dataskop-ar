@@ -1,5 +1,6 @@
 using System;
 using DataskopAR.Data;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -30,7 +31,7 @@ namespace DataskopAR.Interaction {
 
 #region Properties
 
-		public ICalibration ActiveCalibration { get; private set; }
+		[CanBeNull] public ICalibration ActiveCalibration { get; private set; }
 
 		/// <summary>
 		/// The current Calibration Phase.
@@ -84,33 +85,45 @@ namespace DataskopAR.Interaction {
 					break;
 				case CalibratorPhase.NorthAlignStart:
 					CurrentPhase = CalibratorPhase.NorthAlignProcess;
-					ActiveCalibration = northAlignmentCalibrator.Enable();
+
+					if (northAlignmentCalibrator != null) {
+						ActiveCalibration = northAlignmentCalibrator.Enable();
+					}
+
 					break;
 				case CalibratorPhase.NorthAlignProcess:
 					CurrentPhase = CalibratorPhase.NorthAlignFinish;
-					ActiveCalibration.Disable();
+					ActiveCalibration?.Disable();
 					break;
 				case CalibratorPhase.NorthAlignFinish:
 					CurrentPhase = CalibratorPhase.GroundStart;
 					break;
 				case CalibratorPhase.GroundStart:
 					CurrentPhase = CalibratorPhase.GroundProcess;
-					ActiveCalibration = groundLevelCalibrator.Enable();
+
+					if (northAlignmentCalibrator != null) {
+						ActiveCalibration = groundLevelCalibrator.Enable();
+					}
+
 					break;
 				case CalibratorPhase.GroundProcess:
 					CurrentPhase = CalibratorPhase.GroundFinish;
-					ActiveCalibration.Disable();
+					ActiveCalibration?.Disable();
 					break;
 				case CalibratorPhase.GroundFinish:
 					CurrentPhase = CalibratorPhase.RoomStart;
 					break;
 				case CalibratorPhase.RoomStart:
 					CurrentPhase = CalibratorPhase.RoomProcess;
-					ActiveCalibration = roomCalibrator.Enable();
+
+					if (northAlignmentCalibrator != null) {
+						ActiveCalibration = roomCalibrator.Enable();
+					}
+
 					break;
 				case CalibratorPhase.RoomProcess:
 					CurrentPhase = CalibratorPhase.RoomFinish;
-					ActiveCalibration.Disable();
+					ActiveCalibration?.Disable();
 					break;
 				case CalibratorPhase.RoomFinish:
 					CurrentPhase = CalibratorPhase.End;
