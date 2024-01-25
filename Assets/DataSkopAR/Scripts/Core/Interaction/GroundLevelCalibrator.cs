@@ -27,7 +27,7 @@ namespace DataskopAR.Interaction {
 
 #region Properties
 
-		private float GroundLevelYPosition { get; set; }
+		public float GroundLevelYPosition { get; set; }
 		public bool IsEnabled { get; set; }
 		private bool HasCalibrated { get; set; }
 
@@ -36,7 +36,7 @@ namespace DataskopAR.Interaction {
 #region Methods
 
 		private void OnEnable() {
-			arPlaneManager.planesChanged += GetLowestPlane;
+			arPlaneManager.planesChanged += OnArPlanesChanged;
 			map.OnUpdated += OnMapUpdated;
 		}
 
@@ -49,33 +49,29 @@ namespace DataskopAR.Interaction {
 
 		}
 
-		private void GetLowestPlane(ARPlanesChangedEventArgs e) {
+		private void OnArPlanesChanged(ARPlanesChangedEventArgs e) {
 
 			if (!IsEnabled) {
 				return;
 			}
 
 			foreach (ARPlane plane in e.added) {
+				SetLowestPlaneFound(plane);
+			}
 
-				float yPos = plane.center.y;
+		}
 
-				if (yPos < -2f) {
-					plane.gameObject.SetActive(false);
-					continue;
-				}
+		public void SetLowestPlaneFound(ARPlane foundPlane) {
 
-				if (GroundLevelYPosition > yPos) {
+			float yPos = foundPlane.center.y;
 
-					GroundLevelYPosition = yPos;
-					SetMapRootGroundLevel(GroundLevelYPosition);
+			if (yPos < -3f) {
+				foundPlane.gameObject.SetActive(false);
+				return;
+			}
 
-					if (!HasCalibrated) {
-						CalibrationCompleted?.Invoke();
-						HasCalibrated = true;
-					}
-
-				}
-
+			if (GroundLevelYPosition > yPos) {
+				GroundLevelYPosition = yPos;
 			}
 
 		}
@@ -119,7 +115,7 @@ namespace DataskopAR.Interaction {
 
 		private void OnDisable() {
 			map.OnUpdated -= OnMapUpdated;
-			arPlaneManager.planesChanged -= GetLowestPlane;
+			arPlaneManager.planesChanged -= OnArPlanesChanged;
 		}
 
 #endregion
