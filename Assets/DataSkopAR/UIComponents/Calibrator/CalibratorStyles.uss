@@ -17,38 +17,6 @@ VisualElement {
     flex-wrap: nowrap;
 }
 
-.calibrator-button {
-    width: 360px;
-    height: 110px;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: column;
-    font-size: 38px;
-    -unity-text-align: middle-center;
-    background-color: rgb(0, 80, 150);
-    border-left-width: 2px;
-    border-right-width: 2px;
-    border-top-width: 2px;
-    border-bottom-width: 2px;
-    border-left-color: rgb(255, 255, 255);
-    border-right-color: rgb(255, 255, 255);
-    border-top-color: rgb(255, 255, 255);
-    border-bottom-color: rgb(255, 255, 255);
-    color: rgb(229, 229, 229);
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-    -unity-font: url('project://database/Assets/Mapbox/Fonts/OpenSans-Bold.ttf?fileID=12800000&guid=7dfc2e1472ac84e1bb749a8a9f934483&type=3#OpenSans-Bold');
-    margin-top: 75px;
-    -unity-font-style: normal;
-    -unity-font-definition: initial;
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-}
-
 .step-text {
     font-size: 28px;
     color: rgb(0, 0, 0);
@@ -59,7 +27,7 @@ VisualElement {
 }
 
 .option-button {
-    height: 85px;
+    height: 120px;
     width: 360px;
     align-items: stretch;
     left: auto;

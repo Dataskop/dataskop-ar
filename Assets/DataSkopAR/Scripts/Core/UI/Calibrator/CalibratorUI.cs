@@ -3,7 +3,6 @@ using DataskopAR.Interaction;
 using DataskopAR.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Image = UnityEngine.UI.Image;
 
 namespace DataskopAR.UI {
 
@@ -13,8 +12,6 @@ namespace DataskopAR.UI {
 
 		[Header("References")]
 		[SerializeField] private UIDocument calibratorUiDoc;
-		[SerializeField] private CanvasGroup subCanvasGroup;
-		[SerializeField] private Image calibrationProgressIndicator;
 		[SerializeField] private Calibrator calibrator;
 
 		[Header("Values")]
@@ -34,6 +31,8 @@ namespace DataskopAR.UI {
 
 		private VisualElement NorthAlignmentProgressBar { get; set; }
 		private VisualElement NorthAlignmentProgressContainer { get; set; }
+		private VisualElement RoomScanContainer { get; set; }
+		private VisualElement RoomScanProgress { get; set; }
 
 		private int PhaseCounter { get; set; }
 
@@ -56,6 +55,8 @@ namespace DataskopAR.UI {
 
 			NorthAlignmentProgressBar = CalibratorRoot.Q<VisualElement>("NorthAlignmentProgress");
 			NorthAlignmentProgressContainer = CalibratorRoot.Q<VisualElement>("NorthAlignmentContainer");
+			RoomScanContainer = CalibratorRoot.Q<VisualElement>("RoomScanContainer");
+			RoomScanProgress = CalibratorRoot.Q<VisualElement>("RoomScanProgress");
 
 			PhaseCounter = 0;
 			SetStepCounter(PhaseCounter);
@@ -102,11 +103,13 @@ namespace DataskopAR.UI {
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.RoomProcess:
-					subCanvasGroup.alpha = 1;
+					RoomScanProgress.visible = true;
+					RoomScanContainer.visible = true;
 					SetButtonEnabledStatus(false);
 					break;
 				case CalibratorPhase.RoomFinish:
-					subCanvasGroup.alpha = 0;
+					RoomScanProgress.visible = false;
+					RoomScanContainer.visible = false;
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.End:
@@ -140,7 +143,7 @@ namespace DataskopAR.UI {
 		}
 
 		public void OnRoomCalibrationProgressReceived(float progressValue) {
-			calibrationProgressIndicator.fillAmount = progressValue;
+			RoomScanProgress.style.scale = new Scale(new Vector2(1, progressValue));
 		}
 
 		public void OnNorthRotationSampleReceived(int currentSamples, int maxSamples) {
