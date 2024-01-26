@@ -64,6 +64,11 @@ namespace DataskopAR.Interaction {
 
 		}
 
+		public void ResetRoomCalibration() {
+			RoomScanProgress = 0;
+			roomScanProgressed?.Invoke(RoomScanProgress);
+		}
+
 		public void Disable() {
 			IsEnabled = false;
 		}
