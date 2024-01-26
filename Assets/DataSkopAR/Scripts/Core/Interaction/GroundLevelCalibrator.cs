@@ -28,7 +28,8 @@ namespace DataskopAR.Interaction {
 		[Header("References")]
 		[SerializeField] private ARPlaneManager arPlaneManager;
 		[SerializeField] private AbstractMap map;
-		[SerializeField] private Camera camera;
+
+		private Camera cam;
 
 #endregion
 
@@ -52,7 +53,7 @@ namespace DataskopAR.Interaction {
 		public ICalibration Enable() {
 
 			IsEnabled = true;
-			camera = Camera.main;
+			cam = Camera.main;
 			arPlaneManager.enabled = IsEnabled;
 			TogglePlanes(IsEnabled);
 			return this;
@@ -132,7 +133,7 @@ namespace DataskopAR.Interaction {
 					return;
 				}
 
-				TapScreenToWorldRay = camera.ScreenPointToRay(new Vector3(TapPosition.x, TapPosition.y, -5));
+				TapScreenToWorldRay = cam.ScreenPointToRay(new Vector3(TapPosition.x, TapPosition.y, -5));
 
 				if (Physics.Raycast(TapScreenToWorldRay, out RaycastHit hit, Mathf.Infinity, TargetLayerMask)) {
 
