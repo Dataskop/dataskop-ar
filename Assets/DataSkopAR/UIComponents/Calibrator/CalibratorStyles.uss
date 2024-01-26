@@ -4,7 +4,7 @@ VisualElement {
 .guide-text {
     width: 90%;
     align-items: center;
-    font-size: 42px;
+    font-size: 48px;
     -unity-font-style: normal;
     -unity-text-align: lower-center;
     color: rgb(0, 0, 0);
@@ -27,8 +27,8 @@ VisualElement {
 }
 
 .option-button {
-    height: 120px;
-    width: 360px;
+    height: 130px;
+    width: 380px;
     align-items: stretch;
     left: auto;
     background-color: rgb(255, 255, 255);

@@ -130,6 +130,7 @@ namespace DataskopAR.UI {
 
 		public void SetButtonEnabledStatus(bool isEnabled) {
 			CalibratorButton.visible = isEnabled;
+			CalibratorButton.style.display = new StyleEnum<DisplayStyle>(isEnabled ? DisplayStyle.Flex : DisplayStyle.None);
 		}
 
 		private void SetPhaseText(CalibratorPhase phase) {
