@@ -37,10 +37,6 @@ namespace DataskopAR.Data {
 			locationProvider.mapManager.OnUpdated += UpdateMapRoot;
 		}
 
-		private void Start() {
-			InitializeGeoLocation();
-		}
-
 		/// <summary>
 		/// Grab initial location accuracy
 		/// </summary>
