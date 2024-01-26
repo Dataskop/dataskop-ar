@@ -29,6 +29,8 @@ namespace DataskopAR.UI {
 
 		public Button CalibratorButton { get; set; }
 
+		public VisualElement ProgressIndicatorContainer { get; set; }
+
 		private VisualElement NorthAlignmentProgressBar { get; set; }
 		private VisualElement NorthAlignmentProgressContainer { get; set; }
 		private VisualElement RoomScanContainer { get; set; }
@@ -52,6 +54,8 @@ namespace DataskopAR.UI {
 
 			CalibratorButton = CalibratorRoot.Q<Button>("CalibratorButton");
 			CalibratorButton.RegisterCallback<ClickEvent>(e => { Calibrator.OnCalibratorContinued(); });
+
+			ProgressIndicatorContainer = CalibratorRoot.Q<VisualElement>("ProgressIndicatorContainer");
 
 			NorthAlignmentProgressBar = CalibratorRoot.Q<VisualElement>("NorthAlignmentProgress");
 			NorthAlignmentProgressContainer = CalibratorRoot.Q<VisualElement>("NorthAlignmentContainer");
@@ -79,6 +83,7 @@ namespace DataskopAR.UI {
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.NorthAlignProcess:
+					SetProgressIndicatorStatus(true);
 					NorthAlignmentProgressBar.visible = true;
 					NorthAlignmentProgressContainer.visible = true;
 					SetButtonEnabledStatus(false);
@@ -86,6 +91,7 @@ namespace DataskopAR.UI {
 				case CalibratorPhase.NorthAlignFinish:
 					NorthAlignmentProgressBar.visible = false;
 					NorthAlignmentProgressContainer.visible = false;
+					SetProgressIndicatorStatus(false);
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.GroundStart:
@@ -103,6 +109,7 @@ namespace DataskopAR.UI {
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.RoomProcess:
+					SetProgressIndicatorStatus(true);
 					RoomScanProgress.visible = true;
 					RoomScanContainer.visible = true;
 					SetButtonEnabledStatus(false);
@@ -110,6 +117,7 @@ namespace DataskopAR.UI {
 				case CalibratorPhase.RoomFinish:
 					RoomScanProgress.visible = false;
 					RoomScanContainer.visible = false;
+					SetProgressIndicatorStatus(false);
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.End:
@@ -131,6 +139,11 @@ namespace DataskopAR.UI {
 		public void SetButtonEnabledStatus(bool isEnabled) {
 			CalibratorButton.visible = isEnabled;
 			CalibratorButton.style.display = new StyleEnum<DisplayStyle>(isEnabled ? DisplayStyle.Flex : DisplayStyle.None);
+		}
+
+		public void SetProgressIndicatorStatus(bool isEnabled) {
+			ProgressIndicatorContainer.visible = isEnabled;
+			ProgressIndicatorContainer.style.display = new StyleEnum<DisplayStyle>(isEnabled ? DisplayStyle.Flex : DisplayStyle.None);
 		}
 
 		private void SetPhaseText(CalibratorPhase phase) {
