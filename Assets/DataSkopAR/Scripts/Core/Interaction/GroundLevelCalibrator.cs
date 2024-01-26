@@ -96,11 +96,12 @@ namespace DataskopAR.Interaction {
 
 		}
 
-		private void ResetRootGroundLevel() {
+		public void ResetGroundLevelCalibration() {
 
+			LowestPlane = null;
 			GroundLevelYPosition = 0;
 			Vector3 mapPosition = map.Root.position;
-			mapPosition = new Vector3(mapPosition.x, 0, mapPosition.z);
+			mapPosition = new Vector3(mapPosition.x, GroundLevelYPosition, mapPosition.z);
 			map.Root.position = mapPosition;
 
 		}

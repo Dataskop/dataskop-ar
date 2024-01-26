@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DataskopAR.Utils;
 using UnityEngine;
 using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 namespace DataskopAR.Interaction {
 
@@ -30,7 +31,7 @@ namespace DataskopAR.Interaction {
 		[Header("Values")]
 		[SerializeField] private int rotationSamples = 10;
 
-		private readonly WaitForSeconds timeBetweenSteps = new(0.025f);
+		private WaitForSeconds timeBetweenSteps;
 
 #endregion
 
@@ -62,6 +63,7 @@ namespace DataskopAR.Interaction {
 
 				calculatedAngles.Add(CalculateRotationAngle());
 				rotationSampleTaken?.Invoke(i, rotationSamples);
+				timeBetweenSteps = new WaitForSeconds(Random.Range(0.005f, 0.225f));
 				yield return timeBetweenSteps;
 			}
 
