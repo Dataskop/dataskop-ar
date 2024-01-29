@@ -36,8 +36,8 @@ namespace DataskopAR.Interaction {
 #region Properties
 
 		public float GroundLevelYPosition { get; set; }
-		public ARPlane LowestPlane { get; private set; }
 		public bool IsEnabled { get; set; }
+		private ARPlane LowestPlane { get; set; }
 		private Ray TapScreenToWorldRay { get; set; }
 		private Vector2 TapPosition { get; set; }
 
@@ -140,7 +140,7 @@ namespace DataskopAR.Interaction {
 
 					if (hit.collider.gameObject.CompareTag("ARPlane")) {
 
-						SetMapRootGroundLevel(LowestPlane.transform.position.y);
+						SetMapRootGroundLevel(hit.collider.gameObject.transform.position.y);
 						CalibrationCompleted?.Invoke();
 
 					}
