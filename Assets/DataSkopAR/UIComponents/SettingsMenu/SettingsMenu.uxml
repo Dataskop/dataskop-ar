@@ -16,10 +16,10 @@
             <ui:Label text="MENU_TITLE_STRING" display-tooltip-when-elided="true" name="MenuTitle" class="title" />
         </ui:VisualElement>
         <ui:VisualElement name="Splitter" class="splitter" />
-        <ui:VisualElement name="ProjectSelectionContainer" class="settings-menu-container project-selector-close" style="align-items: center;">
+        <ui:VisualElement name="ProjectSelectionContainer" class="settings-menu-container project-selector-close" style="align-items: center; -unity-background-image-tint-color: rgba(255, 255, 255, 0); background-color: rgba(0, 0, 0, 0);">
             <ui:VisualElement name="ProjectsContainer" style="width: 98%;" />
         </ui:VisualElement>
-        <ui:VisualElement name="SettingsMenuContainer" class="settings-menu-container settings-menu-close" style="display: flex; background-color: rgba(255, 255, 255, 0);">
+        <ui:VisualElement name="SettingsMenuContainer" class="settings-menu-container settings-menu-close" style="display: flex; background-color: rgba(0, 0, 0, 0);">
             <ui:VisualElement name="AmountContainer" class="option-container" style="justify-content: space-between; flex-direction: row;">
                 <ui:Label text="Amount to Fetch" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" />
                 <ui:TextField picking-mode="Ignore" name="AmountInput" text="100" class="text-input" />
@@ -77,7 +77,7 @@
             </ui:VisualElement>
             <ui:VisualElement name="Splitter" class="splitter" />
             <ui:VisualElement name="appinfo" class="appinfo">
-                <ui:Label text="DataskopAR - v1.0.130123" display-tooltip-when-elided="true" name="Version" style="font-size: 11px; letter-spacing: 10px; -unity-font-style: bold;" />
+                <ui:Label text="DataskopAR - v1.0.130123" display-tooltip-when-elided="true" name="Version" style="font-size: 11px; letter-spacing: 10px; -unity-font-style: bold; color: rgba(0, 0, 0, 255);" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
