@@ -13,6 +13,8 @@ namespace DataskopAR.UI {
 		private const string KnobAnimation = "knob-on";
 		private const string DefaultAmount = "10";
 		private const string DefaultCooldown = "30";
+		private const string ProjectSelectionTitle = "Projects";
+		private const string SettingsTitle = "Settings";
 
 #endregion
 
@@ -63,6 +65,7 @@ namespace DataskopAR.UI {
 		private Button ResetCalibrationButton { get; set; }
 		private Button LogoutButton { get; set; }
 		private Label VersionLabel { get; set; }
+		private Label TitleLabel { get; set; }
 
 		private TextField AmountInput { get; set; }
 		private TextField CooldownInput { get; set; }
@@ -129,6 +132,8 @@ namespace DataskopAR.UI {
 			VersionLabel = SettingsMenuContainer.Q<Label>("Version");
 			VersionLabel.text = "DataskopAR - " + Version.ID;
 
+			TitleLabel = Root.Q<Label>("MenuTitle");
+
 			AmountInput = SettingsMenuContainer.Q<TextField>("AmountInput");
 			AmountInput.RegisterCallback<ChangeEvent<string>>(AmountInputChanged);
 
@@ -141,6 +146,8 @@ namespace DataskopAR.UI {
 			isSettingsMenuActive = !isSettingsMenuActive;
 
 			if (isSettingsMenuActive) {
+
+				TitleLabel.text = SettingsTitle;
 
 				if (isProjectSelectorActive) {
 					ProjectSelectorContainer.RemoveFromClassList(MenuOpenAnimation);
@@ -170,6 +177,8 @@ namespace DataskopAR.UI {
 			isProjectSelectorActive = !isProjectSelectorActive;
 
 			if (isProjectSelectorActive) {
+
+				TitleLabel.text = ProjectSelectionTitle;
 
 				if (isSettingsMenuActive) {
 					SettingsMenuContainer.RemoveFromClassList(MenuOpenAnimation);
