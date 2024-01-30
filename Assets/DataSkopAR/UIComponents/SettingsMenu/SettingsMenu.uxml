@@ -11,17 +11,15 @@
             <ui:VisualElement name="Icon" style="width: 80%; height: 80%; background-image: url(&apos;project://database/Assets/DataSkopAR/Images/Icons/history.png?fileID=21300000&amp;guid=b77594151ea4321489aa1e626c9f8281&amp;type=3#history&apos;); background-color: rgba(27, 27, 27, 0); -unity-background-image-tint-color: rgb(0, 80, 150); font-size: 22px; color: rgba(255, 255, 255, 0.22); align-items: center; justify-content: center;" />
         </ui:Button>
     </ui:VisualElement>
-    <ui:VisualElement name="MainContainer" picking-mode="Ignore" style="width: 100%; height: 100%;">
+    <ui:VisualElement name="MainContainer" style="width: 480px; height: auto; position: absolute; align-items: center; background-color: rgb(210, 210, 210); border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px;">
+        <ui:VisualElement name="TitleContainer" class="titlecontainer">
+            <ui:Label text="MENU_TITLE_STRING" display-tooltip-when-elided="true" name="MenuTitle" class="title" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Splitter" class="splitter" />
         <ui:VisualElement name="ProjectSelectionContainer" class="settings-menu-container project-selector-close" style="align-items: center;">
-            <ui:VisualElement name="TitleContainer" class="titlecontainer">
-                <ui:Label text="Projects" display-tooltip-when-elided="true" name="ProjectSelectionTitle" class="title" />
-            </ui:VisualElement>
             <ui:VisualElement name="ProjectsContainer" style="width: 98%;" />
         </ui:VisualElement>
-        <ui:VisualElement name="SettingsMenuContainer" class="settings-menu-container settings-menu-close" style="display: flex;">
-            <ui:VisualElement name="TitleContainer" class="titlecontainer">
-                <ui:Label text="Settings" display-tooltip-when-elided="true" name="SettingsTitle" class="title" />
-            </ui:VisualElement>
+        <ui:VisualElement name="SettingsMenuContainer" class="settings-menu-container settings-menu-close" style="display: flex; background-color: rgba(255, 255, 255, 0);">
             <ui:VisualElement name="AmountContainer" class="option-container" style="justify-content: space-between; flex-direction: row;">
                 <ui:Label text="Amount to Fetch" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" />
                 <ui:TextField picking-mode="Ignore" name="AmountInput" text="100" class="text-input" />
@@ -30,7 +28,6 @@
                 <ui:Label text="Fetch Timer (seconds)" display-tooltip-when-elided="true" class="option-label" />
                 <ui:TextField picking-mode="Ignore" name="CooldownInput" text="30" class="text-input" />
             </ui:VisualElement>
-            <ui:VisualElement name="Splitter" class="splitter" />
             <ui:VisualElement name="OptionContainer_01" class="option-container">
                 <ui:Button display-tooltip-when-elided="true" name="Option_01" class="option-toggle-button-container">
                     <ui:Label text="Buildings" display-tooltip-when-elided="true" class="option-label" />
