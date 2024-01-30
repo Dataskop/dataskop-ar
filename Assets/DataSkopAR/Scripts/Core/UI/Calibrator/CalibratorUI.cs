@@ -21,15 +21,15 @@ namespace DataskopAR.UI {
 
 #region Properties
 
-		public VisualElement CalibratorRoot { get; set; }
+		private VisualElement CalibratorRoot { get; set; }
 
-		public Label GuideLabel { get; set; }
+		private Label GuideLabel { get; set; }
 
-		public Label StepLabel { get; set; }
+		private Label StepLabel { get; set; }
 
-		public Button CalibratorButton { get; set; }
+		private Button CalibratorButton { get; set; }
 
-		public VisualElement ProgressIndicatorContainer { get; set; }
+		private VisualElement ProgressIndicatorContainer { get; set; }
 
 		private VisualElement NorthAlignmentProgressBar { get; set; }
 		private VisualElement NorthAlignmentProgressContainer { get; set; }
@@ -143,7 +143,7 @@ namespace DataskopAR.UI {
 			CalibratorButton.style.display = new StyleEnum<DisplayStyle>(isEnabled ? DisplayStyle.Flex : DisplayStyle.None);
 		}
 
-		public void SetProgressIndicatorStatus(bool isEnabled) {
+		private void SetProgressIndicatorStatus(bool isEnabled) {
 			ProgressIndicatorContainer.visible = isEnabled;
 			ProgressIndicatorContainer.style.display = new StyleEnum<DisplayStyle>(isEnabled ? DisplayStyle.Flex : DisplayStyle.None);
 		}
