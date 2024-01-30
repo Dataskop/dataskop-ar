@@ -63,7 +63,7 @@ namespace DataskopAR.Interaction {
 
 				calculatedAngles.Add(CalculateRotationAngle());
 				rotationSampleTaken?.Invoke(i, rotationSamples);
-				timeBetweenSteps = new WaitForSeconds(Random.Range(0.005f, 0.225f));
+				timeBetweenSteps = new WaitForSeconds(Random.Range(0.005f, 0.115f));
 				yield return timeBetweenSteps;
 			}
 
