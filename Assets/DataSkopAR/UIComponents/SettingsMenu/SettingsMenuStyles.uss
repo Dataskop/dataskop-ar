@@ -4,16 +4,9 @@ VisualElement {
 .settings-menu-container {
     width: 480px;
     height: auto;
-    background-color: rgba(255, 255, 255, 0.8);
-    position: absolute;
-    left: 105%;
-    top: 15%;
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
     justify-content: flex-end;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0);
 }
 
 .app-buttons-container {
