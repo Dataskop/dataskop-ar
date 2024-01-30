@@ -75,10 +75,12 @@ namespace DataskopAR.UI {
 
 			switch (currentPhase) {
 				case CalibratorPhase.Initial:
+					StepLabel.visible = false;
 					SetVisibility(true);
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.NorthAlignStart:
+					StepLabel.visible = true;
 					SetStepCounter(1);
 					SetButtonEnabledStatus(true);
 					break;
@@ -153,7 +155,7 @@ namespace DataskopAR.UI {
 
 		private void SetStepCounter(int nextPhaseCounter) {
 			PhaseCounter += nextPhaseCounter;
-			StepLabel.text = $"Step {PhaseCounter}/{numberOfPhases}";
+			StepLabel.text = $"Phase {PhaseCounter}/{numberOfPhases}";
 		}
 
 		public void OnRoomCalibrationProgressReceived(float progressValue) {
