@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="bb153ca6-8fe7-4493-81fc-a1814e44e87d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.dataskop-ar/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.dataskop-ar/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/DataSkopAR/UIComponents/SettingsMenu/SettingsMenu.uxml" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DataSkopAR/UIComponents/SettingsMenu/SettingsMenu.uxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +39,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "dev",
+    "git-widget-placeholder": "14-project-list-vertical-size-and-scrolling",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -108,6 +109,7 @@
       <workItem from="1706083815050" duration="204000" />
       <workItem from="1706084205760" duration="14577000" />
       <workItem from="1706621325453" duration="1229000" />
+      <workItem from="1706624018864" duration="1576000" />
     </task>
     <servers />
   </component>
