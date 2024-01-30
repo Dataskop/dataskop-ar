@@ -25,12 +25,7 @@ namespace DataskopAR.Entities {
 
 #region Methods
 
-		private void Start() {
-			rotationCoroutine = StartCoroutine(RotateToNorth(rotationTime));
-		}
-
 		public void StartRotating() {
-			StopCoroutine(rotationCoroutine);
 			rotationCoroutine = StartCoroutine(RotateToNorth(rotationTime));
 		}
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DataskopAR.Utils;
 using Mapbox.Unity.Location;
@@ -33,9 +34,12 @@ namespace DataskopAR.Data {
 
 #region Methods
 
-		private void Start() {
-
+		private void OnEnable() {
 			locationProviderFactory.DefaultLocationProvider.OnLocationUpdated += CheckUserLocationInAreas;
+		}
+
+		private void Start() {
+			
 			InitializeAreas(locationData);
 			userAreaLocated?.Invoke(lastLocatedArea);
 
