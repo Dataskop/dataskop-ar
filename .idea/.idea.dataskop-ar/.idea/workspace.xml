@@ -5,20 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bb153ca6-8fe7-4493-81fc-a1814e44e87d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/DataSkopAR/Scenes/World.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DataSkopAR/Scenes/World.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/Data/GeoLocationManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/Data/GeoLocationManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/Data/LocationAreaManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/Data/LocationAreaManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/Entities/Compass/Compass.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/Entities/Compass/Compass.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/Interaction/Calibrator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/Interaction/Calibrator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/Interaction/CalibratorPhase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/Interaction/CalibratorPhase.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/Interaction/GroundLevelCalibrator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/Interaction/GroundLevelCalibrator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/Interaction/ICalibration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/Interaction/ICalibration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/Interaction/NorthAlignmentCalibrator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/Interaction/NorthAlignmentCalibrator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/Interaction/RoomCalibrator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/Interaction/RoomCalibrator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/UI/Calibrator/CalibratorTextRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/UI/Calibrator/CalibratorTextRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/UI/Calibrator/CalibratorUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DataSkopAR/Scripts/Core/UI/Calibrator/CalibratorUI.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Mapbox/Unity/Map/InitializeMapWithLocationProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Mapbox/Unity/Map/InitializeMapWithLocationProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Mapbox/Unity/Telemetry/TelemetryEditor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Mapbox/Unity/Telemetry/TelemetryEditor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.dataskop-ar/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.dataskop-ar/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +38,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "1-room-scan-progress",
+    "git-widget-placeholder": "dev",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -63,15 +50,15 @@
   },
   "keyToStringList": {
     "rider.external.source.directories": [
-      "C:\\Users\\flami\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache",
-      "C:\\Users\\flami\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache",
-      "C:\\Users\\flami\\AppData\\Local\\Symbols\\src"
+      "C:\\Users\\mzauchinger\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache",
+      "C:\\Users\\mzauchinger\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache",
+      "C:\\Users\\mzauchinger\\AppData\\Local\\Symbols\\src"
     ]
   }
 }]]></component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="D:\Applications\Development\Unity\2021.3.29f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2021.3.29f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath D:\Work\Dataskop\dataskop-ar -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="D:\Work\Dataskop\dataskop-ar" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -79,7 +66,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="D:\Applications\Development\Unity\2021.3.29f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2021.3.29f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath D:\Work\Dataskop\dataskop-ar -testResults Logs/results.xml -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="D:\Work\Dataskop\dataskop-ar" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -96,10 +83,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="19312">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="19312" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -120,6 +107,7 @@
       <workItem from="1706083629365" duration="106000" />
       <workItem from="1706083815050" duration="204000" />
       <workItem from="1706084205760" duration="14577000" />
+      <workItem from="1706621325453" duration="1229000" />
     </task>
     <servers />
   </component>
