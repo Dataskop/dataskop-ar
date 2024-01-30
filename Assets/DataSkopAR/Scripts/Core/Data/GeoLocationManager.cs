@@ -90,7 +90,10 @@ namespace DataskopAR.Data {
 
 			locationProvider.mapManager.UpdateMap(Conversions.StringToLatLon(dataPointLocation));
 			BestGPSAccuracy = 0;
+
+#if UNITY_ANDROID
 			Handheld.Vibrate();
+#endif
 			HasUsedFixedPositioning = true;
 
 			NotificationHandler.Add(new Notification {
