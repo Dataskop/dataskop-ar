@@ -1,10 +1,8 @@
 using System;
-using DataskopAR.Data;
+using DataskopAR.Interaction;
+using DataskopAR.Utils;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
-using Image = UnityEngine.UI.Image;
 
 namespace DataskopAR.UI {
 
@@ -12,16 +10,9 @@ namespace DataskopAR.UI {
 
 #region Fields
 
-		[Header("Events")]
-		public UnityEvent onCalibratorPhaseStarted;
-		public UnityEvent onGroundCalibrationStarted;
-		public UnityEvent onGroundCalibrationFinished;
-		public UnityEvent onCalibratorPhaseEnded;
-
 		[Header("References")]
 		[SerializeField] private UIDocument calibratorUiDoc;
-		[SerializeField] private CanvasGroup subCanvasGroup;
-		[SerializeField] private Image calibrationProgressIndicator;
+		[SerializeField] private Calibrator calibrator;
 
 		[Header("Values")]
 		[SerializeField] private int numberOfPhases;
@@ -30,129 +21,153 @@ namespace DataskopAR.UI {
 
 #region Properties
 
-		public VisualElement CalibratorRoot { get; set; }
-		public Label GuideLabel { get; set; }
-		public Label StepLabel { get; set; }
-		public Button CalibratorButton { get; set; }
-		private CalibratorPhase CalibratorPhase { get; set; }
+		private VisualElement CalibratorRoot { get; set; }
+
+		private Label GuideLabel { get; set; }
+
+		private Label StepLabel { get; set; }
+
+		private Button CalibratorButton { get; set; }
+
+		private VisualElement ProgressIndicatorContainer { get; set; }
+
+		private VisualElement NorthAlignmentProgressBar { get; set; }
+		private VisualElement NorthAlignmentProgressContainer { get; set; }
+		private VisualElement RoomScanContainer { get; set; }
+		private VisualElement RoomScanProgress { get; set; }
+
 		private int PhaseCounter { get; set; }
+
+		private Calibrator Calibrator => calibrator;
 
 #endregion
 
 #region Methods
 
 		private void OnEnable() {
+
 			CalibratorRoot = calibratorUiDoc.rootVisualElement.Q<VisualElement>("CalibratorContainer");
+			SetVisibility(false);
+
 			GuideLabel = CalibratorRoot.Q<Label>("GuideLabel");
 			StepLabel = CalibratorRoot.Q<Label>("StepText");
+
 			CalibratorButton = CalibratorRoot.Q<Button>("CalibratorButton");
-			CalibratorButton.RegisterCallback<ClickEvent>(e => { TriggerNextPhase(); });
+			CalibratorButton.RegisterCallback<ClickEvent>(e => { Calibrator.OnCalibratorContinued(); });
+
+			ProgressIndicatorContainer = CalibratorRoot.Q<VisualElement>("ProgressIndicatorContainer");
+
+			NorthAlignmentProgressBar = CalibratorRoot.Q<VisualElement>("NorthAlignmentProgress");
+			NorthAlignmentProgressContainer = CalibratorRoot.Q<VisualElement>("NorthAlignmentContainer");
+			RoomScanContainer = CalibratorRoot.Q<VisualElement>("RoomScanContainer");
+			RoomScanProgress = CalibratorRoot.Q<VisualElement>("RoomScanProgress");
+
+			PhaseCounter = 0;
+			SetStepCounter(PhaseCounter);
+
 		}
 
-		private void Start() {
-
-			InitializeCalibration();
-
-			if (DataPointsManager.IsDemoScene) {
-				SkipCalibration();
-			}
-
-		}
-
-		private void SkipCalibration() {
-			ToggleCalibrator(false);
-			CalibratorPhase = CalibratorPhase.End;
-			TriggerNextPhase();
-		}
-
-		public void SkipCalibrationInput(InputAction.CallbackContext ctx) {
-			if (ctx.performed) {
-				if (CalibratorPhase != CalibratorPhase.End)
-					SkipCalibration();
-			}
-		}
-
-		public void ToggleCalibrator(bool isVisible) {
+		public void SetVisibility(bool isVisible) {
 			CalibratorRoot.style.visibility = new StyleEnum<Visibility>(isVisible ? Visibility.Visible : Visibility.Hidden);
 		}
 
-		public void InitializeCalibration() {
-			PhaseCounter = 0;
-			CalibratorPhase = CalibratorPhase.Initial;
-			SetStepCounter(PhaseCounter);
-			SetPhaseText(CalibratorPhase.Initial);
-			ToggleCalibrator(true);
-			onCalibratorPhaseStarted?.Invoke();
-		}
+		public void OnCalibratorPhaseChanged(CalibratorPhase currentPhase) {
 
-		public void TriggerNextPhase() {
-
-			SetStepCounter(++PhaseCounter);
-
-			switch (CalibratorPhase) {
+			switch (currentPhase) {
 				case CalibratorPhase.Initial:
-					SetPhaseText(CalibratorPhase.GroundStart);
+					StepLabel.visible = false;
+					SetVisibility(true);
+					SetButtonEnabledStatus(true);
+					break;
+				case CalibratorPhase.NorthAlignStart:
+					StepLabel.visible = true;
+					SetStepCounter(1);
+					SetButtonEnabledStatus(true);
+					break;
+				case CalibratorPhase.NorthAlignProcess:
+					SetProgressIndicatorStatus(true);
+					NorthAlignmentProgressBar.visible = true;
+					NorthAlignmentProgressContainer.visible = true;
 					SetButtonEnabledStatus(false);
-					CalibratorPhase = CalibratorPhase.GroundStart;
-					onGroundCalibrationStarted?.Invoke();
+					break;
+				case CalibratorPhase.NorthAlignFinish:
+					NorthAlignmentProgressBar.visible = false;
+					NorthAlignmentProgressContainer.visible = false;
+					SetProgressIndicatorStatus(false);
+					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.GroundStart:
-					SetPhaseText(CalibratorPhase.GroundFinish);
-					CalibratorPhase = CalibratorPhase.GroundFinish;
-					onGroundCalibrationFinished?.Invoke();
-					subCanvasGroup.alpha = 1;
+					SetStepCounter(1);
+					SetButtonEnabledStatus(true);
+					break;
+				case CalibratorPhase.GroundProcess:
 					SetButtonEnabledStatus(false);
 					break;
 				case CalibratorPhase.GroundFinish:
-					SetPhaseText(CalibratorPhase.End);
-					CalibratorPhase = CalibratorPhase.End;
-					subCanvasGroup.alpha = 0;
+					SetButtonEnabledStatus(true);
+					break;
+				case CalibratorPhase.RoomStart:
+					SetStepCounter(1);
+					SetButtonEnabledStatus(true);
+					break;
+				case CalibratorPhase.RoomProcess:
+					SetProgressIndicatorStatus(true);
+					RoomScanProgress.visible = true;
+					RoomScanContainer.visible = true;
+					SetButtonEnabledStatus(false);
+					break;
+				case CalibratorPhase.RoomFinish:
+					RoomScanProgress.visible = false;
+					RoomScanContainer.visible = false;
+					SetProgressIndicatorStatus(false);
+					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.End:
-					onCalibratorPhaseEnded?.Invoke();
-					ToggleCalibrator(false);
+					StepLabel.visible = false;
+					SetButtonEnabledStatus(true);
+					break;
+				case CalibratorPhase.None:
+					SetButtonEnabledStatus(false);
+					SetVisibility(false);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
 
+			SetPhaseText(currentPhase);
+
 		}
 
 		public void SetButtonEnabledStatus(bool isEnabled) {
-			CalibratorButton.SetEnabled(isEnabled);
+			CalibratorButton.visible = isEnabled;
+			CalibratorButton.style.display = new StyleEnum<DisplayStyle>(isEnabled ? DisplayStyle.Flex : DisplayStyle.None);
+		}
+
+		private void SetProgressIndicatorStatus(bool isEnabled) {
+			ProgressIndicatorContainer.visible = isEnabled;
+			ProgressIndicatorContainer.style.display = new StyleEnum<DisplayStyle>(isEnabled ? DisplayStyle.Flex : DisplayStyle.None);
 		}
 
 		private void SetPhaseText(CalibratorPhase phase) {
-			SetGuideText(CalibratorTextRepository.CalibratorGuideDict[phase]);
-			SetButtonText(CalibratorTextRepository.CalibratorButtonTextDict[phase]);
-		}
-
-		private void SetGuideText(string guideText) {
-			GuideLabel.text = guideText;
-		}
-
-		private void SetButtonText(string buttonText) {
-			CalibratorButton.text = buttonText;
+			GuideLabel.text = CalibratorTextRepository.CalibratorGuideDict[phase];
+			CalibratorButton.text = CalibratorTextRepository.CalibratorButtonTextDict[phase];
 		}
 
 		private void SetStepCounter(int nextPhaseCounter) {
-			StepLabel.text = $"Step {nextPhaseCounter}/{numberOfPhases}";
+			PhaseCounter += nextPhaseCounter;
+			StepLabel.text = $"Phase {PhaseCounter}/{numberOfPhases}";
 		}
 
 		public void OnRoomCalibrationProgressReceived(float progressValue) {
+			RoomScanProgress.style.scale = new Scale(new Vector2(1, progressValue));
+		}
 
-			calibrationProgressIndicator.fillAmount += progressValue;
-
-			Debug.Log(progressValue);
-
-			if (calibrationProgressIndicator.fillAmount >= 0.95f) {
-				SetButtonEnabledStatus(true);
-			}
-
+		public void OnNorthRotationSampleReceived(int currentSamples, int maxSamples) {
+			NorthAlignmentProgressBar.style.scale = new Scale(new Vector2(MathExtensions.Map01(currentSamples, 0, maxSamples), 1));
 		}
 
 		private void OnDisable() {
-			CalibratorButton.UnregisterCallback<ClickEvent>(e => { TriggerNextPhase(); });
+			CalibratorButton.UnregisterCallback<ClickEvent>(e => { Calibrator.OnCalibratorContinued(); });
 		}
 
 #endregion
