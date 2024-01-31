@@ -1,16 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/DataSkopAR/UIComponents/SettingsMenu/SettingsMenuStyles.uss?fileID=7433441132597879392&amp;guid=3ea82a0a9c67db041b4dad349eb75bbd&amp;type=3#SettingsMenuStyles" />
-    <ui:VisualElement name="AppButtonsContainer" class="app-buttons-container" style="position: absolute;">
-        <ui:Button display-tooltip-when-elided="true" name="SettingsMenuButton" class="app-button" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; -unity-background-scale-mode: stretch-to-fill;">
-            <ui:IMGUIContainer name="Icon" picking-mode="Ignore" class="button-icon" style="background-image: url(&apos;project://database/Assets/DataSkopAR/Images/Icons/settings.png?fileID=21300000&amp;guid=3804e06c39831e347a1b14bd8c27ac9d&amp;type=3#settings&apos;);" />
-        </ui:Button>
-        <ui:Button display-tooltip-when-elided="true" name="ProjectSelectorButton" class="app-button" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;">
-            <ui:IMGUIContainer name="Icon" picking-mode="Ignore" class="button-icon" style="background-image: url(&apos;project://database/Assets/DataSkopAR/Images/Icons/layers.png?fileID=21300000&amp;guid=75ce9a85f62a3cc488ca084e37b7d189&amp;type=3#layers&apos;);" />
-        </ui:Button>
-        <ui:Button display-tooltip-when-elided="true" name="HistoryButton" class="history-button app-button" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; align-items: center;">
-            <ui:VisualElement name="Icon" style="width: 80%; height: 80%; background-image: url(&apos;project://database/Assets/DataSkopAR/Images/Icons/history.png?fileID=21300000&amp;guid=b77594151ea4321489aa1e626c9f8281&amp;type=3#history&apos;); background-color: rgba(27, 27, 27, 0); -unity-background-image-tint-color: rgb(0, 80, 150); font-size: 22px; color: rgba(255, 255, 255, 0.22); align-items: center; justify-content: center;" />
-        </ui:Button>
-    </ui:VisualElement>
     <ui:VisualElement name="MenuContainer" class="settings-menu-close" style="width: 520px; height: auto; position: absolute; align-items: center; background-color: rgb(210, 210, 210); border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; left: 101%; top: 15%;">
         <ui:VisualElement name="TitleContainer" class="titlecontainer">
             <ui:Label text="MENU_TITLE_STRING" display-tooltip-when-elided="true" name="MenuTitle" class="title" />
@@ -78,5 +67,16 @@
                 <ui:Label text="DataskopAR - v1.0.130123" display-tooltip-when-elided="true" name="Version" style="font-size: 11px; letter-spacing: 10px; -unity-font-style: bold; color: rgb(0, 0, 0);" />
             </ui:VisualElement>
         </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="AppButtonsContainer" class="app-buttons-container" style="position: absolute;">
+        <ui:Button display-tooltip-when-elided="true" name="SettingsMenuButton" class="app-button" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; -unity-background-scale-mode: stretch-to-fill;">
+            <ui:IMGUIContainer name="Icon" picking-mode="Ignore" class="button-icon" style="background-image: url(&apos;project://database/Assets/DataSkopAR/Images/Icons/settings.png?fileID=21300000&amp;guid=3804e06c39831e347a1b14bd8c27ac9d&amp;type=3#settings&apos;);" />
+        </ui:Button>
+        <ui:Button display-tooltip-when-elided="true" name="ProjectSelectorButton" class="app-button" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;">
+            <ui:IMGUIContainer name="Icon" picking-mode="Ignore" class="button-icon" style="background-image: url(&apos;project://database/Assets/DataSkopAR/Images/Icons/layers.png?fileID=21300000&amp;guid=75ce9a85f62a3cc488ca084e37b7d189&amp;type=3#layers&apos;);" />
+        </ui:Button>
+        <ui:Button display-tooltip-when-elided="true" name="HistoryButton" class="history-button app-button" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; align-items: center;">
+            <ui:VisualElement name="Icon" style="width: 80%; height: 80%; background-image: url(&apos;project://database/Assets/DataSkopAR/Images/Icons/history.png?fileID=21300000&amp;guid=b77594151ea4321489aa1e626c9f8281&amp;type=3#history&apos;); background-color: rgba(27, 27, 27, 0); -unity-background-image-tint-color: rgb(0, 80, 150); font-size: 22px; color: rgba(255, 255, 255, 0.22); align-items: center; justify-content: center;" />
+        </ui:Button>
     </ui:VisualElement>
 </ui:UXML>
