@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/DataSkopAR/UIComponents/SettingsMenu/SettingsMenuStyles.uss?fileID=7433441132597879392&amp;guid=3ea82a0a9c67db041b4dad349eb75bbd&amp;type=3#SettingsMenuStyles" />
-    <ui:VisualElement name="MenuContainer" class="settings-menu-close" style="width: 520px; height: auto; position: absolute; align-items: center; background-color: rgb(210, 210, 210); border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; left: 101%; top: 15%;">
+    <ui:VisualElement name="MenuContainer" class="settings-menu-close" style="width: 520px; height: auto; position: absolute; align-items: center; background-color: rgba(210, 210, 210, 0.78); border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; left: 101%; top: 15%;">
         <ui:VisualElement name="TitleContainer" class="titlecontainer">
             <ui:Label text="MENU_TITLE_STRING" display-tooltip-when-elided="true" name="MenuTitle" class="title" />
         </ui:VisualElement>
