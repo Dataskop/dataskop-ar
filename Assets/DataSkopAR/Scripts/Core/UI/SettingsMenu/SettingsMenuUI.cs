@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
@@ -67,6 +68,7 @@ namespace DataskopAR.UI {
 		private Button LogoutButton { get; set; }
 		private VisualElement ProjectsIcon { get; set; }
 		private VisualElement SettingsIcon { get; set; }
+		private VisualElement HistoryIcon { get; set; }
 		private Label VersionLabel { get; set; }
 		private Label TitleLabel { get; set; }
 		private TextField AmountInput { get; set; }
@@ -114,7 +116,9 @@ namespace DataskopAR.UI {
 			ProjectsIcon = ProjectSelectorButton.Q<VisualElement>("Icon");
 
 			HistoryButton = Root.Q<Button>("HistoryButton");
-			HistoryButton.RegisterCallback<ClickEvent>(e => ToggleHistoryView());
+			HistoryButton.RegisterCallback<ClickEvent>(_ => ToggleHistoryView());
+
+			HistoryIcon = HistoryButton.Q<VisualElement>("Icon");
 
 			ToggleBuildingsButton = SettingsMenuContainer.Q<Button>("Option_01");
 			ToggleBuildingsButton.RegisterCallback<ClickEvent>(_ => ToggleBuildings());
@@ -150,7 +154,7 @@ namespace DataskopAR.UI {
 
 		}
 
-		public void ToggleMenu(MenuView requestedView) {
+		private void ToggleMenu(MenuView requestedView) {
 
 			if (IsOpen) {
 
@@ -176,30 +180,29 @@ namespace DataskopAR.UI {
 
 		private void DisplayView(MenuView view) {
 
-			if (view == MenuView.Projects) {
+			switch (view) {
+				case MenuView.Projects:
+					SettingsIcon.style.unityBackgroundImageTintColor = new StyleColor(deselectedIconColor);
+					SettingsMenuContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 
-				SettingsIcon.style.unityBackgroundImageTintColor = new StyleColor(deselectedIconColor);
-				SettingsMenuContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+					TitleLabel.text = ProjectSelectionTitle;
+					ProjectsIcon.style.unityBackgroundImageTintColor = new StyleColor(selectedIconColor);
+					ProjectSelectorContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
 
-				TitleLabel.text = ProjectSelectionTitle;
-				ProjectsIcon.style.unityBackgroundImageTintColor = new StyleColor(selectedIconColor);
-				ProjectSelectorContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
+					CurrentView = MenuView.Projects;
+					break;
+				case MenuView.Settings:
+					ProjectsIcon.style.unityBackgroundImageTintColor = new StyleColor(deselectedIconColor);
+					ProjectSelectorContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 
-				CurrentView = MenuView.Projects;
+					TitleLabel.text = SettingsTitle;
+					SettingsIcon.style.unityBackgroundImageTintColor = new StyleColor(selectedIconColor);
+					SettingsMenuContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
 
-			}
-
-			if (view == MenuView.Settings) {
-
-				ProjectsIcon.style.unityBackgroundImageTintColor = new StyleColor(deselectedIconColor);
-				ProjectSelectorContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
-
-				TitleLabel.text = SettingsTitle;
-				SettingsIcon.style.unityBackgroundImageTintColor = new StyleColor(selectedIconColor);
-				SettingsMenuContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
-
-				CurrentView = MenuView.Settings;
-
+					CurrentView = MenuView.Settings;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(view), view, null);
 			}
 
 		}
@@ -208,11 +211,11 @@ namespace DataskopAR.UI {
 			ToggleMenu(MenuView.Projects);
 		}
 
-		public void ToggleHistoryView() {
+		private void ToggleHistoryView() {
 
 			isHistorySliderActive = !isHistorySliderActive;
 			historyButtonPressed?.Invoke();
-			HistoryButton.Q<VisualElement>("Icon").style.unityBackgroundImageTintColor =
+			HistoryIcon.style.unityBackgroundImageTintColor =
 				new StyleColor(isHistorySliderActive ? selectedIconColor : deselectedIconColor);
 
 		}
@@ -226,11 +229,11 @@ namespace DataskopAR.UI {
 		}
 
 		public void HideSettings() {
-			MenuContainer.RemoveFromClassList(MenuOpenAnimation);
-			SettingsIcon.style.unityBackgroundImageTintColor = new StyleColor(deselectedIconColor);
-			ProjectsIcon.style.unityBackgroundImageTintColor = new StyleColor(deselectedIconColor);
-			SettingsMenuContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
-			ProjectSelectorContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+
+			if (IsOpen) {
+				ToggleMenu(CurrentView);
+			}
+
 		}
 
 		private void ToggleBuildings() {
