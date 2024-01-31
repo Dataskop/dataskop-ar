@@ -15,7 +15,7 @@
         <ui:VisualElement name="TitleContainer" class="titlecontainer">
             <ui:Label text="MENU_TITLE_STRING" display-tooltip-when-elided="true" name="MenuTitle" class="title" />
         </ui:VisualElement>
-        <ui:VisualElement name="Splitter" class="splitter" style="height: 4px; border-top-left-radius: 2px; border-bottom-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; width: 96%; background-color: rgb(75, 75, 75);" />
+        <ui:VisualElement name="Splitter" class="splitter" style="height: 4px; border-top-left-radius: 2px; border-bottom-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; width: 96%; background-color: rgb(123, 123, 123);" />
         <ui:ScrollView name="ProjectSelectionContainer" class="project-selection-container" style="width: 100%; height: auto; max-height: 800px; position: relative; display: none;" />
         <ui:VisualElement name="SettingsMenuContainer" class="settings-menu-container" style="display: none; background-color: rgba(0, 0, 0, 0);">
             <ui:VisualElement name="AmountContainer" class="option-container" style="justify-content: space-between; flex-direction: row;">
