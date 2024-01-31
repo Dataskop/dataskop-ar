@@ -11,15 +11,13 @@
             <ui:VisualElement name="Icon" style="width: 80%; height: 80%; background-image: url(&apos;project://database/Assets/DataSkopAR/Images/Icons/history.png?fileID=21300000&amp;guid=b77594151ea4321489aa1e626c9f8281&amp;type=3#history&apos;); background-color: rgba(27, 27, 27, 0); -unity-background-image-tint-color: rgb(0, 80, 150); font-size: 22px; color: rgba(255, 255, 255, 0.22); align-items: center; justify-content: center;" />
         </ui:Button>
     </ui:VisualElement>
-    <ui:VisualElement name="MainContainer" style="width: 480px; height: auto; position: absolute; align-items: center; background-color: rgb(210, 210, 210); border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; left: 101%; top: 15%;">
+    <ui:VisualElement name="MenuContainer" class="settings-menu-close" style="width: 520px; height: auto; position: absolute; align-items: center; background-color: rgb(210, 210, 210); border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; left: 101%; top: 15%;">
         <ui:VisualElement name="TitleContainer" class="titlecontainer">
             <ui:Label text="MENU_TITLE_STRING" display-tooltip-when-elided="true" name="MenuTitle" class="title" />
         </ui:VisualElement>
-        <ui:VisualElement name="Splitter" class="splitter" />
-        <ui:VisualElement name="ProjectSelectionContainer" class="settings-menu-container project-selector-close" style="align-items: center; -unity-background-image-tint-color: rgba(255, 255, 255, 0); background-color: rgba(0, 0, 0, 0);">
-            <ui:VisualElement name="ProjectsContainer" style="width: 98%;" />
-        </ui:VisualElement>
-        <ui:VisualElement name="SettingsMenuContainer" class="settings-menu-container settings-menu-close" style="display: flex; background-color: rgba(0, 0, 0, 0);">
+        <ui:VisualElement name="Splitter" class="splitter" style="height: 4px; border-top-left-radius: 2px; border-bottom-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; width: 96%; background-color: rgb(75, 75, 75);" />
+        <ui:ScrollView name="ProjectSelectionContainer" class="project-selection-container" style="width: 100%; height: auto; max-height: 800px; position: relative; display: none;" />
+        <ui:VisualElement name="SettingsMenuContainer" class="settings-menu-container" style="display: none; background-color: rgba(0, 0, 0, 0);">
             <ui:VisualElement name="AmountContainer" class="option-container" style="justify-content: space-between; flex-direction: row;">
                 <ui:Label text="Amount to Fetch" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" />
                 <ui:TextField picking-mode="Ignore" name="AmountInput" text="100" class="text-input" />
@@ -76,7 +74,7 @@
                 <ui:Button text="Logout" display-tooltip-when-elided="true" name="LogoutButton" class="option-button" />
             </ui:VisualElement>
             <ui:VisualElement name="Splitter" class="splitter" />
-            <ui:VisualElement name="appinfo" class="appinfo">
+            <ui:VisualElement name="appinfo">
                 <ui:Label text="DataskopAR - v1.0.130123" display-tooltip-when-elided="true" name="Version" style="font-size: 11px; letter-spacing: 10px; -unity-font-style: bold; color: rgb(0, 0, 0);" />
             </ui:VisualElement>
         </ui:VisualElement>

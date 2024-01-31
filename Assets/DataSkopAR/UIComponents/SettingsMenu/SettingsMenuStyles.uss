@@ -2,7 +2,7 @@ VisualElement {
 }
 
 .settings-menu-container {
-    width: 480px;
+    width: 100%;
     height: auto;
     justify-content: flex-end;
     align-items: center;
@@ -211,9 +211,6 @@ VisualElement {
     -unity-background-scale-mode: stretch-to-fill;
 }
 
-.appinfo {
-}
-
 .titlecontainer {
     align-items: center;
     width: 100%;
@@ -232,4 +229,12 @@ VisualElement {
     height: 65%;
     font-size: 22px;
     -unity-font-style: normal;
+}
+
+.project-selection-container {
+    width: 100%;
+    height: auto;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0);
 }
