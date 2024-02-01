@@ -10,17 +10,17 @@ namespace DataskopAR.UI {
 		// @formatter:off
 
 		public static readonly Dictionary<CalibratorPhase, string> CalibratorGuideDict = new() {
-			{ CalibratorPhase.Initial, "Welcome! Let's fine-tune your experience. Start the calibration now for optimal performance!" },
-			{ CalibratorPhase.NorthAlignStart, "First we are going to calibrate the north alignment." },
+			{ CalibratorPhase.Initial, "" }, // Currently unused phase
+			{ CalibratorPhase.NorthAlignStart, "Welcome! Let's fine-tune your experience. Start the calibration now for optimal performance! First we are going to calibrate the north alignment." },
 			{ CalibratorPhase.NorthAlignProcess, "Grabbing north rotation samples..." },
-			{ CalibratorPhase.NorthAlignFinish, "North alignment complete! Continue to the next step." },
-			{ CalibratorPhase.GroundStart, "Let's locate the ground in the next calibration step." },
+			{ CalibratorPhase.NorthAlignFinish, "" }, // Currently unused phase
+			{ CalibratorPhase.GroundStart, "North alignment complete! Let's locate the ground in the next calibration phase." },
 			{ CalibratorPhase.GroundProcess, "Find a green rectangle on the floor! Tap on it when you see it aligned with the floor." },
-			{ CalibratorPhase.GroundFinish, "Ground calibration successful! You're all set for the next step." },
-			{ CalibratorPhase.RoomStart, "Time to capture your surroundings for better AR tracking!" },
+			{ CalibratorPhase.GroundFinish, "" }, // Currently unused phase
+			{ CalibratorPhase.RoomStart, "Ground calibration successful! You're all set for the next phase. Time to capture your surroundings for better AR tracking!" },
 			{ CalibratorPhase.RoomProcess, "Slowly scan the room with your device until the blue progress bar fills up all the way." },
-			{ CalibratorPhase.RoomFinish, "Room mapping is complete! Please continue to the next step." },
-			{ CalibratorPhase.End, "All set! Hit 'Finish' to dive into the full application experience." },
+			{ CalibratorPhase.RoomFinish, "" }, // Currently unused phase
+			{ CalibratorPhase.End, "Room mapping is complete! Hit 'Finish' to dive into the full application experience." },
 			{ CalibratorPhase.None, "" }
 		};
 
