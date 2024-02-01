@@ -13,7 +13,6 @@ namespace DataskopAR.Interaction {
 
 		public UnityEvent calibrationInitialized;
 		public UnityEvent<CalibratorPhase> phaseChanged;
-		public UnityEvent calibrationStepCompleted;
 		public UnityEvent calibrationFinished;
 
 #endregion
@@ -71,7 +70,7 @@ namespace DataskopAR.Interaction {
 			}
 
 			calibrationInitialized?.Invoke();
-			CurrentPhase = CalibratorPhase.Initial;
+			CurrentPhase = CalibratorPhase.NorthAlignStart;
 			IsCalibrating = true;
 
 		}
@@ -92,7 +91,7 @@ namespace DataskopAR.Interaction {
 
 					break;
 				case CalibratorPhase.NorthAlignProcess:
-					CurrentPhase = CalibratorPhase.NorthAlignFinish;
+					CurrentPhase = CalibratorPhase.GroundStart;
 					ActiveCalibration?.Disable();
 					break;
 				case CalibratorPhase.NorthAlignFinish:
@@ -107,7 +106,7 @@ namespace DataskopAR.Interaction {
 
 					break;
 				case CalibratorPhase.GroundProcess:
-					CurrentPhase = CalibratorPhase.GroundFinish;
+					CurrentPhase = CalibratorPhase.RoomStart;
 					ActiveCalibration?.Disable();
 					break;
 				case CalibratorPhase.GroundFinish:
@@ -122,7 +121,7 @@ namespace DataskopAR.Interaction {
 
 					break;
 				case CalibratorPhase.RoomProcess:
-					CurrentPhase = CalibratorPhase.RoomFinish;
+					CurrentPhase = CalibratorPhase.End;
 					ActiveCalibration?.Disable();
 					break;
 				case CalibratorPhase.RoomFinish:

@@ -81,6 +81,7 @@ namespace DataskopAR.UI {
 					break;
 				case CalibratorPhase.NorthAlignStart:
 					StepLabel.visible = true;
+					SetVisibility(true);
 					SetStepCounter(1);
 					SetButtonEnabledStatus(true);
 					break;
@@ -97,6 +98,9 @@ namespace DataskopAR.UI {
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.GroundStart:
+					NorthAlignmentProgressBar.visible = false;
+					NorthAlignmentProgressContainer.visible = false;
+					SetProgressIndicatorStatus(false);
 					SetStepCounter(1);
 					SetButtonEnabledStatus(true);
 					break;
@@ -123,6 +127,9 @@ namespace DataskopAR.UI {
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.End:
+					RoomScanProgress.visible = false;
+					RoomScanContainer.visible = false;
+					SetProgressIndicatorStatus(false);
 					StepLabel.visible = false;
 					SetButtonEnabledStatus(true);
 					break;
