@@ -28,7 +28,7 @@ namespace DataskopAR.UI {
 
 #region Properties
 
-		private VisualElement ProjectSelectionPopUpRoot { get; set; }
+		private VisualElement MenuContainer { get; set; }
 		private ICollection<Button> ProjectButtons { get; set; }
 		private StyleColor SelectedColor { get; set; }
 		private StyleColor DeselectedColor { get; set; }
@@ -50,8 +50,8 @@ namespace DataskopAR.UI {
 
 		private void UpdateCompaniesWithProjects(IReadOnlyCollection<Company> companies) {
 
-			ProjectSelectionPopUpRoot = settingsMenuUIDoc.rootVisualElement;
-			VisualElement contentContainer = ProjectSelectionPopUpRoot.Q<VisualElement>("ProjectsContainer");
+			MenuContainer = settingsMenuUIDoc.rootVisualElement.Q<VisualElement>("MenuContainer");
+			ScrollView contentContainer = MenuContainer.Q<ScrollView>("ProjectSelectionContainer");
 
 			foreach (Company company in companies) {
 
@@ -100,10 +100,10 @@ namespace DataskopAR.UI {
 			}
 
 			if (contentContainer.childCount == 0) {
-				Label noProjectsText = new () {
+				Label noProjectsText = new() {
 					text = "No Projects found!"
 				};
-				
+
 				contentContainer.Add(noProjectsText);
 			}
 

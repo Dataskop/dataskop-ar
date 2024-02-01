@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
@@ -13,6 +14,8 @@ namespace DataskopAR.UI {
 		private const string KnobAnimation = "knob-on";
 		private const string DefaultAmount = "10";
 		private const string DefaultCooldown = "30";
+		private const string ProjectSelectionTitle = "Projects";
+		private const string SettingsTitle = "Settings";
 
 #endregion
 
@@ -26,15 +29,13 @@ namespace DataskopAR.UI {
 		public UnityEvent onCompassCalibrationButtonPressed;
 		public UnityEvent onResetCalibrationButtonPressed;
 		public UnityEvent onLogoutButtonPressed;
-		public UnityEvent<bool> onSettingsMenuToggle;
-		public UnityEvent<bool> onProjectSelectorToggle;
 		public UnityEvent historyButtonPressed;
 		public UnityEvent sidePanelOpened;
 		public UnityEvent<int> amountInputChanged;
 		public UnityEvent<int> cooldownInputChanged;
 
 		[Header("References")]
-		[SerializeField] private UIDocument settingsMenuUIDoc;
+		[SerializeField] private UIDocument menuDocument;
 
 		[Header("Values")]
 		[SerializeField] private Color selectedIconColor;
@@ -48,7 +49,10 @@ namespace DataskopAR.UI {
 
 #region Properties
 
+		private MenuView CurrentView { get; set; } = MenuView.Settings;
+		private bool IsOpen { get; set; }
 		private VisualElement Root { get; set; }
+		private VisualElement MenuContainer { get; set; }
 		private VisualElement SettingsMenuContainer { get; set; }
 		private VisualElement ProjectSelectorContainer { get; set; }
 		private VisualElement AppButtonsContainer { get; set; }
@@ -62,8 +66,11 @@ namespace DataskopAR.UI {
 		private Button CompassCalibrationButton { get; set; }
 		private Button ResetCalibrationButton { get; set; }
 		private Button LogoutButton { get; set; }
+		private VisualElement ProjectsIcon { get; set; }
+		private VisualElement SettingsIcon { get; set; }
+		private VisualElement HistoryIcon { get; set; }
 		private Label VersionLabel { get; set; }
-
+		private Label TitleLabel { get; set; }
 		private TextField AmountInput { get; set; }
 		private TextField CooldownInput { get; set; }
 
@@ -72,7 +79,9 @@ namespace DataskopAR.UI {
 #region Methods
 
 		private void OnEnable() {
-			Root = settingsMenuUIDoc.rootVisualElement;
+			Root = menuDocument.rootVisualElement;
+
+			MenuContainer = Root.Q<VisualElement>("MenuContainer");
 
 			SettingsMenuContainer = Root.Q<VisualElement>("SettingsMenuContainer");
 			SettingsMenuContainer.RegisterCallback<PointerDownEvent>(_ => { UIInteractionDetection.IsPointerOverUi = true; });
@@ -97,13 +106,19 @@ namespace DataskopAR.UI {
 #endif
 
 			SettingsMenuButton = Root.Q<Button>("SettingsMenuButton");
-			SettingsMenuButton.RegisterCallback<ClickEvent>(_ => ToggleSettingsMenu());
+			SettingsMenuButton.RegisterCallback<ClickEvent>(_ => ToggleMenu(MenuView.Settings));
+
+			SettingsIcon = SettingsMenuButton.Q<VisualElement>("Icon");
 
 			ProjectSelectorButton = Root.Q<Button>("ProjectSelectorButton");
-			ProjectSelectorButton.RegisterCallback<ClickEvent>(_ => ToggleProjectSelectionMenu());
+			ProjectSelectorButton.RegisterCallback<ClickEvent>(_ => ToggleMenu(MenuView.Projects));
+
+			ProjectsIcon = ProjectSelectorButton.Q<VisualElement>("Icon");
 
 			HistoryButton = Root.Q<Button>("HistoryButton");
-			HistoryButton.RegisterCallback<ClickEvent>(e => ToggleHistoryView());
+			HistoryButton.RegisterCallback<ClickEvent>(_ => ToggleHistoryView());
+
+			HistoryIcon = HistoryButton.Q<VisualElement>("Icon");
 
 			ToggleBuildingsButton = SettingsMenuContainer.Q<Button>("Option_01");
 			ToggleBuildingsButton.RegisterCallback<ClickEvent>(_ => ToggleBuildings());
@@ -129,6 +144,8 @@ namespace DataskopAR.UI {
 			VersionLabel = SettingsMenuContainer.Q<Label>("Version");
 			VersionLabel.text = "DataskopAR - " + Version.ID;
 
+			TitleLabel = Root.Q<Label>("MenuTitle");
+
 			AmountInput = SettingsMenuContainer.Q<TextField>("AmountInput");
 			AmountInput.RegisterCallback<ChangeEvent<string>>(AmountInputChanged);
 
@@ -137,67 +154,68 @@ namespace DataskopAR.UI {
 
 		}
 
-		public void ToggleSettingsMenu() {
-			isSettingsMenuActive = !isSettingsMenuActive;
+		private void ToggleMenu(MenuView requestedView) {
 
-			if (isSettingsMenuActive) {
+			if (IsOpen) {
 
-				if (isProjectSelectorActive) {
-					ProjectSelectorContainer.RemoveFromClassList(MenuOpenAnimation);
-
-					ProjectSelectorButton.Q<VisualElement>("Icon").style.unityBackgroundImageTintColor =
-						new StyleColor(deselectedIconColor);
-					isProjectSelectorActive = false;
+				if (CurrentView == requestedView) {
+					MenuContainer.RemoveFromClassList(MenuOpenAnimation);
+					SettingsIcon.style.unityBackgroundImageTintColor = new StyleColor(deselectedIconColor);
+					ProjectsIcon.style.unityBackgroundImageTintColor = new StyleColor(deselectedIconColor);
+					IsOpen = false;
+					return;
 				}
 
-				SettingsMenuContainer.AddToClassList(MenuOpenAnimation);
-				SettingsMenuButton.Q<VisualElement>("Icon").style.unityBackgroundImageTintColor =
-					new StyleColor(selectedIconColor);
+				DisplayView(requestedView);
 
-				onSettingsMenuToggle?.Invoke(true);
 			}
 			else {
-				SettingsMenuContainer.RemoveFromClassList(MenuOpenAnimation);
-				SettingsMenuButton.Q<VisualElement>("Icon").style.unityBackgroundImageTintColor =
-					new StyleColor(deselectedIconColor);
+				MenuContainer.AddToClassList(MenuOpenAnimation);
+				IsOpen = true;
+				DisplayView(requestedView);
+				sidePanelOpened?.Invoke();
 			}
-
-			if (isSettingsMenuActive || isProjectSelectorActive) sidePanelOpened?.Invoke();
 
 		}
 
-		public void ToggleProjectSelectionMenu() {
-			isProjectSelectorActive = !isProjectSelectorActive;
+		private void DisplayView(MenuView view) {
 
-			if (isProjectSelectorActive) {
+			switch (view) {
+				case MenuView.Projects:
+					SettingsIcon.style.unityBackgroundImageTintColor = new StyleColor(deselectedIconColor);
+					SettingsMenuContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 
-				if (isSettingsMenuActive) {
-					SettingsMenuContainer.RemoveFromClassList(MenuOpenAnimation);
-					SettingsMenuButton.Q<VisualElement>("Icon").style.unityBackgroundImageTintColor =
-						new StyleColor(deselectedIconColor);
-					isSettingsMenuActive = false;
-				}
+					TitleLabel.text = ProjectSelectionTitle;
+					ProjectsIcon.style.unityBackgroundImageTintColor = new StyleColor(selectedIconColor);
+					ProjectSelectorContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
 
-				ProjectSelectorContainer.AddToClassList(MenuOpenAnimation);
-				ProjectSelectorButton.Q<VisualElement>("Icon").style.unityBackgroundImageTintColor =
-					new StyleColor(selectedIconColor);
-				onProjectSelectorToggle?.Invoke(true);
+					CurrentView = MenuView.Projects;
+					break;
+				case MenuView.Settings:
+					ProjectsIcon.style.unityBackgroundImageTintColor = new StyleColor(deselectedIconColor);
+					ProjectSelectorContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+
+					TitleLabel.text = SettingsTitle;
+					SettingsIcon.style.unityBackgroundImageTintColor = new StyleColor(selectedIconColor);
+					SettingsMenuContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
+
+					CurrentView = MenuView.Settings;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(view), view, null);
 			}
-			else {
-				ProjectSelectorContainer.RemoveFromClassList(MenuOpenAnimation);
 
-				ProjectSelectorButton.Q<VisualElement>("Icon").style.unityBackgroundImageTintColor =
-					new StyleColor(deselectedIconColor);
-			}
-
-			if (isSettingsMenuActive || isProjectSelectorActive) sidePanelOpened?.Invoke();
 		}
 
-		public void ToggleHistoryView() {
+		public void OnCalibrationFinished() {
+			ToggleMenu(MenuView.Projects);
+		}
+
+		private void ToggleHistoryView() {
 
 			isHistorySliderActive = !isHistorySliderActive;
 			historyButtonPressed?.Invoke();
-			HistoryButton.Q<VisualElement>("Icon").style.unityBackgroundImageTintColor =
+			HistoryIcon.style.unityBackgroundImageTintColor =
 				new StyleColor(isHistorySliderActive ? selectedIconColor : deselectedIconColor);
 
 		}
@@ -211,15 +229,11 @@ namespace DataskopAR.UI {
 		}
 
 		public void HideSettings() {
-			SettingsMenuContainer.RemoveFromClassList(MenuOpenAnimation);
-			SettingsMenuButton.Q<VisualElement>("Icon").style.unityBackgroundImageTintColor =
-				new StyleColor(deselectedIconColor);
-			ProjectSelectorContainer.RemoveFromClassList(MenuOpenAnimation);
 
-			ProjectSelectorButton.Q<VisualElement>("Icon").style.unityBackgroundImageTintColor =
-				new StyleColor(deselectedIconColor);
-			isSettingsMenuActive = false;
-			isProjectSelectorActive = false;
+			if (IsOpen) {
+				ToggleMenu(CurrentView);
+			}
+
 		}
 
 		private void ToggleBuildings() {
@@ -292,20 +306,29 @@ namespace DataskopAR.UI {
 
 		public void OnInfoCardFullscreen(InfoCardState state) {
 
-			if (state != InfoCardState.Fullscreen) return;
+			if (state != InfoCardState.Fullscreen) {
+				return;
+			}
 
 			HideSettings();
 
 		}
 
 		private void OnDisable() {
-			SettingsMenuButton.UnregisterCallback<ClickEvent>(_ => ToggleSettingsMenu());
-			ProjectSelectorButton.UnregisterCallback<ClickEvent>(_ => ToggleProjectSelectionMenu());
+			SettingsMenuButton.UnregisterCallback<ClickEvent>(_ => ToggleMenu(MenuView.Settings));
+			ProjectSelectorButton.UnregisterCallback<ClickEvent>(_ => ToggleMenu(MenuView.Projects));
 			CompassCalibrationButton.UnregisterCallback<ClickEvent>(_ => CompassCalibrationPressed());
 			ResetCalibrationButton.UnregisterCallback<ClickEvent>(_ => ResetCalibrationPressed());
 		}
 
 #endregion
+
+	}
+
+	public enum MenuView {
+
+		Settings,
+		Projects
 
 	}
 
