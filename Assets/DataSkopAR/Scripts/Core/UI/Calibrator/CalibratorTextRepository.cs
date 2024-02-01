@@ -15,9 +15,9 @@ namespace DataskopAR.UI {
 			{ CalibratorPhase.NorthAlignProcess, "Grabbing north rotation samples..." },
 			{ CalibratorPhase.NorthAlignFinish, "" }, // Currently unused phase
 			{ CalibratorPhase.GroundStart, "North alignment complete!\nLet's locate the ground in the next calibration phase." },
-			{ CalibratorPhase.GroundProcess, "Find a green rectangle on the floor! Tap on it when you see it aligned with the floor." },
+			{ CalibratorPhase.GroundProcess, "Find a green rectangle on the floor and tap on it when you see it aligned with the floor." },
 			{ CalibratorPhase.GroundFinish, "" }, // Currently unused phase
-			{ CalibratorPhase.RoomStart, "Ground calibration successful! You're all set for the next phase.\nTime to capture your surroundings for better AR tracking!" },
+			{ CalibratorPhase.RoomStart, "Ground calibration successful! \nTime to capture your surroundings in the next phase for better AR tracking!" },
 			{ CalibratorPhase.RoomProcess, "Slowly scan the room with your device until the blue progress bar fills up all the way." },
 			{ CalibratorPhase.RoomFinish, "" }, // Currently unused phase
 			{ CalibratorPhase.End, "Room mapping is complete!\nHit 'Finish' to dive into the full application experience." },
