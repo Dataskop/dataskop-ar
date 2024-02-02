@@ -27,6 +27,8 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private Canvas dataDisplay;
 		[SerializeField] private CanvasGroup canvasGroup;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
+		[SerializeField] private TextMeshProUGUI minValueTextMesh;
+		[SerializeField] private TextMeshProUGUI maxValueTextMesh;
 
 		private Vector3 origin;
 
@@ -73,8 +75,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 			VisTransform.localScale *= Scale;
 			dataDisplay.transform.localScale *= Scale;
-
-			dataDisplay.transform.localPosition = new Vector3(0, 0.15f, 0);
+			dataDisplay.transform.localPosition = new Vector3(0, dataDisplay.transform.localScale.y, 0);
 
 			dataDisplay.worldCamera = ARCamera;
 			OnMeasurementResultChanged(DataPoint.CurrentMeasurementResult);
@@ -98,6 +99,13 @@ namespace DataskopAR.Entities.Visualizations {
 
 		private void SetDisplayValue(bool value) {
 			valueTextMesh.text = value.ToString();
+		}
+
+		private void SetMinMaxDisplayValues(float min, float max) {
+
+			minValueTextMesh.text = min.ToString("00.00", CultureInfo.InvariantCulture) + DataPoint.Attribute?.Unit;
+			maxValueTextMesh.text = max.ToString("00.00", CultureInfo.InvariantCulture) + DataPoint.Attribute?.Unit;
+
 		}
 
 		private void RotateVisualization() {
@@ -170,6 +178,7 @@ namespace DataskopAR.Entities.Visualizations {
 					float receivedValue = mr.ReadAsFloat();
 					SetPillarHeight(receivedValue, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
 					SetDisplayValue(receivedValue);
+					SetMinMaxDisplayValues(DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
 					break;
 				}
 			}
