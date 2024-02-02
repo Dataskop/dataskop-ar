@@ -190,3 +190,6 @@ VisualElement {
 .meta-info-text {
     font-size: 28px;
 }
+
+.refresh-button {
+}

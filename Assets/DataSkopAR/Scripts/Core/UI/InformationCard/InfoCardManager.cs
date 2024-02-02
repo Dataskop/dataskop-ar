@@ -36,18 +36,22 @@ namespace DataskopAR.UI {
 
 			InfoCard = informationCardUIDoc.rootVisualElement.Q<VisualElement>("InfoCard");
 
-			InfoCard.RegisterCallback<PointerDownEvent>((e) => { UIInteractionDetection.IsPointerOverUi = true; });
-
-			SwipeArea = InfoCard.Q<VisualElement>("SwipeArea");
-
-			SwipeArea.RegisterCallback<PointerDownEvent>((e) => { UIInteractionDetection.HasPointerStartedOverSwipeArea = true; });
+			InfoCard.RegisterCallback<PointerDownEvent>((e) => {
+					UIInteractionDetection.IsPointerOverUi = true;
+					UIInteractionDetection.HasPointerStartedOverSwipeArea = true;
+				}
+			);
 
 #if UNITY_EDITOR
 
-			SwipeArea.RegisterCallback<PointerEnterEvent>((e) => { UIInteractionDetection.HasPointerStartedOverSwipeArea = true; });
-			InfoCard.RegisterCallback<PointerEnterEvent>((e) => { UIInteractionDetection.IsPointerOverUi = true; });
-			SwipeArea.RegisterCallback<PointerLeaveEvent>((e) => { UIInteractionDetection.HasPointerStartedOverSwipeArea = false; });
-			InfoCard.RegisterCallback<PointerLeaveEvent>((e) => { UIInteractionDetection.IsPointerOverUi = false; });
+			InfoCard.RegisterCallback<PointerEnterEvent>((e) => {
+				UIInteractionDetection.IsPointerOverUi = true;
+				UIInteractionDetection.HasPointerStartedOverSwipeArea = true;
+			});
+			InfoCard.RegisterCallback<PointerLeaveEvent>((e) => {
+				UIInteractionDetection.IsPointerOverUi = false;
+				UIInteractionDetection.HasPointerStartedOverSwipeArea = false;
+			});
 
 #endif
 
