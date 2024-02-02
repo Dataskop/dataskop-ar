@@ -150,14 +150,8 @@ namespace DataskopAR.Interaction {
 					return;
 				}
 
-				if (ActiveCalibration != null) {
-					ActiveCalibration.Disable();
-					ActiveCalibration = null;
-				}
-
-				CurrentPhase = CalibratorPhase.None;
-				calibrationFinished?.Invoke();
-				IsCalibrating = false;
+				ActiveCalibration?.Disable();
+				CurrentPhase = CalibratorPhase.End;
 
 			}
 
