@@ -174,7 +174,7 @@ namespace DataskopAR.Entities.Visualizations {
 				}
 			}
 
-			pillarFillMeshRenderer.material.color = Options.fillGradientDefault.Evaluate(BarHeight);
+			pillarFillMeshRenderer.material.color = Options.fillColor;
 			SetAuthorImage();
 
 		}
