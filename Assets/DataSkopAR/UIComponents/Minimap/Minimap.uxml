@@ -1,4 +1,4 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/DataSkopAR/UIComponents/Minimap/MinimapStyles.uss?fileID=7433441132597879392&amp;guid=cc00331b4b750714797abb6a01e4393d&amp;type=3#MinimapStyles" />
-    <ui:IMGUIContainer name="MinimapContainer" class="minimap-container" style="display: flex; bottom: 165px; right: 25px; width: 256px; height: 256px;" />
+    <ui:IMGUIContainer name="MinimapContainer" class="minimap-container" style="display: flex; bottom: 165px; right: 25px; width: 360px; height: 360px; border-left-color: rgb(87, 86, 96); border-right-color: rgb(87, 86, 96); border-top-color: rgb(87, 86, 96); border-bottom-color: rgb(87, 86, 96);" />
 </ui:UXML>
