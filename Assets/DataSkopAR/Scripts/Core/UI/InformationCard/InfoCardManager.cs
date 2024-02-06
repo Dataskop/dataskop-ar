@@ -8,12 +8,6 @@ namespace DataskopAR.UI {
 
 	public class InfoCardManager : MonoBehaviour {
 
-#region Properties
-
-		private VisualElement InfoCard { get; set; }
-
-#endregion
-
 #region Fields
 
 		[Header("References")]
@@ -26,6 +20,20 @@ namespace DataskopAR.UI {
 		[SerializeField] private DataManager dataManager;
 
 		private Coroutine uiInteractionRoutine;
+
+#endregion
+
+#region Properties
+
+		private VisualElement InfoCard { get; set; }
+
+		private VisualElement DetailsContainer { get; set; }
+
+		private VisualElement MapContainer { get; set; }
+
+		private VisualElement DetailsTab { get; set; }
+
+		private VisualElement MapTab { get; set; }
 
 #endregion
 
@@ -53,6 +61,15 @@ namespace DataskopAR.UI {
 			});
 
 #endif
+
+			DetailsContainer = InfoCard.Q<VisualElement>("DetailsContainer");
+			MapContainer = InfoCard.Q<VisualElement>("MapContainer");
+
+			DetailsTab = InfoCard.Q<VisualElement>("DetailsTab");
+			DetailsTab.RegisterCallback<ClickEvent>(_ => OnDetailsTabPressed());
+
+			MapTab = InfoCard.Q<VisualElement>("MapTab");
+			MapTab.RegisterCallback<ClickEvent>(_ => OnMapTabPressed());
 
 			infoCardStateManager.Init(InfoCard);
 
@@ -107,6 +124,16 @@ namespace DataskopAR.UI {
 
 		public void SetInfoCardVisibility(bool isVisible) {
 			InfoCard.style.visibility = new StyleEnum<Visibility>(isVisible ? Visibility.Visible : Visibility.Hidden);
+		}
+
+		private void OnDetailsTabPressed() {
+			MapContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+			DetailsContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
+		}
+
+		private void OnMapTabPressed() {
+			DetailsContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+			MapContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
 		}
 
 		private void OnDisable() {
