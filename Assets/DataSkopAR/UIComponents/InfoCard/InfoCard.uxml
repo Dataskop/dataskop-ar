@@ -51,7 +51,7 @@
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="MapContainer" class="data-container" style="display: flex;">
-            <ui:VisualElement name="Map" style="background-image: url(&apos;project://database/Assets/DataSkopAR/Materials/MinimapRenderTexture.renderTexture?fileID=8400000&amp;guid=c08a303c35e70464a863f4aee1ef4f6e&amp;type=2#MinimapRenderTexture&apos;); width: 65%; height: 840px; flex-grow: 0; flex-shrink: 1; justify-content: flex-start; align-items: stretch;" />
+            <ui:VisualElement name="Map" style="background-image: url(&apos;project://database/Assets/DataSkopAR/Materials/MapRenderTexture.renderTexture?fileID=8400000&amp;guid=6c002e83dc0e47546b0a92796d0ed167&amp;type=2#MapRenderTexture&apos;); flex-grow: 0; flex-shrink: 1; justify-content: flex-start; align-items: stretch; width: 1548px; height: 840px; background-color: rgb(238, 238, 238); border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
