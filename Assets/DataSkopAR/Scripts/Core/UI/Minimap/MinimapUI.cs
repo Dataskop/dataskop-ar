@@ -31,6 +31,10 @@ namespace DataskopAR {
 			MinimapRoot.visible = false;
 		}
 
+		public void ToggleMinimap() {
+			MinimapRoot.visible = !MinimapRoot.visible;
+		}
+
 #endregion
 
 	}
