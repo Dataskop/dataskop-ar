@@ -27,6 +27,8 @@ namespace DataskopAR.Data {
 		private bool HasInitialLocationData { get; set; }
 
 		private bool HasUsedFixedPositioning { get; set; }
+		
+		
 
 #endregion
 
