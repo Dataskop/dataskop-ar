@@ -11,7 +11,6 @@ namespace DataskopAR.UI {
 #region Properties
 
 		private VisualElement InfoCard { get; set; }
-		private VisualElement SwipeArea { get; set; }
 
 #endregion
 
