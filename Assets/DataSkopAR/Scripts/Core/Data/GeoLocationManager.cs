@@ -80,6 +80,13 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
+		/// Fetch Position manually
+		/// </summary>
+		public void FetchPosition() {
+			locationProvider.mapManager.UpdateMap(locationProvider.DefaultLocationProvider.CurrentLocation.LatitudeLongitude);
+		}
+
+		/// <summary>
 		/// Updates map to the position of the found QR code's lat/long.
 		/// </summary>
 		public void OnQRMarkerTracking(QrResult qrResult) {
