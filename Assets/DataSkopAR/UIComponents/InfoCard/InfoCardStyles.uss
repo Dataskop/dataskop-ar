@@ -194,7 +194,7 @@ VisualElement {
 .refresh-button {
 }
 
-.tab {
+.tab-selected {
     height: 100%;
     background-color: rgba(243, 243, 243, 0.8);
     width: 100%;
@@ -210,18 +210,19 @@ VisualElement {
     border-bottom-color: rgb(0, 80, 150);
     border-left-width: 0;
     border-right-width: 0;
-    border-top-width: 8px;
+    border-top-width: 12px;
     border-bottom-width: 0;
+    display: flex;
 }
 
 .tab-label {
     font-size: 62px;
     color: rgb(60, 60, 60);
     -unity-text-align: middle-center;
-    -unity-font-style: bold;
+    -unity-font-style: normal;
 }
 
-.tab-deselected {
+.tab {
     height: 100%;
     background-color: rgba(243, 243, 243, 0.8);
     width: 100%;
@@ -240,9 +241,11 @@ VisualElement {
     border-top-width: 4px;
     border-bottom-width: 0;
     transform-origin: bottom;
+    font-size: 58px;
+    -unity-text-align: middle-center;
 }
 
-.tab-label-deselected {
+.tab-label-selected {
     font-size: 62px;
     color: rgb(60, 60, 60);
     -unity-text-align: middle-center;
