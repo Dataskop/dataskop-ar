@@ -22,7 +22,7 @@
                 <ui:Label text="Map" display-tooltip-when-elided="true" class="tab-label" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="DetailsContainer" class="data-container">
+        <ui:VisualElement name="DetailsContainer" class="data-container" style="display: none;">
             <ui:VisualElement name="HeaderContainer" class="data-display-container" style="width: 100%; background-color: rgb(224, 224, 224); height: 120px; justify-content: center;">
                 <ui:Label text="Location" display-tooltip-when-elided="true" name="Location" class="text-container sub-header" />
                 <ui:Label text="Area" display-tooltip-when-elided="true" name="Area" class="text-container header" />
@@ -50,6 +50,8 @@
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="MapContainer" class="data-container" style="display: none;" />
+        <ui:VisualElement name="MapContainer" class="data-container" style="display: flex;">
+            <ui:VisualElement name="Map" style="background-image: url(&apos;project://database/Assets/DataSkopAR/Materials/MinimapRenderTexture.renderTexture?fileID=8400000&amp;guid=c08a303c35e70464a863f4aee1ef4f6e&amp;type=2#MinimapRenderTexture&apos;); width: 65%; height: 840px; flex-grow: 0; flex-shrink: 1; justify-content: flex-start; align-items: stretch;" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
