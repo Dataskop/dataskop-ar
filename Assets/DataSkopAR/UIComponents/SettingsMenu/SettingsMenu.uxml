@@ -51,15 +51,24 @@
                 </ui:Button>
             </ui:VisualElement>
             <ui:VisualElement name="Splitter" class="splitter" />
-            <ui:VisualElement name="OptionContainer_05" class="option-container" style="-unity-text-align: upper-left;">
+            <ui:VisualElement name="OptionContainer_05" class="option-container">
+                <ui:Button display-tooltip-when-elided="true" name="Option_05" class="option-toggle-button-container">
+                    <ui:Label text="Minimap" display-tooltip-when-elided="true" class="option-label" />
+                    <ui:VisualElement name="Toggler_04" class="toggle-button-background toggler-off toggler-on">
+                        <ui:VisualElement name="Knob_04" class="toggle-button-knob knob-off knob-on" />
+                    </ui:VisualElement>
+                </ui:Button>
+            </ui:VisualElement>
+            <ui:VisualElement name="Splitter" class="splitter" />
+            <ui:VisualElement name="OptionContainer_06" class="option-container" style="-unity-text-align: upper-left;">
                 <ui:Button text="Calibrate Compass" display-tooltip-when-elided="true" name="CalibrateCompassButton" class="option-button" />
             </ui:VisualElement>
             <ui:VisualElement name="Splitter" class="splitter" />
-            <ui:VisualElement name="OptionContainer_06" class="option-container">
+            <ui:VisualElement name="OptionContainer_07" class="option-container">
                 <ui:Button text="Reset Calibration" display-tooltip-when-elided="true" name="ResetCalibrationButton" class="option-button" style="color: rgb(238, 0, 8);" />
             </ui:VisualElement>
             <ui:VisualElement name="Splitter" class="splitter" />
-            <ui:VisualElement name="OptionContainer_07" class="option-container" style="-unity-text-align: upper-left;">
+            <ui:VisualElement name="OptionContainer_08" class="option-container" style="-unity-text-align: upper-left;">
                 <ui:Button text="Logout" display-tooltip-when-elided="true" name="LogoutButton" class="option-button" />
             </ui:VisualElement>
             <ui:VisualElement name="Splitter" class="splitter" />
