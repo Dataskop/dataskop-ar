@@ -19,7 +19,7 @@ namespace DataskopAR.Data {
 		/// <summary>
 		/// Keeps track of the best GPS accuracy the device received.
 		/// </summary>
-		private float BestGPSAccuracy { get; set; } = 1000;
+		private float BestAccuracy { get; set; } = 1000;
 
 		/// <summary>
 		/// Is true, if the initial geo location has been acquired already.
@@ -33,7 +33,7 @@ namespace DataskopAR.Data {
 #region Methods
 
 		private void OnEnable() {
-			locationProvider.DeviceLocationProvider.OnLocationUpdated += UpdateGPSLocation;
+			locationProvider.DefaultLocationProvider.OnLocationUpdated += UpdateLocation;
 			locationProvider.mapManager.OnUpdated += UpdateMapRoot;
 		}
 
@@ -42,14 +42,16 @@ namespace DataskopAR.Data {
 		/// </summary>
 		public void InitializeGeoLocation() {
 
-			float gpsAccuracy = locationProvider.DeviceLocationProvider.CurrentLocation.Accuracy;
+			Location initialLocation = locationProvider.DefaultLocationProvider.CurrentLocation;
+			float gpsAccuracy = initialLocation.Accuracy;
 
 			if (gpsAccuracy > 20) {
 				ErrorHandler.ThrowError(201, gpsAccuracy, this);
 			}
 
-			BestGPSAccuracy = gpsAccuracy;
-			locationProvider.mapManager.UpdateMap(locationProvider.DeviceLocationProvider.CurrentLocation.LatitudeLongitude, 18);
+			BestAccuracy = gpsAccuracy;
+			Debug.Log("Received Initial Location: " + initialLocation.LatitudeLongitude);
+			locationProvider.mapManager.UpdateMap(initialLocation.LatitudeLongitude, 18);
 			HasInitialLocationData = true;
 
 		}
@@ -57,7 +59,7 @@ namespace DataskopAR.Data {
 		/// <summary>
 		/// Update Map when user location gps over device is more accurate than latest sample
 		/// </summary>
-		private void UpdateGPSLocation(Location userLocation) {
+		private void UpdateLocation(Location userLocation) {
 
 			if (HasUsedFixedPositioning)
 				return;
@@ -65,15 +67,23 @@ namespace DataskopAR.Data {
 			if (!HasInitialLocationData)
 				return;
 
-			if (userLocation.Accuracy > BestGPSAccuracy)
+			if (userLocation.Accuracy > BestAccuracy)
 				return;
 
-			if (Mathf.Abs(userLocation.Accuracy - BestGPSAccuracy) < 0.5f)
+			if (Mathf.Abs(userLocation.Accuracy - BestAccuracy) < 0.5f)
 				return;
 
+			Debug.Log("Received Location: " + userLocation.LatitudeLongitude);
 			locationProvider.mapManager.UpdateMap(userLocation.LatitudeLongitude);
-			BestGPSAccuracy = userLocation.Accuracy;
+			BestAccuracy = userLocation.Accuracy;
 
+		}
+
+		/// <summary>
+		/// Fetch Position manually
+		/// </summary>
+		public void FetchPosition() {
+			locationProvider.mapManager.UpdateMap(locationProvider.DefaultLocationProvider.CurrentLocation.LatitudeLongitude);
 		}
 
 		/// <summary>
@@ -89,7 +99,7 @@ namespace DataskopAR.Data {
 			string dataPointLocation = splitResult[1];
 
 			locationProvider.mapManager.UpdateMap(Conversions.StringToLatLon(dataPointLocation));
-			BestGPSAccuracy = 0;
+			BestAccuracy = 0;
 
 #if UNITY_ANDROID
 			Handheld.Vibrate();
@@ -113,7 +123,7 @@ namespace DataskopAR.Data {
 		}
 
 		private void OnDisable() {
-			locationProvider.DeviceLocationProvider.OnLocationUpdated -= UpdateGPSLocation;
+			locationProvider.DefaultLocationProvider.OnLocationUpdated -= UpdateLocation;
 			locationProvider.mapManager.OnUpdated -= UpdateMapRoot;
 		}
 

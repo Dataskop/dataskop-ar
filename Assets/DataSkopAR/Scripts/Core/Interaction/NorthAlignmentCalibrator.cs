@@ -19,6 +19,7 @@ namespace DataskopAR.Interaction {
 
 		[Header("Events")]
 		public UnityEvent<int, int> rotationSampleTaken;
+		public UnityEvent northRotationCompleted;
 
 #endregion
 
@@ -73,6 +74,7 @@ namespace DataskopAR.Interaction {
 			CalibrationCompleted?.Invoke();
 
 			yield return new WaitForEndOfFrame();
+			northRotationCompleted?.Invoke();
 
 		}
 
