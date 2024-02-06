@@ -26,6 +26,7 @@ namespace DataskopAR.UI {
 		public UnityEvent onToggleCompassButtonPressed;
 		public UnityEvent onToggleOcclusionButtonPressed;
 		public UnityEvent onToggleFloorCalibrationButtonPressed;
+		public UnityEvent onToggleMinimapButtonPressed;
 		public UnityEvent onCompassCalibrationButtonPressed;
 		public UnityEvent onResetCalibrationButtonPressed;
 		public UnityEvent onLogoutButtonPressed;
@@ -63,6 +64,7 @@ namespace DataskopAR.UI {
 		private Button ToggleCompassButton { get; set; }
 		private Button ToggleOcclusionButton { get; set; }
 		private Button ToggleFloorCalibrationButton { get; set; }
+		private Button ToggleMinimapButton { get; set; }
 		private Button CompassCalibrationButton { get; set; }
 		private Button ResetCalibrationButton { get; set; }
 		private Button LogoutButton { get; set; }
@@ -131,6 +133,9 @@ namespace DataskopAR.UI {
 
 			ToggleFloorCalibrationButton = SettingsMenuContainer.Q<Button>("Option_04");
 			ToggleFloorCalibrationButton.RegisterCallback<ClickEvent>(_ => ToggleFloorCalibration());
+
+			ToggleMinimapButton = SettingsMenuContainer.Q<Button>("Option_05");
+			ToggleMinimapButton.RegisterCallback<ClickEvent>(_ => ToggleMinimap());
 
 			CompassCalibrationButton = SettingsMenuContainer.Q<Button>("CalibrateCompassButton");
 			CompassCalibrationButton.RegisterCallback<ClickEvent>(_ => CompassCalibrationPressed());
@@ -254,6 +259,11 @@ namespace DataskopAR.UI {
 		private void ToggleFloorCalibration() {
 			Toggle(ToggleFloorCalibrationButton);
 			onToggleFloorCalibrationButtonPressed?.Invoke();
+		}
+
+		private void ToggleMinimap() {
+			Toggle(ToggleMinimapButton);
+			onToggleMinimapButtonPressed?.Invoke();
 		}
 
 		private static void Toggle(VisualElement pressedButton) {
