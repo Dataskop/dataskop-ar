@@ -160,11 +160,11 @@ VisualElement {
     transition-timing-function: ease;
     transition-delay: 0s;
     transition-property: translate;
-    translate: 0 0.01%;
+    translate: 0 0.02%;
 }
 
 .info-card-short {
-    translate: 0 -30%;
+    translate: 0 -40%;
     transition-property: translate;
     transition-duration: 0.33s;
     transition-timing-function: ease;
