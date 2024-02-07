@@ -129,11 +129,34 @@ namespace DataskopAR.UI {
 		private void OnDetailsTabPressed() {
 			MapContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 			DetailsContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
+			HighlightTab(DetailsTab);
 		}
 
 		private void OnMapTabPressed() {
 			DetailsContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 			MapContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
+			HighlightTab(MapTab);
+		}
+
+		private void HighlightTab(VisualElement pressedTab) {
+
+			var availableTabs = InfoCard.Q<VisualElement>("TabContainer").Children();
+
+			foreach (var element in availableTabs) {
+
+				if (element == pressedTab) {
+					pressedTab.RemoveFromClassList("tab");
+					pressedTab.AddToClassList("tab-selected");
+					continue;
+				}
+
+				if (element.ClassListContains("tab-selected")) {
+					element.RemoveFromClassList("tab-selected");
+					element.AddToClassList("tab");
+				}
+
+			}
+
 		}
 
 		private void OnDisable() {
