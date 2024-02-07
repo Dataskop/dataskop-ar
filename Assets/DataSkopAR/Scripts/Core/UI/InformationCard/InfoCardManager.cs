@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DataskopAR.Data;
 using DataskopAR.Interaction;
 using UnityEngine;
@@ -140,9 +141,9 @@ namespace DataskopAR.UI {
 
 		private void HighlightTab(VisualElement pressedTab) {
 
-			var availableTabs = InfoCard.Q<VisualElement>("TabContainer").Children();
+			IEnumerable<VisualElement> availableTabs = InfoCard.Q<VisualElement>("TabContainer").Children();
 
-			foreach (var element in availableTabs) {
+			foreach (VisualElement element in availableTabs) {
 
 				if (element == pressedTab) {
 					pressedTab.RemoveFromClassList("tab");
@@ -150,10 +151,12 @@ namespace DataskopAR.UI {
 					continue;
 				}
 
-				if (element.ClassListContains("tab-selected")) {
-					element.RemoveFromClassList("tab-selected");
-					element.AddToClassList("tab");
+				if (!element.ClassListContains("tab-selected")) {
+					continue;
 				}
+
+				element.RemoveFromClassList("tab-selected");
+				element.AddToClassList("tab");
 
 			}
 
