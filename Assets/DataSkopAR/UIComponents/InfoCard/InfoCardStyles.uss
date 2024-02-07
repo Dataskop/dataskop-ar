@@ -223,3 +223,26 @@ VisualElement {
     font-size: 58px;
     -unity-text-align: middle-center;
 }
+
+.tab-selected {
+    height: 100%;
+    background-color: rgba(243, 243, 243, 0.8);
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    margin-right: 8px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-left-color: rgb(0, 80, 150);
+    border-right-color: rgb(0, 80, 150);
+    border-top-color: rgb(0, 80, 150);
+    border-bottom-color: rgb(0, 80, 150);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 8px;
+    border-bottom-width: 0;
+    transform-origin: bottom;
+    font-size: 58px;
+    -unity-text-align: middle-center;
+}
