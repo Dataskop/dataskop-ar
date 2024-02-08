@@ -18,6 +18,7 @@ namespace DataskopAR.UI {
 		[SerializeField] private InfoCardHeaderUI infoCardHeaderUI;
 		[SerializeField] private InfoCardProjectDataUI infoCardProjectDataUI;
 		[SerializeField] private InfoCardDataUI infoCardDataUI;
+		[SerializeField] private InfoCardMap infoCardMap;
 		[SerializeField] private DataManager dataManager;
 
 		private Coroutine uiInteractionRoutine;
@@ -83,6 +84,7 @@ namespace DataskopAR.UI {
 			infoCardProjectDataUI.Init(InfoCard);
 			infoCardHeaderUI.Init(InfoCard);
 			infoCardDataUI.Init(InfoCard);
+			infoCardMap.Init(InfoCard);
 
 		}
 
