@@ -7,9 +7,9 @@
             <ui:Label display-tooltip-when-elided="true" name="ErrorText" style="width: 100%; height: 100%; font-size: 24px; -unity-text-align: middle-left; flex-wrap: nowrap; white-space: normal; color: rgb(60, 60, 60);" />
         </ui:VisualElement>
         <ui:VisualElement name="MetaInformation" picking-mode="Ignore" class="meta-info-container" style="flex-direction: row; justify-content: space-between; margin-top: 45px; margin-bottom: 0;">
-            <ui:Label text="Project Name" display-tooltip-when-elided="true" name="ProjectName" class="meta-info-text" style="-unity-font-style: bold; font-size: 32px;" />
+            <ui:Label text="No Project Selected" display-tooltip-when-elided="true" name="ProjectName" class="meta-info-text" style="-unity-font-style: bold; font-size: 32px; color: rgb(60, 60, 60);" />
             <ui:VisualElement name="LastUpdatedContainer" style="flex-direction: row;">
-                <ui:Label text="Last Update: 16/11/22 09:07" display-tooltip-when-elided="true" name="LastUpdated" class="meta-info-text" style="font-size: 32px;" />
+                <ui:Label display-tooltip-when-elided="true" name="LastUpdated" text="Last Update: -" class="meta-info-text" style="font-size: 32px; color: rgb(60, 60, 60);" />
                 <ui:Button display-tooltip-when-elided="true" name="UpdateProject" class="refresh-button" style="width: 50px; height: 50px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 1px; margin-right: 1px; margin-top: 1px; margin-bottom: 1px; justify-content: center; align-items: center; background-color: rgba(192, 59, 59, 0); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0;">
                     <ui:IMGUIContainer style="background-image: url(&apos;project://database/Assets/DataSkopAR/Images/Icons/refresh_1024px.png?fileID=21300000&amp;guid=c76b05f6d283e804dba8cf6ecb94d3b0&amp;type=3#refresh_1024px&apos;); -unity-background-image-tint-color: rgb(91, 91, 91); background-color: rgba(0, 0, 0, 0); width: 75%; height: 75%;" />
                 </ui:Button>
