@@ -125,6 +125,11 @@ namespace DataskopAR.UI {
 			infoCardStateManager.OnSwipe(swipe);
 		}
 
+		public void OnMinimapTapped() {
+			OnMapTabPressed();
+			infoCardStateManager.ShowInfo();
+		}
+
 		public void SetInfoCardVisibility(bool isVisible) {
 			InfoCard.style.visibility = new StyleEnum<Visibility>(isVisible ? Visibility.Visible : Visibility.Hidden);
 		}
