@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 0.63733137, b: 0.2235294, a: 0.78431374}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -130,6 +130,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 042002a71b2f8974c885f97707e7f24a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapIconBorder: {fileID: 4490306367903162614}
+  mapSelectionColor: {r: 0.7058824, g: 0.3372549, b: 0.03529412, a: 1}
+  mapDefaultColor: {r: 0, g: 0.5267832, b: 1, a: 1}
 --- !u!1 &7714383849404019188
 GameObject:
   m_ObjectHideFlags: 0
@@ -156,7 +159,7 @@ Transform:
   m_GameObject: {fileID: 7714383849404019188}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 5, z: 0}
-  m_LocalScale: {x: 2.3, y: 2.3, z: 1}
+  m_LocalScale: {x: 2.4, y: 2.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 812699848333882032}
@@ -204,7 +207,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.11320752, g: 0.11320752, b: 0.11320752, a: 0.78431374}
+  m_Color: {r: 0, g: 0.5267832, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
