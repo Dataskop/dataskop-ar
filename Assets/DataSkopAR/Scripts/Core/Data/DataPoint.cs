@@ -15,6 +15,13 @@ namespace DataskopAR.Data {
 
 #region Fields
 
+		[Header("References")]
+		[SerializeField] private SpriteRenderer mapIconBorder;
+
+		[Header("Values")]
+		[SerializeField] private Color mapSelectionColor;
+		[SerializeField] private Color mapDefaultColor;
+
 		private MeasurementResult mResult;
 
 #endregion
@@ -35,7 +42,7 @@ namespace DataskopAR.Data {
 			MeasurementDefinition.MeasurementResults.ToList().IndexOf(CurrentMeasurementResult);
 
 		public DataAttribute Attribute { get; set; }
-		public Visualization Vis { get; set; }
+		public Visualization Vis { get; private set; }
 		public Device Device { get; set; }
 		public AuthorRepository AuthorRepository { get; set; }
 
@@ -79,10 +86,12 @@ namespace DataskopAR.Data {
 
 			if (isSelected) {
 				Vis.Select();
+				SetMapIconColor(mapSelectionColor);
 				return;
 			}
 
 			Vis.Deselect();
+			SetMapIconColor(mapDefaultColor);
 
 		}
 
@@ -90,7 +99,7 @@ namespace DataskopAR.Data {
 			CurrentMeasurementResult = mRes;
 		}
 
-		public void NextMeasurementResult() {
+		private void NextMeasurementResult() {
 
 			if (MeasurementDefinition.MeasurementResults != null) {
 				int i = CurrentMeasurementResultIndex;
@@ -102,7 +111,7 @@ namespace DataskopAR.Data {
 			}
 		}
 
-		public void PreviousMeasurementResult() {
+		private void PreviousMeasurementResult() {
 
 			if (MeasurementDefinition.MeasurementResults != null) {
 				int i = CurrentMeasurementResultIndex;
@@ -113,6 +122,10 @@ namespace DataskopAR.Data {
 				SetMeasurementResult(MeasurementDefinition.MeasurementResults.ToList()[i + 1]);
 			}
 
+		}
+
+		private void SetMapIconColor(Color color) {
+			mapIconBorder.color = color;
 		}
 
 #endregion
