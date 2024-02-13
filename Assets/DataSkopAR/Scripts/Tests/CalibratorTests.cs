@@ -10,8 +10,7 @@ namespace DataskopAR.Tests {
 		[Test]
 		public void CalibratorPhaseIsNotNoneAfterInitialization() {
 
-			GameObject testObject = new();
-			Calibrator calibrator = Object.Instantiate(testObject).AddComponent<Calibrator>();
+			Calibrator calibrator = CreateCalibrator();
 
 			calibrator.Initialize();
 
@@ -23,8 +22,7 @@ namespace DataskopAR.Tests {
 		public void CalibratorPhaseIsNoneAfterCompletion() {
 
 			// Arrange
-			GameObject testObject = new();
-			Calibrator calibrator = Object.Instantiate(testObject).AddComponent<Calibrator>();
+			Calibrator calibrator = CreateCalibrator();
 
 			// Act
 			calibrator.Initialize();
@@ -36,6 +34,11 @@ namespace DataskopAR.Tests {
 			// Assert
 			Assert.AreEqual(calibrator.CurrentPhase, CalibratorPhase.None);
 
+		}
+
+		// Test Fixtures
+		private static Calibrator CreateCalibrator() {
+			return Object.Instantiate(new GameObject()).AddComponent<Calibrator>();
 		}
 
 	}
