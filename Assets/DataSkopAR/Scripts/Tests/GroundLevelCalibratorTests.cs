@@ -5,6 +5,7 @@ using UnityEngine.XR.ARFoundation;
 
 namespace DataskopAR.Tests {
 
+	[TestFixture]
 	public class GroundLevelCalibratorTests {
 
 		[Test]

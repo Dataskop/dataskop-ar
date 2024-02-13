@@ -14,6 +14,7 @@ namespace DataskopAR.Interaction {
 #region Constants
 
 		private const int TargetLayerMask = 1 << 10;
+		private const string PlaneTag = "ARPlane";
 
 #endregion
 
@@ -134,20 +135,35 @@ namespace DataskopAR.Interaction {
 					return;
 				}
 
-				TapScreenToWorldRay = cam.ScreenPointToRay(new Vector3(TapPosition.x, TapPosition.y, -5));
+				GameObject tappedPlane = GetTappedPArPlane(TapPosition);
 
-				if (Physics.Raycast(TapScreenToWorldRay, out RaycastHit hit, Mathf.Infinity, TargetLayerMask)) {
-
-					if (hit.collider.gameObject.CompareTag("ARPlane")) {
-
-						SetMapRootGroundLevel(hit.collider.gameObject.transform.position.y);
-						CalibrationCompleted?.Invoke();
-
-					}
-
+				if (tappedPlane == null) {
+					return;
 				}
 
+				GroundLevelYPosition = tappedPlane.transform.position.y;
+				SetMapRootGroundLevel(GroundLevelYPosition);
+				CalibrationCompleted?.Invoke();
+
 			}
+
+		}
+
+		private GameObject GetTappedPArPlane(Vector3 tapPos) {
+
+			TapScreenToWorldRay = cam.ScreenPointToRay(new Vector3(tapPos.x, tapPos.y, -5));
+
+			if (!Physics.Raycast(TapScreenToWorldRay, out RaycastHit hit, Mathf.Infinity, TargetLayerMask)) {
+				return null;
+			}
+
+			GameObject tappedObject = hit.collider.gameObject;
+
+			if (!tappedObject.CompareTag(PlaneTag)) {
+				return null;
+			}
+
+			return hit.collider.gameObject;
 
 		}
 
