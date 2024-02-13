@@ -55,6 +55,8 @@ namespace DataskopAR.Data {
 			HasInitialLocationData = true;
 
 		}
+		
+		
 
 		/// <summary>
 		/// Update Map when user location gps over device is more accurate than latest sample
