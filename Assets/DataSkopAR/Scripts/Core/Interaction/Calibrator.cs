@@ -11,6 +11,7 @@ namespace DataskopAR.Interaction {
 
 #region Events
 
+		[Header("UI Events")]
 		public UnityEvent calibrationInitialized;
 		public UnityEvent<CalibratorPhase> phaseChanged;
 		public UnityEvent calibrationFinished;
