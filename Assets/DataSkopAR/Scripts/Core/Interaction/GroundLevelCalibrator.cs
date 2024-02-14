@@ -141,6 +141,7 @@ namespace DataskopAR.Interaction {
 					return;
 				}
 
+				LowestPlane = tappedPlane.GetComponent<ARPlane>();
 				GroundLevelYPosition = tappedPlane.transform.position.y;
 				SetMapRootGroundLevel(GroundLevelYPosition);
 				CalibrationCompleted?.Invoke();

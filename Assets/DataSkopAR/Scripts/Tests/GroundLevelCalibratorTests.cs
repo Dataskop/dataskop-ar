@@ -9,7 +9,7 @@ namespace DataskopAR.Tests {
 	public class GroundLevelCalibratorTests {
 
 		[Test]
-		public void GroundLevelIsLowerThanInitialYPositionWhenLowerPlaneIsFound() {
+		public void Ground_Level_Is_Lower_Than_Initial_Y_Position_When_Lower_Plane_Is_Found() {
 
 			GameObject testObject = new();
 			GroundLevelCalibrator calibrator = Object.Instantiate(testObject).AddComponent<GroundLevelCalibrator>();
@@ -24,7 +24,7 @@ namespace DataskopAR.Tests {
 		}
 
 		[Test]
-		public void FoundPlaneGetsDiscardedWhenYPosLimitIsExceeded() {
+		public void Found_Plane_Gets_Discarded_When_Y_Pos_Limit_Is_Exceeded() {
 
 			GameObject testObject = new();
 			GroundLevelCalibrator calibrator = Object.Instantiate(testObject).AddComponent<GroundLevelCalibrator>();
