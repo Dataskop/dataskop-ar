@@ -6,12 +6,6 @@ namespace DataskopAR.Data {
 
 	public sealed class ApiRequestHandler {
 
-#region Fields
-
-		private readonly UserData _user = UserData.Instance;
-
-#endregion
-
 #region Properties
 
 		public static ApiRequestHandler Instance { get; } = new();
