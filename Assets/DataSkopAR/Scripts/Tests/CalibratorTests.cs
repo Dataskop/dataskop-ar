@@ -8,7 +8,7 @@ namespace DataskopAR.Tests {
 	public class CalibratorTests {
 
 		[Test]
-		public void CalibratorPhaseIsNotNoneAfterInitialization() {
+		public void Calibrator_Phase_Is_Not_None_After_Initialization() {
 
 			Calibrator calibrator = CreateCalibrator();
 
@@ -19,7 +19,7 @@ namespace DataskopAR.Tests {
 		}
 
 		[Test]
-		public void CalibratorPhaseIsNoneAfterCompletion() {
+		public void Calibrator_Phase_Is_None_After_Completion() {
 
 			// Arrange
 			Calibrator calibrator = CreateCalibrator();
