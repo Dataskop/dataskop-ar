@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DataskopAR.Tests {
 
-	[TestFixture]
+	[TestFixture][Category("Dataskop")]
 	public class CalibratorTests {
 
 		[Test]
