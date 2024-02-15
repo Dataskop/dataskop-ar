@@ -74,7 +74,7 @@ namespace DataskopAR.UI {
 				sliderChanged?.Invoke(e.newValue, e.previousValue);
 			}
 
-			CurrentTimeLabel.style.top = Dragger.localBound.yMax;
+			UpdateTimeLabelPosition();
 
 		}
 
@@ -106,6 +106,10 @@ namespace DataskopAR.UI {
 
 		private void UpdateTimeLabel(MeasurementResult currentDataPointMeasurementResult) {
 			CurrentTimeLabel.text = $"{currentDataPointMeasurementResult.GetDate()}<br>{currentDataPointMeasurementResult.GetClockTime()}";
+		}
+
+		private void UpdateTimeLabelPosition() {
+			CurrentTimeLabel.style.top = Dragger.localBound.yMax;
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
@@ -164,14 +168,14 @@ namespace DataskopAR.UI {
 
 		}
 
-		private void OnDisable() {
-			dataManager.FetchedAmountChanged -= OnFetchedAmountChanged;
-			HistorySliderContainer.UnregisterCallback<ChangeEvent<int>>(e => sliderChanged?.Invoke(e.newValue, e.previousValue));
-		}
-
 		private IEnumerator DelayToggle() {
 			yield return new WaitForSeconds(0.015f);
 			historyViewToggled?.Invoke(IsActive);
+		}
+
+		private void OnDisable() {
+			dataManager.FetchedAmountChanged -= OnFetchedAmountChanged;
+			HistorySliderContainer.UnregisterCallback<ChangeEvent<int>>(e => sliderChanged?.Invoke(e.newValue, e.previousValue));
 		}
 
 #endregion
