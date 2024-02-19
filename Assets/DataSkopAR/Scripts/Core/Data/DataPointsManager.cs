@@ -6,7 +6,6 @@ using Mapbox.Unity.Utilities;
 using Mapbox.Utils;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.XR.ARFoundation;
 
 namespace DataskopAR.Data {
 
