@@ -74,8 +74,12 @@ namespace DataskopAR.UI {
 				sliderChanged?.Invoke(e.newValue, e.previousValue);
 			}
 
-			CurrentTimeLabel.style.top = Dragger.localBound.yMax;
+			AdjustTimeLabelPosition();
 
+		}
+
+		private void AdjustTimeLabelPosition() {
+			CurrentTimeLabel.style.top = Dragger.localBound.yMax;
 		}
 
 		private void OnFetchedAmountChanged(int newValue) {
