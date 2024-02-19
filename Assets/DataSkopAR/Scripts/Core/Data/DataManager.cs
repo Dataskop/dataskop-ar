@@ -7,6 +7,7 @@ using DataskopAR.UI;
 using JetBrains.Annotations;
 using UnityEngine;
 using Newtonsoft.Json;
+using UnityEngine.Events;
 using Debug = UnityEngine.Debug;
 
 namespace DataskopAR.Data {
@@ -33,7 +34,8 @@ namespace DataskopAR.Data {
 
 		public event Action HasUpdatedMeasurementResults;
 
-		public event Action<int> FetchedAmountChanged;
+		[Header("Events")]
+		public UnityEvent<int> fetchedAmountChanged;
 
 #endregion
 
@@ -41,7 +43,9 @@ namespace DataskopAR.Data {
 
 		[Header("References")]
 		[SerializeField] private LoadingIndicator loadingIndicator;
-		[SerializeField] private int fetchAmount;
+
+		[Header("Values")]
+		[SerializeField] private int fetchAmount = 1;
 		[SerializeField] private int fetchInterval = 30000;
 
 #endregion
@@ -310,7 +314,7 @@ namespace DataskopAR.Data {
 
 			await SelectedProject.UpdateDeviceMeasurements(FetchAmount);
 			HasUpdatedMeasurementResults?.Invoke();
-			FetchedAmountChanged?.Invoke(FetchAmount);
+			fetchedAmountChanged?.Invoke(FetchAmount);
 
 			LoadingIndicator.Hide();
 

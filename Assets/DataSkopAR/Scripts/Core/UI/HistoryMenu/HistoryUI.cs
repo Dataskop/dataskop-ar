@@ -65,7 +65,6 @@ namespace DataskopAR.UI {
 		private void Start() {
 			SetVisibility(Root, false);
 			HistorySlider.highValue = dataManager.FetchAmount - 1;
-			dataManager.FetchedAmountChanged += OnFetchedAmountChanged;
 		}
 
 		private void SliderValueChanged(ChangeEvent<int> e) {
@@ -82,7 +81,7 @@ namespace DataskopAR.UI {
 			CurrentTimeLabel.style.top = Dragger.localBound.yMax;
 		}
 
-		private void OnFetchedAmountChanged(int newValue) {
+		public void OnFetchedAmountChanged(int newValue) {
 			HistorySlider.highValue = newValue - 1;
 		}
 
@@ -169,7 +168,6 @@ namespace DataskopAR.UI {
 		}
 
 		private void OnDisable() {
-			dataManager.FetchedAmountChanged -= OnFetchedAmountChanged;
 			HistorySliderContainer.UnregisterCallback<ChangeEvent<int>>(e => sliderChanged?.Invoke(e.newValue, e.previousValue));
 		}
 
