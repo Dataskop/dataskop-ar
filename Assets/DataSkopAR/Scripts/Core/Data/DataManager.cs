@@ -25,17 +25,24 @@ namespace DataskopAR.Data {
 		/// <summary>
 		/// Invoked when companies and their projects are loaded, without additional info on single projects.
 		/// </summary>
+#pragma warning disable CS0067 // Event is never used
 		public event Action<IReadOnlyCollection<Company>> HasLoadedProjectList;
+#pragma warning restore CS0067 // Event is never used
 
 		/// <summary>
 		/// Invoked once data for the selected project finished loading.
 		/// </summary>
 		public event Action<Project> HasLoadedProjectData;
 
+		/// <summary>
+		/// Invoked when measurement results has been updated.
+		/// </summary>
 		public event Action HasUpdatedMeasurementResults;
 
 		[Header("Events")]
 		public UnityEvent<int> fetchedAmountChanged;
+		public UnityEvent<IReadOnlyCollection<Company>> projectListLoaded;
+		public UnityEvent<Project> projectLoaded;
 
 #endregion
 
@@ -137,7 +144,7 @@ namespace DataskopAR.Data {
 				await c.UpdateProjects();
 			}
 
-			HasLoadedProjectList?.Invoke(Companies);
+			projectListLoaded?.Invoke(Companies);
 			LoadingIndicator.Hide();
 
 		}
@@ -278,6 +285,8 @@ namespace DataskopAR.Data {
 		private void OnProjectDataLoaded(Project selectedProject) {
 
 			HasLoadedProjectData?.Invoke(selectedProject);
+			projectLoaded?.Invoke(selectedProject);
+
 			LoadingIndicator.Hide();
 
 			NotificationHandler.Add(new Notification {

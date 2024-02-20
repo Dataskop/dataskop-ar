@@ -1,6 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using DataskopAR.Data;
-using Mapbox.Unity.Map;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
@@ -24,34 +25,46 @@ namespace DataskopAR.UI {
 		[SerializeField] private Color selectedIconColor;
 		[SerializeField] private Color deselectedIconColor;
 
+		private bool isDescending = false;
+
 #endregion
 
 #region Properties
 
 		private VisualElement MenuContainer { get; set; }
 		private ICollection<Button> ProjectButtons { get; set; }
+		private Button SortButton { get; set; }
+		private ScrollView ProjectsContainer { get; set; }
 		private StyleColor SelectedColor { get; set; }
 		private StyleColor DeselectedColor { get; set; }
+		private IReadOnlyCollection<Company> Companies { get; set; }
 
 #endregion
 
 #region Methods
 
-		private void OnEnable() {
-			dataManager.HasLoadedProjectList += UpdateCompaniesWithProjects;
-			dataManager.HasLoadedProjectData += MarkSelectedProject;
-		}
+		private void Awake() {
 
-		private void Start() {
+			MenuContainer = settingsMenuUIDoc.rootVisualElement.Q<VisualElement>("MenuContainer");
+			SortButton = MenuContainer.Q<Button>("SortButton");
+			SortButton.RegisterCallback<ClickEvent>(_ => OnSortButtonPressed());
+
+			ProjectsContainer = MenuContainer.Q<ScrollView>("ProjectSelectionContainer");
+
 			ProjectButtons = new List<Button>();
 			SelectedColor = new StyleColor(selectedIconColor);
 			DeselectedColor = new StyleColor(deselectedIconColor);
+
 		}
 
-		private void UpdateCompaniesWithProjects(IReadOnlyCollection<Company> companies) {
+		public void OnProjectListLoaded(IReadOnlyCollection<Company> companies) {
+			Companies = companies;
+			UpdateCompaniesWithProjects(Companies);
+		}
 
-			MenuContainer = settingsMenuUIDoc.rootVisualElement.Q<VisualElement>("MenuContainer");
-			ScrollView contentContainer = MenuContainer.Q<ScrollView>("ProjectSelectionContainer");
+		private void UpdateCompaniesWithProjects(IEnumerable<Company> companies) {
+
+			ProjectsContainer.Clear();
 
 			foreach (Company company in companies) {
 
@@ -59,9 +72,14 @@ namespace DataskopAR.UI {
 				Label label = groupOfProjectsTemplateContainer.Q<Label>("company-name");
 				label.text = company.Information.Name;
 
-				foreach (Project project in company.Projects) {
+				IEnumerable<Project> sortedCompanyProjects = isDescending
+					? company.Projects.OrderByDescending(x => x.Information.Name)
+					: company.Projects.OrderBy(x => x.Information.Name);
+
+				foreach (Project project in sortedCompanyProjects) {
 
 					if (project.Properties != null) {
+
 						if (project.Properties.IsDemo && !DataPointsManager.IsDemoScene) {
 							continue;
 						}
@@ -69,6 +87,7 @@ namespace DataskopAR.UI {
 						if (!project.Properties.IsDemo && DataPointsManager.IsDemoScene) {
 							continue;
 						}
+
 					}
 					else {
 						// Only show projects with possible null properties in the normal app, omit them in the demo scene.
@@ -96,17 +115,24 @@ namespace DataskopAR.UI {
 					continue;
 				}
 
-				contentContainer.Add(groupOfProjectsTemplateContainer);
+				ProjectsContainer.Add(groupOfProjectsTemplateContainer);
 			}
 
-			if (contentContainer.childCount == 0) {
-				Label noProjectsText = new() {
-					text = "No Projects found!"
-				};
-
-				contentContainer.Add(noProjectsText);
+			if (ProjectsContainer.childCount != 0) {
+				return;
 			}
 
+			Label noProjectsText = new() {
+				text = "No Projects found!"
+			};
+
+			ProjectsContainer.Add(noProjectsText);
+
+		}
+
+		private void OnSortButtonPressed() {
+			isDescending = !isDescending;
+			UpdateCompaniesWithProjects(Companies);
 		}
 
 		public void MarkSelectedProject(Project currentProject) {
@@ -128,11 +154,6 @@ namespace DataskopAR.UI {
 				}
 			}
 
-		}
-
-		private void OnDisable() {
-			dataManager.HasLoadedProjectList -= UpdateCompaniesWithProjects;
-			dataManager.HasLoadedProjectData -= MarkSelectedProject;
 		}
 
 #endregion
