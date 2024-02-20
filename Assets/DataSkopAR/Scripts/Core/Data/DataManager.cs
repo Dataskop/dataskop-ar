@@ -32,10 +32,15 @@ namespace DataskopAR.Data {
 		/// </summary>
 		public event Action<Project> HasLoadedProjectData;
 
+		/// <summary>
+		/// Invoked when measurement results has been updated.
+		/// </summary>
 		public event Action HasUpdatedMeasurementResults;
 
 		[Header("Events")]
 		public UnityEvent<int> fetchedAmountChanged;
+		public UnityEvent<IReadOnlyCollection<Company>> projectListLoaded;
+		public UnityEvent<Project> projectLoaded;
 
 #endregion
 
@@ -137,7 +142,7 @@ namespace DataskopAR.Data {
 				await c.UpdateProjects();
 			}
 
-			HasLoadedProjectList?.Invoke(Companies);
+			projectListLoaded?.Invoke(Companies);
 			LoadingIndicator.Hide();
 
 		}
@@ -278,6 +283,8 @@ namespace DataskopAR.Data {
 		private void OnProjectDataLoaded(Project selectedProject) {
 
 			HasLoadedProjectData?.Invoke(selectedProject);
+			projectLoaded?.Invoke(selectedProject);
+
 			LoadingIndicator.Hide();
 
 			NotificationHandler.Add(new Notification {

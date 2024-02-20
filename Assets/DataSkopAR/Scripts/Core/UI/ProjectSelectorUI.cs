@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using DataskopAR.Data;
-using Mapbox.Unity.Map;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
@@ -38,18 +37,13 @@ namespace DataskopAR.UI {
 
 #region Methods
 
-		private void OnEnable() {
-			dataManager.HasLoadedProjectList += UpdateCompaniesWithProjects;
-			dataManager.HasLoadedProjectData += MarkSelectedProject;
-		}
-
 		private void Start() {
 			ProjectButtons = new List<Button>();
 			SelectedColor = new StyleColor(selectedIconColor);
 			DeselectedColor = new StyleColor(deselectedIconColor);
 		}
 
-		private void UpdateCompaniesWithProjects(IReadOnlyCollection<Company> companies) {
+		public void UpdateCompaniesWithProjects(IReadOnlyCollection<Company> companies) {
 
 			MenuContainer = settingsMenuUIDoc.rootVisualElement.Q<VisualElement>("MenuContainer");
 			ScrollView contentContainer = MenuContainer.Q<ScrollView>("ProjectSelectionContainer");
@@ -114,7 +108,7 @@ namespace DataskopAR.UI {
 
 		}
 
-		private void MarkSelectedProject(Project currentProject) {
+		public void MarkSelectedProject(Project currentProject) {
 
 			if (ProjectButtons.Count == 0) {
 				return;
@@ -133,11 +127,6 @@ namespace DataskopAR.UI {
 				}
 			}
 
-		}
-
-		private void OnDisable() {
-			dataManager.HasLoadedProjectList -= UpdateCompaniesWithProjects;
-			dataManager.HasLoadedProjectData -= MarkSelectedProject;
 		}
 
 #endregion
