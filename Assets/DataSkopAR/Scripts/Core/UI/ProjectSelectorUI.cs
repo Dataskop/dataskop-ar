@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using DataskopAR.Data;
 using Mapbox.Unity.Map;
 using UnityEngine;
@@ -59,7 +60,9 @@ namespace DataskopAR.UI {
 				Label label = groupOfProjectsTemplateContainer.Q<Label>("company-name");
 				label.text = company.Information.Name;
 
-				foreach (Project project in company.Projects) {
+				IEnumerable<Project> sortedCompanyProjects = company.Projects.OrderBy(x => x.Information.Name);
+
+				foreach (Project project in sortedCompanyProjects) {
 
 					if (project.Properties != null) {
 						if (project.Properties.IsDemo && !DataPointsManager.IsDemoScene) {
