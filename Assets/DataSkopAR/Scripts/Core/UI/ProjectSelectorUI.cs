@@ -65,6 +65,7 @@ namespace DataskopAR.UI {
 				foreach (Project project in sortedCompanyProjects) {
 
 					if (project.Properties != null) {
+
 						if (project.Properties.IsDemo && !DataPointsManager.IsDemoScene) {
 							continue;
 						}
@@ -72,6 +73,7 @@ namespace DataskopAR.UI {
 						if (!project.Properties.IsDemo && DataPointsManager.IsDemoScene) {
 							continue;
 						}
+
 					}
 					else {
 						// Only show projects with possible null properties in the normal app, omit them in the demo scene.
@@ -112,7 +114,7 @@ namespace DataskopAR.UI {
 
 		}
 
-		public void MarkSelectedProject(Project currentProject) {
+		private void MarkSelectedProject(Project currentProject) {
 
 			if (ProjectButtons.Count == 0) {
 				return;
