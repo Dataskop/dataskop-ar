@@ -25,7 +25,9 @@ namespace DataskopAR.Data {
 		/// <summary>
 		/// Invoked when companies and their projects are loaded, without additional info on single projects.
 		/// </summary>
+#pragma warning disable CS0067 // Event is never used
 		public event Action<IReadOnlyCollection<Company>> HasLoadedProjectList;
+#pragma warning restore CS0067 // Event is never used
 
 		/// <summary>
 		/// Invoked once data for the selected project finished loading.
