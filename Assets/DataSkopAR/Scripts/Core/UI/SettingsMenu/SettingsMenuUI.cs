@@ -68,6 +68,7 @@ namespace DataskopAR.UI {
 		private Button CompassCalibrationButton { get; set; }
 		private Button ResetCalibrationButton { get; set; }
 		private Button LogoutButton { get; set; }
+		private Button SortButton { get; set; }
 		private VisualElement ProjectsIcon { get; set; }
 		private VisualElement SettingsIcon { get; set; }
 		private VisualElement HistoryIcon { get; set; }
@@ -146,6 +147,8 @@ namespace DataskopAR.UI {
 			LogoutButton = SettingsMenuContainer.Q<Button>("LogoutButton");
 			LogoutButton.RegisterCallback<ClickEvent>(_ => LogoutButtonPressed());
 
+			SortButton = MenuContainer.Q<Button>("SortButton");
+
 			VersionLabel = SettingsMenuContainer.Q<Label>("Version");
 			VersionLabel.text = "DataskopAR - " + Version.ID;
 
@@ -194,7 +197,10 @@ namespace DataskopAR.UI {
 					ProjectsIcon.style.unityBackgroundImageTintColor = new StyleColor(selectedIconColor);
 					ProjectSelectorContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
 
+					SortButton.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
+
 					CurrentView = MenuView.Projects;
+
 					break;
 				case MenuView.Settings:
 					ProjectsIcon.style.unityBackgroundImageTintColor = new StyleColor(deselectedIconColor);
@@ -203,6 +209,8 @@ namespace DataskopAR.UI {
 					TitleLabel.text = SettingsTitle;
 					SettingsIcon.style.unityBackgroundImageTintColor = new StyleColor(selectedIconColor);
 					SettingsMenuContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
+
+					SortButton.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 
 					CurrentView = MenuView.Settings;
 					break;

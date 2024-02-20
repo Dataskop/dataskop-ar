@@ -34,17 +34,22 @@ namespace DataskopAR.UI {
 		private VisualElement MenuContainer { get; set; }
 		private ICollection<Button> ProjectButtons { get; set; }
 		private Button SortButton { get; set; }
+		private ScrollView ProjectsContainer { get; set; }
 		private StyleColor SelectedColor { get; set; }
 		private StyleColor DeselectedColor { get; set; }
+		private IReadOnlyCollection<Company> Companies { get; set; }
 
 #endregion
 
 #region Methods
 
 		private void Awake() {
+
 			MenuContainer = settingsMenuUIDoc.rootVisualElement.Q<VisualElement>("MenuContainer");
 			SortButton = MenuContainer.Q<Button>("SortButton");
 			SortButton.RegisterCallback<ClickEvent>(_ => OnSortButtonPressed());
+
+			ProjectsContainer = MenuContainer.Q<ScrollView>("ProjectSelectionContainer");
 
 			ProjectButtons = new List<Button>();
 			SelectedColor = new StyleColor(selectedIconColor);
@@ -52,9 +57,14 @@ namespace DataskopAR.UI {
 
 		}
 
-		public void UpdateCompaniesWithProjects(IReadOnlyCollection<Company> companies) {
+		public void OnProjectListLoaded(IReadOnlyCollection<Company> companies) {
+			Companies = companies;
+			UpdateCompaniesWithProjects(Companies);
+		}
 
-			ScrollView contentContainer = MenuContainer.Q<ScrollView>("ProjectSelectionContainer");
+		private void UpdateCompaniesWithProjects(IEnumerable<Company> companies) {
+
+			ProjectsContainer.Clear();
 
 			foreach (Company company in companies) {
 
@@ -62,7 +72,9 @@ namespace DataskopAR.UI {
 				Label label = groupOfProjectsTemplateContainer.Q<Label>("company-name");
 				label.text = company.Information.Name;
 
-				IEnumerable<Project> sortedCompanyProjects = company.Projects.OrderBy(x => x.Information.Name);
+				IEnumerable<Project> sortedCompanyProjects = isDescending
+					? company.Projects.OrderByDescending(x => x.Information.Name)
+					: company.Projects.OrderBy(x => x.Information.Name);
 
 				foreach (Project project in sortedCompanyProjects) {
 
@@ -103,23 +115,24 @@ namespace DataskopAR.UI {
 					continue;
 				}
 
-				contentContainer.Add(groupOfProjectsTemplateContainer);
+				ProjectsContainer.Add(groupOfProjectsTemplateContainer);
 			}
 
-			if (contentContainer.childCount == 0) {
-				Label noProjectsText = new() {
-					text = "No Projects found!"
-				};
-
-				contentContainer.Add(noProjectsText);
+			if (ProjectsContainer.childCount != 0) {
+				return;
 			}
+
+			Label noProjectsText = new() {
+				text = "No Projects found!"
+			};
+
+			ProjectsContainer.Add(noProjectsText);
 
 		}
 
 		private void OnSortButtonPressed() {
-
 			isDescending = !isDescending;
-
+			UpdateCompaniesWithProjects(Companies);
 		}
 
 		public void MarkSelectedProject(Project currentProject) {
