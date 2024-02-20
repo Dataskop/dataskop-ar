@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DataskopAR.Data;
@@ -24,12 +25,15 @@ namespace DataskopAR.UI {
 		[SerializeField] private Color selectedIconColor;
 		[SerializeField] private Color deselectedIconColor;
 
+		private bool isDescending = false;
+
 #endregion
 
 #region Properties
 
 		private VisualElement MenuContainer { get; set; }
 		private ICollection<Button> ProjectButtons { get; set; }
+		private Button SortButton { get; set; }
 		private StyleColor SelectedColor { get; set; }
 		private StyleColor DeselectedColor { get; set; }
 
@@ -37,15 +41,19 @@ namespace DataskopAR.UI {
 
 #region Methods
 
-		private void Start() {
+		private void Awake() {
+			MenuContainer = settingsMenuUIDoc.rootVisualElement.Q<VisualElement>("MenuContainer");
+			SortButton = MenuContainer.Q<Button>("SortButton");
+			SortButton.RegisterCallback<ClickEvent>(_ => OnSortButtonPressed());
+
 			ProjectButtons = new List<Button>();
 			SelectedColor = new StyleColor(selectedIconColor);
 			DeselectedColor = new StyleColor(deselectedIconColor);
+
 		}
 
 		public void UpdateCompaniesWithProjects(IReadOnlyCollection<Company> companies) {
 
-			MenuContainer = settingsMenuUIDoc.rootVisualElement.Q<VisualElement>("MenuContainer");
 			ScrollView contentContainer = MenuContainer.Q<ScrollView>("ProjectSelectionContainer");
 
 			foreach (Company company in companies) {
@@ -105,6 +113,12 @@ namespace DataskopAR.UI {
 
 				contentContainer.Add(noProjectsText);
 			}
+
+		}
+
+		private void OnSortButtonPressed() {
+
+			isDescending = !isDescending;
 
 		}
 
