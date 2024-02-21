@@ -5,10 +5,16 @@ namespace DataskopAR.Entities.Visualizations {
 
 	public class TimeElement : MonoBehaviour {
 
-		[SerializeField] private int _distanceToDataPoint;
-		[SerializeField] private SpriteRenderer authorSpriteRenderer;
+#region Fields
 
+		[Header("References")]
+		[SerializeField] private SpriteRenderer authorSpriteRenderer;
+		[SerializeField] private CanvasGroup dataDisplay;
+
+		private int _distanceToDataPoint;
 		private MeasurementResult measurementResult;
+
+#endregion
 
 #region Properties
 
@@ -27,7 +33,7 @@ namespace DataskopAR.Entities.Visualizations {
 			get => _distanceToDataPoint;
 			set => _distanceToDataPoint = value;
 		}
-		
+
 		public SpriteRenderer AuthorSprite {
 			get => authorSpriteRenderer;
 		}
@@ -46,6 +52,14 @@ namespace DataskopAR.Entities.Visualizations {
 				authorSpriteRenderer.enabled = false;
 			}
 
+		}
+
+		public void DisplayData() {
+			dataDisplay.alpha = 1;
+		}
+
+		public void HideDate() {
+			dataDisplay.alpha = 0;
 		}
 
 #endregion
