@@ -78,6 +78,7 @@ namespace DataskopAR.Entities.Visualizations {
 				timeElement.NextTargetPosition = timeElement.transform.position;
 				timeElement.DistanceToDataPoint = i + 1;
 				timeElement.MeasurementResult = MeasurementResults?[timeElement.DistanceToDataPoint];
+				timeElement.SetDisplayData();
 				timeElement.gameObject.SetActive(ShouldDrawTimeElement(Configuration.visibleHistoryCount, timeElement));
 
 				TimeElements.Add(newElement.GetComponent<TimeElement>());
