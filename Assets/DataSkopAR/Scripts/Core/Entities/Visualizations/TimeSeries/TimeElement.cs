@@ -1,4 +1,5 @@
 using DataskopAR.Data;
+using TMPro;
 using UnityEngine;
 
 namespace DataskopAR.Entities.Visualizations {
@@ -10,6 +11,8 @@ namespace DataskopAR.Entities.Visualizations {
 		[Header("References")]
 		[SerializeField] private SpriteRenderer authorSpriteRenderer;
 		[SerializeField] private CanvasGroup dataDisplay;
+		[SerializeField] private TextMeshProUGUI valueDisplay;
+		[SerializeField] private TextMeshProUGUI dateDisplay;
 
 		private int _distanceToDataPoint;
 		private MeasurementResult measurementResult;
@@ -54,11 +57,18 @@ namespace DataskopAR.Entities.Visualizations {
 
 		}
 
+		public void SetDisplayData() {
+
+			valueDisplay.SetText(MeasurementResult.Value);
+			dateDisplay.SetText(MeasurementResult.GetTime());
+
+		}
+
 		public void DisplayData() {
 			dataDisplay.alpha = 1;
 		}
 
-		public void HideDate() {
+		public void HideData() {
 			dataDisplay.alpha = 0;
 		}
 

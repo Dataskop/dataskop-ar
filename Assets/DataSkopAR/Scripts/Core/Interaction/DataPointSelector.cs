@@ -60,6 +60,7 @@ namespace DataskopAR.Interaction {
 			}
 		}
 
+		public TimeElement HoveredTimeElement { get; set; }
 		private Ray TapScreenToWorldRay { get; set; }
 		private Ray ReticuleToWorldRay => cam.ViewportPointToRay(screenRayPosition);
 		private Vector2 TapPosition { get; set; }
@@ -74,31 +75,58 @@ namespace DataskopAR.Interaction {
 
 				GameObject hitGameObject = hit.collider.gameObject;
 
-				DataPoint hoveredDataPoint = hitGameObject.CompareTag("TimeElement")
-					? hit.collider.gameObject.GetComponent<TimeElement>().Series.DataPoint
-					: hit.collider.gameObject.GetComponentInParent<Visualization>().DataPoint;
+				if (hitGameObject.CompareTag("TimeElement")) {
 
-				if (!hoveredDataPoint.Vis.IsSpawned) return;
+					TimeElement hoveredTimeElement = hitGameObject.GetComponent<TimeElement>();
 
-				//Debug.DrawRay(ReticuleToWorldRay.origin, ReticuleToWorldRay.direction * 50f, Color.green, 20f);
+					if (!hoveredTimeElement.Series.IsSpawned) return;
 
-				if (SelectedDataPoint == hoveredDataPoint) return;
+					if (HoveredTimeElement == hoveredTimeElement) return;
 
-				if (SoftSelectedDataPoint == hoveredDataPoint) return;
+					if (HoveredTimeElement != null) {
+						HoveredTimeElement.HideData();
+					}
 
-				if (SoftSelectedDataPoint != null)
-					SoftSelectedDataPoint.SetSelectionStatus(false, false);
+					HoveredTimeElement = hoveredTimeElement;
+					HoveredTimeElement.DisplayData();
+					return;
 
-				SoftSelectedDataPoint = hoveredDataPoint;
-				SoftSelectedDataPoint.SetSelectionStatus(true, true);
-				return;
+				}
+
+				if (hitGameObject.CompareTag("Vis")) {
+
+					DataPoint hoveredDataPoint = hitGameObject.GetComponentInParent<Visualization>().DataPoint;
+
+					if (!hoveredDataPoint.Vis.IsSpawned) return;
+
+					//Debug.DrawRay(ReticuleToWorldRay.origin, ReticuleToWorldRay.direction * 50f, Color.green, 20f);
+
+					if (SelectedDataPoint == hoveredDataPoint) return;
+
+					if (SoftSelectedDataPoint == hoveredDataPoint) return;
+
+					if (SoftSelectedDataPoint != null)
+						SoftSelectedDataPoint.SetSelectionStatus(false, false);
+
+					SoftSelectedDataPoint = hoveredDataPoint;
+					SoftSelectedDataPoint.SetSelectionStatus(true, true);
+
+				}
 
 			}
+			else {
 
-			if (SoftSelectedDataPoint == null) return;
+				if (SoftSelectedDataPoint != null) {
+					SoftSelectedDataPoint.SetSelectionStatus(false, false);
+					SoftSelectedDataPoint = null;
+				}
 
-			SoftSelectedDataPoint.SetSelectionStatus(false, false);
-			SoftSelectedDataPoint = null;
+				if (HoveredTimeElement != null) {
+					HoveredTimeElement.HideData();
+					HoveredTimeElement = null;
+				}
+
+			}
 
 		}
 

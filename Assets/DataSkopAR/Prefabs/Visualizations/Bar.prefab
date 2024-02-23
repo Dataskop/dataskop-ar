@@ -672,8 +672,8 @@ MonoBehaviour:
   timeSeriesConfiguration:
     elementVis: {fileID: 4622183919543581581, guid: 0a5cb2a5cbd4a314eaf6d5a57ca3bc23, type: 3}
     visibleHistoryCount: 30
-    elementDistance: 0.12
-    animationDuration: 0.125
+    elementDistance: 0.172
+    animationDuration: 0.11
     isFading: 0
   pillarFillMeshRenderer: {fileID: 3453302712147824817}
   pillarFrameMeshRenderer: {fileID: 5409999038619184764}
