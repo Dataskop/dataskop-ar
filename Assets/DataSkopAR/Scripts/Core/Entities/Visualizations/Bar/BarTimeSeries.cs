@@ -7,7 +7,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 #region Fields
 
-		[SerializeField] private Gradient timeElementGradient;
+		[SerializeField] private Color timeElementColor;
 
 #endregion
 
@@ -23,7 +23,6 @@ namespace DataskopAR.Entities.Visualizations {
 			foreach (TimeElement te in TimeElements) {
 				te.transform.localScale *= DataPoint.Vis.Scale;
 				te.AuthorSprite.gameObject.transform.Rotate(new Vector3(0, 0, -90));
-				
 			}
 
 			SetBarValue();
@@ -47,7 +46,7 @@ namespace DataskopAR.Entities.Visualizations {
 			pillarFill.localScale = localScale;
 
 			Material meshMaterial = e.gameObject.transform.GetChild(0).GetChild(0).GetComponentInChildren<MeshRenderer>().material;
-			meshMaterial.color = timeElementGradient.Evaluate(MathExtensions.Map01(value, min, max));
+			meshMaterial.color = timeElementColor;
 
 			if (!Configuration.isFading) return;
 			if (!ShouldDrawTimeElement(Configuration.visibleHistoryCount, e)) return;
