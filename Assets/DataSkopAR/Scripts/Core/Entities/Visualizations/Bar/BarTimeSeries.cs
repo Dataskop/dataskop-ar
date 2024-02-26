@@ -23,6 +23,7 @@ namespace DataskopAR.Entities.Visualizations {
 			foreach (TimeElement te in TimeElements) {
 				te.transform.localScale *= DataPoint.Vis.Scale;
 				te.AuthorSprite.gameObject.transform.Rotate(new Vector3(0, 0, -90));
+				
 			}
 
 			SetBarValue();
