@@ -12,12 +12,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 #endregion
 
-#region Properties
-
-		private Vector3 CameraPosition => DataPoint.Vis.ARCamera.transform.position;
-
-#endregion
-
 #region Constants
 
 		private static readonly int Alpha = Shader.PropertyToID("_Alpha");
@@ -33,11 +27,11 @@ namespace DataskopAR.Entities.Visualizations {
 
 		private void SetSize() {
 
-			foreach (TimeElement e in TimeElements) { 
-				float elementValue = Mathf.Clamp(e.MeasurementResult.ReadAsFloat(), DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
-				
-				
-				float bubbleSize = MathExtensions.Map(elementValue, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum, minScale, maxScale);
+			foreach (TimeElement e in TimeElements) {
+				float elementValue = Mathf.Clamp(e.MeasurementResult.ReadAsFloat(), DataPoint.Attribute.Minimum,
+					DataPoint.Attribute.Maximum);
+				float bubbleSize = MathExtensions.Map(elementValue, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum, minScale,
+					maxScale);
 				e.transform.localScale = new Vector3(bubbleSize, bubbleSize, bubbleSize);
 			}
 

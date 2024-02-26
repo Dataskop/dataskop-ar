@@ -1,14 +1,22 @@
 using DataskopAR.Data;
+using TMPro;
 using UnityEngine;
 
 namespace DataskopAR.Entities.Visualizations {
 
 	public class TimeElement : MonoBehaviour {
 
-		[SerializeField] private int _distanceToDataPoint;
+#region Fields
+
+		[Header("References")]
 		[SerializeField] private SpriteRenderer authorSpriteRenderer;
+		[SerializeField] private CanvasGroup dataDisplay;
+		[SerializeField] private TextMeshProUGUI valueDisplay;
+		[SerializeField] private TextMeshProUGUI dateDisplay;
 
 		private MeasurementResult measurementResult;
+
+#endregion
 
 #region Properties
 
@@ -23,11 +31,8 @@ namespace DataskopAR.Entities.Visualizations {
 			}
 		}
 
-		public int DistanceToDataPoint {
-			get => _distanceToDataPoint;
-			set => _distanceToDataPoint = value;
-		}
-		
+		public int DistanceToDataPoint { get; set; }
+
 		public SpriteRenderer AuthorSprite {
 			get => authorSpriteRenderer;
 		}
@@ -46,6 +51,21 @@ namespace DataskopAR.Entities.Visualizations {
 				authorSpriteRenderer.enabled = false;
 			}
 
+		}
+
+		public void SetDisplayData() {
+
+			valueDisplay.SetText(MeasurementResult.Value);
+			dateDisplay.SetText(MeasurementResult.GetTime());
+
+		}
+
+		public void DisplayData() {
+			dataDisplay.alpha = 1;
+		}
+
+		public void HideData() {
+			dataDisplay.alpha = 0;
 		}
 
 #endregion

@@ -341,7 +341,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -2}
+  m_AnchoredPosition: {x: 0, y: -0.7}
   m_SizeDelta: {x: -2, y: 1.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3171516771275407050
@@ -555,7 +555,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 1.35, z: 0}
-  scaleFactor: 0.0115
+  scaleFactor: 0.05
   timeSeriesConfiguration:
     elementVis: {fileID: 1958504234192534124, guid: dfe66c67caab47e4ca181cd65cdd7251, type: 3}
     visibleHistoryCount: 30
@@ -598,8 +598,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.11301171
-      value: 1.1987203
+      time: 0.10849511
+      value: 0.9452032
       inSlope: 1.391493
       outSlope: 1.391493
       tangentMode: 0
@@ -607,8 +607,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.14805415
     - serializedVersion: 3
-      time: 0.32242504
-      value: 0.85509753
+      time: 0.25615612
+      value: 0.7322643
       inSlope: 0.0037641358
       outSlope: 0.0037641358
       tangentMode: 0
@@ -616,8 +616,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.8966732
     - serializedVersion: 3
-      time: 0.4944589
-      value: 1.064988
+      time: 0.4492929
+      value: 0.87158287
       inSlope: -0.33731923
       outSlope: -0.33731923
       tangentMode: 0
@@ -625,8 +625,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.75789374
     - serializedVersion: 3
-      time: 0.6427076
-      value: 0.9856503
+      time: 0.59452033
+      value: 0.8157666
       inSlope: 0.26127276
       outSlope: 0.26127276
       tangentMode: 0
@@ -634,8 +634,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.4322865
     - serializedVersion: 3
-      time: 0.83480126
-      value: 1.0040834
+      time: 0.78060204
+      value: 0.83681655
       inSlope: -0.62637925
       outSlope: -0.62637925
       tangentMode: 0
@@ -643,8 +643,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.28921372
     - serializedVersion: 3
-      time: 1
-      value: 1
+      time: 0.9970093
+      value: 0.8405762
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1013,7 +1013,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.5}
   m_SizeDelta: {x: -2, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5331428365048485217
@@ -1053,8 +1053,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4283515647
-  m_fontColor: {r: 1, g: 0.25943398, b: 0.31588808, a: 1}
+    rgba: 4278209279
+  m_fontColor: {r: 1, g: 0.28953752, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1148,8 +1148,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 2}
-  m_SizeDelta: {x: 7.2, y: 1}
+  m_AnchoredPosition: {x: 0, y: -3}
+  m_SizeDelta: {x: 5, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7555129991720265614
 CanvasRenderer:
@@ -1206,15 +1206,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.4
-  m_fontSizeBase: 0.4
+  m_fontSize: 0.35
+  m_fontSizeBase: 0.35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0

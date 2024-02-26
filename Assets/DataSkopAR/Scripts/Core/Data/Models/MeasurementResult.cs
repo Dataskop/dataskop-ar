@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using UnityEngine;
 
 namespace DataskopAR.Data {
 
@@ -111,15 +110,15 @@ namespace DataskopAR.Data {
 		}
 
 		public string GetTime() {
-			return $"{GetDate()} {GetClockTime()}";
+			return $"{GetDate()}";
 		}
 
 		public string GetDate() {
-			return $"{Timestamp.ToLocalTime().ToShortDateString()}";
+			return $"{Timestamp.ToString(new CultureInfo("de-DE"))}";
 		}
 
 		public string GetClockTime() {
-			return $"{Timestamp.ToLocalTime().ToLongTimeString()}";
+			return $"{Timestamp.ToLongTimeString()}";
 		}
 
 		/// <summary>

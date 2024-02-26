@@ -7,7 +7,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 #region Fields
 
-		[SerializeField] private Gradient timeElementGradient;
+		[SerializeField] private Color timeElementColor;
 
 #endregion
 
@@ -46,7 +46,7 @@ namespace DataskopAR.Entities.Visualizations {
 			pillarFill.localScale = localScale;
 
 			Material meshMaterial = e.gameObject.transform.GetChild(0).GetChild(0).GetComponentInChildren<MeshRenderer>().material;
-			meshMaterial.color = timeElementGradient.Evaluate(MathExtensions.Map01(value, min, max));
+			meshMaterial.color = timeElementColor;
 
 			if (!Configuration.isFading) return;
 			if (!ShouldDrawTimeElement(Configuration.visibleHistoryCount, e)) return;
