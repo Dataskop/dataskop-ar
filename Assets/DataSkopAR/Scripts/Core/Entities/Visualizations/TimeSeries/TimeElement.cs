@@ -14,7 +14,6 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private TextMeshProUGUI valueDisplay;
 		[SerializeField] private TextMeshProUGUI dateDisplay;
 
-		private int _distanceToDataPoint;
 		private MeasurementResult measurementResult;
 
 #endregion
@@ -32,10 +31,7 @@ namespace DataskopAR.Entities.Visualizations {
 			}
 		}
 
-		public int DistanceToDataPoint {
-			get => _distanceToDataPoint;
-			set => _distanceToDataPoint = value;
-		}
+		public int DistanceToDataPoint { get; set; }
 
 		public SpriteRenderer AuthorSprite {
 			get => authorSpriteRenderer;
