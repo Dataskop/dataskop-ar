@@ -52,19 +52,22 @@ namespace DataskopAR.Entities.Visualizations {
 			TimeSeries.TimeSeriesDespawned += ResetRotation;
 		}
 
+/*
 		private void Update() {
 
-			if (Vector3.Distance(ARCamera.transform.position, canvasRotationAnchor.position) > 10f) {
-				return;
-			}
+					if (Vector3.Distance(ARCamera.transform.position, canvasRotationAnchor.position) > 10f) {
+						return;
+					}
 
-			Vector3 targetDir = new(ARCamera.transform.position.x - dataDisplay.transform.position.x, 0,
-				ARCamera.transform.position.z - dataDisplay.transform.position.z);
-			float singleStep = 2.4f * Time.deltaTime;
-			Vector3 newDir = Vector3.RotateTowards(dataDisplay.transform.forward, targetDir, singleStep, 0.0f);
-			dataDisplay.transform.rotation = Quaternion.LookRotation(newDir);
+
+					Vector3 targetDir = new(ARCamera.transform.position.x - dataDisplay.transform.position.x, 0,
+						ARCamera.transform.position.z - dataDisplay.transform.position.z);
+					float singleStep = 2.4f * Time.deltaTime;
+					//Vector3 newDir = Vector3.RotateTowards(dataDisplay.transform.forward, targetDir, singleStep, 0.0f);
+					//dataDisplay.transform.rotation = Quaternion.LookRotation(newDir);
 
 		}
+*/
 
 		public override void Create(DataPoint dataPoint) {
 
@@ -110,14 +113,10 @@ namespace DataskopAR.Entities.Visualizations {
 
 		private void RotateVisualization() {
 			transform.SetPositionAndRotation(transform.position + new Vector3(0, 0.25f, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
-			RectTransform uiTransform = transform.GetComponentInChildren<RectTransform>();
-			uiTransform.SetPositionAndRotation(uiTransform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
 		}
 
 		private void ResetRotation() {
 			transform.SetPositionAndRotation(transform.position - new Vector3(0, 0.25f, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
-			RectTransform uiTransform = transform.GetComponentInChildren<RectTransform>();
-			uiTransform.SetPositionAndRotation(uiTransform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
 		}
 
 		private void PositionVisualization(Vector3 offset) {
