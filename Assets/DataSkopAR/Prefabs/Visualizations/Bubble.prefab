@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.5}
   m_SizeDelta: {x: -2, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5909269977772859003
@@ -75,8 +75,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4282745329
-  m_fontColor: {r: 0.9433962, g: 0.5072805, b: 0.27144888, a: 1}
+    rgba: 4278209279
+  m_fontColor: {r: 1, g: 0.28953752, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -367,7 +367,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1466837777448236215
 Transform:
   m_ObjectHideFlags: 0
@@ -530,7 +530,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 1.35, z: 0}
-  scaleFactor: 0.011
+  scaleFactor: 0.05
   timeSeriesConfiguration:
     elementVis: {fileID: 4044058376309783487, guid: dc787ffa3086d1041893fd11fc92a97d, type: 3}
     visibleHistoryCount: 30
@@ -551,8 +551,8 @@ MonoBehaviour:
   idTextMesh: {fileID: 6791380059087698677}
   valueTextMesh: {fileID: 256430317505633075}
   dateTextMesh: {fileID: 8853201601850707600}
-  maxScale: 0.03
-  minScale: 0.0115
+  maxScale: 0.05
+  minScale: 0
   curve:
     serializedVersion: 2
     m_Curve:
@@ -590,8 +590,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeContainer: {fileID: 7118866067779761950}
-  minScale: 0.0115
-  maxScale: 0.03
+  minScale: 0.01
+  maxScale: 0.05
 --- !u!1 &4414049407021478041
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,7 +627,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -2}
+  m_AnchoredPosition: {x: 0, y: -0.7}
   m_SizeDelta: {x: -2, y: 1.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2648373687921461487
@@ -1044,8 +1044,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 2}
-  m_SizeDelta: {x: 7.2, y: 1}
+  m_AnchoredPosition: {x: 0, y: -3}
+  m_SizeDelta: {x: 5, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8873160370266346300
 CanvasRenderer:
@@ -1102,15 +1102,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.4
-  m_fontSizeBase: 0.4
+  m_fontSize: 0.35
+  m_fontSizeBase: 0.35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0

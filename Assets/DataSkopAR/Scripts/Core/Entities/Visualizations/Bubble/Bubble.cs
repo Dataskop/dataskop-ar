@@ -51,10 +51,8 @@ namespace DataskopAR.Entities.Visualizations {
 		private BubbleOptions Options { get; set; }
 		public override MeasurementType[] AllowedMeasurementTypes { get; set; } = { MeasurementType.Float, MeasurementType.Bool };
 		private BubbleTimeSeries TimeSeries => bubbleTimeSeries;
-
 		private float MaxScale => maxScale;
 		private float MinScale => minScale;
-
 		private Vector3 DisplayOrigin { get; set; }
 
 #endregion
@@ -151,10 +149,10 @@ namespace DataskopAR.Entities.Visualizations {
 
 		}
 
-		private void SetBubbleSize(float value, float minR, float maxR, float min, float max) {
+		private void SetBubbleSize(float value, float minArea, float maxArea, float min, float max) {
 
-			value = Mathf.Clamp(value, minR, maxR);
-			BubbleSize = MathExtensions.Map(value, minR, maxR, min, max);
+			value = Mathf.Clamp(value, minArea, maxArea);
+			BubbleSize = MathExtensions.Map(value, minArea, maxArea, min, max);
 
 			if (!spriteRenderer.enabled) {
 				VisTransform.localScale = new Vector3(BubbleSize, BubbleSize, BubbleSize);
