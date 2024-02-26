@@ -77,6 +77,11 @@ namespace DataskopAR.Interaction {
 
 				if (hitGameObject.CompareTag("TimeElement")) {
 
+					if (SoftSelectedDataPoint != null) {
+						SoftSelectedDataPoint.SetSelectionStatus(false, false);
+						SoftSelectedDataPoint = null;
+					}
+
 					TimeElement hoveredTimeElement = hitGameObject.GetComponent<TimeElement>();
 
 					if (!hoveredTimeElement.Series.IsSpawned) return;
@@ -94,6 +99,11 @@ namespace DataskopAR.Interaction {
 				}
 
 				if (hitGameObject.CompareTag("Vis")) {
+
+					if (HoveredTimeElement != null) {
+						HoveredTimeElement.HideData();
+						HoveredTimeElement = null;
+					}
 
 					DataPoint hoveredDataPoint = hitGameObject.GetComponentInParent<Visualization>().DataPoint;
 
