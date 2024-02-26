@@ -367,7 +367,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1466837777448236215
 Transform:
   m_ObjectHideFlags: 0
@@ -530,7 +530,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 1.35, z: 0}
-  scaleFactor: 0.011
+  scaleFactor: 0.05
   timeSeriesConfiguration:
     elementVis: {fileID: 4044058376309783487, guid: dc787ffa3086d1041893fd11fc92a97d, type: 3}
     visibleHistoryCount: 30
@@ -551,8 +551,8 @@ MonoBehaviour:
   idTextMesh: {fileID: 6791380059087698677}
   valueTextMesh: {fileID: 256430317505633075}
   dateTextMesh: {fileID: 8853201601850707600}
-  maxScale: 0.03
-  minScale: 0.0115
+  maxScale: 0.05
+  minScale: 0
   curve:
     serializedVersion: 2
     m_Curve:
@@ -590,8 +590,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeContainer: {fileID: 7118866067779761950}
-  minScale: 0.0115
-  maxScale: 0.03
+  minScale: 0.01
+  maxScale: 0.05
 --- !u!1 &4414049407021478041
 GameObject:
   m_ObjectHideFlags: 0
