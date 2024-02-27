@@ -172,7 +172,7 @@ namespace DataskopAR.Entities.Visualizations {
 				CancelAnimation();
 			}
 
-			animationTarget = visTransform.localScale * 1.35f;
+			animationTarget = visTransform.localScale * 1.25f;
 
 			animationCoroutine = StartCoroutine(LerperHelper.TransformLerpOnCurve(
 				visTransform,

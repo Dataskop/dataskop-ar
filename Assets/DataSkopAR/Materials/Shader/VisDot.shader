@@ -46,8 +46,8 @@ Shader "DataSkopAR/VisDot"
 
             sampler2D _MainTex;
             CBUFFER_START(UnityPerMaterial)
-            float4 _MainTex_ST;
-            float4 _Color;
+                float4 _MainTex_ST;
+                float4 _Color;
             CBUFFER_END
 
             v2f vert(appdata v)
