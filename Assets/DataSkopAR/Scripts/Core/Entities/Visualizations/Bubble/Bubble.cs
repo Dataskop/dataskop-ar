@@ -10,11 +10,10 @@ namespace DataskopAR.Entities.Visualizations {
 
 	public class Bubble : Visualization {
 
-        #region Fields
+#region Fields
 
-		[Header("References")] [SerializeField]
-		private SpriteRenderer spriteRenderer;
-
+		[Header("References")]
+		[SerializeField] private SpriteRenderer spriteRenderer;
 		[SerializeField] private BubbleOptions options;
 		[SerializeField] private BubbleTimeSeries bubbleTimeSeries;
 		[SerializeField] private Transform dropShadow;
@@ -24,17 +23,15 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private LineRenderer labelLine;
 		[SerializeField] private SpriteRenderer authorIconSpriteRenderer;
 
-		[Header("Display References")] [SerializeField]
-		private Canvas dataDisplay;
-
+		[Header("Display References")]
+		[SerializeField] private Canvas dataDisplay;
 		[SerializeField] private CanvasGroup dataDisplayGroup;
 		[SerializeField] private TextMeshProUGUI idTextMesh;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI dateTextMesh;
 
-		[Header("Additional Values")] [HideInInspector]
-		public float maxScale;
-
+		[Header("Additional Values")]
+		[HideInInspector] public float maxScale;
 		[HideInInspector] public float minScale;
 
 		[SerializeField] private AnimationCurve curve;
@@ -45,9 +42,9 @@ namespace DataskopAR.Entities.Visualizations {
 		private Coroutine labelLineRoutineUpper;
 		private Vector3 prevScale;
 
-        #endregion
+#endregion
 
-        #region Properties
+#region Properties
 
 		public VisualizationType Type => VisualizationType.bubble;
 		private float BubbleSize { get; set; }
@@ -62,12 +59,14 @@ namespace DataskopAR.Entities.Visualizations {
 		public override Transform VisTransform => visTransform;
 		private Vector3 DisplayOrigin { get; set; }
 
-        #endregion
+#endregion
 
-        #region Methods
+#region Methods
 
 		protected override void OnDatapointChanged() {
 			base.OnDatapointChanged();
+			Options = Instantiate(options);
+
 			Options = Instantiate(options);
 
 			spriteRenderer.enabled = false;
@@ -111,6 +110,7 @@ namespace DataskopAR.Entities.Visualizations {
 			}
 
 			switch (DataPoint.MeasurementDefinition.MeasurementType) {
+
 				case MeasurementType.Float: {
 					float receivedValue = mr.ReadAsFloat();
 					valueTextMesh.text = receivedValue.ToString(CultureInfo.InvariantCulture) + DataPoint.Attribute?.Unit;
@@ -126,21 +126,29 @@ namespace DataskopAR.Entities.Visualizations {
 					SetBubbleSize(receivedValue ? 1 : 0, 0, 1, MinScale, MaxScale);
 					break;
 				}
+
 			}
 
 			SetAuthorImage();
+
 		}
 
-		private void SetBubbleSize(float value, float minArea, float maxArea, float min, float max) {
-			value = Mathf.Clamp(value, minArea, maxArea);
-			BubbleSize = MathExtensions.Map(value, minArea, maxArea, min, max);
+		private void SetBubbleSize(float value, float minValue, float maxValue, float minArea, float maxArea) {
+
+			value = Mathf.Clamp(value, minValue, maxValue);
+
+			// calc mapped area from the value
+			float newArea = MathExtensions.Map(value, minValue, maxValue, minArea, maxArea);
+
+			// calc radius out of the area
+			BubbleSize = Mathf.Sqrt(newArea / Mathf.PI);
 
 			if (!spriteRenderer.enabled) {
 				VisTransform.localScale = new Vector3(BubbleSize, BubbleSize, BubbleSize);
 				spriteRenderer.enabled = true;
-				//OnBubbleSizeChanged();
 			}
 			else {
+
 				if (scaleRoutine != null) {
 					StopCoroutine(scaleRoutine);
 					VisTransform.localScale = new Vector3(BubbleSize, BubbleSize, BubbleSize);
@@ -148,12 +156,15 @@ namespace DataskopAR.Entities.Visualizations {
 
 				scaleRoutine = StartCoroutine(LerperHelper.TransformLerpOnCurve(VisTransform, TransformValue.Scale, VisTransform.localScale,
 					new Vector3(BubbleSize, BubbleSize, BubbleSize), 0.1f, curve, null));
+
 			}
 
 			dropShadow.transform.localScale = new Vector3(BubbleSize * 0.4f, BubbleSize * 0.4f, BubbleSize * 0.4f);
+
 		}
 
 		private void OnBubbleSizeChanged() {
+
 			groundLineRoutine = StartCoroutine(MoveLinePointTo(groundLine, 0,
 				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - spriteRenderer.bounds.size.y * 0.75f,
 					VisTransform.localPosition.z),
@@ -164,12 +175,14 @@ namespace DataskopAR.Entities.Visualizations {
 			}
 
 			if (dataDisplay.transform.localScale.y > VisTransform.localScale.y) {
+
 				labelRoutine = StartCoroutine(LerperHelper.TransformLerp(dataDisplay.transform, TransformValue.Position,
 					dataDisplay.transform.localPosition,
 					new Vector3(DisplayOrigin.x + spriteRenderer.bounds.size.x * 0.5f + 0.2f, DisplayOrigin.y, DisplayOrigin.z), 0.1f,
 					null));
 
 				if (DataPoint.Vis.IsSelected) {
+
 					labelLine.enabled = true;
 
 					labelLineRoutineLower = StartCoroutine(MoveLinePointTo(labelLine, 0,
@@ -181,6 +194,7 @@ namespace DataskopAR.Entities.Visualizations {
 						new Vector3(DisplayOrigin.x + spriteRenderer.bounds.size.x * 0.5f + 0.1f, DisplayOrigin.y, DisplayOrigin.z),
 						0.1f));
 				}
+
 			}
 			else {
 				labelLine.enabled = false;
@@ -189,22 +203,28 @@ namespace DataskopAR.Entities.Visualizations {
 					dataDisplay.transform.localPosition,
 					DisplayOrigin, 0.1f, null));
 			}
+
 		}
 
 		private IEnumerator MoveLinePointTo(LineRenderer line, int index, Vector3 target, float duration) {
+
 			float current = 0f;
 
 			while (current <= duration) {
+
 				current += Time.deltaTime;
 				float currentPercentage = Mathf.Clamp01(current / duration);
 
 				line.SetPosition(index, Vector3.LerpUnclamped(line.GetPosition(index), target, currentPercentage));
 
 				yield return null;
+
 			}
+
 		}
 
 		private void SetAuthorImage() {
+
 			if (DataPoint.CurrentMeasurementResult.Author != string.Empty) {
 				authorIconSpriteRenderer.sprite = DataPoint.AuthorRepository.AuthorSprites[DataPoint.CurrentMeasurementResult.Author];
 				authorIconSpriteRenderer.enabled = true;
@@ -212,9 +232,11 @@ namespace DataskopAR.Entities.Visualizations {
 			else {
 				authorIconSpriteRenderer.enabled = false;
 			}
+
 		}
 
 		public override void OnTimeSeriesToggled(bool isActive) {
+
 			if (isActive) {
 				groundLine.enabled = false;
 				labelLine.enabled = false;
@@ -225,6 +247,7 @@ namespace DataskopAR.Entities.Visualizations {
 				labelLine.enabled = true;
 				groundLine.enabled = true;
 			}
+
 		}
 
 		public override void Hover() {
@@ -244,7 +267,7 @@ namespace DataskopAR.Entities.Visualizations {
 			IsSelected = false;
 		}
 
-        #endregion
+#endregion
 
 	}
 
