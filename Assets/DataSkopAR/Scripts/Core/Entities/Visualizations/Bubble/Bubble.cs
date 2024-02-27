@@ -152,7 +152,11 @@ namespace DataskopAR.Entities.Visualizations {
 		private void SetBubbleSize(float value, float minValue, float maxValue, float minArea, float maxArea) {
 
 			value = Mathf.Clamp(value, minValue, maxValue);
+
+			// calc mapped area from the value
 			float newArea = MathExtensions.Map(value, minValue, maxValue, minArea, maxArea);
+
+			// calc radius out of the area
 			BubbleSize = Mathf.Sqrt(newArea / Mathf.PI);
 
 			if (!spriteRenderer.enabled) {
