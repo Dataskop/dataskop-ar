@@ -149,15 +149,15 @@ namespace DataskopAR.Entities.Visualizations {
 
 		}
 
-		private void SetBubbleSize(float value, float minArea, float maxArea, float min, float max) {
+		private void SetBubbleSize(float value, float minValue, float maxValue, float minArea, float maxArea) {
 
-			value = Mathf.Clamp(value, minArea, maxArea);
-			BubbleSize = MathExtensions.Map(value, minArea, maxArea, min, max);
+			value = Mathf.Clamp(value, minValue, maxValue);
+			float newArea = MathExtensions.Map(value, minValue, maxValue, minArea, maxArea);
+			BubbleSize = Mathf.Sqrt(newArea / Mathf.PI);
 
 			if (!spriteRenderer.enabled) {
 				VisTransform.localScale = new Vector3(BubbleSize, BubbleSize, BubbleSize);
 				spriteRenderer.enabled = true;
-				//OnBubbleSizeChanged();
 			}
 			else {
 
@@ -223,6 +223,7 @@ namespace DataskopAR.Entities.Visualizations {
 			float current = 0f;
 
 			while (current <= duration) {
+
 				current += Time.deltaTime;
 				float currentPercentage = Mathf.Clamp01(current / duration);
 
@@ -247,6 +248,7 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		public override void OnTimeSeriesToggled(bool isActive) {
+
 			if (isActive) {
 				groundLine.enabled = false;
 				labelLine.enabled = false;
@@ -257,6 +259,7 @@ namespace DataskopAR.Entities.Visualizations {
 				labelLine.enabled = true;
 				groundLine.enabled = true;
 			}
+
 		}
 
 		public override void Hover() {

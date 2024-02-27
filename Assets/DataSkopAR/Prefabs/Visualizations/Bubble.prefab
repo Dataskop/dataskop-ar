@@ -210,12 +210,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 821527ffa364fab40a79cfaa63429fe3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e3c8c84e80085ec4b82398ec0be87ebc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 10.8, y: 10.8}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -232,7 +232,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 5.4
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2857839874927018863
 GameObject:
@@ -530,7 +530,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 1.35, z: 0}
-  scaleFactor: 0.05
+  scaleFactor: 1
   timeSeriesConfiguration:
     elementVis: {fileID: 4044058376309783487, guid: dc787ffa3086d1041893fd11fc92a97d, type: 3}
     visibleHistoryCount: 30
@@ -551,8 +551,8 @@ MonoBehaviour:
   idTextMesh: {fileID: 6791380059087698677}
   valueTextMesh: {fileID: 256430317505633075}
   dateTextMesh: {fileID: 8853201601850707600}
-  maxScale: 0.05
-  minScale: 0
+  maxScale: 1.5
+  minScale: 0.01
   curve:
     serializedVersion: 2
     m_Curve:
@@ -591,7 +591,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeContainer: {fileID: 7118866067779761950}
   minScale: 0.01
-  maxScale: 0.05
+  maxScale: 1.5
 --- !u!1 &4414049407021478041
 GameObject:
   m_ObjectHideFlags: 0
