@@ -46,9 +46,13 @@ namespace DataskopAR.UI {
 			InfoCard = infoCard;
 
 			InfoCardStateTransitionClasses = new Dictionary<InfoCardState, string> {
-				{ InfoCardState.Collapsed, "info-card-collapsed" },
-				{ InfoCardState.Short, "info-card-short" },
-				{ InfoCardState.Fullscreen, "info-card-full" }
+				{
+					InfoCardState.Collapsed, "info-card-collapsed"
+				}, {
+					InfoCardState.Short, "info-card-short"
+				}, {
+					InfoCardState.Fullscreen, "info-card-full"
+				}
 			};
 
 			CurrentCardState = InfoCardState.Collapsed;

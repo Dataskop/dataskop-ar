@@ -6,7 +6,9 @@ using TMPro;
 using UnityEngine;
 
 namespace DataskopAR.Entities.Visualizations {
+
 	public class Bar : Visualization {
+
         #region Fields
 
 		[Header("References")] [SerializeField]
@@ -43,7 +45,10 @@ namespace DataskopAR.Entities.Visualizations {
 		private BarTimeSeries TimeSeries => barTimeSeries;
 
 		public override Transform VisTransform => visTransform;
-		public override MeasurementType[] AllowedMeasurementTypes { get; set; } = { MeasurementType.Float, MeasurementType.Bool };
+		public override MeasurementType[] AllowedMeasurementTypes { get; set; } = {
+			MeasurementType.Float,
+			MeasurementType.Bool
+		};
 
         #endregion
 
@@ -118,8 +123,7 @@ namespace DataskopAR.Entities.Visualizations {
 			transform.localPosition += offset;
 		}
 
-		public override void ApplyStyle() {
-		}
+		public override void ApplyStyle() { }
 
 		public override void Hover() {
 			pillarFrameMeshRenderer.material = Options.materialOptions[0].Hovered;
@@ -154,7 +158,9 @@ namespace DataskopAR.Entities.Visualizations {
 		public override void OnMeasurementResultChanged(MeasurementResult mr) {
 			if (!AllowedMeasurementTypes.Contains(DataPoint.MeasurementDefinition.MeasurementType)) {
 				NotificationHandler.Add(new Notification() {
-					Category = NotificationCategory.Error, Text = "Value Type not supported by this visualization.", DisplayDuration = 5f
+					Category = NotificationCategory.Error,
+					Text = "Value Type not supported by this visualization.",
+					DisplayDuration = 5f
 				});
 				return;
 			}
@@ -203,5 +209,7 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
         #endregion
+
 	}
+
 }

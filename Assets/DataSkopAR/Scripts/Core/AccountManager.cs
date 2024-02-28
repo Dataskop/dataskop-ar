@@ -16,7 +16,7 @@ namespace DataskopAR {
 		public static bool IsLoggedIn => TryGetLoginToken() != null;
 
 #endregion
-		
+
 #region Methods
 
 		private static bool HasToken() {

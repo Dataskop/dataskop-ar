@@ -125,7 +125,11 @@ namespace DataskopAR.Data {
 		///     Returns an interpolated value for a given timestamp.
 		/// </summary>
 		public static float GetValueAtTime(List<MeasurementResult> mResults, DateTime time, string strategy) {
-			List<string> validStrategies = new() { "steps", "average", "linear_interpolation" };
+			List<string> validStrategies = new() {
+				"steps",
+				"average",
+				"linear_interpolation"
+			};
 
 			if (!validStrategies.Contains(strategy))
 				throw new ArgumentOutOfRangeException(nameof(strategy), "Invalid strategy");

@@ -81,7 +81,10 @@ namespace DataskopAR.UI {
 #if UNITY_IOS
 			yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
 #elif UNITY_ANDROID
-			Permission.RequestUserPermissions(new[] { Permission.Camera, Permission.FineLocation });
+			Permission.RequestUserPermissions(new[] {
+				Permission.Camera,
+				Permission.FineLocation
+			});
 			yield return Permission.HasUserAuthorizedPermission(Permission.Camera);
 #else
 			yield break;
