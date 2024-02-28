@@ -102,7 +102,7 @@ namespace DataskopAR.Data {
 
 			UserData.Instance.Token = AccountManager.GetLoginToken();
 
-			if (UserData.Instance.Token == string.Empty) {
+			if (UserData.Instance.Token == null) {
 
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,

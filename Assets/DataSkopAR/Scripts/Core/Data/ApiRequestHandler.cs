@@ -26,7 +26,7 @@ namespace DataskopAR.Data {
 
 			using UnityWebRequest request = UnityWebRequest.Get(url);
 			request.SetRequestHeader("Content-Type", "application/json");
-			request.SetRequestHeader("Authorization", UserData.Instance.Token);
+			request.SetRequestHeader("Authorization", UserData.Instance.Token!);
 			UnityWebRequestAsyncOperation operation = request.SendWebRequest();
 
 			while (!operation.isDone) {
