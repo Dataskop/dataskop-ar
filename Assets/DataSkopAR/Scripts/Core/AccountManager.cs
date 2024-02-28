@@ -4,22 +4,28 @@ namespace DataskopAR {
 
 	public static class AccountManager {
 
+#region Constants
+		
+			private const string APITokenKey = "API_TOKEN";
+
+#endregion
+		
 #region Properties
 
-		public static bool IsLoggedIn => PlayerPrefs.HasKey("API_TOKEN") && !string.IsNullOrEmpty(PlayerPrefs.GetString("API_TOKEN"));
+		public static bool IsLoggedIn => PlayerPrefs.HasKey(APITokenKey) && !string.IsNullOrEmpty(PlayerPrefs.GetString(APITokenKey));
 
 #endregion
 
 #region Methods
 
 		public static void Login(string loginToken) {
-			PlayerPrefs.SetString("API_TOKEN", loginToken);
+			PlayerPrefs.SetString(APITokenKey, loginToken);
 		}
 
 		public static void Logout() {
 
-			if (PlayerPrefs.HasKey("API_TOKEN")) {
-				PlayerPrefs.DeleteKey("API_TOKEN");
+			if (PlayerPrefs.HasKey(APITokenKey)) {
+				PlayerPrefs.DeleteKey(APITokenKey);
 			}
 
 			SceneMaster.LoadScene(0);
@@ -27,7 +33,7 @@ namespace DataskopAR {
 		}
 
 		public static string GetLoginToken() {
-			return IsLoggedIn ? PlayerPrefs.GetString("API_TOKEN") : string.Empty;
+			return IsLoggedIn ? PlayerPrefs.GetString(APITokenKey) : string.Empty;
 		}
 
 #endregion
