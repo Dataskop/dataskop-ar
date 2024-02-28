@@ -6,13 +6,12 @@ using TMPro;
 using UnityEngine;
 
 namespace DataskopAR.Entities.Visualizations {
-
 	public class Bar : Visualization {
+        #region Fields
 
-#region Fields
+		[Header("References")] [SerializeField]
+		private MeshRenderer pillarFillMeshRenderer;
 
-		[Header("References")]
-		[SerializeField] private MeshRenderer pillarFillMeshRenderer;
 		[SerializeField] private MeshRenderer pillarFrameMeshRenderer;
 		[SerializeField] private Transform barFill;
 		[SerializeField] private Transform barFrame;
@@ -23,8 +22,9 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private Transform visTransform;
 		[SerializeField] private SpriteRenderer authorIconSpriteRenderer;
 
-		[Header("Display References")]
-		[SerializeField] private Canvas dataDisplay;
+		[Header("Display References")] [SerializeField]
+		private Canvas dataDisplay;
+
 		[SerializeField] private CanvasGroup canvasGroup;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI minValueTextMesh;
@@ -32,20 +32,22 @@ namespace DataskopAR.Entities.Visualizations {
 
 		private Vector3 origin;
 
-#endregion
+        #endregion
 
-#region Properties
+        #region Properties
 
 		public VisualizationType Type => VisualizationType.bar;
 		private Vector3 BarFillScale { get; set; }
 		private float BarHeight { get; set; }
 		private BarOptions Options { get; set; }
 		private BarTimeSeries TimeSeries => barTimeSeries;
+
+		public override Transform VisTransform => visTransform;
 		public override MeasurementType[] AllowedMeasurementTypes { get; set; } = { MeasurementType.Float, MeasurementType.Bool };
 
-#endregion
+        #endregion
 
-#region Methods
+        #region Methods
 
 		private void Awake() {
 			TimeSeries.TimeSeriesBeforeSpawn += RotateVisualization;
@@ -53,28 +55,25 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 /*
-		private void Update() {
+        private void Update() {
 
-					if (Vector3.Distance(ARCamera.transform.position, canvasRotationAnchor.position) > 10f) {
-						return;
-					}
+                    if (Vector3.Distance(ARCamera.transform.position, canvasRotationAnchor.position) > 10f) {
+                        return;
+                    }
 
 
-					Vector3 targetDir = new(ARCamera.transform.position.x - dataDisplay.transform.position.x, 0,
-						ARCamera.transform.position.z - dataDisplay.transform.position.z);
-					float singleStep = 2.4f * Time.deltaTime;
-					//Vector3 newDir = Vector3.RotateTowards(dataDisplay.transform.forward, targetDir, singleStep, 0.0f);
-					//dataDisplay.transform.rotation = Quaternion.LookRotation(newDir);
+                    Vector3 targetDir = new(ARCamera.transform.position.x - dataDisplay.transform.position.x, 0,
+                        ARCamera.transform.position.z - dataDisplay.transform.position.z);
+                    float singleStep = 2.4f * Time.deltaTime;
+                    //Vector3 newDir = Vector3.RotateTowards(dataDisplay.transform.forward, targetDir, singleStep, 0.0f);
+                    //dataDisplay.transform.rotation = Quaternion.LookRotation(newDir);
 
-		}
+        }
 */
 
-		public override void Create(DataPoint dataPoint) {
-
-			DataPoint = dataPoint;
+		protected override void OnDatapointChanged() {
+			base.OnDatapointChanged();
 			Options = Instantiate(options);
-			DataPoint.MeasurementResultChanged += OnMeasurementResultChanged;
-			VisTransform = visTransform;
 
 			VisTransform.localScale *= Scale;
 			dataDisplay.transform.localScale *= Scale;
@@ -83,8 +82,6 @@ namespace DataskopAR.Entities.Visualizations {
 			dataDisplay.worldCamera = ARCamera;
 			OnMeasurementResultChanged(DataPoint.CurrentMeasurementResult);
 			barCollider.enabled = true;
-			IsSpawned = true;
-
 		}
 
 		private void SetPillarHeight(float heightValue, float minValue, float maxValue) {
@@ -105,10 +102,8 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		private void SetMinMaxDisplayValues(float min, float max) {
-
 			minValueTextMesh.text = min.ToString("00.00", CultureInfo.InvariantCulture) + DataPoint.Attribute?.Unit;
 			maxValueTextMesh.text = max.ToString("00.00", CultureInfo.InvariantCulture) + DataPoint.Attribute?.Unit;
-
 		}
 
 		private void RotateVisualization() {
@@ -123,7 +118,8 @@ namespace DataskopAR.Entities.Visualizations {
 			transform.localPosition += offset;
 		}
 
-		public override void ApplyStyle() { }
+		public override void ApplyStyle() {
+		}
 
 		public override void Hover() {
 			pillarFrameMeshRenderer.material = Options.materialOptions[0].Hovered;
@@ -143,14 +139,12 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		public override void OnTimeSeriesToggled(bool isActive) {
-
 			if (isActive) {
 				TimeSeries.SpawnSeries(timeSeriesConfiguration, DataPoint);
 			}
 			else {
 				TimeSeries.DespawnSeries();
 			}
-
 		}
 
 		public override void OnMeasurementResultsUpdated() {
@@ -158,7 +152,6 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		public override void OnMeasurementResultChanged(MeasurementResult mr) {
-
 			if (!AllowedMeasurementTypes.Contains(DataPoint.MeasurementDefinition.MeasurementType)) {
 				NotificationHandler.Add(new Notification() {
 					Category = NotificationCategory.Error, Text = "Value Type not supported by this visualization.", DisplayDuration = 5f
@@ -184,11 +177,9 @@ namespace DataskopAR.Entities.Visualizations {
 
 			pillarFillMeshRenderer.material.color = Options.fillColor;
 			SetAuthorImage();
-
 		}
 
 		private void SetAuthorImage() {
-
 			if (DataPoint.CurrentMeasurementResult.Author != string.Empty) {
 				authorIconSpriteRenderer.sprite = DataPoint.AuthorRepository.AuthorSprites[DataPoint.CurrentMeasurementResult.Author];
 				authorIconSpriteRenderer.enabled = true;
@@ -196,7 +187,6 @@ namespace DataskopAR.Entities.Visualizations {
 			else {
 				authorIconSpriteRenderer.enabled = false;
 			}
-
 		}
 
 		private void ShowUserDirectionCanvas() {
@@ -212,8 +202,6 @@ namespace DataskopAR.Entities.Visualizations {
 			TimeSeries.TimeSeriesDespawned -= ResetRotation;
 		}
 
-#endregion
-
+        #endregion
 	}
-
 }
