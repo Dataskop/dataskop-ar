@@ -27,7 +27,7 @@ namespace DataskopAR.Entities {
             transform.forward = diff.normalized;
         }
 
-        private void Update() {
+        private void FixedUpdate() {
             var targetTransform = TargetTransform;
             // ReSharper disable once Unity.PerformanceCriticalCodeNullComparison
             if (targetTransform == null) return;
