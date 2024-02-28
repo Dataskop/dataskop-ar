@@ -72,8 +72,8 @@ namespace DataskopAR.Entities.Visualizations {
 */
 
 		protected override void OnDatapointChanged() {
+			base.OnDatapointChanged();
 			Options = Instantiate(options);
-			DataPoint.MeasurementResultChanged += OnMeasurementResultChanged;
 
 			VisTransform.localScale *= Scale;
 			dataDisplay.transform.localScale *= Scale;

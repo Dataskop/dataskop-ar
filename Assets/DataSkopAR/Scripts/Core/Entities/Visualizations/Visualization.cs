@@ -70,7 +70,9 @@ namespace DataskopAR.Entities.Visualizations {
 		/// <summary>
 		///  Creates a visualization for a given Data Point.
 		/// </summary>
-		protected abstract void OnDatapointChanged();
+		protected virtual void OnDatapointChanged() {
+			DataPoint.MeasurementResultChanged += OnMeasurementResultChanged;
+		}
 
 		/// <summary>
 		/// Gets called when the user points the reticule over the visible visualization.

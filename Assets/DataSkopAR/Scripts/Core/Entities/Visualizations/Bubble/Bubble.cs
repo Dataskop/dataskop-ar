@@ -81,7 +81,7 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		protected override void OnDatapointChanged() {
-			DataPoint.MeasurementResultChanged += OnMeasurementResultChanged;
+			base.OnDatapointChanged();
 			Options = Instantiate(options);
 
 			spriteRenderer.enabled = false;
