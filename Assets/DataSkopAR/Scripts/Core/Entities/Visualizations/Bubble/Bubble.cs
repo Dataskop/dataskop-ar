@@ -103,8 +103,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 			labelLine.startWidth = 0.0075f;
 			labelLine.endWidth = 0.0075f;
-
-			IsSpawned = true;
 		}
 
 		public override void OnMeasurementResultsUpdated() {
