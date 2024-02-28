@@ -57,7 +57,7 @@ namespace DataskopAR.Data {
 		public void SetVis(GameObject visPrefab) {
 			RemoveVis();
 			Vis = Instantiate(visPrefab, transform).GetComponent<Visualization>();
-			Vis.Create(this);
+			Vis.DataPoint = this;
 			Vis.SwipedUp += NextMeasurementResult;
 			Vis.SwipedDown += PreviousMeasurementResult;
 		}

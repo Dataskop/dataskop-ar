@@ -21,11 +21,20 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private float scaleFactor;
 		[SerializeField] protected TimeSeriesConfig timeSeriesConfiguration;
 
+		private DataPoint dataPoint;
+
 #endregion
 
 #region Properties
 
-		public DataPoint DataPoint { get; set; }
+		public DataPoint DataPoint {
+			get => dataPoint;
+			set {
+				dataPoint = value;
+				OnDatapointChanged();
+			}
+		}
+
 		public VisualizationOption VisOption { get; set; }
 		public Camera ARCamera { get; set; }
 		public bool IsSelected { get; set; }
@@ -60,8 +69,7 @@ namespace DataskopAR.Entities.Visualizations {
 		/// <summary>
 		///  Creates a visualization for a given Data Point.
 		/// </summary>
-		/// <param name="dataPoint">The DataPoint the Visualization is connected to.</param>
-		public abstract void Create(DataPoint dataPoint);
+		protected abstract void OnDatapointChanged();
 
 		/// <summary>
 		/// Gets called when the user points the reticule over the visible visualization.
