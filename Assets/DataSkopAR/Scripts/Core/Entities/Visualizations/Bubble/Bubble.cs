@@ -69,9 +69,6 @@ namespace DataskopAR.Entities.Visualizations {
 
         private void AlignWithCamera() {
             if (Vector3.Distance(ARCamera.transform.position, visTransform.position) < 50f) {
-                dataDisplay.transform.LookAt(
-                    new Vector3(ARCamera.transform.position.x, dataDisplay.transform.position.y, ARCamera.transform.position.z),
-                    Vector3.up);
                 timeSeriesTransform.transform.LookAt(
                     new Vector3(ARCamera.transform.position.x, timeSeriesTransform.transform.position.y, ARCamera.transform.position.z),
                     Vector3.up);
