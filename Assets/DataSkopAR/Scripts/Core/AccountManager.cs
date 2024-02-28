@@ -1,3 +1,4 @@
+#nullable enable
 using UnityEngine;
 
 namespace DataskopAR {
@@ -12,10 +13,10 @@ namespace DataskopAR {
 
 #region Properties
 
-		public static bool IsLoggedIn => HasToken() && !string.IsNullOrEmpty(PlayerPrefs.GetString(APITokenKey));
+		public static bool IsLoggedIn => TryGetLoginToken() != null;
 
 #endregion
-
+		
 #region Methods
 
 		private static bool HasToken() {
@@ -33,11 +34,13 @@ namespace DataskopAR {
 			}
 
 			SceneMaster.LoadScene(0);
-
 		}
 
-		public static string GetLoginToken() {
-			return IsLoggedIn ? PlayerPrefs.GetString(APITokenKey) : string.Empty;
+		public static string? TryGetLoginToken() {
+			string? token = PlayerPrefs.GetString(APITokenKey, null);
+			if (token == null) return null;
+
+			return !string.IsNullOrEmpty(token) ? token : null;
 		}
 
 #endregion

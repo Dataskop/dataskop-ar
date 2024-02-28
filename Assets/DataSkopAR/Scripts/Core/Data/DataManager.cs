@@ -100,7 +100,7 @@ namespace DataskopAR.Data {
 				return;
 			}
 
-			UserData.Instance.Token = AccountManager.GetLoginToken();
+			UserData.Instance.Token = AccountManager.TryGetLoginToken();
 
 			if (UserData.Instance.Token == null) {
 
