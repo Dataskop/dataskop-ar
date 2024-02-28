@@ -61,20 +61,6 @@ namespace DataskopAR.Entities.Visualizations {
 
         #region Methods
 
-        private void FixedUpdate() {
-            if (IsSpawned) {
-                AlignWithCamera();
-            }
-        }
-
-        private void AlignWithCamera() {
-            if (Vector3.Distance(ARCamera.transform.position, visTransform.position) < 50f) {
-                timeSeriesTransform.transform.LookAt(
-                    new Vector3(ARCamera.transform.position.x, timeSeriesTransform.transform.position.y, ARCamera.transform.position.z),
-                    Vector3.up);
-            }
-        }
-
         protected override void OnDatapointChanged() {
             base.OnDatapointChanged();
             Options = Instantiate(options);
