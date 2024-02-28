@@ -39,7 +39,7 @@ namespace DataskopAR.Data {
 		}
 
 		private void Start() {
-			
+
 			InitializeAreas(locationData);
 			userAreaLocated?.Invoke(lastLocatedArea);
 
