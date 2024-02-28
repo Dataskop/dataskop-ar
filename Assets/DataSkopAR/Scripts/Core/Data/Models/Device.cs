@@ -31,11 +31,11 @@ namespace DataskopAR.Data {
 #endregion
 
 #region Methods
-		
+
 		public MeasurementDefinition GetMeasurementDefinitionByID(int id) {
 			return MeasurementDefinitions.First(item => item.ID == id);
 		}
-		
+
 		public MeasurementDefinition GetMeasurementDefinitionByAttributeId(string attributeId) {
 			return MeasurementDefinitions.First(item => item.AttributeId == attributeId);
 		}
@@ -56,13 +56,13 @@ namespace DataskopAR.Data {
 			var result = MeasurementDefinitions?.First().GetLatestMeasurementResult();
 
 			if (result == null) {
-				
+
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Warning,
 					Text = $"Device {ID} has no reported location!",
 					DisplayDuration = NotificationDuration.Medium
 				});
-				
+
 				return null;
 			}
 
