@@ -76,6 +76,22 @@ namespace DataskopAR.Utils {
 			return y1 + (value - x1) * (y2 - y1) / (x2 - x1);
 		}
 
+		/// <summary>
+		/// Finds the closest point on a ray to a given point. If the point is
+		/// behind the ray's origin, the closest point will be the origin.
+		/// </summary>
+		/// <param name="ray">The ray on which the closes point will be found.</param>
+		/// <param name="point">The given point.</param>
+		/// <param name="distance">Distance from the found point on the ray to the given point.</param>
+		/// <returns></returns>
+		public static Vector3 ClosestPointAlongRay(Ray ray, Vector3 point, out float distance) {
+
+			distance = Vector3.Dot(point - ray.origin, ray.direction);
+			distance = Mathf.Max(distance, 0f);
+			return ray.origin + ray.direction * distance;
+
+		}
+
 	}
 
 }
