@@ -103,7 +103,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 			idTextMesh.text = DataPoint.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper();
 			OnMeasurementResultChanged(DataPoint.CurrentMeasurementResult);
-			IsSpawned = true;
 		}
 
 		public override void OnMeasurementResultChanged(MeasurementResult mr) {

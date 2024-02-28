@@ -82,7 +82,6 @@ namespace DataskopAR.Entities.Visualizations {
 			dataDisplay.worldCamera = ARCamera;
 			OnMeasurementResultChanged(DataPoint.CurrentMeasurementResult);
 			barCollider.enabled = true;
-			IsSpawned = true;
 		}
 
 		private void SetPillarHeight(float heightValue, float minValue, float maxValue) {

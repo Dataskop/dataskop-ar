@@ -31,14 +31,15 @@ namespace DataskopAR.Entities.Visualizations {
 			get => dataPoint;
 			set {
 				dataPoint = value;
-				OnDatapointChanged();
+				if (value != null)
+					OnDatapointChanged();
 			}
 		}
 
 		public VisualizationOption VisOption { get; set; }
 		public Camera ARCamera { get; set; }
 		public bool IsSelected { get; set; }
-		public bool IsSpawned { get; set; }
+		public bool IsSpawned => DataPoint != null;
 		public abstract Transform VisTransform { get; }
 		public abstract MeasurementType[] AllowedMeasurementTypes { get; set; }
 
@@ -90,8 +91,8 @@ namespace DataskopAR.Entities.Visualizations {
 		/// Gets called before the visualization is removed.
 		/// </summary>
 		public virtual void Despawn() {
-			IsSpawned = false;
 			DataPoint.MeasurementResultChanged -= OnMeasurementResultChanged;
+			DataPoint = null;
 			Destroy(gameObject);
 		}
 
