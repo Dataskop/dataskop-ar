@@ -54,6 +54,7 @@ namespace DataskopAR.Entities.Visualizations {
 		public VisualizationType Type => VisualizationType.dot;
 		private DotOptions Options { get; set; }
 		private DotTimeSeries TimeSeries => dotTimeSeries;
+		public override Transform VisTransform => visTransform;
 		public override MeasurementType[] AllowedMeasurementTypes { get; set; } = { MeasurementType.Float, MeasurementType.Bool };
 
         #endregion
@@ -83,7 +84,6 @@ namespace DataskopAR.Entities.Visualizations {
 			Options = Instantiate(options);
 			DataPoint.MeasurementResultChanged += OnMeasurementResultChanged;
 
-			VisTransform = visTransform;
 			Transform displayTransform = dataDisplay.transform;
 			dataDisplay.worldCamera = ARCamera;
 
