@@ -100,9 +100,9 @@ namespace DataskopAR.Data {
 				return;
 			}
 
-			UserData.Instance.Token = AccountManager.GetLoginToken();
+			UserData.Instance.Token = AccountManager.TryGetLoginToken();
 
-			if (UserData.Instance.Token == string.Empty) {
+			if (UserData.Instance.Token == null) {
 
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
