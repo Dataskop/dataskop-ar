@@ -54,6 +54,7 @@ namespace DataskopAR.Entities.Visualizations {
 		private BubbleTimeSeries TimeSeries => bubbleTimeSeries;
 		private float MaxScale => maxScale;
 		private float MinScale => minScale;
+		public override Transform VisTransform => visTransform;
 		private Vector3 DisplayOrigin { get; set; }
 
         #endregion
@@ -85,7 +86,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 			spriteRenderer.enabled = false;
 
-			VisTransform = visTransform;
 			VisTransform.localPosition = Offset;
 
 			dataDisplay.worldCamera = ARCamera;

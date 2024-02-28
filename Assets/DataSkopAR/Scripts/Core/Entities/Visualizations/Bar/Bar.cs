@@ -41,6 +41,8 @@ namespace DataskopAR.Entities.Visualizations {
 		private float BarHeight { get; set; }
 		private BarOptions Options { get; set; }
 		private BarTimeSeries TimeSeries => barTimeSeries;
+
+		public override Transform VisTransform => visTransform;
 		public override MeasurementType[] AllowedMeasurementTypes { get; set; } = { MeasurementType.Float, MeasurementType.Bool };
 
         #endregion
@@ -72,7 +74,6 @@ namespace DataskopAR.Entities.Visualizations {
 		protected override void OnDatapointChanged() {
 			Options = Instantiate(options);
 			DataPoint.MeasurementResultChanged += OnMeasurementResultChanged;
-			VisTransform = visTransform;
 
 			VisTransform.localScale *= Scale;
 			dataDisplay.transform.localScale *= Scale;
