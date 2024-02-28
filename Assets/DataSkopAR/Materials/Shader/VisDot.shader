@@ -63,15 +63,15 @@ Shader "DataSkopAR/VisDot"
             {
                 // sample the texture
                 half4 col = tex2D(_MainTex, i.uv);
+                half3 rgb = col;
+                half3 diff = abs(half3(1,1,1) - rgb);
+                float delta = length(diff);
 
-                if (any(col.rgb != half3(1, 1, 1)))
-                {
-                    UNITY_APPLY_FOG(i.fogCoord, _Color);
-                    return _Color;
-                }
-
-                UNITY_APPLY_FOG(i.fogCoord, col);
-                return col;
+                half3 blendRgb = lerp(half3(1,1,1), _Color, delta);
+                half4 blencColor = half4(blendRgb, col.a);
+         
+                UNITY_APPLY_FOG(i.fogCoord, blencColor);
+                return blencColor;
             }
             ENDHLSL
         }
