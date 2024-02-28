@@ -38,7 +38,8 @@ namespace DataskopAR {
 			callback?.Invoke();
 		}
 
-		public static IEnumerator TransformLerpOnCurve(Transform t, TransformValue tValue, Vector3 origin, Vector3 target, float duration, AnimationCurve curve,
+		public static IEnumerator TransformLerpOnCurve(Transform t, TransformValue tValue, Vector3 origin, Vector3 target, float duration,
+			AnimationCurve curve,
 			[CanBeNull] Action callback) {
 
 			float current = 0f;

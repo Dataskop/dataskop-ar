@@ -124,7 +124,9 @@ namespace DataskopAR.Data {
 					devices.Add(new Device(
 						measurementDefinition.DeviceId,
 						measurementDefinition.DeviceId,
-						new List<MeasurementDefinition> { measurementDefinition }
+						new List<MeasurementDefinition> {
+							measurementDefinition
+						}
 					));
 				else {
 					foundDevice.MeasurementDefinitions.Add(measurementDefinition);

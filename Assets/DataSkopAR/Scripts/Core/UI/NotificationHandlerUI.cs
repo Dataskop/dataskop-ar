@@ -49,10 +49,27 @@ namespace DataskopAR.UI {
 
 		private void Start() {
 			NotificationStyles = new Dictionary<NotificationCategory, NotificationStyle> {
-				{ NotificationCategory.Check, new NotificationStyle { Icon = notificationIcons[0], Color = iconColors.check } },
-				{ NotificationCategory.Info, new NotificationStyle { Icon = notificationIcons[1], Color = iconColors.info } },
-				{ NotificationCategory.Warning, new NotificationStyle { Icon = notificationIcons[2], Color = iconColors.warning } },
-				{ NotificationCategory.Error, new NotificationStyle { Icon = notificationIcons[3], Color = iconColors.error } }
+				{
+					NotificationCategory.Check, new NotificationStyle {
+						Icon = notificationIcons[0],
+						Color = iconColors.check
+					}
+				}, {
+					NotificationCategory.Info, new NotificationStyle {
+						Icon = notificationIcons[1],
+						Color = iconColors.info
+					}
+				}, {
+					NotificationCategory.Warning, new NotificationStyle {
+						Icon = notificationIcons[2],
+						Color = iconColors.warning
+					}
+				}, {
+					NotificationCategory.Error, new NotificationStyle {
+						Icon = notificationIcons[3],
+						Color = iconColors.error
+					}
+				}
 			};
 		}
 
