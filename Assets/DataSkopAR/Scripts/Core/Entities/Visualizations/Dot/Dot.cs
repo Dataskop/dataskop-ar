@@ -81,8 +81,8 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		protected override void OnDatapointChanged() {
+			base.OnDatapointChanged();
 			Options = Instantiate(options);
-			DataPoint.MeasurementResultChanged += OnMeasurementResultChanged;
 
 			Transform displayTransform = dataDisplay.transform;
 			dataDisplay.worldCamera = ARCamera;
