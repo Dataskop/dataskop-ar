@@ -39,7 +39,7 @@ namespace DataskopAR.Entities.Visualizations {
 		public Camera ARCamera { get; set; }
 		public bool IsSelected { get; set; }
 		public bool IsSpawned { get; set; }
-		public Transform VisTransform { get; set; }
+		public Transform VisTransform { get; protected set; }
 		public abstract MeasurementType[] AllowedMeasurementTypes { get; set; }
 
 		/// <summary>
