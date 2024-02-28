@@ -450,6 +450,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6582173655514579031}
+  - component: {fileID: 3792078637036086794}
   m_Layer: 7
   m_Name: Visualization
   m_TagString: Untagged
@@ -476,6 +477,20 @@ Transform:
   m_Father: {fileID: 77686069274916870}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3792078637036086794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2843409922626128392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb47a29a2a274313bed14278e1446c43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  faceThreshold: 50
+  targetCamera: {fileID: 0}
 --- !u!1 &3141586532444472431
 GameObject:
   m_ObjectHideFlags: 0
@@ -518,7 +533,6 @@ GameObject:
   - component: {fileID: 77686069274916870}
   - component: {fileID: 7036097098548000483}
   - component: {fileID: -8508717279963492584}
-  - component: {fileID: 7643811219931162464}
   m_Layer: 7
   m_Name: Dot
   m_TagString: DataPoint
@@ -694,20 +708,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeContainer: {fileID: 3915101229060502330}
---- !u!114 &7643811219931162464
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4044058376309783487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb47a29a2a274313bed14278e1446c43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  faceThreshold: 50
-  targetCamera: {fileID: 0}
 --- !u!1 &4356684265461053018
 GameObject:
   m_ObjectHideFlags: 0
@@ -805,6 +805,7 @@ GameObject:
   - component: {fileID: 2210104469672086103}
   - component: {fileID: 1073197193382578760}
   - component: {fileID: 980153147878497166}
+  - component: {fileID: 6450795076049046936}
   m_Layer: 7
   m_Name: DataDisplay
   m_TagString: Untagged
@@ -909,6 +910,20 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &6450795076049046936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6066116404273247818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb47a29a2a274313bed14278e1446c43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  faceThreshold: 50
+  targetCamera: {fileID: 0}
 --- !u!1 &7001842154920687943
 GameObject:
   m_ObjectHideFlags: 0
