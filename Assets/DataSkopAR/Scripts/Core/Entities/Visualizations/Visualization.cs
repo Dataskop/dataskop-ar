@@ -21,16 +21,26 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private float scaleFactor;
 		[SerializeField] protected TimeSeriesConfig timeSeriesConfiguration;
 
+		private DataPoint dataPoint;
+
 #endregion
 
 #region Properties
 
-		public DataPoint DataPoint { get; set; }
+		public DataPoint DataPoint {
+			get => dataPoint;
+			set {
+				dataPoint = value;
+				if (value != null)
+					OnDatapointChanged();
+			}
+		}
+
 		public VisualizationOption VisOption { get; set; }
 		public Camera ARCamera { get; set; }
 		public bool IsSelected { get; set; }
-		public bool IsSpawned { get; set; }
-		public Transform VisTransform { get; set; }
+		public bool IsSpawned => DataPoint != null;
+		public abstract Transform VisTransform { get; }
 		public abstract MeasurementType[] AllowedMeasurementTypes { get; set; }
 
 		/// <summary>
@@ -60,8 +70,9 @@ namespace DataskopAR.Entities.Visualizations {
 		/// <summary>
 		///  Creates a visualization for a given Data Point.
 		/// </summary>
-		/// <param name="dataPoint">The DataPoint the Visualization is connected to.</param>
-		public abstract void Create(DataPoint dataPoint);
+		protected virtual void OnDatapointChanged() {
+			DataPoint.MeasurementResultChanged += OnMeasurementResultChanged;
+		}
 
 		/// <summary>
 		/// Gets called when the user points the reticule over the visible visualization.
@@ -82,8 +93,8 @@ namespace DataskopAR.Entities.Visualizations {
 		/// Gets called before the visualization is removed.
 		/// </summary>
 		public virtual void Despawn() {
-			IsSpawned = false;
 			DataPoint.MeasurementResultChanged -= OnMeasurementResultChanged;
+			DataPoint = null;
 			Destroy(gameObject);
 		}
 
