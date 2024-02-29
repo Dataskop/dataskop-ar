@@ -60,15 +60,18 @@ Shader "DataSkopAR/VisDot"
 
             half4 frag(v2f i) : SV_Target
             {
-                // sample the texture
+                // Sample the texture
                 half4 col = tex2D(_MainTex, i.uv);
-                half3 rgb = col;
-                half3 diff = abs(half3(1, 1, 1) - rgb);
-                float delta = length(diff);
+                half3 rgb = col.rgb;
 
-                half3 blend_rgb = lerp(half3(1, 1, 1), _Color, delta);
+                // Brightness (luma) of the original color
+                float brightness = dot(rgb, half3(0.2126, 0.7152, 0.0722));
+                float blendFactor = smoothstep(0.0, 0.5, 1.0 - brightness); // Adjust thresholds as needed
+
+                //  Blend based on the blendFactor
+                half3 blend_rgb = lerp(half3(1, 1, 1), _Color.rgb, blendFactor);
+
                 half4 blend_color = half4(blend_rgb, col.a);
-
                 UNITY_APPLY_FOG(i.fogCoord, blend_color);
                 return blend_color;
             }
