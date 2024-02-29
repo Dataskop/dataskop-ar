@@ -706,9 +706,8 @@ MonoBehaviour:
   dotTimeSeries: {fileID: -8508717279963492584}
   dropShadow: {fileID: 4238437126515807959}
   visTransform: {fileID: 5936784113304799239}
-  timeSeriesTransform: {fileID: 3915101229060502330}
   groundLine: {fileID: 6640198457753545217}
-  authorIconSpriteRenderer: {fileID: 0}
+  authorIconImageRenderer: {fileID: 1878226782549778265}
   dataDisplay: {fileID: 8897848829674948698}
   dataDisplayGroup: {fileID: 1914850585399415048}
   idTextMesh: {fileID: 186263882979777262}
