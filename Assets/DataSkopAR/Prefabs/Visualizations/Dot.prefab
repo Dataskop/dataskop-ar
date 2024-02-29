@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 3832025266384703219}
   - component: {fileID: 4126681341744695957}
   - component: {fileID: 5374473941371282443}
+  - component: {fileID: 6905968862198501113}
   m_Layer: 7
   m_Name: Primary
   m_TagString: Vis
@@ -175,6 +176,20 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6905968862198501113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380976051210389545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb47a29a2a274313bed14278e1446c43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  faceThreshold: 30
+  targetCamera: {fileID: 0}
 --- !u!1 &2042400481462122573
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,6 +500,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3915101229060502330}
+  - component: {fileID: 3276604940214098203}
   m_Layer: 7
   m_Name: TimeElementsContainer
   m_TagString: Untagged
@@ -507,6 +523,20 @@ Transform:
   m_Father: {fileID: 6582173655514579031}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3276604940214098203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3141586532444472431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb47a29a2a274313bed14278e1446c43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  faceThreshold: 30
+  targetCamera: {fileID: 0}
 --- !u!1 &4044058376309783487
 GameObject:
   m_ObjectHideFlags: 0
@@ -790,6 +820,7 @@ GameObject:
   - component: {fileID: 2210104469672086103}
   - component: {fileID: 1073197193382578760}
   - component: {fileID: 980153147878497166}
+  - component: {fileID: 5359458206824435407}
   m_Layer: 7
   m_Name: DataDisplay
   m_TagString: Untagged
@@ -890,10 +921,24 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6066116404273247818}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &5359458206824435407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6066116404273247818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb47a29a2a274313bed14278e1446c43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  faceThreshold: 30
+  targetCamera: {fileID: 0}
 --- !u!1 &7001842154920687943
 GameObject:
   m_ObjectHideFlags: 0
