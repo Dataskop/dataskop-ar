@@ -10,16 +10,17 @@ Shader "DataSkopAR/VisDot"
         Tags
         {
             "RenderType"="Transparent"
-            "Queue"="Geometry"
-            "RenderPipeline"="UniversalRenderPipeline"
+            "Queue"="Transparent"
             "IgnoreProjector"="True"
+            "CanUseSpriteAtlas"="true"
+            "PreviewType"="Plane"
+            "SortingLayer"="Custom/WorldSpaceCanvas"
+            "Order in Layer"="0"
         }
 
-        Blend SrcAlpha OneMinusSrcAlpha
-        LOD 100
         Cull Off
-        ZWrite On
-        ZTest LEqual
+        ZWrite Off
+        Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {

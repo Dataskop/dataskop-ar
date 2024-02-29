@@ -249,18 +249,18 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		public override void Hover() {
-			spriteRenderer.material = Options.materialOptions[0].Hovered;
+			spriteRenderer.material = Options.materialOptions[0].hoverMaterial;
 			dataDisplayGroup.alpha = 1;
 		}
 
 		public override void Select() {
-			spriteRenderer.material = Options.materialOptions[0].Selected;
+			spriteRenderer.material = Options.materialOptions[0].selectionMaterial;
 			dataDisplayGroup.alpha = 1;
 			IsSelected = true;
 		}
 
 		public override void Deselect() {
-			spriteRenderer.material = Options.materialOptions[0].Deselected;
+			spriteRenderer.material = Options.materialOptions[0].defaultMaterial;
 			dataDisplayGroup.alpha = 0;
 			IsSelected = false;
 		}

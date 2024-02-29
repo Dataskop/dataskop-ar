@@ -9,7 +9,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 	public class Bar : Visualization {
 
-        #region Fields
+#region Fields
 
 		[Header("References")] [SerializeField]
 		private MeshRenderer pillarFillMeshRenderer;
@@ -34,9 +34,9 @@ namespace DataskopAR.Entities.Visualizations {
 
 		private Vector3 origin;
 
-        #endregion
+#endregion
 
-        #region Properties
+#region Properties
 
 		public VisualizationType Type => VisualizationType.bar;
 		private Vector3 BarFillScale { get; set; }
@@ -50,9 +50,9 @@ namespace DataskopAR.Entities.Visualizations {
 			MeasurementType.Bool
 		};
 
-        #endregion
+#endregion
 
-        #region Methods
+#region Methods
 
 		private void Awake() {
 			TimeSeries.TimeSeriesBeforeSpawn += RotateVisualization;
@@ -126,18 +126,18 @@ namespace DataskopAR.Entities.Visualizations {
 		public override void ApplyStyle() { }
 
 		public override void Hover() {
-			pillarFrameMeshRenderer.material = Options.materialOptions[0].Hovered;
+			pillarFrameMeshRenderer.material = Options.materialOptions[0].hoverMaterial;
 			ShowUserDirectionCanvas();
 		}
 
 		public override void Select() {
-			pillarFrameMeshRenderer.material = Options.materialOptions[0].Selected;
+			pillarFrameMeshRenderer.material = Options.materialOptions[0].selectionMaterial;
 			ShowUserDirectionCanvas();
 			IsSelected = true;
 		}
 
 		public override void Deselect() {
-			pillarFrameMeshRenderer.material = Options.materialOptions[0].Deselected;
+			pillarFrameMeshRenderer.material = Options.materialOptions[0].defaultMaterial;
 			HideAllUserDirectionCanvas();
 			IsSelected = false;
 		}
@@ -208,7 +208,7 @@ namespace DataskopAR.Entities.Visualizations {
 			TimeSeries.TimeSeriesDespawned -= ResetRotation;
 		}
 
-        #endregion
+#endregion
 
 	}
 
