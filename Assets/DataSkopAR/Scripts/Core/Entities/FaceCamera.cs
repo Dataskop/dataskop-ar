@@ -7,14 +7,23 @@ namespace DataskopAR.Entities {
 
 	public class FaceCamera : MonoBehaviour {
 
+#region Fields
+
 		[SerializeField] [Tooltip("How close the camera has to be to the object for it to face it.")]
 		private float faceThreshold;
 
 		[SerializeField] private Camera? targetCamera;
+		[SerializeField] private bool isBackwards;
 
+#endregion
 
-		// ReSharper disable once Unity.NoNullPropagation
+#region Properties
+
 		private Transform? TargetTransform => targetCamera?.transform;
+
+#endregion
+
+#region Methods
 
 		private void AlignWith(Vector3 target) {
 
@@ -22,23 +31,31 @@ namespace DataskopAR.Entities {
 			float distance = diff.magnitude;
 			bool shouldFace = distance <= faceThreshold;
 
-			if (!shouldFace) return;
+			if (!shouldFace) {
+				return;
+			}
 
-			transform.forward = diff.normalized;
+			transform.forward = isBackwards ? -diff.normalized : diff.normalized;
 		}
 
 		private void FixedUpdate() {
-			var targetTransform = TargetTransform;
-			// ReSharper disable once Unity.PerformanceCriticalCodeNullComparison
-			if (targetTransform == null) return;
+
+			Transform? targetTransform = TargetTransform;
+
+			if (targetTransform == null) {
+				return;
+			}
 
 			AlignWith(targetTransform.position);
 		}
 
 		private void Awake() {
-			if (targetCamera == null)
+			if (targetCamera == null) {
 				targetCamera = Camera.main;
+			}
 		}
+
+#endregion
 
 	}
 

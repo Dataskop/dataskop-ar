@@ -10,7 +10,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 	public class Dot : Visualization {
 
-        #region Fields
+#region Fields
 
 		[Header("References")]
 		[SerializeField] private SpriteRenderer spriteRenderer;
@@ -46,9 +46,9 @@ namespace DataskopAR.Entities.Visualizations {
 		private Vector3 animationTarget;
 		private Coroutine moveLineCoroutine;
 
-        #endregion
+#endregion
 
-        #region Properties
+#region Properties
 
 		public VisualizationType Type => VisualizationType.dot;
 		private DotOptions Options { get; set; }
@@ -59,9 +59,9 @@ namespace DataskopAR.Entities.Visualizations {
 			MeasurementType.Bool
 		};
 
-        #endregion
+#endregion
 
-        #region Methods
+#region Methods
 
 		protected override void OnDataPointChanged() {
 			base.OnDataPointChanged();
@@ -175,7 +175,7 @@ namespace DataskopAR.Entities.Visualizations {
 					CancelAnimation();
 				}
 
-				animationTarget = visTransform.localScale / 1.35f;
+				animationTarget = visTransform.localScale / 1.25f;
 
 				animationCoroutine = StartCoroutine(LerperHelper.TransformLerpOnCurve(
 					visTransform,
@@ -233,7 +233,7 @@ namespace DataskopAR.Entities.Visualizations {
 			}
 		}
 
-        #endregion
+#endregion
 
 	}
 
