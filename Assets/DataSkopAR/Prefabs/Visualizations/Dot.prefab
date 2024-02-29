@@ -191,6 +191,54 @@ MonoBehaviour:
   faceThreshold: 100
   targetCamera: {fileID: 0}
   isBackwards: 0
+--- !u!1 &1578453947121861389
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 895242415743193502}
+  - component: {fileID: 9196750826154611022}
+  m_Layer: 7
+  m_Name: UI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &895242415743193502
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578453947121861389}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2557888039117677335}
+  m_Father: {fileID: 77686069274916870}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9196750826154611022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578453947121861389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb47a29a2a274313bed14278e1446c43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  faceThreshold: 100
+  targetCamera: {fileID: 0}
+  isBackwards: 1
 --- !u!1 &2042400481462122573
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,7 +618,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6582173655514579031}
-  - {fileID: 2557888039117677335}
+  - {fileID: 895242415743193502}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -822,7 +870,6 @@ GameObject:
   - component: {fileID: 2210104469672086103}
   - component: {fileID: 1073197193382578760}
   - component: {fileID: 980153147878497166}
-  - component: {fileID: 5359458206824435407}
   m_Layer: 7
   m_Name: DataDisplay
   m_TagString: Untagged
@@ -837,8 +884,8 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6066116404273247818}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.02}
   m_LocalScale: {x: 0.01, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -846,8 +893,8 @@ RectTransform:
   - {fileID: 462845311097899154}
   - {fileID: 2880971824574786997}
   - {fileID: 7681336337725062326}
-  m_Father: {fileID: 77686069274916870}
-  m_RootOrder: 1
+  m_Father: {fileID: 895242415743193502}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -871,8 +918,8 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 0
+  m_AdditionalShaderChannelsFlag: -1
+  m_SortingLayerID: -1606924549
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &2210104469672086103
@@ -923,25 +970,10 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6066116404273247818}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
---- !u!114 &5359458206824435407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6066116404273247818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb47a29a2a274313bed14278e1446c43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  faceThreshold: 100
-  targetCamera: {fileID: 0}
-  isBackwards: 1
 --- !u!1 &7001842154920687943
 GameObject:
   m_ObjectHideFlags: 0
@@ -1119,8 +1151,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

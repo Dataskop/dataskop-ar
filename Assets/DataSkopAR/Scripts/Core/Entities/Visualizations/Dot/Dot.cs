@@ -24,7 +24,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 		[Header("Display References")]
 		[SerializeField] private Canvas dataDisplay;
-
 		[SerializeField] private CanvasGroup dataDisplayGroup;
 		[SerializeField] private TextMeshProUGUI idTextMesh;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
@@ -67,15 +66,15 @@ namespace DataskopAR.Entities.Visualizations {
 			base.OnDataPointChanged();
 			Options = Instantiate(options);
 
-			Transform displayTransform = dataDisplay.transform;
 			dataDisplay.worldCamera = ARCamera;
+			Transform displayTransform = dataDisplay.transform;
 
 			VisTransform.localScale *= Scale;
 			dropShadow.transform.localScale *= Scale;
 			displayTransform.localScale *= Scale;
 
 			VisTransform.localPosition = Offset;
-			displayTransform.localPosition = Offset;
+			displayTransform.localPosition = new Vector3(displayTransform.localPosition.x, Offset.y, displayTransform.localPosition.z);
 
 			SetLinePosition(groundLine,
 				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - spriteRenderer.bounds.size.y * 0.75f,
