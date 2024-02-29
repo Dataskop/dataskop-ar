@@ -10,20 +10,25 @@ namespace DataskopAR.Entities.Visualizations {
 
 	public class Dot : Visualization {
 
+#region Constants
+
+		private static readonly int ShaderColor = Shader.PropertyToID("_Color");
+
+#endregion
+
 #region Fields
 
 		[Header("References")]
-		[SerializeField] private SpriteRenderer spriteRenderer;
+		[SerializeField] private Image imageRenderer;
 		[SerializeField] private DotOptions options;
 		[SerializeField] private DotTimeSeries dotTimeSeries;
 		[SerializeField] private Transform dropShadow;
 		[SerializeField] private Transform visTransform;
-		[SerializeField] private Transform timeSeriesTransform;
 		[SerializeField] private LineRenderer groundLine;
-		[SerializeField] private SpriteRenderer authorIconSpriteRenderer;
+		[SerializeField] private Image authorIconImageRenderer;
 
 		[Header("Display References")]
-		[SerializeField] private Canvas dataDisplay;
+		[SerializeField] private Transform dataDisplay;
 		[SerializeField] private CanvasGroup dataDisplayGroup;
 		[SerializeField] private TextMeshProUGUI idTextMesh;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
@@ -40,6 +45,7 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private AnimationCurve animationCurveDeselect;
 		[SerializeField] private float animationTimeOnSelect;
 		[SerializeField] private float animationTimeOnDeselect;
+		[SerializeField] private float selectionScale;
 
 		private Coroutine animationCoroutine;
 		private Vector3 animationTarget;
@@ -66,7 +72,6 @@ namespace DataskopAR.Entities.Visualizations {
 			base.OnDataPointChanged();
 			Options = Instantiate(options);
 
-			dataDisplay.worldCamera = ARCamera;
 			Transform displayTransform = dataDisplay.transform;
 
 			VisTransform.localScale *= Scale;
@@ -77,7 +82,7 @@ namespace DataskopAR.Entities.Visualizations {
 			displayTransform.localPosition = new Vector3(displayTransform.localPosition.x, Offset.y, displayTransform.localPosition.z);
 
 			SetLinePosition(groundLine,
-				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - spriteRenderer.bounds.size.y * 0.75f,
+				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - imageRenderer.sprite.bounds.size.y * 0.75f,
 					VisTransform.localPosition.z),
 				dropShadow.localPosition);
 			groundLine.startWidth = 0.0075f;
@@ -88,6 +93,7 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		public override void OnMeasurementResultChanged(MeasurementResult mr) {
+
 			if (!AllowedMeasurementTypes.Contains(DataPoint.MeasurementDefinition.MeasurementType)) {
 				NotificationHandler.Add(new Notification() {
 					Category = NotificationCategory.Error,
@@ -119,6 +125,7 @@ namespace DataskopAR.Entities.Visualizations {
 			}
 
 			SetAuthorImage();
+
 		}
 
 		public override void ApplyStyle() {
@@ -142,7 +149,7 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		public override void Hover() {
-			spriteRenderer.material = Options.materialOptions[0].Hovered;
+			imageRenderer.material = Options.styles[0].hoverMaterial;
 			dataDisplayGroup.alpha = 1;
 		}
 
@@ -151,7 +158,7 @@ namespace DataskopAR.Entities.Visualizations {
 				CancelAnimation();
 			}
 
-			animationTarget = visTransform.localScale * 1.25f;
+			animationTarget = visTransform.localScale * selectionScale;
 
 			animationCoroutine = StartCoroutine(LerperHelper.TransformLerpOnCurve(
 				visTransform,
@@ -163,7 +170,7 @@ namespace DataskopAR.Entities.Visualizations {
 				OnScaleChanged
 			));
 
-			spriteRenderer.material = Options.materialOptions[0].Selected;
+			imageRenderer.material = Options.styles[0].selectionMaterial;
 			dataDisplayGroup.alpha = 1;
 			IsSelected = true;
 		}
@@ -174,7 +181,7 @@ namespace DataskopAR.Entities.Visualizations {
 					CancelAnimation();
 				}
 
-				animationTarget = visTransform.localScale / 1.25f;
+				animationTarget = visTransform.localScale / selectionScale;
 
 				animationCoroutine = StartCoroutine(LerperHelper.TransformLerpOnCurve(
 					visTransform,
@@ -187,7 +194,7 @@ namespace DataskopAR.Entities.Visualizations {
 				));
 			}
 
-			spriteRenderer.material = Options.materialOptions[0].Deselected;
+			imageRenderer.material = Options.styles[0].defaultMaterial;
 			dataDisplayGroup.alpha = 0;
 			IsSelected = false;
 		}
@@ -204,7 +211,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 		private void OnScaleChanged() {
 			moveLineCoroutine = StartCoroutine(MoveLinePointTo(0,
-				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - spriteRenderer.bounds.size.y * 0.75f,
+				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - imageRenderer.sprite.bounds.size.y * 0.75f,
 					VisTransform.localPosition.z),
 				0.1f));
 		}
@@ -224,11 +231,11 @@ namespace DataskopAR.Entities.Visualizations {
 
 		private void SetAuthorImage() {
 			if (DataPoint.CurrentMeasurementResult.Author != string.Empty) {
-				authorIconSpriteRenderer.sprite = DataPoint.AuthorRepository.AuthorSprites[DataPoint.CurrentMeasurementResult.Author];
-				authorIconSpriteRenderer.enabled = true;
+				authorIconImageRenderer.sprite = DataPoint.AuthorRepository.AuthorSprites[DataPoint.CurrentMeasurementResult.Author];
+				authorIconImageRenderer.enabled = true;
 			}
 			else {
-				authorIconSpriteRenderer.enabled = false;
+				authorIconImageRenderer.enabled = false;
 			}
 		}
 
