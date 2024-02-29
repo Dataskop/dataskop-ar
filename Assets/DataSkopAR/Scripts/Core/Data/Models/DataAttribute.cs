@@ -38,7 +38,13 @@ namespace DataskopAR.Data {
 				Maximum = maxVal;
 			}
 
-			string[] acceptedTypes = { "nominal", "binary", "ordinal", "discrete", "continuous" };
+			string[] acceptedTypes = {
+				"nominal",
+				"binary",
+				"ordinal",
+				"discrete",
+				"continuous"
+			};
 
 			if (!acceptedTypes.Contains(attributeType)) {
 				throw new ArgumentOutOfRangeException(nameof(attributeType), "Type not supported.");

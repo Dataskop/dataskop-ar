@@ -49,43 +49,28 @@ namespace DataskopAR.Entities.Visualizations {
 		public VisualizationType Type => VisualizationType.bubble;
 		private float BubbleSize { get; set; }
 		private BubbleOptions Options { get; set; }
-		public override MeasurementType[] AllowedMeasurementTypes { get; set; } = { MeasurementType.Float, MeasurementType.Bool };
+		public override MeasurementType[] AllowedMeasurementTypes { get; set; } = {
+			MeasurementType.Float,
+			MeasurementType.Bool
+		};
 		private BubbleTimeSeries TimeSeries => bubbleTimeSeries;
 		private float MaxScale => maxScale;
 		private float MinScale => minScale;
+		public override Transform VisTransform => visTransform;
 		private Vector3 DisplayOrigin { get; set; }
 
 #endregion
 
 #region Methods
 
-		private void FixedUpdate() {
-			if (IsSpawned) {
-				AlignWithCamera();
-			}
-		}
+		protected override void OnDatapointChanged() {
+			base.OnDatapointChanged();
+			Options = Instantiate(options);
 
-		private void AlignWithCamera() {
-			if (Vector3.Distance(ARCamera.transform.position, visTransform.position) < 50f) {
-				visTransform.LookAt(new Vector3(ARCamera.transform.position.x, visTransform.position.y, ARCamera.transform.position.z),
-					Vector3.up);
-				dataDisplay.transform.LookAt(
-					new Vector3(ARCamera.transform.position.x, dataDisplay.transform.position.y, ARCamera.transform.position.z),
-					Vector3.up);
-				timeSeriesTransform.transform.LookAt(
-					new Vector3(ARCamera.transform.position.x, timeSeriesTransform.transform.position.y, ARCamera.transform.position.z),
-					Vector3.up);
-			}
-		}
-
-		public override void Create(DataPoint dataPoint) {
-			DataPoint = dataPoint;
-			DataPoint.MeasurementResultChanged += OnMeasurementResultChanged;
 			Options = Instantiate(options);
 
 			spriteRenderer.enabled = false;
 
-			VisTransform = visTransform;
 			VisTransform.localPosition = Offset;
 
 			dataDisplay.worldCamera = ARCamera;
@@ -103,8 +88,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 			labelLine.startWidth = 0.0075f;
 			labelLine.endWidth = 0.0075f;
-
-			IsSpawned = true;
 		}
 
 		public override void OnMeasurementResultsUpdated() {
@@ -117,10 +100,11 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		public override void OnMeasurementResultChanged(MeasurementResult mr) {
-
 			if (!AllowedMeasurementTypes.Contains(DataPoint.MeasurementDefinition.MeasurementType)) {
 				NotificationHandler.Add(new Notification() {
-					Category = NotificationCategory.Error, Text = "Value Type not supported by this visualization.", DisplayDuration = 5f
+					Category = NotificationCategory.Error,
+					Text = "Value Type not supported by this visualization.",
+					DisplayDuration = 5f
 				});
 				return;
 			}
