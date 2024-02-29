@@ -38,8 +38,7 @@ namespace DataskopAR.Data {
 			}
 		}
 
-		public int CurrentMeasurementResultIndex =>
-			MeasurementDefinition.MeasurementResults.ToList().IndexOf(CurrentMeasurementResult);
+		public int CurrentMeasurementResultIndex => MeasurementDefinition.MeasurementResults.ToList().IndexOf(CurrentMeasurementResult);
 
 		public DataAttribute Attribute { get; set; }
 		public Visualization Vis { get; private set; }
