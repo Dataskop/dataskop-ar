@@ -32,7 +32,7 @@ namespace DataskopAR.Entities.Visualizations {
 			set {
 				dataPoint = value;
 				if (value != null)
-					OnDatapointChanged();
+					OnDataPointChanged();
 			}
 		}
 
@@ -70,7 +70,7 @@ namespace DataskopAR.Entities.Visualizations {
 		/// <summary>
 		///  Creates a visualization for a given Data Point.
 		/// </summary>
-		protected virtual void OnDatapointChanged() {
+		protected virtual void OnDataPointChanged() {
 			DataPoint.MeasurementResultChanged += OnMeasurementResultChanged;
 		}
 

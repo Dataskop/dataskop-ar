@@ -63,8 +63,8 @@ namespace DataskopAR.Entities.Visualizations {
 
         #region Methods
 
-		protected override void OnDatapointChanged() {
-			base.OnDatapointChanged();
+		protected override void OnDataPointChanged() {
+			base.OnDataPointChanged();
 			Options = Instantiate(options);
 
 			Transform displayTransform = dataDisplay.transform;
