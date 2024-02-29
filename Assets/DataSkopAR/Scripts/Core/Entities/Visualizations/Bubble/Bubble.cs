@@ -67,8 +67,6 @@ namespace DataskopAR.Entities.Visualizations {
 			base.OnDatapointChanged();
 			Options = Instantiate(options);
 
-			Options = Instantiate(options);
-
 			spriteRenderer.enabled = false;
 
 			VisTransform.localPosition = Offset;

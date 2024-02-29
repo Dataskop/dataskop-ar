@@ -12,9 +12,8 @@ namespace DataskopAR.Entities.Visualizations {
 
         #region Fields
 
-		[Header("References")] [SerializeField]
-		private SpriteRenderer spriteRenderer;
-
+		[Header("References")]
+		[SerializeField] private SpriteRenderer spriteRenderer;
 		[SerializeField] private DotOptions options;
 		[SerializeField] private DotTimeSeries dotTimeSeries;
 		[SerializeField] private Transform dropShadow;
@@ -23,24 +22,22 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private LineRenderer groundLine;
 		[SerializeField] private SpriteRenderer authorIconSpriteRenderer;
 
-		[Header("Display References")] [SerializeField]
-		private Canvas dataDisplay;
+		[Header("Display References")]
+		[SerializeField] private Canvas dataDisplay;
 
 		[SerializeField] private CanvasGroup dataDisplayGroup;
 		[SerializeField] private TextMeshProUGUI idTextMesh;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI dateTextMesh;
 
-		[Header("Icon Values")] [SerializeField]
-		private Image boolIcon;
-
+		[Header("Icon Values")]
+		[SerializeField] private Image boolIcon;
 		[SerializeField] private Sprite[] boolIcons;
 		[SerializeField] private Color32 boolTrueColor;
 		[SerializeField] private Color32 boolFalseColor;
 
-		[Header("Animation Values")] [SerializeField]
-		private AnimationCurve animationCurveSelect;
-
+		[Header("Animation Values")]
+		[SerializeField] private AnimationCurve animationCurveSelect;
 		[SerializeField] private AnimationCurve animationCurveDeselect;
 		[SerializeField] private float animationTimeOnSelect;
 		[SerializeField] private float animationTimeOnDeselect;
