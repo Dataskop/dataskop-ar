@@ -10,13 +10,13 @@ Shader "DataSkopAR/VisDot"
         Tags
         {
             "RenderType"="Transparent"
-            "Queue"="Transparent"
+            "Queue"="Geometry"
             "RenderPipeline"="UniversalRenderPipeline"
+            "IgnoreProjector"="True"
         }
 
         Blend SrcAlpha OneMinusSrcAlpha
         LOD 100
-
         Cull Off
         ZWrite On
         ZTest LEqual
@@ -31,14 +31,12 @@ Shader "DataSkopAR/VisDot"
 
             #include "UnityCG.cginc"
 
-            struct appdata
-            {
+            struct appdata {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
             };
 
-            struct v2f
-            {
+            struct v2f {
                 float2 uv : TEXCOORD0;
                 UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;

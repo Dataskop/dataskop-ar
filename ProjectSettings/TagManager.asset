@@ -50,6 +50,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: AlwaysOnTop
+  - name: WorldSpaceCanvas
     uniqueID: 2688042747
     locked: 0
