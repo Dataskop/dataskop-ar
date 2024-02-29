@@ -10,12 +10,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 	public class Dot : Visualization {
 
-#region Constants
-
-		private static readonly int ShaderColor = Shader.PropertyToID("_Color");
-
-#endregion
-
 #region Fields
 
 		[Header("References")]
@@ -85,6 +79,7 @@ namespace DataskopAR.Entities.Visualizations {
 				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - imageRenderer.sprite.bounds.size.y * 0.75f,
 					VisTransform.localPosition.z),
 				dropShadow.localPosition);
+
 			groundLine.startWidth = 0.0075f;
 			groundLine.endWidth = 0.0075f;
 

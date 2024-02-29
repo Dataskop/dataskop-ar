@@ -126,18 +126,18 @@ namespace DataskopAR.Entities.Visualizations {
 		public override void ApplyStyle() { }
 
 		public override void Hover() {
-			pillarFrameMeshRenderer.material = Options.materialOptions[0].hoverMaterial;
+			pillarFrameMeshRenderer.material = Options.styles[0].hoverMaterial;
 			ShowUserDirectionCanvas();
 		}
 
 		public override void Select() {
-			pillarFrameMeshRenderer.material = Options.materialOptions[0].selectionMaterial;
+			pillarFrameMeshRenderer.material = Options.styles[0].selectionMaterial;
 			ShowUserDirectionCanvas();
 			IsSelected = true;
 		}
 
 		public override void Deselect() {
-			pillarFrameMeshRenderer.material = Options.materialOptions[0].defaultMaterial;
+			pillarFrameMeshRenderer.material = Options.styles[0].defaultMaterial;
 			HideAllUserDirectionCanvas();
 			IsSelected = false;
 		}
