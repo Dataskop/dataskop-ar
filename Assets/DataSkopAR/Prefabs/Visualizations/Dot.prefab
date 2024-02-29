@@ -188,7 +188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb47a29a2a274313bed14278e1446c43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  faceThreshold: 30
+  faceThreshold: 100
   targetCamera: {fileID: 0}
 --- !u!1 &2042400481462122573
 GameObject:
@@ -535,7 +535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb47a29a2a274313bed14278e1446c43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  faceThreshold: 30
+  faceThreshold: 100
   targetCamera: {fileID: 0}
 --- !u!1 &4044058376309783487
 GameObject:
@@ -937,7 +937,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb47a29a2a274313bed14278e1446c43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  faceThreshold: 30
+  faceThreshold: 100
   targetCamera: {fileID: 0}
 --- !u!1 &7001842154920687943
 GameObject:
