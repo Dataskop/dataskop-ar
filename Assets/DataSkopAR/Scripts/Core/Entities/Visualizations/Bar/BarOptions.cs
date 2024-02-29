@@ -6,7 +6,7 @@ namespace DataskopAR.Entities.Visualizations {
 	public class BarOptions : ScriptableObject {
 
 		public Color fillColor;
-		public Style[] materialOptions;
+		public Style[] styles;
 
 	}
 
