@@ -78,7 +78,9 @@ namespace DataskopAR {
 			Error thrownError = GetError(errorCode);
 			thrownError.TimeStamp = DateTime.Now;
 			ErrorQueue.Enqueue(thrownError);
-			OnErrorReceived?.Invoke(sender, new ErrorReceivedEventArgs { Error = thrownError });
+			OnErrorReceived?.Invoke(sender, new ErrorReceivedEventArgs {
+				Error = thrownError
+			});
 		}
 
 		/// <summary>
@@ -92,7 +94,9 @@ namespace DataskopAR {
 			thrownError.TimeStamp = DateTime.Now;
 			thrownError.Value = value;
 			ErrorQueue.Enqueue(thrownError);
-			OnErrorReceived?.Invoke(sender, new ErrorReceivedEventArgs { Error = thrownError });
+			OnErrorReceived?.Invoke(sender, new ErrorReceivedEventArgs {
+				Error = thrownError
+			});
 		}
 
 		/// <summary>

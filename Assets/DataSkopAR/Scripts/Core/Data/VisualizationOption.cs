@@ -18,7 +18,12 @@ namespace DataskopAR.Data {
 
 		public VisualizationOption(string type, VisualizationStyle style) {
 
-			string[] acceptedTypes = { "dot", "bubble", "bar", "box" };
+			string[] acceptedTypes = {
+				"dot",
+				"bubble",
+				"bar",
+				"box"
+			};
 
 			if (!acceptedTypes.Contains(type)) {
 				throw new ArgumentOutOfRangeException(nameof(type), "Type not supported.");
