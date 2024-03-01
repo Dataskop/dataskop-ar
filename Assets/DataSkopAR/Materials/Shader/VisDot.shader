@@ -64,14 +64,14 @@ Shader "DataSkopAR/VisDot"
                 half4 col = tex2D(_MainTex, i.uv);
                 half3 rgb = col.rgb;
 
-                // Brightness (luma) of the original color
-                float brightness = dot(rgb, half3(0.2126, 0.7152, 0.0722));
+                // linear RGB to luminance/brightness (luma)
+                float brightness = dot(rgb, half3(0.222, 0.707, 0.071));
                 float blendFactor = smoothstep(0.0, 0.5, 1.0 - brightness); // Adjust thresholds as needed
 
                 //  Blend based on the blendFactor
                 half3 blend_rgb = lerp(half3(1, 1, 1), _Color.rgb, blendFactor);
-
                 half4 blend_color = half4(blend_rgb, col.a);
+
                 UNITY_APPLY_FOG(i.fogCoord, blend_color);
                 return blend_color;
             }
