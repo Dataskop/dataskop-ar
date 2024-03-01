@@ -473,7 +473,7 @@ MonoBehaviour:
   idTextMesh: {fileID: 1936030068375102587}
   valueTextMesh: {fileID: 8550670531630696219}
   dateTextMesh: {fileID: 7912062229078590609}
-  minScale: 0.25
+  minScale: 0.3
   maxScale: 0.8
   curve:
     serializedVersion: 2
@@ -512,7 +512,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeContainer: {fileID: 4888721393604602538}
-  minScale: 0.25
+  minScale: 0.3
   maxScale: 0.8
 --- !u!1 &4431131822481873550
 GameObject:
