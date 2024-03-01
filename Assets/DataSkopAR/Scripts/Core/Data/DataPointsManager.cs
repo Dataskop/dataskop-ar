@@ -53,9 +53,13 @@ namespace DataskopAR.Data {
 		private Vector2d[] DataPointsLocations { get; set; }
 
 		private DataAttributeManager DataAttributeManager => dataAttrRepo;
+
 		private VisualizationRepository VisualizationRepository => visRepository;
+
 		private AuthorRepository AuthorRepository => authorRepository;
+
 		private bool HasLoadedDataPoints { get; set; }
+
 		private DataManager DataManager => dataManager;
 
 #endregion

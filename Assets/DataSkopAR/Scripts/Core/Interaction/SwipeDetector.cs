@@ -19,7 +19,9 @@ namespace DataskopAR.Interaction {
 #region Properties
 
 		private Ray ReticuleToWorldRay => arCamera.ScreenPointToRay(new Vector3(MousePosition.x, MousePosition.y, -5));
+
 		private static Vector3 MousePosition => Mouse.current.position.ReadValue();
+
 		private Vector2 FingerPosition { get; set; } = Vector2.zero;
 
 #endregion

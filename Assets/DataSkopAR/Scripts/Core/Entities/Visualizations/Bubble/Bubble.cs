@@ -31,10 +31,10 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private TextMeshProUGUI dateTextMesh;
 
 		[Header("Additional Values")]
-		[HideInInspector] public float maxScale;
 		[HideInInspector] public float minScale;
-
+		[HideInInspector] public float maxScale;
 		[SerializeField] private AnimationCurve curve;
+
 		private Coroutine scaleRoutine;
 		private Coroutine groundLineRoutine;
 		private Coroutine labelRoutine;
@@ -48,24 +48,30 @@ namespace DataskopAR.Entities.Visualizations {
 #region Properties
 
 		public VisualizationType Type => VisualizationType.bubble;
+
 		private float BubbleSize {
-			get {
-				return bubbleSize;
-			}
+			get => bubbleSize;
 			set {
 				bubbleSize = value;
 				OnBubbleSizeChanged();
 			}
 		}
+
 		private BubbleOptions Options { get; set; }
+
 		public override MeasurementType[] AllowedMeasurementTypes { get; set; } = {
 			MeasurementType.Float,
 			MeasurementType.Bool
 		};
+
 		private BubbleTimeSeries TimeSeries => bubbleTimeSeries;
+
 		private float MaxScale => maxScale;
+
 		private float MinScale => minScale;
+
 		public override Transform VisTransform => visTransform;
+
 		private Vector3 DisplayOrigin { get; set; }
 
 #endregion

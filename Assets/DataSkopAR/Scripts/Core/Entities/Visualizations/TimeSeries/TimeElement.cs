@@ -22,10 +22,12 @@ namespace DataskopAR.Entities.Visualizations {
 #region Properties
 
 		public TimeSeries Series { get; set; }
+
 		public Vector3 NextTargetPosition { get; set; }
 
 		public MeasurementResult MeasurementResult {
 			get => measurementResult;
+
 			set {
 				measurementResult = value;
 				SetAuthorSprite();

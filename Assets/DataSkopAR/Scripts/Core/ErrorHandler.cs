@@ -126,9 +126,13 @@ namespace DataskopAR {
 		public struct Error {
 
 			public int ErrorCode { get; set; }
+
 			public string ErrorMessage { get; set; }
+
 			public ErrorType Type { get; set; }
+
 			public DateTime TimeStamp { get; set; }
+
 			public float? Value { get; set; }
 
 			public new string ToString() {

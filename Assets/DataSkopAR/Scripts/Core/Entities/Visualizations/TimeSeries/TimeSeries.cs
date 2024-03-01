@@ -28,12 +28,19 @@ namespace DataskopAR.Entities.Visualizations {
 #region Properties
 
 		protected List<TimeElement> TimeElements { get; private set; }
+
 		protected TimeSeriesConfig Configuration { get; private set; }
+
 		public DataPoint DataPoint { get; protected set; }
+
 		private List<MeasurementResult> MeasurementResults { get; set; }
+
 		private Vector3 VisOrigin { get; set; }
+
 		private int SwipeCount { get; set; }
+
 		private int ResultsCount => MeasurementResults?.Count ?? 0;
+
 		public bool IsSpawned { get; private set; }
 
 #endregion

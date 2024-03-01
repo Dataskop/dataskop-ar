@@ -50,9 +50,13 @@ namespace DataskopAR.Entities.Visualizations {
 #region Properties
 
 		public VisualizationType Type => VisualizationType.dot;
+
 		private DotOptions Options { get; set; }
+
 		private DotTimeSeries TimeSeries => dotTimeSeries;
+
 		public override Transform VisTransform => visTransform;
+
 		public override MeasurementType[] AllowedMeasurementTypes { get; set; } = {
 			MeasurementType.Float,
 			MeasurementType.Bool

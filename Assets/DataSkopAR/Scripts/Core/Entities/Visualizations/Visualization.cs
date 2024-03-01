@@ -28,45 +28,42 @@ namespace DataskopAR.Entities.Visualizations {
 #region Properties
 
 		public DataPoint DataPoint {
-			get {
-				return dataPoint;
-			}
+			get => dataPoint;
+
 			set {
 				dataPoint = value;
-				if (value != null)
+				if (value != null) {
 					OnDataPointChanged();
+				}
 			}
 		}
 
 		public VisualizationOption VisOption { get; set; }
+
 		public Camera ARCamera { get; set; }
+
 		public bool IsSelected { get; set; }
+
 		public bool IsSpawned => DataPoint != null;
+
 		public abstract Transform VisTransform { get; }
+
 		public abstract MeasurementType[] AllowedMeasurementTypes { get; set; }
 
 		/// <summary>
 		/// The offset of the visualization to the ground.
 		/// </summary>
 		public Vector3 Offset {
-			get {
-				return offset;
-			}
-			set {
-				offset = value;
-			}
+			get => offset;
+			set => offset = value;
 		}
 
 		/// <summary>
 		/// The factor that gets multiplied with the objects default size.
 		/// </summary>
 		public float Scale {
-			get {
-				return scaleFactor;
-			}
-			set {
-				scaleFactor = value;
-			}
+			get => scaleFactor;
+			set => scaleFactor = value;
 		}
 
 #endregion

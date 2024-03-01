@@ -39,12 +39,17 @@ namespace DataskopAR.Entities.Visualizations {
 #region Properties
 
 		public VisualizationType Type => VisualizationType.bar;
+
 		private Vector3 BarFillScale { get; set; }
+
 		private float BarHeight { get; set; }
+
 		private BarOptions Options { get; set; }
+
 		private BarTimeSeries TimeSeries => barTimeSeries;
 
 		public override Transform VisTransform => visTransform;
+
 		public override MeasurementType[] AllowedMeasurementTypes { get; set; } = {
 			MeasurementType.Float,
 			MeasurementType.Bool

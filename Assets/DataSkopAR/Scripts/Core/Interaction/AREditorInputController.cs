@@ -20,6 +20,7 @@ namespace DataskopAR.Interaction {
 #region Properties
 
 		private Vector3 MoveDirection { get; set; }
+
 		private Vector2 LookDelta { get; set; }
 
 #endregion
