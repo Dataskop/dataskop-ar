@@ -41,13 +41,22 @@ namespace DataskopAR.Entities.Visualizations {
 		private Coroutine labelLineRoutineLower;
 		private Coroutine labelLineRoutineUpper;
 		private Vector3 prevScale;
+		private float bubbleSize;
 
 #endregion
 
 #region Properties
 
 		public VisualizationType Type => VisualizationType.bubble;
-		private float BubbleSize { get; set; }
+		private float BubbleSize {
+			get {
+				return bubbleSize;
+			}
+			set {
+				bubbleSize = value;
+				OnBubbleSizeChanged();
+			}
+		}
 		private BubbleOptions Options { get; set; }
 		public override MeasurementType[] AllowedMeasurementTypes { get; set; } = {
 			MeasurementType.Float,
@@ -69,11 +78,9 @@ namespace DataskopAR.Entities.Visualizations {
 
 			visImageRenderer.enabled = false;
 
-			VisTransform.localPosition = Offset;
+			VisTransform.root.localPosition = Offset;
 
 			Transform displayTransform = dataDisplay.transform;
-			displayTransform.localScale *= Scale;
-			displayTransform.localPosition = Offset;
 			DisplayOrigin = displayTransform.localPosition;
 
 			idTextMesh.text = DataPoint.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper();
@@ -91,9 +98,9 @@ namespace DataskopAR.Entities.Visualizations {
 			OnMeasurementResultChanged(DataPoint.MeasurementDefinition.GetLatestMeasurementResult());
 		}
 
-		public override void ApplyStyle() {
-			dropShadow.gameObject.SetActive(DataPoint.Vis.VisOption.Style.HasDropShadow);
-			groundLine.gameObject.SetActive(DataPoint.Vis.VisOption.Style.HasGroundLine);
+		public override void ApplyStyle(VisualizationStyle style) {
+			dropShadow.gameObject.SetActive(style.HasDropShadow);
+			groundLine.gameObject.SetActive(style.HasGroundLine);
 		}
 
 		public override void OnMeasurementResultChanged(MeasurementResult mr) {
@@ -133,7 +140,7 @@ namespace DataskopAR.Entities.Visualizations {
 		private void SetBubbleSize(float value, float minValue, float maxValue, float minScale, float maxScale) {
 
 			value = Mathf.Clamp(value, minValue, maxValue);
-			
+
 			// calc min and max area out of desired min and max scale
 			float minArea = Mathf.PI * Mathf.Pow(minScale, 2);
 			float maxArea = Mathf.PI * Mathf.Pow(maxScale, 2);
@@ -144,15 +151,23 @@ namespace DataskopAR.Entities.Visualizations {
 			// calc radius out of the area
 			BubbleSize = Mathf.Sqrt(newArea / Mathf.PI);
 
+		}
+
+		private void OnBubbleSizeChanged() {
+
+			Vector3 newBubbleScale = new(BubbleSize, BubbleSize, BubbleSize);
+
 			if (!visImageRenderer.enabled) {
-				VisTransform.localScale = new Vector3(BubbleSize, BubbleSize, BubbleSize);
+				VisTransform.localScale = newBubbleScale;
+				dataDisplay.localScale = newBubbleScale;
 				visImageRenderer.enabled = true;
 			}
 			else {
 
 				if (scaleRoutine != null) {
 					StopCoroutine(scaleRoutine);
-					VisTransform.localScale = new Vector3(BubbleSize, BubbleSize, BubbleSize);
+					VisTransform.localScale = newBubbleScale;
+					dataDisplay.localScale = newBubbleScale;
 				}
 
 				scaleRoutine = StartCoroutine(LerperHelper.TransformLerpOnCurve(VisTransform, TransformValue.Scale, VisTransform.localScale,
@@ -160,11 +175,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 			}
 
-			dropShadow.transform.localScale = new Vector3(BubbleSize * 0.4f, BubbleSize * 0.4f, BubbleSize * 0.4f);
-
-		}
-
-		private void OnBubbleSizeChanged() {
+			dropShadow.transform.localScale = newBubbleScale;
 
 			groundLineRoutine = StartCoroutine(MoveLinePointTo(groundLine, 0,
 				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - visImageRenderer.sprite.bounds.size.y * 0.75f,

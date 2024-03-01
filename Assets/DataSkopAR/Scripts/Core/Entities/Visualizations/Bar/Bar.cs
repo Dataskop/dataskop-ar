@@ -123,7 +123,9 @@ namespace DataskopAR.Entities.Visualizations {
 			transform.localPosition += offset;
 		}
 
-		public override void ApplyStyle() { }
+		public override void ApplyStyle(VisualizationStyle style) {
+			return;
+		}
 
 		public override void Hover() {
 			pillarFrameMeshRenderer.material = Options.styles[0].hoverMaterial;
