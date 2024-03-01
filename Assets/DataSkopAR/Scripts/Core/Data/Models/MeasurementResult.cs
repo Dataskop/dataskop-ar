@@ -13,10 +13,15 @@ namespace DataskopAR.Data {
 #region Properties
 
 		public string Value { get; }
+
 		public int ValueType { get; }
+
 		public DateTime Timestamp { get; }
+
 		public Position Position { get; }
+
 		private MeasurementDefinition MeasurementDefinition { get; }
+
 		public string Author { get; }
 
 #endregion

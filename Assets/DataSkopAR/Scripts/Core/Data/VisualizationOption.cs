@@ -10,6 +10,7 @@ namespace DataskopAR.Data {
 #region Properties
 
 		public string Type { get; set; }
+
 		public VisualizationStyle Style { get; set; }
 
 #endregion

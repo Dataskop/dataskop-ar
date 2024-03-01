@@ -8,6 +8,7 @@ namespace DataskopAR.UI {
 #region Properties
 
 		protected override VisualElement ComponentRoot { get; set; }
+
 		private VisualElement InfoCard { get; set; }
 
 #endregion

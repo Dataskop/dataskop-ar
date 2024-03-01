@@ -14,10 +14,15 @@ namespace DataskopAR.Data {
 #region Properties
 
 		public int ID { get; }
+
 		public MeasurementType MeasurementType { get; }
+
 		public MeasurementDefinitionInformation MeasurementDefinitionInformation { get; }
+
 		public string DeviceId { get; }
+
 		public string AttributeId { get; }
+
 		public ICollection<MeasurementResult> MeasurementResults { get; private set; }
 
 #endregion
@@ -134,6 +139,7 @@ namespace DataskopAR.Data {
 	public class AdditionalMeasurementDefinitionProperties {
 
 		public string DeviceId { get; }
+
 		public string AttributeId { get; }
 
 		public AdditionalMeasurementDefinitionProperties(string deviceId, string attributeId) {
@@ -146,6 +152,7 @@ namespace DataskopAR.Data {
 	public class MeasurementResultsResponse {
 
 		public int Count { get; set; }
+
 		public ICollection<MeasurementResult> MeasurementResults { get; }
 
 		public MeasurementResultsResponse(int count, ICollection<MeasurementResult> measurementResults) {

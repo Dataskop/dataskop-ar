@@ -37,9 +37,13 @@ namespace DataskopAR.Interaction {
 #region Properties
 
 		public float GroundLevelYPosition { get; set; }
+
 		public bool IsEnabled { get; set; }
+
 		private ARPlane LowestPlane { get; set; }
+
 		private Ray TapScreenToWorldRay { get; set; }
+
 		private Vector2 TapPosition { get; set; }
 
 #endregion

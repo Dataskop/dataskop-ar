@@ -25,12 +25,19 @@ namespace DataskopAR.UI {
 #region Properties
 
 		private VisualElement Root { get; set; }
+
 		private VisualElement HistoryContainer { get; set; }
+
 		private VisualElement HistorySliderContainer { get; set; }
+
 		private VisualElement Dragger { get; set; }
+
 		private SliderInt HistorySlider { get; set; }
+
 		private bool IsActive { get; set; }
+
 		private Label CurrentTimeLabel { get; set; }
+
 		private DataPoint SelectedDataPoint { get; set; }
 
 #endregion

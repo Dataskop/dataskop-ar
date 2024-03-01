@@ -51,30 +51,55 @@ namespace DataskopAR.UI {
 #region Properties
 
 		private MenuView CurrentView { get; set; } = MenuView.Settings;
+
 		private bool IsOpen { get; set; }
+
 		private VisualElement Root { get; set; }
+
 		private VisualElement MenuContainer { get; set; }
+
 		private VisualElement SettingsMenuContainer { get; set; }
+
 		private VisualElement ProjectSelectorContainer { get; set; }
+
 		private VisualElement AppButtonsContainer { get; set; }
+
 		private Button SettingsMenuButton { get; set; }
+
 		private Button ProjectSelectorButton { get; set; }
+
 		private Button HistoryButton { get; set; }
+
 		private Button ToggleBuildingsButton { get; set; }
+
 		private Button ToggleCompassButton { get; set; }
+
 		private Button ToggleOcclusionButton { get; set; }
+
 		private Button ToggleFloorCalibrationButton { get; set; }
+
 		private Button ToggleMinimapButton { get; set; }
+
 		private Button CompassCalibrationButton { get; set; }
+
 		private Button ResetCalibrationButton { get; set; }
+
 		private Button LogoutButton { get; set; }
+
 		private Button SortButton { get; set; }
+
 		private VisualElement ProjectsIcon { get; set; }
+
 		private VisualElement SettingsIcon { get; set; }
+
 		private VisualElement HistoryIcon { get; set; }
+
 		private Label VersionLabel { get; set; }
+
 		private Label TitleLabel { get; set; }
+
 		private TextField AmountInput { get; set; }
+
 		private TextField CooldownInput { get; set; }
 
 #endregion

@@ -7,7 +7,9 @@ namespace DataskopAR.Data {
 #region Properties
 
 		public double Latitude { get; }
+
 		public double Longitude { get; }
+
 		public double Altitude { get; }
 
 #endregion

@@ -1,6 +1,7 @@
 using DataskopAR.Data;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace DataskopAR.Entities.Visualizations {
 
@@ -9,7 +10,7 @@ namespace DataskopAR.Entities.Visualizations {
 #region Fields
 
 		[Header("References")]
-		[SerializeField] private SpriteRenderer authorSpriteRenderer;
+		[SerializeField] private Image authorImageRenderer;
 		[SerializeField] private CanvasGroup dataDisplay;
 		[SerializeField] private TextMeshProUGUI valueDisplay;
 		[SerializeField] private TextMeshProUGUI dateDisplay;
@@ -21,6 +22,7 @@ namespace DataskopAR.Entities.Visualizations {
 #region Properties
 
 		public TimeSeries Series { get; set; }
+
 		public Vector3 NextTargetPosition { get; set; }
 
 		public MeasurementResult MeasurementResult {
@@ -33,9 +35,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public int DistanceToDataPoint { get; set; }
 
-		public SpriteRenderer AuthorSprite {
-			get => authorSpriteRenderer;
-		}
+		public Image AuthorSprite => authorImageRenderer;
 
 #endregion
 
@@ -44,11 +44,11 @@ namespace DataskopAR.Entities.Visualizations {
 		private void SetAuthorSprite() {
 
 			if (MeasurementResult.Author != string.Empty) {
-				authorSpriteRenderer.sprite = Series.DataPoint.AuthorRepository.AuthorSprites[MeasurementResult.Author];
-				authorSpriteRenderer.enabled = true;
+				authorImageRenderer.sprite = Series.DataPoint.AuthorRepository.AuthorSprites[MeasurementResult.Author];
+				authorImageRenderer.enabled = true;
 			}
 			else {
-				authorSpriteRenderer.enabled = false;
+				authorImageRenderer.enabled = false;
 			}
 
 		}

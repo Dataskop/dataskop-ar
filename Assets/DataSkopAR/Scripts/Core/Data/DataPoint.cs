@@ -32,18 +32,21 @@ namespace DataskopAR.Data {
 
 		public MeasurementResult CurrentMeasurementResult {
 			get => mResult;
+
 			set {
 				mResult = value;
 				MeasurementResultChanged?.Invoke(CurrentMeasurementResult);
 			}
 		}
 
-		public int CurrentMeasurementResultIndex =>
-			MeasurementDefinition.MeasurementResults.ToList().IndexOf(CurrentMeasurementResult);
+		public int CurrentMeasurementResultIndex => MeasurementDefinition.MeasurementResults.ToList().IndexOf(CurrentMeasurementResult);
 
 		public DataAttribute Attribute { get; set; }
+
 		public Visualization Vis { get; private set; }
+
 		public Device Device { get; set; }
+
 		public AuthorRepository AuthorRepository { get; set; }
 
 #endregion

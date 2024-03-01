@@ -14,8 +14,11 @@ namespace DataskopAR.Data {
 #region Properties
 
 		public int ID { get; set; }
+
 		public ProjectInformation Information { get; set; }
+
 		public AdditionalProperties Properties { get; set; }
+
 		public ICollection<Device> Devices { get; set; }
 
 #endregion

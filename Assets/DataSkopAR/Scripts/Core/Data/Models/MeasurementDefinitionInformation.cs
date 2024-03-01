@@ -5,10 +5,15 @@ namespace DataskopAR.Data {
 #region Properties
 
 		public string Name { get; set; }
+
 		public string UiShortName { get; set; }
+
 		public string Description { get; set; }
+
 		public string Info { get; set; }
+
 		public string CreatedDate { get; set; }
+
 		public string UpdatedDate { get; set; }
 
 #endregion
