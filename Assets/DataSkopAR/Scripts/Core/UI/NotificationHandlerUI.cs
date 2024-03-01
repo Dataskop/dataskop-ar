@@ -30,9 +30,13 @@ namespace DataskopAR.UI {
 #region Properties
 
 		private Dictionary<NotificationCategory, NotificationStyle> NotificationStyles { get; set; }
+
 		private VisualElement Root { get; set; }
+
 		private VisualElement NotificationEl { get; set; }
+
 		private VisualElement IconElement { get; set; }
+
 		private Label MessageTextElement { get; set; }
 
 #endregion

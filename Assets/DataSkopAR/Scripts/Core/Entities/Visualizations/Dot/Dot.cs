@@ -10,88 +10,91 @@ namespace DataskopAR.Entities.Visualizations {
 
 	public class Dot : Visualization {
 
-        #region Fields
+#region Fields
 
-		[Header("References")] [SerializeField]
-		private SpriteRenderer spriteRenderer;
-
+		[Header("References")]
+		[SerializeField] private Image visImageRenderer;
+		[SerializeField] private Transform visTransform;
 		[SerializeField] private DotOptions options;
 		[SerializeField] private DotTimeSeries dotTimeSeries;
 		[SerializeField] private Transform dropShadow;
-		[SerializeField] private Transform visTransform;
-		[SerializeField] private Transform timeSeriesTransform;
 		[SerializeField] private LineRenderer groundLine;
-		[SerializeField] private SpriteRenderer authorIconSpriteRenderer;
+		[SerializeField] private Image authorIconImageRenderer;
 
-		[Header("Display References")] [SerializeField]
-		private Canvas dataDisplay;
-
+		[Header("Display References")]
+		[SerializeField] private Transform dataDisplay;
 		[SerializeField] private CanvasGroup dataDisplayGroup;
 		[SerializeField] private TextMeshProUGUI idTextMesh;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI dateTextMesh;
 
-		[Header("Icon Values")] [SerializeField]
-		private Image boolIcon;
-
+		[Header("Icon Values")]
+		[SerializeField] private Image boolIcon;
 		[SerializeField] private Sprite[] boolIcons;
 		[SerializeField] private Color32 boolTrueColor;
 		[SerializeField] private Color32 boolFalseColor;
 
-		[Header("Animation Values")] [SerializeField]
-		private AnimationCurve animationCurveSelect;
-
+		[Header("Animation Values")]
+		[SerializeField] private AnimationCurve animationCurveSelect;
 		[SerializeField] private AnimationCurve animationCurveDeselect;
 		[SerializeField] private float animationTimeOnSelect;
 		[SerializeField] private float animationTimeOnDeselect;
+		[SerializeField] private float selectionScale;
 
 		private Coroutine animationCoroutine;
 		private Vector3 animationTarget;
 		private Coroutine moveLineCoroutine;
 
-        #endregion
+#endregion
 
-        #region Properties
+#region Properties
 
 		public VisualizationType Type => VisualizationType.dot;
+
 		private DotOptions Options { get; set; }
+
 		private DotTimeSeries TimeSeries => dotTimeSeries;
+
 		public override Transform VisTransform => visTransform;
+
 		public override MeasurementType[] AllowedMeasurementTypes { get; set; } = {
 			MeasurementType.Float,
 			MeasurementType.Bool
 		};
 
-        #endregion
+#endregion
 
-        #region Methods
+#region Methods
 
-		protected override void OnDatapointChanged() {
-			base.OnDatapointChanged();
+		protected override void OnDataPointChanged() {
+
+			base.OnDataPointChanged();
 			Options = Instantiate(options);
 
 			Transform displayTransform = dataDisplay.transform;
-			dataDisplay.worldCamera = ARCamera;
 
 			VisTransform.localScale *= Scale;
 			dropShadow.transform.localScale *= Scale;
 			displayTransform.localScale *= Scale;
 
-			VisTransform.localPosition = Offset;
-			displayTransform.localPosition = Offset;
+			VisTransform.root.localPosition = Offset;
+			dropShadow.transform.localPosition -= Offset;
 
 			SetLinePosition(groundLine,
-				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - spriteRenderer.bounds.size.y * 0.75f,
+				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - visImageRenderer.sprite.bounds.size.y * 0.75f,
 					VisTransform.localPosition.z),
 				dropShadow.localPosition);
+
 			groundLine.startWidth = 0.0075f;
 			groundLine.endWidth = 0.0075f;
 
 			idTextMesh.text = DataPoint.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper();
 			OnMeasurementResultChanged(DataPoint.CurrentMeasurementResult);
+
 		}
 
 		public override void OnMeasurementResultChanged(MeasurementResult mr) {
+
 			if (!AllowedMeasurementTypes.Contains(DataPoint.MeasurementDefinition.MeasurementType)) {
 				NotificationHandler.Add(new Notification() {
 					Category = NotificationCategory.Error,
@@ -123,11 +126,12 @@ namespace DataskopAR.Entities.Visualizations {
 			}
 
 			SetAuthorImage();
+
 		}
 
-		public override void ApplyStyle() {
-			dropShadow.gameObject.SetActive(DataPoint.Vis.VisOption.Style.HasDropShadow);
-			groundLine.gameObject.SetActive(DataPoint.Vis.VisOption.Style.HasGroundLine);
+		public override void ApplyStyle(VisualizationStyle style) {
+			dropShadow.gameObject.SetActive(style.HasDropShadow);
+			groundLine.gameObject.SetActive(style.HasGroundLine);
 		}
 
 		public override void OnMeasurementResultsUpdated() {
@@ -135,6 +139,7 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		public override void OnTimeSeriesToggled(bool isActive) {
+
 			if (isActive) {
 				groundLine.enabled = false;
 				TimeSeries.SpawnSeries(timeSeriesConfiguration, DataPoint);
@@ -143,19 +148,21 @@ namespace DataskopAR.Entities.Visualizations {
 				groundLine.enabled = true;
 				TimeSeries.DespawnSeries();
 			}
+
 		}
 
 		public override void Hover() {
-			spriteRenderer.material = Options.materialOptions[0].Hovered;
+			visImageRenderer.material = Options.styles[0].hoverMaterial;
 			dataDisplayGroup.alpha = 1;
 		}
 
 		public override void Select() {
+
 			if (animationCoroutine != null) {
 				CancelAnimation();
 			}
 
-			animationTarget = visTransform.localScale * 1.35f;
+			animationTarget = visTransform.localScale * selectionScale;
 
 			animationCoroutine = StartCoroutine(LerperHelper.TransformLerpOnCurve(
 				visTransform,
@@ -167,18 +174,20 @@ namespace DataskopAR.Entities.Visualizations {
 				OnScaleChanged
 			));
 
-			spriteRenderer.material = Options.materialOptions[0].Selected;
+			visImageRenderer.material = Options.styles[0].selectionMaterial;
 			dataDisplayGroup.alpha = 1;
 			IsSelected = true;
+
 		}
 
 		public override void Deselect() {
+
 			if (IsSelected) {
 				if (animationCoroutine != null) {
 					CancelAnimation();
 				}
 
-				animationTarget = visTransform.localScale / 1.35f;
+				animationTarget = visTransform.localScale / selectionScale;
 
 				animationCoroutine = StartCoroutine(LerperHelper.TransformLerpOnCurve(
 					visTransform,
@@ -191,9 +200,10 @@ namespace DataskopAR.Entities.Visualizations {
 				));
 			}
 
-			spriteRenderer.material = Options.materialOptions[0].Deselected;
+			visImageRenderer.material = Options.styles[0].defaultMaterial;
 			dataDisplayGroup.alpha = 0;
 			IsSelected = false;
+
 		}
 
 		private void CancelAnimation() {
@@ -208,7 +218,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 		private void OnScaleChanged() {
 			moveLineCoroutine = StartCoroutine(MoveLinePointTo(0,
-				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - spriteRenderer.bounds.size.y * 0.75f,
+				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - visImageRenderer.sprite.bounds.size.y * 0.75f,
 					VisTransform.localPosition.z),
 				0.1f));
 		}
@@ -228,15 +238,15 @@ namespace DataskopAR.Entities.Visualizations {
 
 		private void SetAuthorImage() {
 			if (DataPoint.CurrentMeasurementResult.Author != string.Empty) {
-				authorIconSpriteRenderer.sprite = DataPoint.AuthorRepository.AuthorSprites[DataPoint.CurrentMeasurementResult.Author];
-				authorIconSpriteRenderer.enabled = true;
+				authorIconImageRenderer.sprite = DataPoint.AuthorRepository.AuthorSprites[DataPoint.CurrentMeasurementResult.Author];
+				authorIconImageRenderer.enabled = true;
 			}
 			else {
-				authorIconSpriteRenderer.enabled = false;
+				authorIconImageRenderer.enabled = false;
 			}
 		}
 
-        #endregion
+#endregion
 
 	}
 

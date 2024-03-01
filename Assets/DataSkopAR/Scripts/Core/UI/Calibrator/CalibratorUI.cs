@@ -32,8 +32,11 @@ namespace DataskopAR.UI {
 		private VisualElement ProgressIndicatorContainer { get; set; }
 
 		private VisualElement NorthAlignmentProgressBar { get; set; }
+
 		private VisualElement NorthAlignmentProgressContainer { get; set; }
+
 		private VisualElement RoomScanContainer { get; set; }
+
 		private VisualElement RoomScanProgress { get; set; }
 
 		private int PhaseCounter { get; set; }

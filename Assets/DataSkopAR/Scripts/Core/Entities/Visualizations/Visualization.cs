@@ -29,18 +29,25 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public DataPoint DataPoint {
 			get => dataPoint;
+
 			set {
 				dataPoint = value;
-				if (value != null)
-					OnDatapointChanged();
+				if (value != null) {
+					OnDataPointChanged();
+				}
 			}
 		}
 
 		public VisualizationOption VisOption { get; set; }
+
 		public Camera ARCamera { get; set; }
+
 		public bool IsSelected { get; set; }
+
 		public bool IsSpawned => DataPoint != null;
+
 		public abstract Transform VisTransform { get; }
+
 		public abstract MeasurementType[] AllowedMeasurementTypes { get; set; }
 
 		/// <summary>
@@ -70,7 +77,7 @@ namespace DataskopAR.Entities.Visualizations {
 		/// <summary>
 		///  Creates a visualization for a given Data Point.
 		/// </summary>
-		protected virtual void OnDatapointChanged() {
+		protected virtual void OnDataPointChanged() {
 			DataPoint.MeasurementResultChanged += OnMeasurementResultChanged;
 		}
 
@@ -108,7 +115,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public abstract void OnMeasurementResultChanged(MeasurementResult mr);
 
-		public abstract void ApplyStyle();
+		public abstract void ApplyStyle(VisualizationStyle style);
 
 		public void Swiped(Swipe swipe) {
 

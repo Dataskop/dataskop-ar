@@ -1,15 +1,10 @@
 using DataskopAR.Utils;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace DataskopAR.Entities.Visualizations {
 
 	public class DotTimeSeries : TimeSeries {
-
-#region Properties
-
-		private Vector3 CameraPosition => DataPoint.Vis.ARCamera.transform.position;
-
-#endregion
 
 #region Constants
 
@@ -26,9 +21,11 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		private void OnTimeSeriesSpawn() {
+
 			foreach (TimeElement e in TimeElements) {
 				e.transform.localScale *= DataPoint.Vis.Scale;
 			}
+
 		}
 
 		private void DrawDotTimeElement() {
@@ -38,7 +35,7 @@ namespace DataskopAR.Entities.Visualizations {
 			foreach (TimeElement e in TimeElements) {
 
 				if (ShouldDrawTimeElement(Configuration.visibleHistoryCount, e)) {
-					e.GetComponent<SpriteRenderer>().material
+					e.GetComponentInChildren<Image>().material
 						.SetFloat(Alpha, 1f - MathExtensions.Map01(Mathf.Abs(e.DistanceToDataPoint), 0, Configuration.visibleHistoryCount));
 				}
 

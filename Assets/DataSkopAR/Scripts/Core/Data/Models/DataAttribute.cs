@@ -12,11 +12,17 @@ namespace DataskopAR.Data {
 #region Properties
 
 		public string ID { get; set; }
+
 		public string Label { get; set; }
+
 		public string Type { get; set; }
+
 		public string Unit { get; set; }
+
 		public float Minimum { get; set; }
+
 		public float Maximum { get; set; }
+
 		public ICollection<VisualizationOption> VisOptions { get; set; }
 
 #endregion

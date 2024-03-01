@@ -36,10 +36,12 @@ namespace DataskopAR.UI {
 #region Properties
 
 		private VisualElement Root { get; set; }
+
 		private TextField TokenTextField { get; set; }
 
 		private string Token {
 			get => token;
+
 			set {
 				token = value;
 				TokenTextField.value = token;
@@ -47,6 +49,7 @@ namespace DataskopAR.UI {
 		}
 
 		private Label VersionLabel { get; set; }
+
 		private bool HasEnteredToken => TokenTextField?.value != string.Empty;
 
 #endregion

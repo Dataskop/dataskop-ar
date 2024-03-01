@@ -41,11 +41,17 @@ namespace DataskopAR.UI {
 #region Properties
 
 		private VisualElement VisSelectorRoot { get; set; }
+
 		private VisualElement VisOptionSelector { get; set; }
+
 		private VisualElement AttributeSelector { get; set; }
+
 		private ICollection<DataAttribute> AvailableAttributes { get; set; }
+
 		private ICollection<VisualizationOption> AvailableVisOptions { get; set; }
+
 		private List<Button> AttributeButtons { get; set; }
+
 		private List<Button> VisOptionButtons { get; set; }
 
 #endregion

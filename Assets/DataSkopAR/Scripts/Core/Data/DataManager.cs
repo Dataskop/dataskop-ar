@@ -60,6 +60,7 @@ namespace DataskopAR.Data {
 #region Properties
 
 		private IReadOnlyCollection<Company> Companies { get; set; }
+
 		public Project SelectedProject { get; private set; }
 
 		public int FetchAmount {
@@ -68,7 +69,9 @@ namespace DataskopAR.Data {
 		}
 
 		private LoadingIndicator LoadingIndicator => loadingIndicator;
+
 		private Stopwatch FetchTimer { get; set; }
+
 		private bool ShouldRefetch { get; set; }
 
 #endregion

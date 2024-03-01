@@ -53,9 +53,13 @@ namespace DataskopAR.Data {
 		private Vector2d[] DataPointsLocations { get; set; }
 
 		private DataAttributeManager DataAttributeManager => dataAttrRepo;
+
 		private VisualizationRepository VisualizationRepository => visRepository;
+
 		private AuthorRepository AuthorRepository => authorRepository;
+
 		private bool HasLoadedDataPoints { get; set; }
+
 		private DataManager DataManager => dataManager;
 
 #endregion
@@ -104,7 +108,7 @@ namespace DataskopAR.Data {
 					ToggleTimeSeries(dp, false);
 					dp.SetVis(vis);
 					dp.Vis.VisOption = visOpt;
-					dp.Vis.ApplyStyle();
+					dp.Vis.ApplyStyle(dp.Vis.VisOption.Style);
 				}
 
 				onVisualizationChanged?.Invoke(visOpt);

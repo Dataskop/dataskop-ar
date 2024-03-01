@@ -38,6 +38,7 @@ namespace DataskopAR.Interaction {
 		/// </summary>
 		public CalibratorPhase CurrentPhase {
 			get => currentPhase;
+
 			private set {
 				currentPhase = value;
 				phaseChanged?.Invoke(CurrentPhase);

@@ -38,6 +38,7 @@ namespace DataskopAR.Interaction {
 		/// </summary>
 		public DataPoint SelectedDataPoint {
 			get => selectedDataPoint;
+
 			private set {
 				selectedDataPoint = value;
 				onDataPointSelected?.Invoke(SelectedDataPoint);
@@ -51,6 +52,7 @@ namespace DataskopAR.Interaction {
 		/// </summary>
 		public DataPoint SoftSelectedDataPoint {
 			get => softSelectedDataPoint;
+
 			private set {
 				softSelectedDataPoint = value;
 
@@ -61,8 +63,11 @@ namespace DataskopAR.Interaction {
 		}
 
 		public TimeElement HoveredTimeElement { get; set; }
+
 		private Ray TapScreenToWorldRay { get; set; }
+
 		private Ray ReticuleToWorldRay => cam.ViewportPointToRay(screenRayPosition);
+
 		private Vector2 TapPosition { get; set; }
 
 #endregion
