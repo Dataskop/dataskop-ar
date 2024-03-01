@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9be824edd2679f40beb00d104119e30, type: 3}
   m_Name: BarOptions
   m_EditorClassIdentifier: 
-  fillColor: {r: 0.4021186, g: 0.6981132, b: 0.32600567, a: 1}
-  materialOptions:
-  - Deselected: {fileID: 2100000, guid: c08e23e36613f10459993236cf71c45a, type: 2}
-    Hovered: {fileID: 2100000, guid: 054dcdee08aaff44cb7c26670c8a5447, type: 2}
-    Selected: {fileID: 2100000, guid: 0abc940067761cd45897e1356b680b74, type: 2}
+  fillColor: {r: 0, g: 0.569185, b: 1, a: 1}
+  styles:
+  - defaultMaterial: {fileID: 2100000, guid: c08e23e36613f10459993236cf71c45a, type: 2}
+    hoverMaterial: {fileID: 2100000, guid: 054dcdee08aaff44cb7c26670c8a5447, type: 2}
+    selectionMaterial: {fileID: 2100000, guid: 0abc940067761cd45897e1356b680b74, type: 2}
