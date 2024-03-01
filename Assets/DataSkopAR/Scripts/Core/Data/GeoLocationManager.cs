@@ -56,8 +56,6 @@ namespace DataskopAR.Data {
 
 		}
 
-
-
 		/// <summary>
 		/// Update Map when user location gps over device is more accurate than latest sample
 		/// </summary>

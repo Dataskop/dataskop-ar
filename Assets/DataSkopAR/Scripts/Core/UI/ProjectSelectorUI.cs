@@ -32,11 +32,17 @@ namespace DataskopAR.UI {
 #region Properties
 
 		private VisualElement MenuContainer { get; set; }
+
 		private ICollection<Button> ProjectButtons { get; set; }
+
 		private Button SortButton { get; set; }
+
 		private ScrollView ProjectsContainer { get; set; }
+
 		private StyleColor SelectedColor { get; set; }
+
 		private StyleColor DeselectedColor { get; set; }
+
 		private IReadOnlyCollection<Company> Companies { get; set; }
 
 #endregion

@@ -15,6 +15,7 @@ namespace DataskopAR.Data {
 #region Properties
 
 		private static Queue<Notification> Notifications { get; } = new();
+
 		public static int QueueCount => Notifications.Count;
 
 #endregion

@@ -8,7 +8,9 @@ namespace DataskopAR.Data {
 #region Properties
 
 		public string ID { get; set; }
+
 		public string Label { get; set; }
+
 		public ICollection<MeasurementDefinition> MeasurementDefinitions { get; set; }
 
 		/// <summary>
