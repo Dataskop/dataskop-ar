@@ -13,11 +13,11 @@ namespace DataskopAR.Entities.Visualizations {
 #region Fields
 
 		[Header("References")]
-		[SerializeField] private Image imageRenderer;
+		[SerializeField] private Image visImageRenderer;
+		[SerializeField] private Transform visTransform;
 		[SerializeField] private DotOptions options;
 		[SerializeField] private DotTimeSeries dotTimeSeries;
 		[SerializeField] private Transform dropShadow;
-		[SerializeField] private Transform visTransform;
 		[SerializeField] private LineRenderer groundLine;
 		[SerializeField] private Image authorIconImageRenderer;
 
@@ -76,7 +76,7 @@ namespace DataskopAR.Entities.Visualizations {
 			displayTransform.localPosition = new Vector3(displayTransform.localPosition.x, Offset.y, displayTransform.localPosition.z);
 
 			SetLinePosition(groundLine,
-				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - imageRenderer.sprite.bounds.size.y * 0.75f,
+				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - visImageRenderer.sprite.bounds.size.y * 0.75f,
 					VisTransform.localPosition.z),
 				dropShadow.localPosition);
 
@@ -144,7 +144,7 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		public override void Hover() {
-			imageRenderer.material = Options.styles[0].hoverMaterial;
+			visImageRenderer.material = Options.styles[0].hoverMaterial;
 			dataDisplayGroup.alpha = 1;
 		}
 
@@ -165,7 +165,7 @@ namespace DataskopAR.Entities.Visualizations {
 				OnScaleChanged
 			));
 
-			imageRenderer.material = Options.styles[0].selectionMaterial;
+			visImageRenderer.material = Options.styles[0].selectionMaterial;
 			dataDisplayGroup.alpha = 1;
 			IsSelected = true;
 		}
@@ -189,7 +189,7 @@ namespace DataskopAR.Entities.Visualizations {
 				));
 			}
 
-			imageRenderer.material = Options.styles[0].defaultMaterial;
+			visImageRenderer.material = Options.styles[0].defaultMaterial;
 			dataDisplayGroup.alpha = 0;
 			IsSelected = false;
 		}
@@ -206,7 +206,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 		private void OnScaleChanged() {
 			moveLineCoroutine = StartCoroutine(MoveLinePointTo(0,
-				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - imageRenderer.sprite.bounds.size.y * 0.75f,
+				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - visImageRenderer.sprite.bounds.size.y * 0.75f,
 					VisTransform.localPosition.z),
 				0.1f));
 		}

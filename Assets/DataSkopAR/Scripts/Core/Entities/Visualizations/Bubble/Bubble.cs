@@ -5,6 +5,7 @@ using DataskopAR.Data;
 using DataskopAR.Utils;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace DataskopAR.Entities.Visualizations {
 
@@ -13,18 +14,17 @@ namespace DataskopAR.Entities.Visualizations {
 #region Fields
 
 		[Header("References")]
-		[SerializeField] private SpriteRenderer spriteRenderer;
+		[SerializeField] private Image visImageRenderer;
+		[SerializeField] private Transform visTransform;
 		[SerializeField] private BubbleOptions options;
 		[SerializeField] private BubbleTimeSeries bubbleTimeSeries;
 		[SerializeField] private Transform dropShadow;
-		[SerializeField] private Transform visTransform;
-		[SerializeField] private Transform timeSeriesTransform;
 		[SerializeField] private LineRenderer groundLine;
 		[SerializeField] private LineRenderer labelLine;
-		[SerializeField] private SpriteRenderer authorIconSpriteRenderer;
+		[SerializeField] private Image authorIconImageRenderer;
 
 		[Header("Display References")]
-		[SerializeField] private Canvas dataDisplay;
+		[SerializeField] private Transform dataDisplay;
 		[SerializeField] private CanvasGroup dataDisplayGroup;
 		[SerializeField] private TextMeshProUGUI idTextMesh;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
@@ -67,11 +67,10 @@ namespace DataskopAR.Entities.Visualizations {
 			base.OnDataPointChanged();
 			Options = Instantiate(options);
 
-			spriteRenderer.enabled = false;
+			visImageRenderer.enabled = false;
 
 			VisTransform.localPosition = Offset;
 
-			dataDisplay.worldCamera = ARCamera;
 			Transform displayTransform = dataDisplay.transform;
 			displayTransform.localScale *= Scale;
 			displayTransform.localPosition = Offset;
@@ -131,9 +130,13 @@ namespace DataskopAR.Entities.Visualizations {
 
 		}
 
-		private void SetBubbleSize(float value, float minValue, float maxValue, float minArea, float maxArea) {
+		private void SetBubbleSize(float value, float minValue, float maxValue, float minScale, float maxScale) {
 
 			value = Mathf.Clamp(value, minValue, maxValue);
+			
+			// calc min and max area out of desired min and max scale
+			float minArea = Mathf.PI * Mathf.Pow(minScale, 2);
+			float maxArea = Mathf.PI * Mathf.Pow(maxScale, 2);
 
 			// calc mapped area from the value
 			float newArea = MathExtensions.Map(value, minValue, maxValue, minArea, maxArea);
@@ -141,9 +144,9 @@ namespace DataskopAR.Entities.Visualizations {
 			// calc radius out of the area
 			BubbleSize = Mathf.Sqrt(newArea / Mathf.PI);
 
-			if (!spriteRenderer.enabled) {
+			if (!visImageRenderer.enabled) {
 				VisTransform.localScale = new Vector3(BubbleSize, BubbleSize, BubbleSize);
-				spriteRenderer.enabled = true;
+				visImageRenderer.enabled = true;
 			}
 			else {
 
@@ -164,7 +167,7 @@ namespace DataskopAR.Entities.Visualizations {
 		private void OnBubbleSizeChanged() {
 
 			groundLineRoutine = StartCoroutine(MoveLinePointTo(groundLine, 0,
-				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - spriteRenderer.bounds.size.y * 0.75f,
+				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - visImageRenderer.sprite.bounds.size.y * 0.75f,
 					VisTransform.localPosition.z),
 				0.1f));
 
@@ -176,7 +179,8 @@ namespace DataskopAR.Entities.Visualizations {
 
 				labelRoutine = StartCoroutine(LerperHelper.TransformLerp(dataDisplay.transform, TransformValue.Position,
 					dataDisplay.transform.localPosition,
-					new Vector3(DisplayOrigin.x + spriteRenderer.bounds.size.x * 0.5f + 0.2f, DisplayOrigin.y, DisplayOrigin.z), 0.1f,
+					new Vector3(DisplayOrigin.x + visImageRenderer.sprite.bounds.size.x * 0.5f + 0.2f, DisplayOrigin.y, DisplayOrigin.z),
+					0.1f,
 					null));
 
 				if (DataPoint.Vis.IsSelected) {
@@ -184,12 +188,14 @@ namespace DataskopAR.Entities.Visualizations {
 					labelLine.enabled = true;
 
 					labelLineRoutineLower = StartCoroutine(MoveLinePointTo(labelLine, 0,
-						new Vector3(VisTransform.localPosition.x + spriteRenderer.bounds.size.x * 0.75f, VisTransform.localPosition.y,
+						new Vector3(VisTransform.localPosition.x + visImageRenderer.sprite.bounds.size.x * 0.75f,
+							VisTransform.localPosition.y,
 							VisTransform.localPosition.z),
 						0.1f));
 
 					labelLineRoutineUpper = StartCoroutine(MoveLinePointTo(labelLine, 1,
-						new Vector3(DisplayOrigin.x + spriteRenderer.bounds.size.x * 0.5f + 0.1f, DisplayOrigin.y, DisplayOrigin.z),
+						new Vector3(DisplayOrigin.x + visImageRenderer.sprite.bounds.size.x * 0.5f + 0.1f, DisplayOrigin.y,
+							DisplayOrigin.z),
 						0.1f));
 				}
 
@@ -224,11 +230,11 @@ namespace DataskopAR.Entities.Visualizations {
 		private void SetAuthorImage() {
 
 			if (DataPoint.CurrentMeasurementResult.Author != string.Empty) {
-				authorIconSpriteRenderer.sprite = DataPoint.AuthorRepository.AuthorSprites[DataPoint.CurrentMeasurementResult.Author];
-				authorIconSpriteRenderer.enabled = true;
+				authorIconImageRenderer.sprite = DataPoint.AuthorRepository.AuthorSprites[DataPoint.CurrentMeasurementResult.Author];
+				authorIconImageRenderer.enabled = true;
 			}
 			else {
-				authorIconSpriteRenderer.enabled = false;
+				authorIconImageRenderer.enabled = false;
 			}
 
 		}
@@ -249,18 +255,18 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		public override void Hover() {
-			spriteRenderer.material = Options.styles[0].hoverMaterial;
+			visImageRenderer.material = Options.styles[0].hoverMaterial;
 			dataDisplayGroup.alpha = 1;
 		}
 
 		public override void Select() {
-			spriteRenderer.material = Options.styles[0].selectionMaterial;
+			visImageRenderer.material = Options.styles[0].selectionMaterial;
 			dataDisplayGroup.alpha = 1;
 			IsSelected = true;
 		}
 
 		public override void Deselect() {
-			spriteRenderer.material = Options.styles[0].defaultMaterial;
+			visImageRenderer.material = Options.styles[0].defaultMaterial;
 			dataDisplayGroup.alpha = 0;
 			IsSelected = false;
 		}

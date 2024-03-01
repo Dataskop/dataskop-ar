@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 652e764b18f1bd34288980235534e15d, type: 3}
   m_Name: BubbleOptions
   m_EditorClassIdentifier: 
-  materialOptions:
-  - Deselected: {fileID: 2100000, guid: cfb04604155c6a340af0b0c232ef6cea, type: 2}
-    Hovered: {fileID: 2100000, guid: c55b16a2b00ad184686f4e73ac35474d, type: 2}
-    Selected: {fileID: 2100000, guid: d53d14bbfb4d2d94a8a6cb1be050b62c, type: 2}
+  styles:
+  - defaultMaterial: {fileID: 2100000, guid: cfb04604155c6a340af0b0c232ef6cea, type: 2}
+    hoverMaterial: {fileID: 2100000, guid: c55b16a2b00ad184686f4e73ac35474d, type: 2}
+    selectionMaterial: {fileID: 2100000, guid: d53d14bbfb4d2d94a8a6cb1be050b62c, type: 2}
