@@ -362,7 +362,7 @@ Transform:
   m_GameObject: {fileID: 2864698955334232771}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8699105888748358546}
@@ -493,8 +493,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4282598211
-  m_fontColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
+    rgba: 4294177779
+  m_fontColor: {r: 0.9528302, g: 0.9528302, b: 0.9528302, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -604,7 +604,7 @@ MonoBehaviour:
   timeSeriesConfiguration:
     elementVis: {fileID: 4622183919543581581, guid: 0a5cb2a5cbd4a314eaf6d5a57ca3bc23, type: 3}
     visibleHistoryCount: 30
-    elementDistance: 0.2
+    elementDistance: 2
     animationDuration: 0.125
     isFading: 0
   barFillMeshRenderer: {fileID: 3453302712147824817}
@@ -620,6 +620,8 @@ MonoBehaviour:
   valueTextMesh: {fileID: 7218180205001926802}
   minValueTextMesh: {fileID: 2602751140391987743}
   maxValueTextMesh: {fileID: 4043066396322243113}
+  minBarFillHeight: 0
+  maxBarFillHeight: 3
 --- !u!114 &7115935197513389783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -633,7 +635,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeContainer: {fileID: 3192991928674431645}
-  timeElementColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
+  timeElementColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
 --- !u!1 &5175790286732490339
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,8 +818,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4282598211
-  m_fontColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
+    rgba: 4294177779
+  m_fontColor: {r: 0.9528302, g: 0.9528302, b: 0.9528302, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1066,8 +1068,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4282598211
-  m_fontColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
+    rgba: 4294177779
+  m_fontColor: {r: 0.9528302, g: 0.9528302, b: 0.9528302, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1084,8 +1086,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
-  m_fontSizeBase: 4
+  m_fontSize: 8
+  m_fontSizeBase: 8
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1201,8 +1203,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4282137660
-  m_fontColor: {r: 0.23529412, g: 0.23529412, b: 0.23529412, a: 1}
+    rgba: 4294177779
+  m_fontColor: {r: 0.9528302, g: 0.9528302, b: 0.9528302, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

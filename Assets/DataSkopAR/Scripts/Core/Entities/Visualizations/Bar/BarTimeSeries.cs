@@ -22,7 +22,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 			foreach (TimeElement te in TimeElements) {
 				te.transform.localScale *= DataPoint.Vis.Scale;
-				te.AuthorSprite.gameObject.transform.Rotate(new Vector3(0, 0, -90));
 			}
 
 			SetBarValue();
@@ -42,7 +41,7 @@ namespace DataskopAR.Entities.Visualizations {
 			Transform pillarFill = e.gameObject.transform.GetChild(0).GetChild(0);
 			value = Mathf.Clamp(value, min, max);
 			Vector3 localScale = pillarFill.localScale;
-			localScale = new Vector3(localScale.x, MathExtensions.Map01(value, min, max), localScale.z);
+			localScale = new Vector3(localScale.x, MathExtensions.Map(value, min, max, 0, 3), localScale.z);
 			pillarFill.localScale = localScale;
 
 			Material meshMaterial = e.gameObject.transform.GetChild(0).GetChild(0).GetComponentInChildren<MeshRenderer>().material;

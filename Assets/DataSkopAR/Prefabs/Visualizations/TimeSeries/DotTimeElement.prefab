@@ -507,8 +507,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 476620857552747703}
-  - component: {fileID: 53805235692649039}
   - component: {fileID: 4201410211675108776}
+  - component: {fileID: 53805235692649039}
   m_Layer: 7
   m_Name: DotTimeElement
   m_TagString: TimeElement
@@ -532,6 +532,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &4201410211675108776
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958504234192534124}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &53805235692649039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -548,19 +561,6 @@ MonoBehaviour:
   dataDisplay: {fileID: 7909283493535015794}
   valueDisplay: {fileID: 1886714146907246277}
   dateDisplay: {fileID: 655529781871892674}
---- !u!135 &4201410211675108776
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1958504234192534124}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2916876182257097203
 GameObject:
   m_ObjectHideFlags: 0
@@ -680,7 +680,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8440227774997506034
 RectTransform:
   m_ObjectHideFlags: 0
