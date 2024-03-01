@@ -63,6 +63,7 @@ namespace DataskopAR.Entities.Visualizations {
 #region Methods
 
 		protected override void OnDataPointChanged() {
+
 			base.OnDataPointChanged();
 			Options = Instantiate(options);
 
@@ -72,8 +73,8 @@ namespace DataskopAR.Entities.Visualizations {
 			dropShadow.transform.localScale *= Scale;
 			displayTransform.localScale *= Scale;
 
-			VisTransform.localPosition = Offset;
-			displayTransform.localPosition = new Vector3(displayTransform.localPosition.x, Offset.y, displayTransform.localPosition.z);
+			VisTransform.root.localPosition = Offset;
+			dropShadow.transform.localPosition -= Offset;
 
 			SetLinePosition(groundLine,
 				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - visImageRenderer.sprite.bounds.size.y * 0.75f,
@@ -85,6 +86,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 			idTextMesh.text = DataPoint.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper();
 			OnMeasurementResultChanged(DataPoint.CurrentMeasurementResult);
+
 		}
 
 		public override void OnMeasurementResultChanged(MeasurementResult mr) {
@@ -123,9 +125,9 @@ namespace DataskopAR.Entities.Visualizations {
 
 		}
 
-		public override void ApplyStyle() {
-			dropShadow.gameObject.SetActive(DataPoint.Vis.VisOption.Style.HasDropShadow);
-			groundLine.gameObject.SetActive(DataPoint.Vis.VisOption.Style.HasGroundLine);
+		public override void ApplyStyle(VisualizationStyle style) {
+			dropShadow.gameObject.SetActive(style.HasDropShadow);
+			groundLine.gameObject.SetActive(style.HasGroundLine);
 		}
 
 		public override void OnMeasurementResultsUpdated() {
@@ -133,6 +135,7 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		public override void OnTimeSeriesToggled(bool isActive) {
+
 			if (isActive) {
 				groundLine.enabled = false;
 				TimeSeries.SpawnSeries(timeSeriesConfiguration, DataPoint);
@@ -141,6 +144,7 @@ namespace DataskopAR.Entities.Visualizations {
 				groundLine.enabled = true;
 				TimeSeries.DespawnSeries();
 			}
+
 		}
 
 		public override void Hover() {
@@ -149,6 +153,7 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		public override void Select() {
+
 			if (animationCoroutine != null) {
 				CancelAnimation();
 			}
@@ -168,9 +173,11 @@ namespace DataskopAR.Entities.Visualizations {
 			visImageRenderer.material = Options.styles[0].selectionMaterial;
 			dataDisplayGroup.alpha = 1;
 			IsSelected = true;
+
 		}
 
 		public override void Deselect() {
+
 			if (IsSelected) {
 				if (animationCoroutine != null) {
 					CancelAnimation();
@@ -192,6 +199,7 @@ namespace DataskopAR.Entities.Visualizations {
 			visImageRenderer.material = Options.styles[0].defaultMaterial;
 			dataDisplayGroup.alpha = 0;
 			IsSelected = false;
+
 		}
 
 		private void CancelAnimation() {

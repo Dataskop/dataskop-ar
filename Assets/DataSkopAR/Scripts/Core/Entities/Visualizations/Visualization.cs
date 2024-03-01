@@ -28,7 +28,9 @@ namespace DataskopAR.Entities.Visualizations {
 #region Properties
 
 		public DataPoint DataPoint {
-			get => dataPoint;
+			get {
+				return dataPoint;
+			}
 			set {
 				dataPoint = value;
 				if (value != null)
@@ -47,16 +49,24 @@ namespace DataskopAR.Entities.Visualizations {
 		/// The offset of the visualization to the ground.
 		/// </summary>
 		public Vector3 Offset {
-			get => offset;
-			set => offset = value;
+			get {
+				return offset;
+			}
+			set {
+				offset = value;
+			}
 		}
 
 		/// <summary>
 		/// The factor that gets multiplied with the objects default size.
 		/// </summary>
 		public float Scale {
-			get => scaleFactor;
-			set => scaleFactor = value;
+			get {
+				return scaleFactor;
+			}
+			set {
+				scaleFactor = value;
+			}
 		}
 
 #endregion
@@ -108,7 +118,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public abstract void OnMeasurementResultChanged(MeasurementResult mr);
 
-		public abstract void ApplyStyle();
+		public abstract void ApplyStyle(VisualizationStyle style);
 
 		public void Swiped(Swipe swipe) {
 

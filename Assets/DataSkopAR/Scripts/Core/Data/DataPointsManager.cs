@@ -104,7 +104,7 @@ namespace DataskopAR.Data {
 					ToggleTimeSeries(dp, false);
 					dp.SetVis(vis);
 					dp.Vis.VisOption = visOpt;
-					dp.Vis.ApplyStyle();
+					dp.Vis.ApplyStyle(dp.Vis.VisOption.Style);
 				}
 
 				onVisualizationChanged?.Invoke(visOpt);
