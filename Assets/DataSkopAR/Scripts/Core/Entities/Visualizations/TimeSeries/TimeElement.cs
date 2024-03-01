@@ -27,7 +27,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public MeasurementResult MeasurementResult {
 			get => measurementResult;
-
 			set {
 				measurementResult = value;
 				SetAuthorSprite();
