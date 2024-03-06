@@ -31,7 +31,7 @@ namespace DataskopAR.UI {
 
 		private VisualElement InfoCard { get; set; }
 
-		private InfoCardState CurrentCardState { get; set; }
+		public InfoCardState CurrentCardState { get; private set; }
 
 		private InfoCardState PreviousCardState { get; set; }
 

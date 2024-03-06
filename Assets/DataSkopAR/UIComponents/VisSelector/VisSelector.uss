@@ -78,7 +78,7 @@
 
 .elevated {
     transition-property: translate;
-    translate: 0 -40%;
+    translate: 0 -33%;
     transition-duration: 0.33s;
 }
 
