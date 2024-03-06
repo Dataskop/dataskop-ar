@@ -15,6 +15,7 @@ namespace DataskopAR {
 		[Header("Values")]
 		[Range(-20, 0)] [SerializeField]
 		private float zoomInValue;
+
 		[Range(0, 20)] [SerializeField]
 		private float zoomOutValue;
 
@@ -35,13 +36,14 @@ namespace DataskopAR {
 #region Methods
 
 		public override void Init(VisualElement infoCard) {
+
 			InfoCard = infoCard;
 			ComponentRoot = InfoCard.Q<VisualElement>("MapContainer");
-
 			ZoomInButton = ComponentRoot.Q<Button>("ZoomInButton");
 			ZoomInButton.RegisterCallback<ClickEvent>(_ => OnZoomButtonPressed(zoomInValue));
 			ZoomOutButton = ComponentRoot.Q<Button>("ZoomOutButton");
 			ZoomOutButton.RegisterCallback<ClickEvent>(_ => OnZoomButtonPressed(zoomOutValue));
+
 		}
 
 		private void OnZoomButtonPressed(float zoomChange) {
