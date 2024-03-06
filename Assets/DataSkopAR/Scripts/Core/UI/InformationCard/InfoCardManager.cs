@@ -13,6 +13,7 @@ namespace DataskopAR.UI {
 
 		[Header("References")]
 		[SerializeField] private UIDocument informationCardUIDoc;
+
 		[SerializeField] private InfoCardStateManager infoCardStateManager;
 		[SerializeField] private InfoCardNotificationUI infoCardNotificationUI;
 		[SerializeField] private InfoCardHeaderUI infoCardHeaderUI;
@@ -36,6 +37,8 @@ namespace DataskopAR.UI {
 		private VisualElement DetailsTab { get; set; }
 
 		private VisualElement MapTab { get; set; }
+
+		private Label CallToAction { get; set; }
 
 #endregion
 
@@ -72,6 +75,9 @@ namespace DataskopAR.UI {
 
 			MapTab = InfoCard.Q<VisualElement>("MapTab");
 			MapTab.RegisterCallback<ClickEvent>(_ => OnMapTabPressed());
+
+			CallToAction = InfoCard.Q<Label>("CallToAction");
+			CallToAction.visible = false;
 
 			infoCardStateManager.Init(InfoCard);
 
@@ -110,11 +116,32 @@ namespace DataskopAR.UI {
 		public void OnDataPointSelected(DataPoint dp) {
 			infoCardStateManager.OnDataPointSelected(dp);
 			infoCardDataUI.UpdateDataPointData(dp);
+			SetCallToActionState(false);
+
 		}
 
 		public void OnDataPointSoftSelected(DataPoint dp) {
-			infoCardStateManager.OnDataPointSoftSelected(dp);
+
 			infoCardDataUI.UpdateDataPointData(dp);
+
+			if (infoCardStateManager.CurrentCardState != InfoCardState.Collapsed) {
+				return;
+			}
+
+			SetCallToActionState(dp != null);
+
+		}
+
+		public void OnInfoCardStateChanged(InfoCardState newState) {
+
+			if (newState != InfoCardState.Collapsed) {
+				SetCallToActionState(false);
+			}
+
+		}
+
+		private void SetCallToActionState(bool newState) {
+			CallToAction.visible = newState;
 		}
 
 		private void OnErrorReceived(object o, ErrorHandler.ErrorReceivedEventArgs e) {
