@@ -615,6 +615,7 @@ MonoBehaviour:
   barCollider: {fileID: 8227051107050634163}
   visTransform: {fileID: 111384382076272558}
   authorIconImageRenderer: {fileID: 8170059683810698376}
+  timeElementsContainer: {fileID: 3192991928674431645}
   dataDisplay: {fileID: 4829779556340036457}
   canvasGroup: {fileID: 5703666661579741374}
   valueTextMesh: {fileID: 7218180205001926802}
@@ -634,7 +635,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b193bf6d8001a664eb45f0bdea917470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeContainer: {fileID: 3192991928674431645}
   timeElementColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
 --- !u!1 &5175790286732490339
 GameObject:

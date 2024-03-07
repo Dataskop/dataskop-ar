@@ -22,6 +22,7 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private LineRenderer groundLine;
 		[SerializeField] private LineRenderer labelLine;
 		[SerializeField] private Image authorIconImageRenderer;
+		[SerializeField] private Transform timeElementsContainer;
 
 		[Header("Display References")]
 		[SerializeField] private Transform dataDisplay;
@@ -261,7 +262,7 @@ namespace DataskopAR.Entities.Visualizations {
 			if (isActive) {
 				groundLine.enabled = false;
 				labelLine.enabled = false;
-				TimeSeries.SpawnSeries(timeSeriesConfiguration, DataPoint);
+				TimeSeries.SpawnSeries(timeSeriesConfiguration, DataPoint, timeElementsContainer);
 			}
 			else {
 				TimeSeries.DespawnSeries();
