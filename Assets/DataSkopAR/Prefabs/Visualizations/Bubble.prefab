@@ -468,6 +468,7 @@ MonoBehaviour:
   groundLine: {fileID: 4226972398150195897}
   labelLine: {fileID: 1095265369420110130}
   authorIconImageRenderer: {fileID: 812485554863302625}
+  timeElementsContainer: {fileID: 4888721393604602538}
   dataDisplay: {fileID: 863049340724323298}
   dataDisplayGroup: {fileID: 8004387497064329015}
   idTextMesh: {fileID: 1936030068375102587}
@@ -511,7 +512,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e389fb79e6055934a9ba0c5a66445169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeContainer: {fileID: 4888721393604602538}
   minScale: 0.3
   maxScale: 0.8
 --- !u!1 &4431131822481873550

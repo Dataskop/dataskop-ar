@@ -20,6 +20,7 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private Transform dropShadow;
 		[SerializeField] private LineRenderer groundLine;
 		[SerializeField] private Image authorIconImageRenderer;
+		[SerializeField] private Transform timeElementsContainer;
 
 		[Header("Display References")]
 		[SerializeField] private Transform dataDisplay;
@@ -142,7 +143,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 			if (isActive) {
 				groundLine.enabled = false;
-				TimeSeries.SpawnSeries(timeSeriesConfiguration, DataPoint);
+				TimeSeries.SpawnSeries(timeSeriesConfiguration, DataPoint, timeElementsContainer);
 			}
 			else {
 				groundLine.enabled = true;

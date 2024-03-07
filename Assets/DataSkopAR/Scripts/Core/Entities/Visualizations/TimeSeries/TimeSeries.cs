@@ -7,13 +7,7 @@ using UnityEngine;
 
 namespace DataskopAR.Entities.Visualizations {
 
-	public abstract class TimeSeries : MonoBehaviour {
-
-#region Fields
-
-		public Transform timeContainer;
-
-#endregion
+	public class TimeSeries : MonoBehaviour {
 
 #region Events
 
@@ -52,7 +46,7 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		//TODO: Refactor to support a large amount of Data
-		public void SpawnSeries(TimeSeriesConfig config, DataPoint dp) {
+		public void SpawnSeries(TimeSeriesConfig config, DataPoint dp, Transform container) {
 
 			DataPoint = dp;
 			Configuration = config;
@@ -77,7 +71,7 @@ namespace DataskopAR.Entities.Visualizations {
 					visPosition.z);
 				GameObject newElement = Instantiate(Configuration.elementVis, elementPos, visTransform.rotation);
 
-				newElement.transform.SetParent(timeContainer);
+				newElement.transform.SetParent(container);
 
 				TimeElement timeElement = newElement.GetComponent<TimeElement>();
 

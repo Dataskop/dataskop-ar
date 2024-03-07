@@ -1,6 +1,6 @@
 {
-    "name": "DataskopAR.Tests",
-    "rootNamespace": "DataskopAR.Tests",
+    "name": "DataskopAR.EditMode.Tests",
+    "rootNamespace": "DataskopAR.EditMode.Tests",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",

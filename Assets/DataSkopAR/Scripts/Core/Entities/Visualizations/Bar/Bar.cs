@@ -21,6 +21,7 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private BoxCollider barCollider;
 		[SerializeField] private Transform visTransform;
 		[SerializeField] private Image authorIconImageRenderer;
+		[SerializeField] private Transform timeElementsContainer;
 
 		[Header("Display References")]
 		[SerializeField] private Transform dataDisplay;
@@ -129,7 +130,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public override void OnTimeSeriesToggled(bool isActive) {
 			if (isActive) {
-				TimeSeries.SpawnSeries(timeSeriesConfiguration, DataPoint);
+				TimeSeries.SpawnSeries(timeSeriesConfiguration, DataPoint, timeElementsContainer);
 			}
 			else {
 				TimeSeries.DespawnSeries();
