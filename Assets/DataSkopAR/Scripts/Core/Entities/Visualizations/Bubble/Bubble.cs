@@ -111,6 +111,7 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		public override void OnMeasurementResultChanged(MeasurementResult mr) {
+
 			if (!AllowedMeasurementTypes.Contains(DataPoint.MeasurementDefinition.MeasurementType)) {
 				NotificationHandler.Add(new Notification() {
 					Category = NotificationCategory.Error,
@@ -126,7 +127,8 @@ namespace DataskopAR.Entities.Visualizations {
 					float receivedValue = mr.ReadAsFloat();
 					valueTextMesh.text = receivedValue.ToString(CultureInfo.InvariantCulture) + DataPoint.Attribute?.Unit;
 					dateTextMesh.text = mr.GetTime();
-					SetBubbleSize(receivedValue, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum, MinScale, MaxScale);
+					BubbleSize = BubbleUtils.CalculateRadius(receivedValue, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum,
+						MinScale, MaxScale);
 					break;
 				}
 
@@ -134,29 +136,13 @@ namespace DataskopAR.Entities.Visualizations {
 					bool receivedValue = mr.ReadAsBool();
 					valueTextMesh.text = receivedValue.ToString();
 					dateTextMesh.text = mr.GetTime();
-					SetBubbleSize(receivedValue ? 1 : 0, 0, 1, MinScale, MaxScale);
+					BubbleSize = BubbleUtils.CalculateRadius(receivedValue ? 1 : 0, 0, 1, MinScale, MaxScale);
 					break;
 				}
 
 			}
 
 			SetAuthorImage();
-
-		}
-
-		private void SetBubbleSize(float value, float minValue, float maxValue, float minScale, float maxScale) {
-
-			value = Mathf.Clamp(value, minValue, maxValue);
-
-			// calc min and max area out of desired min and max scale
-			float minArea = Mathf.PI * Mathf.Pow(minScale, 2);
-			float maxArea = Mathf.PI * Mathf.Pow(maxScale, 2);
-
-			// calc mapped area from the value
-			float newArea = MathExtensions.Map(value, minValue, maxValue, minArea, maxArea);
-
-			// calc radius out of the area
-			BubbleSize = Mathf.Sqrt(newArea / Mathf.PI);
 
 		}
 

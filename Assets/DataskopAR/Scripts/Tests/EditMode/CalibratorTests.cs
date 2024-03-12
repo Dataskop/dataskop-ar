@@ -2,7 +2,7 @@ using DataskopAR.Interaction;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace DataskopAR.Tests {
+namespace DataskopAR.EditMode.Tests {
 
 	[TestFixture] [Category("Dataskop")]
 	public class CalibratorTests {

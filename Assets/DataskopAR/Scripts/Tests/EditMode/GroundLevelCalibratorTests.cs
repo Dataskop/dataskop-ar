@@ -3,7 +3,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 
-namespace DataskopAR.Tests {
+namespace DataskopAR.EditMode.Tests {
 
 	[TestFixture] [Category("Dataskop")]
 	public class GroundLevelCalibratorTests {
