@@ -15,6 +15,7 @@ namespace DataskopAR.Data {
 
 		[Header("Events")]
 		public UnityEvent<VisualizationOption> onVisualizationChanged;
+
 		public UnityEvent dataPointsResultsUpdated;
 		public UnityEvent<int> dataPointHistorySwiped;
 
@@ -24,17 +25,15 @@ namespace DataskopAR.Data {
 
 		[Header("References")]
 		[SerializeField] private DataManager dataManager;
+
 		[SerializeField] private AbstractMap map;
 		[SerializeField] private GameObject dataPointPrefab;
 		[SerializeField] private Transform dataPointsContainer;
 		[SerializeField] private VisualizationRepository visRepository;
 		[SerializeField] private DataAttributeManager dataAttrRepo;
 		[SerializeField] private AuthorRepository authorRepository;
-		[SerializeField] private bool isDemoScene;
 
 		private GameObject dummyVisObject;
-
-		public static bool IsDemoScene;
 
 #endregion
 
@@ -43,9 +42,9 @@ namespace DataskopAR.Data {
 		/// <summary>
 		///     List of currently placed markers in the AR world.
 		/// </summary>
-		public IList<DataPoint> DataPoints { get; set; }
+		public IList<DataPoint> DataPoints { get; private set; }
 
-		public Dictionary<Device, Vector3> LastKnownDevicePositions { get; set; }
+		public Dictionary<Device, Vector3> LastKnownDevicePositions { get; private set; }
 
 		/// <summary>
 		///     Array of precise marker locations in the AR world.
@@ -65,10 +64,6 @@ namespace DataskopAR.Data {
 #endregion
 
 #region Methods
-
-		private void Awake() {
-			IsDemoScene = isDemoScene;
-		}
 
 		private void OnEnable() {
 			DataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
@@ -91,7 +86,7 @@ namespace DataskopAR.Data {
 			if (!HasLoadedDataPoints)
 				return;
 
-			if (IsDemoScene) return;
+			if (AppOptions.DemoMode) return;
 
 			for (int i = 0; i < DataPoints.Count; i++) {
 				DataPoints[i].transform.localPosition = map.GeoToWorldPosition(DataPointsLocations[i]);
@@ -236,7 +231,7 @@ namespace DataskopAR.Data {
 					dataPointInstance.SetMeasurementResult(dataPointInstance.MeasurementDefinition.GetLatestMeasurementResult());
 
 					//Move the DataPoint to its location
-					if (IsDemoScene) {
+					if (AppOptions.DemoMode) {
 
 						Vector3 GetLastKnownDevicePosition(Device device) {
 
