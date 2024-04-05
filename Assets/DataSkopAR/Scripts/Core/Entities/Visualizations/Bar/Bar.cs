@@ -14,8 +14,10 @@ namespace DataskopAR.Entities.Visualizations {
 
 		[Header("References")]
 		[SerializeField] private MeshRenderer barFillMeshRenderer;
+
 		[SerializeField] private MeshRenderer barFrameMeshRenderer;
 		[SerializeField] private Transform barFill;
+		[SerializeField] private Transform barFrame;
 		[SerializeField] private BarOptions options;
 		[SerializeField] private BarTimeSeries barTimeSeries;
 		[SerializeField] private BoxCollider barCollider;
@@ -25,16 +27,14 @@ namespace DataskopAR.Entities.Visualizations {
 
 		[Header("Display References")]
 		[SerializeField] private Transform dataDisplay;
+
 		[SerializeField] private CanvasGroup canvasGroup;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI minValueTextMesh;
 		[SerializeField] private TextMeshProUGUI maxValueTextMesh;
 
-		[Header("Values")]
-		[SerializeField] private float minBarFillHeight;
-		[SerializeField] private float maxBarFillHeight;
-
 		private Vector3 origin;
+		private bool isRotated;
 
 #endregion
 
@@ -56,6 +56,14 @@ namespace DataskopAR.Entities.Visualizations {
 			MeasurementType.Float,
 			MeasurementType.Bool
 		};
+
+		private bool IsRotated {
+			get => isRotated;
+			set {
+				isRotated = value;
+				OnVisualizationRotated(IsRotated);
+			}
+		}
 
 #endregion
 
@@ -100,16 +108,45 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		private void RotateVisualization() {
-			// transform.SetPositionAndRotation(transform.position + new Vector3(0, 0.25f, 0), Quaternion.Euler(new Vector3(0, 0, 90)));
+			VisTransform.localRotation = Quaternion.Euler(0, 0, -90);
+			VisTransform.localPosition = new Vector3(barFrame.localScale.y * Scale * -0.5f, barFrame.localScale.x * Scale * 0.5f, 0);
+			dataDisplay.localRotation = Quaternion.Euler(0, 0, 90);
+			IsRotated = true;
 		}
 
 		private void ResetRotation() {
-			// transform.SetPositionAndRotation(transform.position - new Vector3(0, 0.25f, 0), Quaternion.Euler(new Vector3(0, 0, 0)));
+			dataDisplay.localRotation = Quaternion.Euler(0, 0, 0);
+			VisTransform.localPosition = new Vector3(0, 0, 0);
+			VisTransform.localRotation = Quaternion.Euler(0, 0, 0);
+			IsRotated = false;
 		}
 
-		public override void ApplyStyle(VisualizationStyle style) {
-			return;
+		private void OnVisualizationRotated(bool rotationState) {
+
+			dataDisplay.GetComponent<RectTransform>().sizeDelta = new Vector2(
+				rotationState ? barFrame.localScale.y * 100 : barFrame.localScale.x * 100,
+				rotationState ? barFrame.localScale.x * 100 : barFrame.localScale.y * 100
+			);
+
+			RectTransform maxValueTransform = maxValueTextMesh.GetComponent<RectTransform>();
+			maxValueTransform.anchorMin = rotationState ? new Vector2(1, 0) : new Vector2(0, 1);
+			maxValueTransform.pivot = rotationState ? new Vector2(1, 0.5f) : new Vector2(0.5f, 1);
+
+			maxValueTransform.sizeDelta = rotationState
+				? new Vector2(60, maxValueTransform.sizeDelta.y)
+				: new Vector2(maxValueTransform.sizeDelta.x, 10);
+
+			RectTransform minValueTransform = minValueTextMesh.GetComponent<RectTransform>();
+			minValueTransform.anchorMax = rotationState ? new Vector2(0, 1) : new Vector2(1, 0);
+			minValueTransform.pivot = rotationState ? new Vector2(0, 0.5f) : new Vector2(0.5f, 0);
+
+			minValueTransform.sizeDelta = rotationState
+				? new Vector2(60, minValueTransform.sizeDelta.y)
+				: new Vector2(minValueTransform.sizeDelta.x, 10);
+
 		}
+
+		public override void ApplyStyle(VisualizationStyle style) { }
 
 		public override void Hover() {
 			barFrameMeshRenderer.material = Options.styles[0].hoverMaterial;
@@ -130,10 +167,12 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public override void OnTimeSeriesToggled(bool isActive) {
 			if (isActive) {
+				RotateVisualization();
 				TimeSeries.SpawnSeries(timeSeriesConfiguration, DataPoint, timeElementsContainer);
 			}
 			else {
 				TimeSeries.DespawnSeries();
+				ResetRotation();
 			}
 		}
 
@@ -154,15 +193,15 @@ namespace DataskopAR.Entities.Visualizations {
 			switch (DataPoint.MeasurementDefinition.MeasurementType) {
 				case MeasurementType.Bool: {
 					bool receivedValue = mr.ReadAsBool();
-					SetPillarHeight(receivedValue ? 1f : 0f, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum, minBarFillHeight,
-						maxBarFillHeight);
+					SetPillarHeight(receivedValue ? 1f : 0f, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum, 0,
+						barFrame.localScale.y);
 					SetDisplayValue(receivedValue);
 					break;
 				}
 				case MeasurementType.Float: {
 					float receivedValue = mr.ReadAsFloat();
-					SetPillarHeight(receivedValue, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum, minBarFillHeight,
-						maxBarFillHeight);
+					SetPillarHeight(receivedValue, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum, 0,
+						barFrame.localScale.y);
 					SetDisplayValue(receivedValue);
 					SetMinMaxDisplayValues(DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
 					break;

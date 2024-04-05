@@ -806,7 +806,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   authorImageRenderer: {fileID: 5776136816199776139}
-  dataDisplay: {fileID: 1407746713325745728}
+  dataDisplayGroup: {fileID: 1407746713325745728}
+  dataDisplay: {fileID: 8655438420523502435}
   valueDisplay: {fileID: 5887018428436496412}
   dateDisplay: {fileID: 9113366220029396958}
 --- !u!1 &5148261334088139178
