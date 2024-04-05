@@ -10,7 +10,7 @@
             <ui:VisualElement name="RoomScanContainer" style="position: absolute; background-image: url(&apos;project://database/Assets/DataSkopAR/Images/tablet.png?fileID=21300000&amp;guid=2cbdf3b46c788364b9a83e6dce520c25&amp;type=3#tablet&apos;); width: 100%; height: 100%; visibility: hidden; -unity-background-scale-mode: scale-to-fit;" />
         </ui:VisualElement>
         <ui:VisualElement style="width: 100%; justify-content: center; align-items: center; margin-top: 12px; margin-bottom: 12px;">
-            <ui:Button text="BUTTON_TEXT" display-tooltip-when-elided="true" name="CalibratorButton" class="option-button" style="margin-top: 8px; visibility: visible; overflow: visible; display: flex;" />
+            <ui:Button text="BUTTON_TEXT" display-tooltip-when-elided="true" name="CalibratorButton" class="option-button" style="margin-top: 8px; visibility: visible; overflow: visible; display: none;" />
             <ui:Label text="Step X/X" display-tooltip-when-elided="true" name="StepText" class="step-text" />
         </ui:VisualElement>
     </ui:VisualElement>

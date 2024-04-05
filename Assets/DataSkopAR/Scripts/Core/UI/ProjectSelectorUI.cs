@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using DataskopAR.Data;
@@ -17,12 +16,14 @@ namespace DataskopAR.UI {
 
 		[Header("References")]
 		[SerializeField] private UIDocument settingsMenuUIDoc;
+
 		[SerializeField] private VisualTreeAsset groupOfProjectsTemplate;
 		[SerializeField] private VisualTreeAsset projectTemplate;
 		[SerializeField] private DataManager dataManager;
 
 		[Header("Values")]
 		[SerializeField] private Color selectedIconColor;
+
 		[SerializeField] private Color deselectedIconColor;
 
 		private bool isDescending = false;
@@ -86,18 +87,18 @@ namespace DataskopAR.UI {
 
 					if (project.Properties != null) {
 
-						if (project.Properties.IsDemo && !DataPointsManager.IsDemoScene) {
+						if (project.Properties.IsDemo && !AppOptions.DemoMode) {
 							continue;
 						}
 
-						if (!project.Properties.IsDemo && DataPointsManager.IsDemoScene) {
+						if (!project.Properties.IsDemo && AppOptions.DemoMode) {
 							continue;
 						}
 
 					}
 					else {
 						// Only show projects with possible null properties in the normal app, omit them in the demo scene.
-						if (DataPointsManager.IsDemoScene) {
+						if (AppOptions.DemoMode) {
 							continue;
 						}
 					}
