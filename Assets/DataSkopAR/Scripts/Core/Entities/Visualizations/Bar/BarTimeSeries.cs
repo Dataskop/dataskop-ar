@@ -14,26 +14,30 @@ namespace DataskopAR.Entities.Visualizations {
 #region Methods
 
 		private void Awake() {
-			TimeSeriesSpawned += ScaleBars;
-			TimeSeriesStartMoved += SetBarValue;
+			TimeSeriesSpawned += OnTimeSeriesSpawned;
+			TimeSeriesStartMoved += OnTimeSeriesMoved;
 		}
 
-		private void ScaleBars() {
+		private void OnTimeSeriesSpawned() {
 
 			foreach (TimeElement te in TimeElements) {
 				te.transform.localScale *= DataPoint.Vis.Scale;
+				RotateDisplay(te.DataDisplay);
+				SetBarHeight(te, te.MeasurementResult.ReadAsFloat(), DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
 			}
-
-			SetBarValue();
 
 		}
 
-		private void SetBarValue() {
+		private void OnTimeSeriesMoved() {
 
 			foreach (TimeElement te in TimeElements) {
 				SetBarHeight(te, te.MeasurementResult.ReadAsFloat(), DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
 			}
 
+		}
+
+		private void RotateDisplay(Transform displayTransform) {
+			displayTransform.localRotation = Quaternion.Euler(0, 0, 90);
 		}
 
 		private void SetBarHeight(TimeElement e, float value, float min, float max) {
@@ -56,8 +60,8 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		private void OnDisable() {
-			TimeSeriesSpawned -= ScaleBars;
-			TimeSeriesStartMoved -= SetBarValue;
+			TimeSeriesSpawned -= OnTimeSeriesSpawned;
+			TimeSeriesStartMoved -= OnTimeSeriesMoved;
 		}
 
 #endregion

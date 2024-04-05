@@ -11,7 +11,8 @@ namespace DataskopAR.Entities.Visualizations {
 
 		[Header("References")]
 		[SerializeField] private Image authorImageRenderer;
-		[SerializeField] private CanvasGroup dataDisplay;
+		[SerializeField] private CanvasGroup dataDisplayGroup;
+		[SerializeField] private Transform dataDisplay;
 		[SerializeField] private TextMeshProUGUI valueDisplay;
 		[SerializeField] private TextMeshProUGUI dateDisplay;
 
@@ -37,6 +38,8 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public Image AuthorSprite => authorImageRenderer;
 
+		public Transform DataDisplay => dataDisplay;
+
 #endregion
 
 #region Methods
@@ -61,11 +64,11 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		public void DisplayData() {
-			dataDisplay.alpha = 1;
+			dataDisplayGroup.alpha = 1;
 		}
 
 		public void HideData() {
-			dataDisplay.alpha = 0;
+			dataDisplayGroup.alpha = 0;
 		}
 
 #endregion
