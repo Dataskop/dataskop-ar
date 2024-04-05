@@ -603,13 +603,14 @@ MonoBehaviour:
   scaleFactor: 0.25
   timeSeriesConfiguration:
     elementVis: {fileID: 4622183919543581581, guid: 0a5cb2a5cbd4a314eaf6d5a57ca3bc23, type: 3}
-    visibleHistoryCount: 30
-    elementDistance: 2
-    animationDuration: 0.125
+    visibleHistoryCount: 10
+    elementDistance: 0.3
+    animationDuration: 0.1
     isFading: 0
   barFillMeshRenderer: {fileID: 3453302712147824817}
   barFrameMeshRenderer: {fileID: 5409999038619184764}
   barFill: {fileID: 1887986065971451328}
+  barFrame: {fileID: 6556137744151889736}
   options: {fileID: 11400000, guid: a90cd0498d65c0d4d8e518f851b5caf4, type: 2}
   barTimeSeries: {fileID: 7115935197513389783}
   barCollider: {fileID: 8227051107050634163}
@@ -621,8 +622,6 @@ MonoBehaviour:
   valueTextMesh: {fileID: 7218180205001926802}
   minValueTextMesh: {fileID: 2602751140391987743}
   maxValueTextMesh: {fileID: 4043066396322243113}
-  minBarFillHeight: 0
-  maxBarFillHeight: 3
 --- !u!114 &7115935197513389783
 MonoBehaviour:
   m_ObjectHideFlags: 0
