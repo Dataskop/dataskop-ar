@@ -714,7 +714,7 @@ MonoBehaviour:
   timeSeriesConfiguration:
     elementVis: {fileID: 1958504234192534124, guid: dfe66c67caab47e4ca181cd65cdd7251, type: 3}
     visibleHistoryCount: 30
-    elementDistance: 1.2
+    elementDistance: 0.5
     animationDuration: 0.1
     isFading: 0
   visImageRenderer: {fileID: 1976732403522348671}
@@ -848,7 +848,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e0f6a743f8e5ac4da11ef777169e666, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeContainer: {fileID: 3915101229060502330}
 --- !u!1 &4703005888043822835
 GameObject:
   m_ObjectHideFlags: 0
