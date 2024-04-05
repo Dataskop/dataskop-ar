@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.ARFoundation;
 
 namespace DataskopAR.Interaction {
 
@@ -13,6 +14,7 @@ namespace DataskopAR.Interaction {
 
 		[Header("UI Events")]
 		public UnityEvent calibrationInitialized;
+
 		public UnityEvent<CalibratorPhase> phaseChanged;
 		public UnityEvent calibrationFinished;
 
@@ -22,6 +24,7 @@ namespace DataskopAR.Interaction {
 
 		[Header("References")]
 		[SerializeField] private GroundLevelCalibrator groundLevelCalibrator;
+
 		[SerializeField] private NorthAlignmentCalibrator northAlignmentCalibrator;
 		[SerializeField] private RoomCalibrator roomCalibrator;
 
@@ -63,7 +66,12 @@ namespace DataskopAR.Interaction {
 
 		public void Initialize() {
 
-			if (DataPointsManager.IsDemoScene) {
+			if (AppOptions.DemoMode) {
+				ARTrackedImageManager arManager = (ARTrackedImageManager)FindObjectOfType(typeof(ARTrackedImageManager), true);
+				arManager.enabled = true;
+				DemoBoxHandler demoBoxHandler = (DemoBoxHandler)FindObjectOfType(typeof(DemoBoxHandler), true);
+				demoBoxHandler.enabled = true;
+				calibrationFinished?.Invoke();
 				return;
 			}
 
