@@ -30,15 +30,11 @@ namespace DataskopAR.Data {
 		private void OnEnable() {
 			dataManager.HasLoadedProjectData += ActivateTracking;
 			imageManager.trackedImagesChanged += OnTrackedImagesChanged;
+			ARImageObjects = new Dictionary<ARTrackedImage, Device>();
 		}
 
 		private void ActivateTracking(Project loadedProject) {
 			ShouldTrackImages = true;
-		}
-
-		private void Awake() {
-			ARImageObjects = new Dictionary<ARTrackedImage, Device>();
-
 		}
 
 		private void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs e) {

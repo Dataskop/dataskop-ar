@@ -10,6 +10,7 @@ namespace DataskopAR.Data {
 
 		[Header("References")]
 		[SerializeField] private LocationProviderFactory locationProvider;
+
 		[SerializeField] private Camera arCam;
 
 #endregion
@@ -33,6 +34,7 @@ namespace DataskopAR.Data {
 #region Methods
 
 		private void OnEnable() {
+			locationProvider.mapManager.OnInitialized += InitializeGeoLocation;
 			locationProvider.DefaultLocationProvider.OnLocationUpdated += UpdateLocation;
 			locationProvider.mapManager.OnUpdated += UpdateMapRoot;
 		}
@@ -50,7 +52,6 @@ namespace DataskopAR.Data {
 			}
 
 			BestAccuracy = gpsAccuracy;
-			Debug.Log("Received Initial Location: " + initialLocation.LatitudeLongitude);
 			locationProvider.mapManager.UpdateMap(initialLocation.LatitudeLongitude, 18);
 			HasInitialLocationData = true;
 

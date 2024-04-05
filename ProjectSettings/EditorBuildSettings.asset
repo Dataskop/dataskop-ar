@@ -14,9 +14,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/DataSkopAR/Scenes/World.unity
     guid: b21a510cc56861148a1cb354508c63c5
-  - enabled: 1
-    path: Assets/DataSkopAR/Scenes/Demo.unity
-    guid: 85eb478e73a4a9e4193097e3036f0ab3
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 4f7f94d073f8b024c9ae5b4007611614, type: 2}
     UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 0da32c4865dc0cd4aaf415a0f1f6c433, type: 2}

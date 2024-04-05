@@ -143,7 +143,7 @@ namespace DataskopAR.UI {
 
 			if (isValid) {
 				AccountManager.Login(Token);
-				SceneMaster.LoadScene(2);
+				SceneMaster.LoadScene("World");
 			}
 			else {
 				NotificationHandler.Add(new Notification {
@@ -156,8 +156,9 @@ namespace DataskopAR.UI {
 		}
 
 		private static void OnDemoButtonPressed() {
+			AppOptions.DemoMode = true;
 			AccountManager.Login("313f1398d57643ac90915b1b497db58141826a3d0c9a4f97a1cebc9f10db4e1e");
-			SceneMaster.LoadScene(3);
+			SceneMaster.LoadScene("World");
 		}
 
 #endregion
