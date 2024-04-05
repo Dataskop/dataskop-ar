@@ -1,8 +1,10 @@
 using System;
+using DataskopAR.Data;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.ARFoundation;
 
 namespace DataskopAR.Interaction {
 
@@ -65,6 +67,11 @@ namespace DataskopAR.Interaction {
 		public void Initialize() {
 
 			if (AppOptions.DemoMode) {
+				ARTrackedImageManager arManager = (ARTrackedImageManager)FindObjectOfType(typeof(ARTrackedImageManager), true);
+				arManager.enabled = true;
+				DemoBoxHandler demoBoxHandler = (DemoBoxHandler)FindObjectOfType(typeof(DemoBoxHandler), true);
+				demoBoxHandler.enabled = true;
+				calibrationFinished?.Invoke();
 				return;
 			}
 
