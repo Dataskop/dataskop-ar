@@ -59,7 +59,7 @@ namespace DataskopAR.UI {
 		public void OnEnable() {
 			Root = mainMenuUIDoc.rootVisualElement;
 
-			Root.Q<UnityEngine.UIElements.Button>("btnScan").RegisterCallback<ClickEvent>(e => {
+			Root.Q<UnityEngine.UIElements.Button>("btnScan").RegisterCallback<ClickEvent>(_ => {
 				closeBtn.gameObject.SetActive(true);
 				scanButtonPressed?.Invoke();
 				ToggleMainMenuScreen(false);
@@ -67,10 +67,10 @@ namespace DataskopAR.UI {
 			});
 
 			Root.Q<UnityEngine.UIElements.Button>("btnDemo")
-				.RegisterCallback<ClickEvent>(e => { OnDemoButtonPressed(); });
+				.RegisterCallback<ClickEvent>(_ => { OnDemoButtonPressed(); });
 
 			Root.Q<UnityEngine.UIElements.Button>("btnLogin")
-				.RegisterCallback<ClickEvent>(e => { OnLoginButtonPressed(); });
+				.RegisterCallback<ClickEvent>(_ => { OnLoginButtonPressed(); });
 
 			TokenTextField = Root.Q<TextField>("txtAPISecret");
 			TokenTextField.value = "";
