@@ -76,7 +76,7 @@ namespace DataskopAR.UI {
 			TokenTextField.value = "";
 
 			VersionLabel = Root.Q<Label>("footerCopyright");
-			VersionLabel.text = Version.ID + " ©FHSTP (2022, 2023)";
+			VersionLabel.text = Version.ID + " ©FHSTP (2022-2024)";
 
 			AppOptions.DemoMode = false;
 		}
