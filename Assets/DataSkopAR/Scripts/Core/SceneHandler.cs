@@ -6,7 +6,7 @@ namespace DataskopAR {
 	/// <summary>
 	///     Manages Scenes and their functions across the app.
 	/// </summary>
-	public static class SceneMaster {
+	public static class SceneHandler {
 
 #region Methods
 
