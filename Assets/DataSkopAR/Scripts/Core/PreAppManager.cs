@@ -9,8 +9,9 @@ namespace DataskopAR {
 		private void Start() {
 
 			SetApplicationTargetFrameRate(60);
-
-			if (SceneMaster.GetCurrentScene() == 0) SceneMaster.LoadScene(AccountManager.IsLoggedIn ? 2 : 1);
+			if (SceneHandler.GetCurrentScene() == 0) {
+				SceneHandler.LoadScene(AccountManager.IsLoggedIn ? 2 : 1);
+			}
 
 		}
 

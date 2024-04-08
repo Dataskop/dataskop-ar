@@ -33,7 +33,7 @@ namespace DataskopAR {
 				PlayerPrefs.DeleteKey(APITokenKey);
 			}
 
-			SceneMaster.LoadScene(0);
+			SceneHandler.LoadScene("MainMenu");
 		}
 
 		public static string? TryGetLoginToken() {
