@@ -136,7 +136,7 @@ namespace DataskopAR {
 			public float? Value { get; set; }
 
 			public new string ToString() {
-				return $"{TimeStamp} - {ErrorCode}: {ErrorMessage}";
+				return $"[{TimeStamp.Hour}:{TimeStamp.Minute}:{TimeStamp.Second}] - {ErrorCode}: {ErrorMessage}";
 			}
 
 		}

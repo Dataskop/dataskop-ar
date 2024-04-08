@@ -56,9 +56,7 @@ namespace DataskopAR.UI {
 					break;
 			}
 
-			ErrorLabel.text =
-				$"[{receivedError.TimeStamp.Hour}:{receivedError.TimeStamp.Minute}:{receivedError.TimeStamp.Second}] {receivedError.ErrorCode} - {receivedError.ErrorMessage}";
-
+			ErrorLabel.text = receivedError.ToString();
 			StartCoroutine(DecayError());
 
 		}
