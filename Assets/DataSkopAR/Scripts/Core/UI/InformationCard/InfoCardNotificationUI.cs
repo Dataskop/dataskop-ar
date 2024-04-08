@@ -41,20 +41,12 @@ namespace DataskopAR.UI {
 
 		internal void OnErrorReceived(ErrorHandler.Error receivedError) {
 
-			switch (receivedError.Type) {
-				case ErrorHandler.ErrorType.Tip:
-					ErrorLabel.style.color = new StyleColor(tipColor);
-					break;
-				case ErrorHandler.ErrorType.Warning:
-					ErrorLabel.style.color = new StyleColor(warningColor);
-					break;
-				case ErrorHandler.ErrorType.Error:
-					ErrorLabel.style.color = new StyleColor(errorColor);
-					break;
-				default:
-					ErrorLabel.style.color = new StyleColor(tipColor);
-					break;
-			}
+			ErrorLabel.style.color = receivedError.Type switch {
+				ErrorHandler.ErrorType.Tip => new StyleColor(tipColor),
+				ErrorHandler.ErrorType.Warning => new StyleColor(warningColor),
+				ErrorHandler.ErrorType.Error => new StyleColor(errorColor),
+				_ => new StyleColor(tipColor)
+			};
 
 			ErrorLabel.text = receivedError.ToString();
 			StartCoroutine(DecayError());
