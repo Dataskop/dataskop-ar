@@ -107,6 +107,7 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		private void RotateVisualization() {
+			VisTransform.GetComponent<FaceCamera>().enabled = false;
 			VisTransform.localRotation = Quaternion.Euler(0, 0, -90);
 			VisTransform.localPosition = new Vector3(barFrame.localScale.y * Scale * -0.5f, barFrame.localScale.x * Scale * 0.5f, 0);
 			dataDisplay.localRotation = Quaternion.Euler(0, 0, 90);
@@ -118,6 +119,7 @@ namespace DataskopAR.Entities.Visualizations {
 			VisTransform.localPosition = new Vector3(0, 0, 0);
 			VisTransform.localRotation = Quaternion.Euler(0, 0, 0);
 			IsRotated = false;
+			VisTransform.GetComponent<FaceCamera>().enabled = true;
 		}
 
 		private void OnVisualizationRotated(bool rotationState) {
