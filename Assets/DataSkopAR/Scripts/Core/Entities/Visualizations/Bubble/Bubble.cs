@@ -161,7 +161,7 @@ namespace DataskopAR.Entities.Visualizations {
 					dataDisplay.localScale = newBubbleScale;
 				}
 
-				scaleRoutine = StartCoroutine(LerperHelper.TransformLerpOnCurve(VisTransform, TransformValue.Scale, VisTransform.localScale,
+				scaleRoutine = StartCoroutine(Lerper.TransformLerpOnCurve(VisTransform, TransformValue.Scale, VisTransform.localScale,
 					new Vector3(BubbleSize, BubbleSize, BubbleSize), 0.1f, curve, null));
 
 			}
@@ -179,7 +179,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 			if (dataDisplay.transform.localScale.y > VisTransform.localScale.y) {
 
-				labelRoutine = StartCoroutine(LerperHelper.TransformLerp(dataDisplay.transform, TransformValue.Position,
+				labelRoutine = StartCoroutine(Lerper.TransformLerp(dataDisplay.transform, TransformValue.Position,
 					dataDisplay.transform.localPosition,
 					new Vector3(DisplayOrigin.x + visImageRenderer.sprite.bounds.size.x * 0.5f + 0.2f, DisplayOrigin.y, DisplayOrigin.z),
 					0.1f,
@@ -205,7 +205,7 @@ namespace DataskopAR.Entities.Visualizations {
 			else {
 				labelLine.enabled = false;
 
-				labelRoutine = StartCoroutine(LerperHelper.TransformLerp(dataDisplay.transform, TransformValue.Position,
+				labelRoutine = StartCoroutine(Lerper.TransformLerp(dataDisplay.transform, TransformValue.Position,
 					dataDisplay.transform.localPosition,
 					DisplayOrigin, 0.1f, null));
 			}

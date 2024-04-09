@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 namespace DataskopAR {
 
-	public static class LerperHelper {
+	public static class Lerper {
 
 		public static IEnumerator TransformLerp(Transform t, TransformValue tValue, Vector3 origin, Vector3 target, float duration,
 			[CanBeNull] Action callback) {
