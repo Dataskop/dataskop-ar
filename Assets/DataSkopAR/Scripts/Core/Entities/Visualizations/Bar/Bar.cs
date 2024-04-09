@@ -13,7 +13,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 		[Header("References")]
 		[SerializeField] private MeshRenderer barFillMeshRenderer;
-
 		[SerializeField] private MeshRenderer barFrameMeshRenderer;
 		[SerializeField] private Transform barFill;
 		[SerializeField] private Transform barFrame;
@@ -26,7 +25,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 		[Header("Display References")]
 		[SerializeField] private Transform dataDisplay;
-
 		[SerializeField] private CanvasGroup canvasGroup;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI minValueTextMesh;
