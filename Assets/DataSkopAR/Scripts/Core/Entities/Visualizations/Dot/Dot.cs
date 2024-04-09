@@ -164,7 +164,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 			animationTarget = visTransform.localScale * selectionScale;
 
-			animationCoroutine = StartCoroutine(LerperHelper.TransformLerpOnCurve(
+			animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
 				visTransform,
 				TransformValue.Scale,
 				VisTransform.localScale,
@@ -189,7 +189,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 				animationTarget = visTransform.localScale / selectionScale;
 
-				animationCoroutine = StartCoroutine(LerperHelper.TransformLerpOnCurve(
+				animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
 					visTransform,
 					TransformValue.Scale,
 					VisTransform.localScale,
