@@ -5,7 +5,7 @@ namespace DataskopAR.Entities.Visualizations {
 	public static class BubbleUtils {
 
 		/// <summary>
-		/// Calculates the area based on a given value and maps it to a new radius based on it.
+		///     Calculates the area based on a given value and maps it to a new radius based on it.
 		/// </summary>
 		/// <param name="value">The given value for the mapping</param>
 		/// <param name="minValue">The lower limit of the value</param>

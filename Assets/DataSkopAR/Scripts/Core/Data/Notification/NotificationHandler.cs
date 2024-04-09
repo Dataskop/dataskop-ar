@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 namespace DataskopAR.Data {
 
 	public static class NotificationHandler {
@@ -32,7 +31,7 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
-		/// Adds a notification only if a notification with the same UniqueID does not exist yet.
+		///     Adds a notification only if a notification with the same UniqueID does not exist yet.
 		/// </summary>
 		/// <param name="notification">The notification to be added</param>
 		public static void AddUnique(Notification notification) {

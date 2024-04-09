@@ -1,7 +1,6 @@
 using Mapbox.Unity.Location;
 using Mapbox.Unity.Utilities;
 using UnityEngine;
-
 namespace DataskopAR.Data {
 
 	public class GeoLocationManager : MonoBehaviour {
@@ -18,12 +17,12 @@ namespace DataskopAR.Data {
 #region Properties
 
 		/// <summary>
-		/// Keeps track of the best GPS accuracy the device received.
+		///     Keeps track of the best GPS accuracy the device received.
 		/// </summary>
 		private float BestAccuracy { get; set; } = 1000;
 
 		/// <summary>
-		/// Is true, if the initial geo location has been acquired already.
+		///     Is true, if the initial geo location has been acquired already.
 		/// </summary>
 		private bool HasInitialLocationData { get; set; }
 
@@ -40,7 +39,7 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
-		/// Grab initial location accuracy
+		///     Grab initial location accuracy
 		/// </summary>
 		public void InitializeGeoLocation() {
 
@@ -58,7 +57,7 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
-		/// Update Map when user location gps over device is more accurate than latest sample
+		///     Update Map when user location gps over device is more accurate than latest sample
 		/// </summary>
 		private void UpdateLocation(Location userLocation) {
 
@@ -81,14 +80,14 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
-		/// Fetch Position manually
+		///     Fetch Position manually
 		/// </summary>
 		public void FetchPosition() {
 			locationProvider.mapManager.UpdateMap(locationProvider.DefaultLocationProvider.CurrentLocation.LatitudeLongitude);
 		}
 
 		/// <summary>
-		/// Updates map to the position of the found QR code's lat/long.
+		///     Updates map to the position of the found QR code's lat/long.
 		/// </summary>
 		public void OnQRMarkerTracking(QrResult qrResult) {
 
@@ -116,7 +115,7 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
-		/// Updates the map root to the user position when acquiring a new GPS position.
+		///     Updates the map root to the user position when acquiring a new GPS position.
 		/// </summary>
 		private void UpdateMapRoot() {
 			Vector3 arPos = arCam.transform.position;

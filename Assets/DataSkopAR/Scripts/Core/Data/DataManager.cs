@@ -5,8 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataskopAR.UI;
 using JetBrains.Annotations;
-using UnityEngine;
 using Newtonsoft.Json;
+using UnityEngine;
 using UnityEngine.Events;
 using Debug = UnityEngine.Debug;
 
@@ -23,19 +23,19 @@ namespace DataskopAR.Data {
 #region Events
 
 		/// <summary>
-		/// Invoked when companies and their projects are loaded, without additional info on single projects.
+		///     Invoked when companies and their projects are loaded, without additional info on single projects.
 		/// </summary>
 #pragma warning disable CS0067 // Event is never used
 		public event Action<IReadOnlyCollection<Company>> HasLoadedProjectList;
 #pragma warning restore CS0067 // Event is never used
 
 		/// <summary>
-		/// Invoked once data for the selected project finished loading.
+		///     Invoked once data for the selected project finished loading.
 		/// </summary>
 		public event Action<Project> HasLoadedProjectData;
 
 		/// <summary>
-		/// Invoked when measurement results has been updated.
+		///     Invoked when measurement results has been updated.
 		/// </summary>
 		public event Action HasUpdatedMeasurementResults;
 
@@ -122,9 +122,9 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
-		/// Starts process of loading data for the application.
+		///     Starts process of loading data for the application.
 		/// </summary>
-		private async void LoadAppData() {
+		async private void LoadAppData() {
 
 			LoadingIndicator.Show();
 
@@ -152,7 +152,7 @@ namespace DataskopAR.Data {
 
 		}
 
-		private static async Task<IReadOnlyCollection<Company>> UpdateCompanies() {
+		async private static Task<IReadOnlyCollection<Company>> UpdateCompanies() {
 
 			const string url = "https://backend.dataskop.at/api/company/list";
 			string rawResponse = await RequestHandler.Get(url);
@@ -169,7 +169,7 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
-		/// Loads a project based on its ID.
+		///     Loads a project based on its ID.
 		/// </summary>
 		/// <param name="projectId">The ID of the project to be loaded.</param>
 		public async void LoadProject(int projectId) {
@@ -204,7 +204,7 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
-		/// Loads a project based on a given QR-Code-Result
+		///     Loads a project based on a given QR-Code-Result
 		/// </summary>
 		/// <param name="result">A QrResult</param>
 		[UsedImplicitly]
@@ -262,7 +262,7 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
-		/// Gets available Projects from a set of Companies.
+		///     Gets available Projects from a set of Companies.
 		/// </summary>
 		/// <param name="userCompanies">A collection of companies</param>
 		/// <returns>An Enumerable of available projects for the given companies.</returns>
@@ -305,7 +305,7 @@ namespace DataskopAR.Data {
 
 		}
 
-		private async void RefetchDataTimer() {
+		async private void RefetchDataTimer() {
 
 			while (ShouldRefetch) {
 
@@ -332,7 +332,7 @@ namespace DataskopAR.Data {
 
 		}
 
-		private async void OnRefetchTimerElapsed() {
+		async private void OnRefetchTimerElapsed() {
 			await UpdateProjectMeasurements();
 		}
 

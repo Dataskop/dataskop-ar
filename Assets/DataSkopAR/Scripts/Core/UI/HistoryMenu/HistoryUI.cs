@@ -3,7 +3,6 @@ using DataskopAR.Data;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
-
 namespace DataskopAR.UI {
 
 	public class HistoryUI : MonoBehaviour {
@@ -49,7 +48,7 @@ namespace DataskopAR.UI {
 			HistoryContainer = Root.Q<VisualElement>("HistoryContainer");
 			HistorySliderContainer = HistoryContainer.Q<VisualElement>("HistorySliderContainer");
 
-			HistorySliderContainer.RegisterCallback<PointerDownEvent>((e) => { UIInteractionDetection.IsPointerOverUi = true; });
+			HistorySliderContainer.RegisterCallback<PointerDownEvent>(e => { UIInteractionDetection.IsPointerOverUi = true; });
 
 			HistorySlider = HistorySliderContainer.Q<SliderInt>("Slider");
 			HistorySlider.RegisterCallback<ChangeEvent<int>>(SliderValueChanged);
@@ -61,9 +60,9 @@ namespace DataskopAR.UI {
 
 #if UNITY_EDITOR
 
-			HistorySliderContainer.RegisterCallback<PointerEnterEvent>((e) => { UIInteractionDetection.IsPointerOverUi = true; });
+			HistorySliderContainer.RegisterCallback<PointerEnterEvent>(e => { UIInteractionDetection.IsPointerOverUi = true; });
 			HistorySlider.RegisterCallback<PointerDownEvent>(e => { UIInteractionDetection.HasPointerStartedOverSlider = true; });
-			HistorySliderContainer.RegisterCallback<PointerLeaveEvent>((e) => { UIInteractionDetection.IsPointerOverUi = false; });
+			HistorySliderContainer.RegisterCallback<PointerLeaveEvent>(e => { UIInteractionDetection.IsPointerOverUi = false; });
 			HistorySlider.RegisterCallback<PointerUpEvent>(e => { UIInteractionDetection.HasPointerStartedOverSlider = false; });
 
 #endif

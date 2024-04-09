@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-
 namespace DataskopAR.Data {
 
 	[CreateAssetMenu(fileName = "Location", menuName = "Locations/Add Location...", order = 1)]

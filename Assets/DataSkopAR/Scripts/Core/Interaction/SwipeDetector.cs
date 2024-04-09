@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
 namespace DataskopAR.Interaction {
 
 	public class SwipeDetector : MonoBehaviour {

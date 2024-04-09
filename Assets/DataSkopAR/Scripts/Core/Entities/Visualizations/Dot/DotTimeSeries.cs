@@ -1,7 +1,6 @@
 using DataskopAR.Utils;
 using UnityEngine;
 using UnityEngine.UI;
-
 namespace DataskopAR.Entities.Visualizations {
 
 	public class DotTimeSeries : TimeSeries {

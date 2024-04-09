@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using DataskopAR.Utils;
 using Mapbox.Unity.Location;
 using Mapbox.Unity.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
-
 namespace DataskopAR.Data {
 
 	/// <summary>
@@ -15,7 +13,7 @@ namespace DataskopAR.Data {
 
 #region Properties
 
-		private List<LocationArea> LocationAreas { get; set; }
+		private ISet<LocationArea> LocationAreas { get; set; }
 
 #endregion
 
@@ -23,6 +21,7 @@ namespace DataskopAR.Data {
 
 		[Header("References")]
 		[SerializeField] private LocationProviderFactory locationProviderFactory;
+
 		[SerializeField] [Space] private LocationData[] locationData;
 
 		[Header("Events")]
@@ -47,12 +46,12 @@ namespace DataskopAR.Data {
 
 		private void InitializeAreas(IEnumerable<LocationData> locations) {
 
-			LocationAreas = new List<LocationArea>();
+			LocationAreas = new HashSet<LocationArea>();
 
 			foreach (LocationData data in locations)
 			foreach (LocationData.Area area in data.areas) {
 
-				LocationArea locArea = new LocationArea {
+				LocationArea locArea = new() {
 					AreaName = area.areaName,
 					LocationName = data.locationName
 				};

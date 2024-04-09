@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-
 namespace DataskopAR.Interaction {
 
 	public struct Swipe {

@@ -4,21 +4,10 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using UnityEngine;
-
 namespace DataskopAR.Data {
 
 	[UsedImplicitly]
 	public class Company {
-
-#region Properties
-
-		public int ID { get; set; }
-
-		public CompanyInformation Information { get; set; }
-
-		public ICollection<Project> Projects { get; private set; }
-
-#endregion
 
 #region Constructors
 
@@ -45,6 +34,18 @@ namespace DataskopAR.Data {
 			}
 
 		}
+
+#endregion
+
+#region Properties
+
+		private int ID {
+			get;
+		}
+
+		public CompanyInformation Information { get; set; }
+
+		public ICollection<Project> Projects { get; private set; }
 
 #endregion
 

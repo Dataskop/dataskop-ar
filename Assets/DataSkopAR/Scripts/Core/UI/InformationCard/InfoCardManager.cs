@@ -4,7 +4,6 @@ using DataskopAR.Data;
 using DataskopAR.Interaction;
 using UnityEngine;
 using UnityEngine.UIElements;
-
 namespace DataskopAR.UI {
 
 	public class InfoCardManager : MonoBehaviour {
@@ -48,7 +47,7 @@ namespace DataskopAR.UI {
 
 			InfoCard = informationCardUIDoc.rootVisualElement.Q<VisualElement>("InfoCard");
 
-			InfoCard.RegisterCallback<PointerDownEvent>((e) => {
+			InfoCard.RegisterCallback<PointerDownEvent>(e => {
 					UIInteractionDetection.IsPointerOverUi = true;
 					UIInteractionDetection.HasPointerStartedOverSwipeArea = true;
 				}
@@ -56,11 +55,11 @@ namespace DataskopAR.UI {
 
 #if UNITY_EDITOR
 
-			InfoCard.RegisterCallback<PointerEnterEvent>((e) => {
+			InfoCard.RegisterCallback<PointerEnterEvent>(e => {
 				UIInteractionDetection.IsPointerOverUi = true;
 				UIInteractionDetection.HasPointerStartedOverSwipeArea = true;
 			});
-			InfoCard.RegisterCallback<PointerLeaveEvent>((e) => {
+			InfoCard.RegisterCallback<PointerLeaveEvent>(e => {
 				UIInteractionDetection.IsPointerOverUi = false;
 				UIInteractionDetection.HasPointerStartedOverSwipeArea = false;
 			});

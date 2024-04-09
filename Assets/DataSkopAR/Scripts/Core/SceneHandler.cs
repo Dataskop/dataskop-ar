@@ -1,6 +1,5 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.ARFoundation;
-
 namespace DataskopAR {
 
 	/// <summary>

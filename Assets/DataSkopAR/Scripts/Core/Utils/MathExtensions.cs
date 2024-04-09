@@ -77,8 +77,8 @@ namespace DataskopAR.Utils {
 		}
 
 		/// <summary>
-		/// Finds the closest point on a ray to a given point. If the point is
-		/// behind the ray's origin, the closest point will be the origin.
+		///     Finds the closest point on a ray to a given point. If the point is
+		///     behind the ray's origin, the closest point will be the origin.
 		/// </summary>
 		/// <param name="ray">The ray on which the closes point will be found.</param>
 		/// <param name="point">The given point.</param>

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
 namespace DataskopAR {
 
 	/// <summary>
@@ -27,32 +26,32 @@ namespace DataskopAR {
 #region Constants
 
 		private static readonly List<Error> ErrorList = new() {
-			new() {
+			new Error {
 				ErrorCode = 100,
 				ErrorMessage = "No data points in view - move your camera to see data around you.",
 				Type = ErrorType.Tip
 			},
-			new() {
+			new Error {
 				ErrorCode = 101,
 				ErrorMessage = "Select a data point to pin it to the information card.",
 				Type = ErrorType.Tip
 			},
-			new() {
+			new Error {
 				ErrorCode = 200,
 				ErrorMessage = "Data from this data point was not updated in the past 32 hours",
 				Type = ErrorType.Warning
 			},
-			new() {
+			new Error {
 				ErrorCode = 201,
 				ErrorMessage = "Initial GPS data inaccurate! Move around to get better position data.",
 				Type = ErrorType.Warning
 			},
-			new() {
+			new Error {
 				ErrorCode = 300,
 				ErrorMessage = "Compass data is unreliable! Please move around and re-calibrate.",
 				Type = ErrorType.Error
 			},
-			new() {
+			new Error {
 				ErrorCode = 301,
 				ErrorMessage = "World alignment is off! Please move around and re-calibrate.",
 				Type = ErrorType.Error

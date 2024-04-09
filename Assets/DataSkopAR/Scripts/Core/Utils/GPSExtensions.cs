@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Mapbox.Utils;
-
 namespace DataskopAR.Utils {
 
 	// https://stackoverflow.com/a/7199522
@@ -45,7 +44,7 @@ namespace DataskopAR.Utils {
 		public static IEnumerable<Vector2d> GenerateRandomLocationsNear(Vector2d location, int amount, double radius) {
 
 			Vector2d[] randomLocations = new Vector2d[amount];
-			Random r = new Random();
+			Random r = new();
 
 			for (int i = 0; i < randomLocations.Length; i++) {
 

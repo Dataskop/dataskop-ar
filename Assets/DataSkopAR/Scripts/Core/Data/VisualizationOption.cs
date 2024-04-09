@@ -1,19 +1,10 @@
 using System;
 using System.Linq;
 using JetBrains.Annotations;
-
 namespace DataskopAR.Data {
 
 	[UsedImplicitly]
 	public class VisualizationOption {
-
-#region Properties
-
-		public string Type { get; set; }
-
-		public VisualizationStyle Style { get; set; }
-
-#endregion
 
 #region Constructor
 
@@ -34,6 +25,14 @@ namespace DataskopAR.Data {
 			Style = style;
 
 		}
+
+#endregion
+
+#region Properties
+
+		public string Type { get; set; }
+
+		public VisualizationStyle Style { get; set; }
 
 #endregion
 

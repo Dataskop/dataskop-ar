@@ -13,6 +13,12 @@ namespace DataskopAR.Interaction {
 	/// </summary>
 	public class NorthAlignmentCalibrator : MonoBehaviour, ICalibration {
 
+#region Properties
+
+		public bool IsEnabled { get; set; }
+
+#endregion
+
 #region Events
 
 		public event Action CalibrationCompleted;
@@ -33,12 +39,6 @@ namespace DataskopAR.Interaction {
 		[SerializeField] private int rotationSamples = 10;
 
 		private WaitForSeconds timeBetweenSteps;
-
-#endregion
-
-#region Properties
-
-		public bool IsEnabled { get; set; }
 
 #endregion
 

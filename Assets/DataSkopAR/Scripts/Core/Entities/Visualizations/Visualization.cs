@@ -2,7 +2,6 @@ using System;
 using DataskopAR.Data;
 using DataskopAR.Interaction;
 using UnityEngine;
-
 namespace DataskopAR.Entities.Visualizations {
 
 	public abstract class Visualization : MonoBehaviour {
@@ -51,7 +50,7 @@ namespace DataskopAR.Entities.Visualizations {
 		public abstract MeasurementType[] AllowedMeasurementTypes { get; set; }
 
 		/// <summary>
-		/// The offset of the visualization to the ground.
+		///     The offset of the visualization to the ground.
 		/// </summary>
 		public Vector3 Offset {
 			get => offset;
@@ -59,7 +58,7 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		/// <summary>
-		/// The factor that gets multiplied with the objects default size.
+		///     The factor that gets multiplied with the objects default size.
 		/// </summary>
 		public float Scale {
 			get => scaleFactor;
@@ -75,29 +74,29 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		/// <summary>
-		///  Creates a visualization for a given Data Point.
+		///     Creates a visualization for a given Data Point.
 		/// </summary>
 		protected virtual void OnDataPointChanged() {
 			DataPoint.MeasurementResultChanged += OnMeasurementResultChanged;
 		}
 
 		/// <summary>
-		/// Gets called when the user points the reticule over the visible visualization.
+		///     Gets called when the user points the reticule over the visible visualization.
 		/// </summary>
 		public abstract void Hover();
 
 		/// <summary>
-		/// Gets called when the visualization gets selected.
+		///     Gets called when the visualization gets selected.
 		/// </summary>
 		public abstract void Select();
 
 		/// <summary>
-		/// Gets called when the visualization gets deselected.
+		///     Gets called when the visualization gets deselected.
 		/// </summary>
 		public abstract void Deselect();
 
 		/// <summary>
-		/// Gets called before the visualization is removed.
+		///     Gets called before the visualization is removed.
 		/// </summary>
 		public virtual void Despawn() {
 			DataPoint.MeasurementResultChanged -= OnMeasurementResultChanged;
@@ -106,7 +105,7 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		/// <summary>
-		/// Gets called when the time view gets toggled.
+		///     Gets called when the time view gets toggled.
 		/// </summary>
 		/// <param name="isActive"></param>
 		public abstract void OnTimeSeriesToggled(bool isActive);

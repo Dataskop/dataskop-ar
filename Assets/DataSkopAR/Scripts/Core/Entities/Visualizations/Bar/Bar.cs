@@ -5,7 +5,6 @@ using DataskopAR.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
 namespace DataskopAR.Entities.Visualizations {
 
 	public class Bar : Visualization {
@@ -182,7 +181,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public override void OnMeasurementResultChanged(MeasurementResult mr) {
 			if (!AllowedMeasurementTypes.Contains(DataPoint.MeasurementDefinition.MeasurementType)) {
-				NotificationHandler.Add(new Notification() {
+				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
 					Text = "Value Type not supported by this visualization.",
 					DisplayDuration = 5f

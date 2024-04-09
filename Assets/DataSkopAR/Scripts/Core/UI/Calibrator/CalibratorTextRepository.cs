@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using DataskopAR.Interaction;
-
 namespace DataskopAR.UI {
 
 	public static class CalibratorTextRepository {

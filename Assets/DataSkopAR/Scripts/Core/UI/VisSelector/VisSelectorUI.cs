@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using DataskopAR.Data;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
-
 namespace DataskopAR.UI {
 
 	public class VisSelectorUI : MonoBehaviour {
@@ -99,7 +97,7 @@ namespace DataskopAR.UI {
 
 			Button attributeButton = attributeTemplateContainer.Q<Button>("attribute");
 			attributeButton.RegisterCallback<PointerDownEvent>(
-				(e) => { UIInteractionDetection.IsPointerOverUi = true; });
+				e => { UIInteractionDetection.IsPointerOverUi = true; });
 
 			attributeButton.text = attributeLabel;
 			attributeButton.name = attributeId;
@@ -164,7 +162,7 @@ namespace DataskopAR.UI {
 			TemplateContainer visOptTemplateContainer = visualizationOptionUIAsset.Instantiate();
 
 			Button visOptButton = visOptTemplateContainer.Q<Button>("opt");
-			visOptButton.RegisterCallback<PointerDownEvent>((e) => { UIInteractionDetection.IsPointerOverUi = true; });
+			visOptButton.RegisterCallback<PointerDownEvent>(e => { UIInteractionDetection.IsPointerOverUi = true; });
 
 			visOptButton.name = visOpt.Type;
 

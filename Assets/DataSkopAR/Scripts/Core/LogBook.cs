@@ -1,7 +1,6 @@
 using Mapbox.Utils;
 using TMPro;
 using UnityEngine;
-
 namespace DataskopAR {
 
 	/// <summary>

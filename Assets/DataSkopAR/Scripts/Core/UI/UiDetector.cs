@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
 namespace DataskopAR.UI {
 
 	public class UiDetector : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {

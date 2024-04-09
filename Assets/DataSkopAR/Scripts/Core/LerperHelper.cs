@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using JetBrains.Annotations;
 using UnityEngine;
-
 namespace DataskopAR {
 
 	public static class LerperHelper {

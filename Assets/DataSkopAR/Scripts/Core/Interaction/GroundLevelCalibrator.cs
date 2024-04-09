@@ -3,7 +3,6 @@ using Mapbox.Unity.Map;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.ARFoundation;
-
 namespace DataskopAR.Interaction {
 
 	/// <summary>
@@ -11,16 +10,16 @@ namespace DataskopAR.Interaction {
 	/// </summary>
 	public class GroundLevelCalibrator : MonoBehaviour, ICalibration {
 
+#region Events
+
+		public event Action CalibrationCompleted;
+
+#endregion
+
 #region Constants
 
 		private const int TargetLayerMask = 1 << 10;
 		private const string PlaneTag = "ARPlane";
-
-#endregion
-
-#region Events
-
-		public event Action CalibrationCompleted;
 
 #endregion
 

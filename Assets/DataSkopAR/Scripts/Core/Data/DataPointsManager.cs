@@ -6,7 +6,6 @@ using Mapbox.Unity.Utilities;
 using Mapbox.Utils;
 using UnityEngine;
 using UnityEngine.Events;
-
 namespace DataskopAR.Data {
 
 	public class DataPointsManager : MonoBehaviour {
@@ -157,7 +156,7 @@ namespace DataskopAR.Data {
 			if (!HasLoadedDataPoints)
 				return;
 
-			Swipe historySwipe = new Swipe();
+			Swipe historySwipe = new();
 
 			if (newCount > prevCount) {
 				historySwipe.Direction = Vector2.down;

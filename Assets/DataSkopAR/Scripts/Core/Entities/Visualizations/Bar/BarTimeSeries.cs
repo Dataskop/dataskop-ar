@@ -1,6 +1,5 @@
 using DataskopAR.Utils;
 using UnityEngine;
-
 namespace DataskopAR.Entities.Visualizations {
 
 	public class BarTimeSeries : TimeSeries {

@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.ARFoundation;
-
 namespace DataskopAR.Interaction {
 
 	public class Calibrator : MonoBehaviour {
@@ -37,7 +36,7 @@ namespace DataskopAR.Interaction {
 		[CanBeNull] public ICalibration ActiveCalibration { get; private set; }
 
 		/// <summary>
-		/// The current Calibration Phase.
+		///     The current Calibration Phase.
 		/// </summary>
 		public CalibratorPhase CurrentPhase {
 			get => currentPhase;

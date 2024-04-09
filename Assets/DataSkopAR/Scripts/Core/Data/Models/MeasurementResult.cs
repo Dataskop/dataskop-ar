@@ -4,27 +4,10 @@ using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-
 namespace DataskopAR.Data {
 
 	[UsedImplicitly]
 	public class MeasurementResult {
-
-#region Properties
-
-		public string Value { get; }
-
-		public int ValueType { get; }
-
-		public DateTime Timestamp { get; }
-
-		public Position Position { get; }
-
-		private MeasurementDefinition MeasurementDefinition { get; }
-
-		public string Author { get; }
-
-#endregion
 
 #region Constructors
 
@@ -56,6 +39,40 @@ namespace DataskopAR.Data {
 			}
 
 		}
+
+#endregion
+
+#region Nested type: AdditionalMeasurementResultsProperties
+
+#region Sub-Classes
+
+		public class AdditionalMeasurementResultsProperties {
+
+			public AdditionalMeasurementResultsProperties(string author) {
+				Author = author;
+			}
+
+			public string Author { get; }
+
+		}
+
+#endregion
+
+#endregion
+
+#region Properties
+
+		public string Value { get; }
+
+		public int ValueType { get; }
+
+		public DateTime Timestamp { get; }
+
+		public Position Position { get; }
+
+		private MeasurementDefinition MeasurementDefinition { get; }
+
+		public string Author { get; }
 
 #endregion
 
@@ -183,20 +200,6 @@ namespace DataskopAR.Data {
 
 			// Steps result (is also the fallback)
 			return leftItem.ReadAsFloat();
-		}
-
-#endregion
-
-#region Sub-Classes
-
-		public class AdditionalMeasurementResultsProperties {
-
-			public string Author { get; }
-
-			public AdditionalMeasurementResultsProperties(string author) {
-				Author = author;
-			}
-
 		}
 
 #endregion

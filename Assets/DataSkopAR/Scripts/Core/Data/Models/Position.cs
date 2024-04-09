@@ -1,18 +1,7 @@
 ﻿using System.Globalization;
-
 namespace DataskopAR.Data {
 
 	public class Position {
-
-#region Properties
-
-		public double Latitude { get; }
-
-		public double Longitude { get; }
-
-		public double Altitude { get; }
-
-#endregion
 
 #region Constructors
 
@@ -36,6 +25,16 @@ namespace DataskopAR.Data {
 			return
 				$"{Latitude.ToString(CultureInfo.InvariantCulture)}, {Longitude.ToString(CultureInfo.InvariantCulture)}";
 		}
+
+#endregion
+
+#region Properties
+
+		public double Latitude { get; }
+
+		public double Longitude { get; }
+
+		public double Altitude { get; }
 
 #endregion
 
