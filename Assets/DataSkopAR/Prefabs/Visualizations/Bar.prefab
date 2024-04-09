@@ -379,7 +379,7 @@ GameObject:
   m_Component:
   - component: {fileID: 111384382076272558}
   - component: {fileID: 8227051107050634163}
-  - component: {fileID: 6805288552871397130}
+  - component: {fileID: 5901351208451482978}
   m_Layer: 7
   m_Name: Primary
   m_TagString: Vis
@@ -419,7 +419,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 3, z: 1}
   m_Center: {x: 0, y: 1.5, z: 0}
---- !u!114 &6805288552871397130
+--- !u!114 &5901351208451482978
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

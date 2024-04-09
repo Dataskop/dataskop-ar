@@ -24,17 +24,10 @@ namespace DataskopAR.Entities {
 
 #region Methods
 
-		private void AlignWith(Vector3 target) {
-
-			Vector3 diff = (target - transform.position).WithY(0);
-			float distance = diff.magnitude;
-			bool shouldFace = distance <= faceThreshold;
-
-			if (!shouldFace) {
-				return;
+		private void Awake() {
+			if (targetCamera == null) {
+				targetCamera = Camera.main;
 			}
-
-			transform.forward = isBackwards ? -diff.normalized : diff.normalized;
 		}
 
 		private void FixedUpdate() {
@@ -48,10 +41,17 @@ namespace DataskopAR.Entities {
 			AlignWith(targetTransform.position);
 		}
 
-		private void Awake() {
-			if (targetCamera == null) {
-				targetCamera = Camera.main;
+		private void AlignWith(Vector3 target) {
+
+			Vector3 diff = (target - transform.position).WithY(0);
+			float distance = diff.magnitude;
+			bool shouldFace = distance <= faceThreshold;
+
+			if (!shouldFace) {
+				return;
 			}
+
+			transform.forward = isBackwards ? -diff.normalized : diff.normalized;
 		}
 
 #endregion
