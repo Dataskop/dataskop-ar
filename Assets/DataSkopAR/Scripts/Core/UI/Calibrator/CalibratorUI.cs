@@ -3,7 +3,6 @@ using DataskopAR.Interaction;
 using DataskopAR.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
-
 namespace DataskopAR.UI {
 
 	public class CalibratorUI : MonoBehaviour {

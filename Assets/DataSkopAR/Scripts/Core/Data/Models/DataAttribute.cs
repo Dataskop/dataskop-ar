@@ -3,29 +3,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
-
 namespace DataskopAR.Data {
 
 	[UsedImplicitly]
 	public class DataAttribute {
-
-#region Properties
-
-		public string ID { get; set; }
-
-		public string Label { get; set; }
-
-		public string Type { get; set; }
-
-		public string Unit { get; set; }
-
-		public float Minimum { get; set; }
-
-		public float Maximum { get; set; }
-
-		public ICollection<VisualizationOption> VisOptions { get; set; }
-
-#endregion
 
 #region Constructors
 
@@ -60,6 +41,24 @@ namespace DataskopAR.Data {
 			VisOptions = visualizationOptions;
 
 		}
+
+#endregion
+
+#region Properties
+
+		public string ID { get; set; }
+
+		public string Label { get; set; }
+
+		public string Type { get; set; }
+
+		public string Unit { get; set; }
+
+		public float Minimum { get; set; }
+
+		public float Maximum { get; set; }
+
+		public ICollection<VisualizationOption> VisOptions { get; set; }
 
 #endregion
 

@@ -4,7 +4,6 @@ using DataskopAR.Entities.Visualizations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-
 namespace DataskopAR.Interaction {
 
 	public class DataPointSelector : MonoBehaviour {

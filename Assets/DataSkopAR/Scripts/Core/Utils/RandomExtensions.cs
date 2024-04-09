@@ -1,5 +1,4 @@
 using System;
-
 namespace DataskopAR.Utils {
 
 	public static class RandomExtensions {

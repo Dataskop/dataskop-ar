@@ -4,7 +4,6 @@ using DataskopAR.Data;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
-
 namespace DataskopAR.UI {
 
 	public class ProjectSelectorUI : MonoBehaviour {
@@ -16,17 +15,15 @@ namespace DataskopAR.UI {
 
 		[Header("References")]
 		[SerializeField] private UIDocument settingsMenuUIDoc;
-
 		[SerializeField] private VisualTreeAsset groupOfProjectsTemplate;
 		[SerializeField] private VisualTreeAsset projectTemplate;
 		[SerializeField] private DataManager dataManager;
 
 		[Header("Values")]
 		[SerializeField] private Color selectedIconColor;
-
 		[SerializeField] private Color deselectedIconColor;
 
-		private bool isDescending = false;
+		private bool isDescending;
 
 #endregion
 

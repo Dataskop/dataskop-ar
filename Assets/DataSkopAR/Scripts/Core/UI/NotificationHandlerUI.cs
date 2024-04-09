@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using DataskopAR.Data;
 using UnityEngine;
 using UnityEngine.UIElements;
-
 namespace DataskopAR.UI {
 
 	public class NotificationHandlerUI : MonoBehaviour {

@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
-
 namespace DataskopAR.Data {
 
 	public class TokenValidator : MonoBehaviour {

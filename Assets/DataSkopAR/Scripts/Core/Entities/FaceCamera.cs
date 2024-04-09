@@ -2,10 +2,15 @@
 
 using DataskopAR.Utils;
 using UnityEngine;
-
 namespace DataskopAR.Entities {
 
 	public class FaceCamera : MonoBehaviour {
+
+#region Properties
+
+		private Transform? TargetTransform => targetCamera?.transform;
+
+#endregion
 
 #region Fields
 
@@ -17,17 +22,11 @@ namespace DataskopAR.Entities {
 
 #endregion
 
-#region Properties
-
-		private Transform? TargetTransform => targetCamera?.transform;
-
-#endregion
-
 #region Methods
 
 		private void AlignWith(Vector3 target) {
 
-			var diff = (target - transform.position).WithY(0);
+			Vector3 diff = (target - transform.position).WithY(0);
 			float distance = diff.magnitude;
 			bool shouldFace = distance <= faceThreshold;
 

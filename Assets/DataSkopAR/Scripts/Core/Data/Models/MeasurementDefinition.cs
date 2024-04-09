@@ -4,28 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using UnityEngine;
-
 namespace DataskopAR.Data {
 
 	[UsedImplicitly]
 	public class MeasurementDefinition {
-
-#region Properties
-
-		public int ID { get; }
-
-		public MeasurementType MeasurementType { get; }
-
-		public MeasurementDefinitionInformation MeasurementDefinitionInformation { get; }
-
-		public string DeviceId { get; }
-
-		public string AttributeId { get; }
-
-		public ICollection<MeasurementResult> MeasurementResults { get; private set; }
-
-#endregion
 
 #region Constructors
 
@@ -68,6 +50,22 @@ namespace DataskopAR.Data {
 
 #endregion
 
+#region Properties
+
+		public int ID { get; }
+
+		public MeasurementType MeasurementType { get; }
+
+		public MeasurementDefinitionInformation MeasurementDefinitionInformation { get; }
+
+		public string DeviceId { get; }
+
+		public string AttributeId { get; }
+
+		public ICollection<MeasurementResult> MeasurementResults { get; private set; }
+
+#endregion
+
 #region Methods
 
 		/// <summary>
@@ -87,7 +85,7 @@ namespace DataskopAR.Data {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
 					Text = $"Could not fetch Measurement Results for Definition {ID}!",
-					DisplayDuration = NotificationDuration.Medium,
+					DisplayDuration = NotificationDuration.Medium
 				});
 				throw;
 			}
@@ -138,27 +136,27 @@ namespace DataskopAR.Data {
 
 	public class AdditionalMeasurementDefinitionProperties {
 
-		public string DeviceId { get; }
-
-		public string AttributeId { get; }
-
 		public AdditionalMeasurementDefinitionProperties(string deviceId, string attributeId) {
 			DeviceId = deviceId;
 			AttributeId = attributeId;
 		}
 
+		public string DeviceId { get; }
+
+		public string AttributeId { get; }
+
 	}
 
 	public class MeasurementResultsResponse {
-
-		public int Count { get; set; }
-
-		public ICollection<MeasurementResult> MeasurementResults { get; }
 
 		public MeasurementResultsResponse(int count, ICollection<MeasurementResult> measurementResults) {
 			Count = count;
 			MeasurementResults = measurementResults;
 		}
+
+		public int Count { get; set; }
+
+		public ICollection<MeasurementResult> MeasurementResults { get; }
 
 	}
 

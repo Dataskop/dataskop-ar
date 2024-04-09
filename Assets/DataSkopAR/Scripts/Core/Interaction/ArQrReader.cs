@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using ZXing;
-
 namespace DataskopAR.Interaction {
 
 	public class ArQrReader : MonoBehaviour {

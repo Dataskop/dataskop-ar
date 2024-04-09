@@ -1,24 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-
 namespace DataskopAR.Data {
 
 	public class Device {
-
-#region Properties
-
-		public string ID { get; set; }
-
-		public string Label { get; set; }
-
-		public ICollection<MeasurementDefinition> MeasurementDefinitions { get; set; }
-
-		/// <summary>
-		/// Gets the position of a device on the earth.
-		/// </summary>
-		public Position Position => GetPosition();
-
-#endregion
 
 #region Constructors
 
@@ -29,6 +13,21 @@ namespace DataskopAR.Data {
 			MeasurementDefinitions = measurementDefinitions;
 
 		}
+
+#endregion
+
+#region Properties
+
+		public string ID { get; set; }
+
+		public string Label { get; set; }
+
+		public ICollection<MeasurementDefinition> MeasurementDefinitions { get; set; }
+
+		/// <summary>
+		///     Gets the position of a device on the earth.
+		/// </summary>
+		public Position Position => GetPosition();
 
 #endregion
 
@@ -55,20 +54,19 @@ namespace DataskopAR.Data {
 				return null;
 			}
 
-			var result = MeasurementDefinitions?.First().GetLatestMeasurementResult();
+			MeasurementResult result = MeasurementDefinitions?.First().GetLatestMeasurementResult();
 
-			if (result == null) {
-
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Warning,
-					Text = $"Device {ID} has no reported location!",
-					DisplayDuration = NotificationDuration.Medium
-				});
-
-				return null;
+			if (result != null) {
+				return MeasurementDefinitions?.First().GetLatestMeasurementResult().Position;
 			}
 
-			return MeasurementDefinitions?.First().GetLatestMeasurementResult().Position;
+			NotificationHandler.Add(new Notification {
+				Category = NotificationCategory.Warning,
+				Text = $"Device {ID} has no reported location!",
+				DisplayDuration = NotificationDuration.Medium
+			});
+
+			return null;
 
 		}
 

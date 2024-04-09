@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-
+using Random = UnityEngine.Random;
 namespace DataskopAR.Interaction {
 
 	public class RoomCalibrator : MonoBehaviour, ICalibration {
@@ -51,7 +51,7 @@ namespace DataskopAR.Interaction {
 					yield return new WaitForEndOfFrame();
 				}
 				else {
-					float randomProgressValue = UnityEngine.Random.Range(0.05f, 0.125f);
+					float randomProgressValue = Random.Range(0.05f, 0.125f);
 					RoomScanProgress += randomProgressValue;
 					roomScanProgressed?.Invoke(RoomScanProgress);
 					PreviousRotationEuler = ArCamera.transform.eulerAngles;

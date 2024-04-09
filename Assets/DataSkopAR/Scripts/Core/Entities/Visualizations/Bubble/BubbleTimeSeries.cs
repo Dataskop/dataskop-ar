@@ -1,20 +1,19 @@
 using DataskopAR.Utils;
 using UnityEngine;
-
 namespace DataskopAR.Entities.Visualizations {
 
 	public class BubbleTimeSeries : TimeSeries {
+
+#region Constants
+
+		private static readonly int Alpha = Shader.PropertyToID("_Alpha");
+
+#endregion
 
 #region Fields
 
 		[SerializeField] private float minScale;
 		[SerializeField] private float maxScale;
-
-#endregion
-
-#region Constants
-
-		private static readonly int Alpha = Shader.PropertyToID("_Alpha");
 
 #endregion
 

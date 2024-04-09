@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-
 namespace DataskopAR.Entities {
 
 	public class Compass : MonoBehaviour {
@@ -45,7 +44,7 @@ namespace DataskopAR.Entities {
 			while (Input.compass.enabled) {
 
 				Heading = Input.compass.trueHeading;
-				Vector3 eulerRotation = new Vector3(0, 0, Heading);
+				Vector3 eulerRotation = new(0, 0, Heading);
 				Quaternion newQuaternion = Quaternion.Euler(eulerRotation);
 				float timeElapsed = 0f;
 

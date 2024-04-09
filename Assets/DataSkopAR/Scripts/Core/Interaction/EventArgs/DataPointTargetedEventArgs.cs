@@ -1,6 +1,5 @@
 ﻿using System;
 using DataskopAR.Data;
-
 namespace DataskopAR.Interaction {
 
 	public class DataPointTargetedEventArgs : EventArgs {

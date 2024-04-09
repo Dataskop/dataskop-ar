@@ -1,5 +1,4 @@
 using UnityEngine;
-
 namespace DataskopAR {
 
 	public static class Version {
