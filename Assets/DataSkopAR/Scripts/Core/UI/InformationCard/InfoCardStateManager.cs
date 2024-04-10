@@ -6,6 +6,7 @@ using DataskopAR.Interaction;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
+
 namespace DataskopAR.UI {
 
 	public class InfoCardStateManager : MonoBehaviour {

@@ -1,4 +1,5 @@
 using UnityEngine;
+
 namespace DataskopAR.Entities.Visualizations {
 
 	[CreateAssetMenu(fileName = "Options", menuName = "VisOptions/Add Bar Option...", order = 3)]

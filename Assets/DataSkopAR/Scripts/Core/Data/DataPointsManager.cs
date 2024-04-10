@@ -6,6 +6,7 @@ using Mapbox.Unity.Utilities;
 using Mapbox.Utils;
 using UnityEngine;
 using UnityEngine.Events;
+
 namespace DataskopAR.Data {
 
 	public class DataPointsManager : MonoBehaviour {

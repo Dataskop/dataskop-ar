@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.ARFoundation;
+
 namespace DataskopAR.Interaction {
 
 	public class Calibrator : MonoBehaviour {
@@ -57,7 +58,7 @@ namespace DataskopAR.Interaction {
 			northAlignmentCalibrator.CalibrationCompleted += OnCalibratorContinued;
 			groundLevelCalibrator.CalibrationCompleted += OnCalibratorContinued;
 			roomCalibrator.CalibrationCompleted += OnCalibratorContinued;
-			
+
 			FPSManager.SetApplicationTargetFrameRate(60);
 		}
 

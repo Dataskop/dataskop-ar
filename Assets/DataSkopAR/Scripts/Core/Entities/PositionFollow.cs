@@ -1,4 +1,5 @@
 using UnityEngine;
+
 namespace DataskopAR.Entities {
 
 	public class PositionFollow : MonoBehaviour {

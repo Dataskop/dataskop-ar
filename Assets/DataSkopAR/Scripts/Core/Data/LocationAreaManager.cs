@@ -4,6 +4,7 @@ using Mapbox.Unity.Location;
 using Mapbox.Unity.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
+
 namespace DataskopAR.Data {
 
 	/// <summary>

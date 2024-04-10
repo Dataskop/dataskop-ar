@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
+
 namespace DataskopAR.Data {
 
 	[UsedImplicitly]
