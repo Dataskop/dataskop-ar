@@ -1,4 +1,5 @@
 using UnityEngine;
+
 namespace DataskopAR {
 
 	public class UIInteractionDetection : MonoBehaviour {

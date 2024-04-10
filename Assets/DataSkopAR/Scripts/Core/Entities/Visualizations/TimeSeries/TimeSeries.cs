@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DataskopAR.Data;
 using UnityEngine;
+
 namespace DataskopAR.Entities.Visualizations {
 
 	public class TimeSeries : MonoBehaviour {

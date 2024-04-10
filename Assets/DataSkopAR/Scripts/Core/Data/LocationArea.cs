@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Mapbox.Utils;
+
 namespace DataskopAR.Data {
 
 	public class LocationArea {

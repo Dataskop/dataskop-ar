@@ -2,6 +2,7 @@ using DataskopAR.UI;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
+
 namespace DataskopAR {
 
 	public class InfoCardMap : InfoCardComponent {

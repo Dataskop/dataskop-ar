@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Mapbox.Utils;
+
 namespace DataskopAR.Utils {
 
 	// https://stackoverflow.com/a/7199522

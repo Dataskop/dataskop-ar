@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+
 namespace DataskopAR.UI {
 
 	public abstract class InfoCardComponent : MonoBehaviour {
