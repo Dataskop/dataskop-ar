@@ -159,7 +159,7 @@ namespace DataskopAR.UI {
 
 		private static void OnDemoButtonPressed() {
 			AppOptions.DemoMode = true;
-			AccountManager.Login("313f1398d57643ac90915b1b497db58141826a3d0c9a4f97a1cebc9f10db4e1e");
+			AccountManager.Login("");
 			SceneHandler.LoadScene("World");
 		}
 

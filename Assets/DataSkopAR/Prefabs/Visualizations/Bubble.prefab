@@ -401,7 +401,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3548894602401523789}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -474,8 +474,8 @@ MonoBehaviour:
   idTextMesh: {fileID: 1936030068375102587}
   valueTextMesh: {fileID: 8550670531630696219}
   dateTextMesh: {fileID: 7912062229078590609}
-  minScale: 0.3
-  maxScale: 0.8
+  minScale: 0.25
+  maxScale: 0.55
   curve:
     serializedVersion: 2
     m_Curve:
@@ -512,8 +512,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e389fb79e6055934a9ba0c5a66445169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minScale: 0.3
-  maxScale: 0.8
+  minScale: 0.25
+  maxScale: 0.55
 --- !u!1 &4431131822481873550
 GameObject:
   m_ObjectHideFlags: 0
