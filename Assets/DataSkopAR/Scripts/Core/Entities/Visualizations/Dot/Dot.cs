@@ -5,6 +5,7 @@ using DataskopAR.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace DataskopAR.Entities.Visualizations {
 
 	public class Dot : Visualization {

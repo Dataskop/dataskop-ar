@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+
 namespace DataskopAR.UI {
 
 	public class LoadingIndicator : MonoBehaviour {

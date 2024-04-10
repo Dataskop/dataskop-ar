@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+
 namespace DataskopAR.Data {
 
 	public class Position {

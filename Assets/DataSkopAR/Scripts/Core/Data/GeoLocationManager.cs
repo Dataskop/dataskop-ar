@@ -1,6 +1,7 @@
 using Mapbox.Unity.Location;
 using Mapbox.Unity.Utilities;
 using UnityEngine;
+
 namespace DataskopAR.Data {
 
 	public class GeoLocationManager : MonoBehaviour {

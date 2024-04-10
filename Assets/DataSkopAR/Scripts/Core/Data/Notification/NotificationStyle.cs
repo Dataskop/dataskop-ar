@@ -1,4 +1,5 @@
 using UnityEngine;
+
 namespace DataskopAR.Data {
 
 	public struct NotificationStyle {

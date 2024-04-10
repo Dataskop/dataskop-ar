@@ -2,6 +2,7 @@
 
 using DataskopAR.Utils;
 using UnityEngine;
+
 namespace DataskopAR.Entities {
 
 	public class FaceCamera : MonoBehaviour {

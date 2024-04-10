@@ -2,6 +2,7 @@ using System;
 using DataskopAR.Data;
 using DataskopAR.Interaction;
 using UnityEngine;
+
 namespace DataskopAR.Entities.Visualizations {
 
 	public abstract class Visualization : MonoBehaviour {

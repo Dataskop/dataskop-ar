@@ -1,5 +1,6 @@
 using DataskopAR.Utils;
 using UnityEngine;
+
 namespace DataskopAR.Entities.Visualizations {
 
 	public static class BubbleUtils {
