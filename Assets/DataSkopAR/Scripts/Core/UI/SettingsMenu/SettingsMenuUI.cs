@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
+
 namespace DataskopAR.UI {
 
 	public class SettingsMenuUI : MonoBehaviour {
@@ -179,10 +180,10 @@ namespace DataskopAR.UI {
 			TitleLabel = Root.Q<Label>("MenuTitle");
 
 			AmountInput = SettingsMenuContainer.Q<TextField>("AmountInput");
-			AmountInput.RegisterCallback<ChangeEvent<string>>(AmountInputChanged);
+			AmountInput.RegisterCallback<ChangeEvent<string>>(OnFetchAmountInputChanged);
 
 			CooldownInput = SettingsMenuContainer.Q<TextField>("CooldownInput");
-			CooldownInput.RegisterCallback<ChangeEvent<string>>(CooldownInputChanged);
+			CooldownInput.RegisterCallback<ChangeEvent<string>>(OnFetchIntervalInputChanged);
 
 		}
 
@@ -245,6 +246,7 @@ namespace DataskopAR.UI {
 		}
 
 		public void OnCalibrationFinished() {
+			ProjectSelectorButton.visible = true;
 			ToggleMenu(MenuView.Projects);
 		}
 
@@ -316,7 +318,7 @@ namespace DataskopAR.UI {
 			AccountManager.Logout();
 		}
 
-		private void AmountInputChanged(ChangeEvent<string> e) {
+		private void OnFetchAmountInputChanged(ChangeEvent<string> e) {
 
 			if (string.IsNullOrEmpty(e.newValue)) {
 				return;
@@ -331,7 +333,7 @@ namespace DataskopAR.UI {
 
 		}
 
-		private void CooldownInputChanged(ChangeEvent<string> e) {
+		private void OnFetchIntervalInputChanged(ChangeEvent<string> e) {
 
 			if (string.IsNullOrEmpty(e.newValue)) {
 				return;
@@ -346,14 +348,16 @@ namespace DataskopAR.UI {
 
 		}
 
-		public void OnInfoCardFullscreen(InfoCardState state) {
+		public void OnInfoCardStateChanged(InfoCardState state) {
 
-			if (state != InfoCardState.Fullscreen) {
-				return;
+			if (state == InfoCardState.Fullscreen) {
+				HideSettings();
 			}
 
-			HideSettings();
+		}
 
+		public void OnProjectLoaded() {
+			HistoryButton.visible = true;
 		}
 
 		private void OnDisable() {
