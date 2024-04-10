@@ -13,7 +13,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 		[Header("References")]
 		[SerializeField] private MeshRenderer barFillMeshRenderer;
-
 		[SerializeField] private MeshRenderer barFrameMeshRenderer;
 		[SerializeField] private Transform barFill;
 		[SerializeField] private Transform barFrame;
@@ -26,7 +25,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 		[Header("Display References")]
 		[SerializeField] private Transform dataDisplay;
-
 		[SerializeField] private CanvasGroup canvasGroup;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI minValueTextMesh;
@@ -108,7 +106,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 		private void RotateVisualization() {
 			VisTransform.localRotation = Quaternion.Euler(0, 0, -90);
-			VisTransform.localPosition = new Vector3(barFrame.localScale.y * Scale * -0.5f, barFrame.localScale.x * Scale * 0.5f, 0);
+			VisTransform.localPosition = new Vector3(0, 0, 0);
 			dataDisplay.localRotation = Quaternion.Euler(0, 0, 90);
 			IsRotated = true;
 		}

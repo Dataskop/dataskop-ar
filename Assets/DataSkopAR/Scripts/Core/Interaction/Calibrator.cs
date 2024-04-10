@@ -57,6 +57,8 @@ namespace DataskopAR.Interaction {
 			northAlignmentCalibrator.CalibrationCompleted += OnCalibratorContinued;
 			groundLevelCalibrator.CalibrationCompleted += OnCalibratorContinued;
 			roomCalibrator.CalibrationCompleted += OnCalibratorContinued;
+			
+			FPSManager.SetApplicationTargetFrameRate(60);
 		}
 
 		private void Start() {
