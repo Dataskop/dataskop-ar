@@ -10,11 +10,11 @@
         <ui:VisualElement name="SettingsMenuContainer" class="settings-menu-container" style="display: none; background-color: rgba(0, 0, 0, 0);">
             <ui:VisualElement name="AmountContainer" class="option-container" style="justify-content: space-between; flex-direction: row;">
                 <ui:Label text="Amount to Fetch" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" />
-                <ui:TextField picking-mode="Ignore" name="AmountInput" text="100" class="text-input" />
+                <ui:TextField picking-mode="Ignore" name="AmountInput" class="text-input" />
             </ui:VisualElement>
             <ui:VisualElement name="CooldownContainer" class="option-container" style="justify-content: space-between; flex-direction: row;">
                 <ui:Label text="Fetch Timer (seconds)" display-tooltip-when-elided="true" class="option-label" />
-                <ui:TextField picking-mode="Ignore" name="CooldownInput" text="30" class="text-input" />
+                <ui:TextField picking-mode="Ignore" name="CooldownInput" class="text-input" />
             </ui:VisualElement>
             <ui:VisualElement name="OptionContainer_01" class="option-container">
                 <ui:Button display-tooltip-when-elided="true" name="Option_01" class="option-toggle-button-container">
