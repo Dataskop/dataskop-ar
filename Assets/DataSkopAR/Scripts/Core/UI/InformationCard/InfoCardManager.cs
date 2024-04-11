@@ -13,7 +13,6 @@ namespace DataskopAR.UI {
 
 		[Header("References")]
 		[SerializeField] private UIDocument informationCardUIDoc;
-
 		[SerializeField] private InfoCardStateManager infoCardStateManager;
 		[SerializeField] private InfoCardNotificationUI infoCardNotificationUI;
 		[SerializeField] private InfoCardHeaderUI infoCardHeaderUI;
