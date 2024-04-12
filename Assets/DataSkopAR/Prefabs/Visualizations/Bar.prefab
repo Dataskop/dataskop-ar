@@ -647,7 +647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76fa5162f28d8947a1486cd533eb93c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: 1.25, z: 0}
+  offset: {x: 0, y: 1, z: 0}
   scaleFactor: 0.18
   timeSeriesConfiguration:
     elementVis: {fileID: 4622183919543581581, guid: 0a5cb2a5cbd4a314eaf6d5a57ca3bc23, type: 3}
