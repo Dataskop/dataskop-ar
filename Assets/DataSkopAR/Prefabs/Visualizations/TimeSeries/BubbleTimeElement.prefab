@@ -405,7 +405,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3283195694730565243}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -471,9 +471,9 @@ MonoBehaviour:
   authorImageRenderer: {fileID: 1799483348612361825}
   dataDisplayGroup: {fileID: 8504162003731004855}
   dataDisplay: {fileID: 1477406456107987447}
+  idTextMesh: {fileID: 2694393334926766166}
   valueTextMesh: {fileID: 6255283381702725350}
   dateTextMesh: {fileID: 1636749596921177758}
-  idTextMesh: {fileID: 2694393334926766166}
 --- !u!1 &5854642267593137809
 GameObject:
   m_ObjectHideFlags: 0

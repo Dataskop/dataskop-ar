@@ -20,6 +20,9 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private Vector3 offset;
 		[SerializeField] private float scaleFactor;
 		[SerializeField] protected TimeSeriesConfig timeSeriesConfiguration;
+		[SerializeField] protected Color deselectColor;
+		[SerializeField] protected Color hoverColor;
+		[SerializeField] protected Color selectColor;
 
 		private DataPoint dataPoint;
 
