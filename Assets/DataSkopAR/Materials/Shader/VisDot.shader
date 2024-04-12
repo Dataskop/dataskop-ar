@@ -60,7 +60,6 @@ Shader "DataSkopAR/VisDot"
 
             half4 frag(v2f i) : SV_Target
             {
-                // Sample the texture
                 half4 col = tex2D(_MainTex, i.uv);
                 half3 rgb = col.rgb;
 
@@ -68,7 +67,7 @@ Shader "DataSkopAR/VisDot"
                 float brightness = dot(rgb, half3(0.222, 0.707, 0.071));
                 float blendFactor = smoothstep(0.0, 0.5, 1.0 - brightness); // Adjust thresholds as needed
 
-                //  Blend based on the blendFactor
+                //  blend based on the blendFactor
                 half3 blend_rgb = lerp(half3(1, 1, 1), _Color.rgb, blendFactor);
                 half4 blend_color = half4(blend_rgb, col.a);
 

@@ -109,7 +109,7 @@ namespace DataskopAR.Entities.Visualizations {
 					float receivedValue = mr.ReadAsFloat();
 					boolIcon.enabled = false;
 					valueTextMesh.alpha = 1;
-					valueTextMesh.text = receivedValue.ToString(CultureInfo.InvariantCulture) + DataPoint.Attribute?.Unit;
+					valueTextMesh.text = receivedValue.ToString(CultureInfo.InvariantCulture) + $" {DataPoint.Attribute?.Unit}";
 					dateTextMesh.text = mr.GetTime();
 					break;
 				}

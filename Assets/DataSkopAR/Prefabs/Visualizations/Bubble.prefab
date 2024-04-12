@@ -75,8 +75,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4291595332
-  m_fontColor: {r: 0.26855645, g: 0.5488164, b: 0.8018868, a: 1}
+    rgba: 4289747237
+  m_fontColor: {r: 0.14618193, g: 0.3496184, b: 0.6886792, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -532,7 +532,7 @@ MonoBehaviour:
     elementDistance: 0.85
     animationDuration: 0.125
     isFading: 0
-  deselectColor: {r: 0, g: 0.42503363, b: 0.8207547, a: 1}
+  deselectColor: {r: 0.14618193, g: 0.3496184, b: 0.6886792, a: 1}
   hoverColor: {r: 0.8584906, g: 0.31990921, b: 0.66226315, a: 1}
   selectColor: {r: 0.8584906, g: 0.41105816, b: 0.044544328, a: 1}
   visImageRenderer: {fileID: 6127902192051079091}

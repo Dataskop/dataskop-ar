@@ -152,17 +152,20 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public override void Hover() {
 			barFrameMeshRenderer.material = Options.styles[0].hoverMaterial;
+			valueTextMesh.color = hoverColor;
 			ShowUserDirectionCanvas();
 		}
 
 		public override void Select() {
 			barFrameMeshRenderer.material = Options.styles[0].selectionMaterial;
+			valueTextMesh.color = selectColor;
 			ShowUserDirectionCanvas();
 			IsSelected = true;
 		}
 
 		public override void Deselect() {
 			barFrameMeshRenderer.material = Options.styles[0].defaultMaterial;
+			valueTextMesh.color = deselectColor;
 			HideAllUserDirectionCanvas();
 			IsSelected = false;
 		}
