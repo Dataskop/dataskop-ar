@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb47a29a2a274313bed14278e1446c43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  faceThreshold: 50
+  faceThreshold: 100
   targetCamera: {fileID: 0}
   isBackwards: 1
 --- !u!1 &850777355875889141
