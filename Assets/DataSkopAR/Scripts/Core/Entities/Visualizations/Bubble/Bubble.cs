@@ -20,15 +20,14 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private Transform dropShadow;
 		[SerializeField] private LineRenderer groundLine;
 		[SerializeField] private LineRenderer labelLine;
-		[SerializeField] private Image authorIconImageRenderer;
 		[SerializeField] private Transform timeElementsContainer;
 
 		[Header("Display References")]
 		[SerializeField] private Transform dataDisplay;
-		[SerializeField] private CanvasGroup dataDisplayGroup;
 		[SerializeField] private TextMeshProUGUI idTextMesh;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI dateTextMesh;
+		[SerializeField] private Image authorIconImageRenderer;
 
 		[Header("Additional Values")]
 		[HideInInspector] public float minScale;
@@ -124,7 +123,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 				case MeasurementType.Float: {
 					float receivedValue = mr.ReadAsFloat();
-					valueTextMesh.text = receivedValue.ToString(CultureInfo.InvariantCulture) + DataPoint.Attribute?.Unit;
+					valueTextMesh.text = receivedValue.ToString(CultureInfo.InvariantCulture) + $" {DataPoint.Attribute?.Unit}";
 					dateTextMesh.text = mr.GetTime();
 					BubbleSize = BubbleUtils.CalculateRadius(receivedValue, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum,
 						MinScale, MaxScale);
@@ -259,18 +258,18 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public override void Hover() {
 			visImageRenderer.material = Options.styles[0].hoverMaterial;
-			dataDisplayGroup.alpha = 1;
+			valueTextMesh.color = hoverColor;
 		}
 
 		public override void Select() {
 			visImageRenderer.material = Options.styles[0].selectionMaterial;
-			dataDisplayGroup.alpha = 1;
+			valueTextMesh.color = selectColor;
 			IsSelected = true;
 		}
 
 		public override void Deselect() {
 			visImageRenderer.material = Options.styles[0].defaultMaterial;
-			dataDisplayGroup.alpha = 0;
+			valueTextMesh.color = deselectColor;
 			IsSelected = false;
 		}
 

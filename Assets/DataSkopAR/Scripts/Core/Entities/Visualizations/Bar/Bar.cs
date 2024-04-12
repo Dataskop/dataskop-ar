@@ -30,6 +30,8 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI minValueTextMesh;
 		[SerializeField] private TextMeshProUGUI maxValueTextMesh;
+		[SerializeField] private TextMeshProUGUI idMesh;
+		[SerializeField] private TextMeshProUGUI dateMesh;
 
 		private Vector3 origin;
 		private bool isRotated;
@@ -78,6 +80,8 @@ namespace DataskopAR.Entities.Visualizations {
 
 			VisTransform.root.localPosition = Offset;
 			VisTransform.localScale *= Scale;
+
+			idMesh.text = DataPoint.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper();
 
 			OnMeasurementResultChanged(DataPoint.CurrentMeasurementResult);
 			barCollider.enabled = true;
@@ -131,7 +135,7 @@ namespace DataskopAR.Entities.Visualizations {
 			maxValueTransform.pivot = rotationState ? new Vector2(1, 0.5f) : new Vector2(0.5f, 1);
 
 			maxValueTransform.sizeDelta = rotationState
-				? new Vector2(60, maxValueTransform.sizeDelta.y)
+				? new Vector2(80, maxValueTransform.sizeDelta.y)
 				: new Vector2(maxValueTransform.sizeDelta.x, 10);
 
 			RectTransform minValueTransform = minValueTextMesh.GetComponent<RectTransform>();
@@ -139,26 +143,31 @@ namespace DataskopAR.Entities.Visualizations {
 			minValueTransform.pivot = rotationState ? new Vector2(0, 0.5f) : new Vector2(0.5f, 0);
 
 			minValueTransform.sizeDelta = rotationState
-				? new Vector2(60, minValueTransform.sizeDelta.y)
+				? new Vector2(80, minValueTransform.sizeDelta.y)
 				: new Vector2(minValueTransform.sizeDelta.x, 10);
 
+			maxValueTextMesh.alignment = rotationState ? TextAlignmentOptions.Right : TextAlignmentOptions.Center;
+			minValueTextMesh.alignment = rotationState ? TextAlignmentOptions.Left : TextAlignmentOptions.Center;
 		}
 
 		public override void ApplyStyle(VisualizationStyle style) { }
 
 		public override void Hover() {
 			barFrameMeshRenderer.material = Options.styles[0].hoverMaterial;
+			valueTextMesh.color = hoverColor;
 			ShowUserDirectionCanvas();
 		}
 
 		public override void Select() {
 			barFrameMeshRenderer.material = Options.styles[0].selectionMaterial;
+			valueTextMesh.color = selectColor;
 			ShowUserDirectionCanvas();
 			IsSelected = true;
 		}
 
 		public override void Deselect() {
 			barFrameMeshRenderer.material = Options.styles[0].defaultMaterial;
+			valueTextMesh.color = deselectColor;
 			HideAllUserDirectionCanvas();
 			IsSelected = false;
 		}
@@ -194,6 +203,7 @@ namespace DataskopAR.Entities.Visualizations {
 					SetPillarHeight(receivedValue ? 1f : 0f, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum, 0,
 						barFrame.localScale.y);
 					SetDisplayValue(receivedValue);
+					dateMesh.text = mr.GetTime();
 					break;
 				}
 				case MeasurementType.Float: {
@@ -202,6 +212,7 @@ namespace DataskopAR.Entities.Visualizations {
 						barFrame.localScale.y);
 					SetDisplayValue(receivedValue);
 					SetMinMaxDisplayValues(DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
+					dateMesh.text = mr.GetTime();
 					break;
 				}
 			}
