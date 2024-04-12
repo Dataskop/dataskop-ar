@@ -18,7 +18,7 @@ VisualElement {
 }
 
 .swipe-handle {
-    background-color: rgb(0, 80, 150);
+    background-color: rgb(37, 89, 176);
     height: 8px;
     width: 12%;
     border-top-left-radius: 5px;
@@ -59,10 +59,10 @@ VisualElement {
 .data-display-container {
     width: 100%;
     height: auto;
-    border-left-color: rgba(0, 80, 150, 0.86);
-    border-right-color: rgba(0, 80, 150, 0.86);
-    border-top-color: rgba(0, 80, 150, 0.86);
-    border-bottom-color: rgba(0, 80, 150, 0.86);
+    border-left-color: rgb(37, 89, 176);
+    border-right-color: rgb(37, 89, 176);
+    border-top-color: rgb(37, 89, 176);
+    border-bottom-color: rgb(37, 89, 176);
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
     border-top-right-radius: 12px;
@@ -107,7 +107,7 @@ VisualElement {
 .header {
     font-size: 36px;
     -unity-font-style: bold;
-    color: rgb(0, 80, 150);
+    color: rgb(37, 89, 176);
 }
 
 .data-row {
@@ -127,7 +127,7 @@ VisualElement {
 }
 
 .data-title {
-    color: rgb(0, 80, 150);
+    color: rgb(37, 89, 176);
     -unity-font-style: bold;
     font-size: 26px;
 }
@@ -192,6 +192,9 @@ VisualElement {
 }
 
 .refresh-button {
+    color: rgb(37, 89, 176);
+    -unity-background-image-tint-color: rgb(37, 89, 176);
+    background-color: rgb(37, 89, 176);
 }
 
 .tab-label {
@@ -211,9 +214,9 @@ VisualElement {
     margin-right: 8px;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
-    border-left-color: rgba(0, 80, 150, 0.2);
-    border-right-color: rgba(0, 80, 150, 0.2);
-    border-top-color: rgba(0, 80, 150, 0.2);
+    border-left-color: rgb(37, 89, 176);
+    border-right-color: rgb(37, 89, 176);
+    border-top-color: rgb(37, 89, 176);
     border-bottom-color: rgba(67, 67, 67, 0.31);
     border-left-width: 0;
     border-right-width: 0;
@@ -234,10 +237,10 @@ VisualElement {
     margin-right: 8px;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
-    border-left-color: rgb(0, 80, 150);
-    border-right-color: rgb(0, 80, 150);
-    border-top-color: rgb(0, 80, 150);
-    border-bottom-color: rgb(0, 80, 150);
+    border-left-color: rgb(219, 105, 11);
+    border-right-color: rgb(219, 105, 11);
+    border-top-color: rgb(219, 105, 11);
+    border-bottom-color: rgb(219, 105, 11);
     border-left-width: 0;
     border-right-width: 0;
     border-top-width: 8px;
@@ -245,12 +248,4 @@ VisualElement {
     transform-origin: bottom;
     font-size: 58px;
     -unity-text-align: middle-center;
-}
-
-.info-card-glow {
-    border-left-color: rgb(255, 74, 0);
-    border-right-color: rgb(255, 74, 0);
-    border-top-color: rgb(255, 74, 0);
-    border-bottom-color: rgb(255, 74, 0);
-    border-top-width: 0;
 }
