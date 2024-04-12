@@ -119,10 +119,10 @@ VisualElement {
     justify-content: flex-start;
     margin-top: 8px;
     margin-bottom: 8px;
-    border-left-color: rgb(0, 80, 150);
-    border-right-color: rgb(0, 80, 150);
-    border-top-color: rgb(0, 80, 150);
-    border-bottom-color: rgb(0, 80, 150);
+    border-left-color: rgb(37, 89, 176);
+    border-right-color: rgb(37, 89, 176);
+    border-top-color: rgb(37, 89, 176);
+    border-bottom-color: rgb(37, 89, 176);
 }
 
 .splitter {
@@ -151,7 +151,7 @@ VisualElement {
 }
 
 .knob-on {
-    background-color: rgb(42, 109, 219);
+    background-color: rgb(37, 89, 176);
     transition-property: translate;
     transition-duration: 0.2s;
     transition-timing-function: ease;
@@ -164,7 +164,7 @@ VisualElement {
     transition-duration: 0.2s;
     transition-timing-function: ease;
     transition-delay: 0s;
-    background-color: rgb(42, 109, 219);
+    background-color: rgb(37, 89, 176);
 }
 
 .toggler-off {
@@ -207,7 +207,7 @@ VisualElement {
 .button-icon {
     width: 80%;
     height: 80%;
-    -unity-background-image-tint-color: rgb(0, 80, 150);
+    -unity-background-image-tint-color: rgb(37, 89, 176);
     -unity-background-scale-mode: stretch-to-fill;
 }
 

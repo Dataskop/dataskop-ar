@@ -24,7 +24,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 		[Header("Display References")]
 		[SerializeField] private Transform dataDisplay;
-		[SerializeField] private CanvasGroup dataDisplayGroup;
 		[SerializeField] private TextMeshProUGUI idTextMesh;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI dateTextMesh;
@@ -110,7 +109,7 @@ namespace DataskopAR.Entities.Visualizations {
 					float receivedValue = mr.ReadAsFloat();
 					boolIcon.enabled = false;
 					valueTextMesh.alpha = 1;
-					valueTextMesh.text = receivedValue.ToString(CultureInfo.InvariantCulture) + DataPoint.Attribute?.Unit;
+					valueTextMesh.text = receivedValue.ToString(CultureInfo.InvariantCulture) + $" {DataPoint.Attribute?.Unit}";
 					dateTextMesh.text = mr.GetTime();
 					break;
 				}
@@ -154,7 +153,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public override void Hover() {
 			visImageRenderer.material = Options.styles[0].hoverMaterial;
-			dataDisplayGroup.alpha = 1;
+			valueTextMesh.color = hoverColor;
 		}
 
 		public override void Select() {
@@ -176,7 +175,7 @@ namespace DataskopAR.Entities.Visualizations {
 			));
 
 			visImageRenderer.material = Options.styles[0].selectionMaterial;
-			dataDisplayGroup.alpha = 1;
+			valueTextMesh.color = selectColor;
 			IsSelected = true;
 
 		}
@@ -202,7 +201,7 @@ namespace DataskopAR.Entities.Visualizations {
 			}
 
 			visImageRenderer.material = Options.styles[0].defaultMaterial;
-			dataDisplayGroup.alpha = 0;
+			valueTextMesh.color = deselectColor;
 			IsSelected = false;
 
 		}

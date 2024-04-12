@@ -22,7 +22,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 			foreach (TimeElement te in TimeElements) {
 				te.transform.localScale *= DataPoint.Vis.Scale;
-				RotateDisplay(te.DataDisplay);
 				SetBarHeight(te, te.MeasurementResult.ReadAsFloat(), DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
 			}
 
@@ -34,10 +33,6 @@ namespace DataskopAR.Entities.Visualizations {
 				SetBarHeight(te, te.MeasurementResult.ReadAsFloat(), DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
 			}
 
-		}
-
-		private void RotateDisplay(Transform displayTransform) {
-			displayTransform.localRotation = Quaternion.Euler(0, 0, 90);
 		}
 
 		private void SetBarHeight(TimeElement e, float value, float min, float max) {

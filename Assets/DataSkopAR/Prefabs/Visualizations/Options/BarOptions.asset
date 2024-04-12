@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9be824edd2679f40beb00d104119e30, type: 3}
   m_Name: BarOptions
   m_EditorClassIdentifier: 
-  fillColor: {r: 0, g: 0.569185, b: 1, a: 1}
+  fillColor: {r: 0.14618193, g: 0.3496184, b: 0.6886792, a: 1}
   styles:
   - defaultMaterial: {fileID: 2100000, guid: c08e23e36613f10459993236cf71c45a, type: 2}
     hoverMaterial: {fileID: 2100000, guid: 054dcdee08aaff44cb7c26670c8a5447, type: 2}

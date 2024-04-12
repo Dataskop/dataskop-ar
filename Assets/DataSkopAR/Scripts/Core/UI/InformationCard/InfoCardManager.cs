@@ -93,15 +93,17 @@ namespace DataskopAR.UI {
 
 		}
 
+		public void OnProjectLoaded(Project _) {
+			infoCardProjectDataUI.UpdateVisibility();
+		}
+
 		public void OnUserAreaLocated(LocationArea locationArea) {
 			infoCardHeaderUI.OnUserAreaLocated(locationArea);
 		}
 
 		public void OnProjectDataUpdated(Project selectedProject) {
-
 			infoCardProjectDataUI.UpdateProjectNameDisplay(selectedProject == null ? "N/A" : selectedProject.Information.Name);
 			infoCardProjectDataUI.UpdateLastUpdatedDisplay(selectedProject?.GetLastUpdatedTime() ?? new DateTime());
-
 		}
 
 		public void OnMeasurementResultsUpdated() {

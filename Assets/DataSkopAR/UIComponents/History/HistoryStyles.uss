@@ -25,10 +25,10 @@
     border-right-width: 3px;
     border-top-width: 3px;
     border-bottom-width: 3px;
-    border-left-color: rgb(0, 80, 150);
-    border-right-color: rgb(0, 80, 150);
-    border-top-color: rgb(0, 80, 150);
-    border-bottom-color: rgb(0, 80, 150);
+    border-left-color: rgb(37, 89, 176);
+    border-right-color: rgb(37, 89, 176);
+    border-top-color: rgb(37, 89, 176);
+    border-bottom-color: rgb(37, 89, 176);
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
     border-top-right-radius: 12px;
