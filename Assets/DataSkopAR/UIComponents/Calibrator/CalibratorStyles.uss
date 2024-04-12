@@ -47,10 +47,10 @@ VisualElement {
     justify-content: flex-start;
     margin-top: 75px;
     margin-bottom: 8px;
-    border-left-color: rgb(0, 80, 150);
-    border-right-color: rgb(0, 80, 150);
-    border-top-color: rgb(0, 80, 150);
-    border-bottom-color: rgb(0, 80, 150);
+    border-left-color: rgb(37, 89, 176);
+    border-right-color: rgb(37, 89, 176);
+    border-top-color: rgb(37, 89, 176);
+    border-bottom-color: rgb(37, 89, 176);
     -unity-font-definition: initial;
     -unity-font: url('project://database/Assets/Mapbox/Fonts/OpenSans-Bold.ttf?fileID=12800000&guid=7dfc2e1472ac84e1bb749a8a9f934483&type=3#OpenSans-Bold');
 }

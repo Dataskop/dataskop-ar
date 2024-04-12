@@ -151,7 +151,7 @@ VisualElement {
 }
 
 .knob-on {
-    background-color: rgb(42, 109, 219);
+    background-color: rgb(37, 89, 176);
     transition-property: translate;
     transition-duration: 0.2s;
     transition-timing-function: ease;
@@ -164,7 +164,7 @@ VisualElement {
     transition-duration: 0.2s;
     transition-timing-function: ease;
     transition-delay: 0s;
-    background-color: rgb(42, 109, 219);
+    background-color: rgb(37, 89, 176);
 }
 
 .toggler-off {

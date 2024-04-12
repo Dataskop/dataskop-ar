@@ -63,7 +63,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public void SetDisplayData() {
 
-			valueTextMesh.SetText(MeasurementResult.Value);
+			valueTextMesh.SetText(MeasurementResult.Value + $" {Series.DataPoint.Attribute?.Unit}");
 			dateTextMesh.SetText(MeasurementResult.GetTime());
 			idTextMesh.SetText(Series.DataPoint.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper());
 

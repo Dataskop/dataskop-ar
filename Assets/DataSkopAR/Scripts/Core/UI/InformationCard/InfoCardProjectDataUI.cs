@@ -17,7 +17,6 @@ namespace DataskopAR.UI {
 #region Properties
 
 		protected override VisualElement ComponentRoot { get; set; }
-
 		private VisualElement InfoCard { get; set; }
 
 #endregion
@@ -41,6 +40,11 @@ namespace DataskopAR.UI {
 			lastUpdateTime = lastUpdateTime.ToLocalTime();
 			Label lastUpdatedLabel = ComponentRoot.Q<Label>("LastUpdated");
 			lastUpdatedLabel.text = $"Last Updated: {lastUpdateTime.ToShortDateString()} {lastUpdateTime.ToLongTimeString()}";
+		}
+
+		internal void UpdateVisibility() {
+			ComponentRoot.Q<Label>("LastUpdated").visible = true;
+			ComponentRoot.Q<Button>("UpdateProject").visible = true;
 		}
 
 #endregion
