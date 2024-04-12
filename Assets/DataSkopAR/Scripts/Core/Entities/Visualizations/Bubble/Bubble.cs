@@ -20,7 +20,6 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private Transform dropShadow;
 		[SerializeField] private LineRenderer groundLine;
 		[SerializeField] private LineRenderer labelLine;
-		[SerializeField] private Image authorIconImageRenderer;
 		[SerializeField] private Transform timeElementsContainer;
 
 		[Header("Display References")]
@@ -29,6 +28,7 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private TextMeshProUGUI idTextMesh;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI dateTextMesh;
+		[SerializeField] private Image authorIconImageRenderer;
 
 		[Header("Additional Values")]
 		[HideInInspector] public float minScale;
