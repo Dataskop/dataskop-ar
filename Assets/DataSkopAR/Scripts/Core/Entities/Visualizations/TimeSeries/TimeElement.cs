@@ -13,8 +13,9 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private Image authorImageRenderer;
 		[SerializeField] private CanvasGroup dataDisplayGroup;
 		[SerializeField] private Transform dataDisplay;
-		[SerializeField] private TextMeshProUGUI valueDisplay;
-		[SerializeField] private TextMeshProUGUI dateDisplay;
+		[SerializeField] private TextMeshProUGUI idTextMesh;
+		[SerializeField] private TextMeshProUGUI valueTextMesh;
+		[SerializeField] private TextMeshProUGUI dateTextMesh;
 
 		private MeasurementResult measurementResult;
 
@@ -58,8 +59,9 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public void SetDisplayData() {
 
-			valueDisplay.SetText(MeasurementResult.Value);
-			dateDisplay.SetText(MeasurementResult.GetTime());
+			valueTextMesh.SetText(MeasurementResult.Value);
+			dateTextMesh.SetText(MeasurementResult.GetTime());
+			idTextMesh.SetText(Series.DataPoint.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper());
 
 		}
 

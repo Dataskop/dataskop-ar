@@ -304,8 +304,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 8
-  m_fontSizeBase: 8
+  m_fontSize: 7
+  m_fontSizeBase: 7
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -539,13 +539,13 @@ MonoBehaviour:
   dropShadow: {fileID: 7669548959106058827}
   groundLine: {fileID: 4226972398150195897}
   labelLine: {fileID: 1095265369420110130}
-  authorIconImageRenderer: {fileID: 5482767729223683891}
   timeElementsContainer: {fileID: 4888721393604602538}
   dataDisplay: {fileID: 3467808452791393234}
   dataDisplayGroup: {fileID: 760197451655900613}
   idTextMesh: {fileID: 4032105844514091865}
   valueTextMesh: {fileID: 1158193985848679221}
   dateTextMesh: {fileID: 2243546288329447413}
+  authorIconImageRenderer: {fileID: 5482767729223683891}
   minScale: 0.25
   maxScale: 0.55
   curve:
@@ -1264,7 +1264,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 01/01/1999 - 00:00
+  m_text: 01/01/1999 - 00:00:00
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
@@ -1291,8 +1291,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 8
-  m_fontSizeBase: 8
+  m_fontSize: 7
+  m_fontSizeBase: 7
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
