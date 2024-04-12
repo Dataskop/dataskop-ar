@@ -258,15 +258,18 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public override void Hover() {
 			visImageRenderer.material = Options.styles[0].hoverMaterial;
+			valueTextMesh.color = hoverColor;
 		}
 
 		public override void Select() {
 			visImageRenderer.material = Options.styles[0].selectionMaterial;
+			valueTextMesh.color = selectColor;
 			IsSelected = true;
 		}
 
 		public override void Deselect() {
 			visImageRenderer.material = Options.styles[0].defaultMaterial;
+			valueTextMesh.color = deselectColor;
 			IsSelected = false;
 		}
 

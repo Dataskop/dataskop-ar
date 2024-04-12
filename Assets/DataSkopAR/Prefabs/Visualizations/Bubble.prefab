@@ -532,6 +532,9 @@ MonoBehaviour:
     elementDistance: 0.85
     animationDuration: 0.125
     isFading: 0
+  deselectColor: {r: 0, g: 0.42503363, b: 0.8207547, a: 1}
+  hoverColor: {r: 0.8584906, g: 0.31990921, b: 0.66226315, a: 1}
+  selectColor: {r: 0.8584906, g: 0.41105816, b: 0.044544328, a: 1}
   visImageRenderer: {fileID: 6127902192051079091}
   visTransform: {fileID: 7302675423790594360}
   options: {fileID: 11400000, guid: bb8ab6863403a234d9035346e104de5a, type: 2}
@@ -541,7 +544,6 @@ MonoBehaviour:
   labelLine: {fileID: 1095265369420110130}
   timeElementsContainer: {fileID: 4888721393604602538}
   dataDisplay: {fileID: 3467808452791393234}
-  dataDisplayGroup: {fileID: 760197451655900613}
   idTextMesh: {fileID: 4032105844514091865}
   valueTextMesh: {fileID: 1158193985848679221}
   dateTextMesh: {fileID: 2243546288329447413}

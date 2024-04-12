@@ -20,6 +20,7 @@ namespace DataskopAR.Data {
 
 		[Header("Values")]
 		[SerializeField] private Color mapSelectionColor;
+		[SerializeField] private Color mapHoverColor;
 		[SerializeField] private Color mapDefaultColor;
 
 		private MeasurementResult mResult;
@@ -84,6 +85,7 @@ namespace DataskopAR.Data {
 
 			if (isHovered) {
 				Vis.Hover();
+				SetMapIconColor(mapHoverColor);
 				return;
 			}
 

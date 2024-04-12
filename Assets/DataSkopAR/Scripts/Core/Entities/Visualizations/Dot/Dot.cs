@@ -28,11 +28,6 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI dateTextMesh;
 
-		[Header("Values")]
-		[SerializeField] private Color deselectColor;
-		[SerializeField] private Color hoverColor;
-		[SerializeField] private Color selectColor;
-
 		[Header("Icon Values")]
 		[SerializeField] private Image boolIcon;
 		[SerializeField] private Sprite[] boolIcons;
