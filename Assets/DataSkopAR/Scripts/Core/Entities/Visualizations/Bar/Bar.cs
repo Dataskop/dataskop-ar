@@ -30,6 +30,8 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI minValueTextMesh;
 		[SerializeField] private TextMeshProUGUI maxValueTextMesh;
+		[SerializeField] private TextMeshProUGUI idMesh;
+		[SerializeField] private TextMeshProUGUI dateMesh;
 
 		private Vector3 origin;
 		private bool isRotated;
@@ -78,6 +80,8 @@ namespace DataskopAR.Entities.Visualizations {
 
 			VisTransform.root.localPosition = Offset;
 			VisTransform.localScale *= Scale;
+
+			idMesh.text = DataPoint.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper();
 
 			OnMeasurementResultChanged(DataPoint.CurrentMeasurementResult);
 			barCollider.enabled = true;
@@ -194,6 +198,7 @@ namespace DataskopAR.Entities.Visualizations {
 					SetPillarHeight(receivedValue ? 1f : 0f, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum, 0,
 						barFrame.localScale.y);
 					SetDisplayValue(receivedValue);
+					dateMesh.text = mr.GetTime();
 					break;
 				}
 				case MeasurementType.Float: {
@@ -202,6 +207,7 @@ namespace DataskopAR.Entities.Visualizations {
 						barFrame.localScale.y);
 					SetDisplayValue(receivedValue);
 					SetMinMaxDisplayValues(DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
+					dateMesh.text = mr.GetTime();
 					break;
 				}
 			}
