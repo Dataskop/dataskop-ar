@@ -670,6 +670,8 @@ MonoBehaviour:
   valueTextMesh: {fileID: 7218180205001926802}
   minValueTextMesh: {fileID: 2602751140391987743}
   maxValueTextMesh: {fileID: 4043066396322243113}
+  idMesh: {fileID: 7129873558873168896}
+  dateMesh: {fileID: 7750222843963125766}
 --- !u!114 &7115935197513389783
 MonoBehaviour:
   m_ObjectHideFlags: 0
