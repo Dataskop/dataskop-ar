@@ -687,7 +687,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b193bf6d8001a664eb45f0bdea917470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeElementColor: {r: 0.4716981, g: 0.4716981, b: 0.4716981, a: 1}
+  timeElementColor: {r: 0.34212914, g: 0.33641866, b: 0.3773585, a: 1}
 --- !u!1 &5175790286732490339
 GameObject:
   m_ObjectHideFlags: 0

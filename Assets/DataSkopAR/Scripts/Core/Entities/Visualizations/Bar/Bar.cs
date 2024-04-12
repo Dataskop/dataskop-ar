@@ -135,7 +135,7 @@ namespace DataskopAR.Entities.Visualizations {
 			maxValueTransform.pivot = rotationState ? new Vector2(1, 0.5f) : new Vector2(0.5f, 1);
 
 			maxValueTransform.sizeDelta = rotationState
-				? new Vector2(60, maxValueTransform.sizeDelta.y)
+				? new Vector2(80, maxValueTransform.sizeDelta.y)
 				: new Vector2(maxValueTransform.sizeDelta.x, 10);
 
 			RectTransform minValueTransform = minValueTextMesh.GetComponent<RectTransform>();
@@ -143,9 +143,11 @@ namespace DataskopAR.Entities.Visualizations {
 			minValueTransform.pivot = rotationState ? new Vector2(0, 0.5f) : new Vector2(0.5f, 0);
 
 			minValueTransform.sizeDelta = rotationState
-				? new Vector2(60, minValueTransform.sizeDelta.y)
+				? new Vector2(80, minValueTransform.sizeDelta.y)
 				: new Vector2(minValueTransform.sizeDelta.x, 10);
 
+			maxValueTextMesh.alignment = rotationState ? TextAlignmentOptions.Right : TextAlignmentOptions.Center;
+			minValueTextMesh.alignment = rotationState ? TextAlignmentOptions.Left : TextAlignmentOptions.Center;
 		}
 
 		public override void ApplyStyle(VisualizationStyle style) { }
