@@ -28,6 +28,11 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI dateTextMesh;
 
+		[Header("Values")]
+		[SerializeField] private Color deselectColor;
+		[SerializeField] private Color hoverColor;
+		[SerializeField] private Color selectColor;
+
 		[Header("Icon Values")]
 		[SerializeField] private Image boolIcon;
 		[SerializeField] private Sprite[] boolIcons;
@@ -153,6 +158,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public override void Hover() {
 			visImageRenderer.material = Options.styles[0].hoverMaterial;
+			valueTextMesh.color = hoverColor;
 		}
 
 		public override void Select() {
@@ -174,6 +180,7 @@ namespace DataskopAR.Entities.Visualizations {
 			));
 
 			visImageRenderer.material = Options.styles[0].selectionMaterial;
+			valueTextMesh.color = selectColor;
 			IsSelected = true;
 
 		}
@@ -199,6 +206,7 @@ namespace DataskopAR.Entities.Visualizations {
 			}
 
 			visImageRenderer.material = Options.styles[0].defaultMaterial;
+			valueTextMesh.color = deselectColor;
 			IsSelected = false;
 
 		}
