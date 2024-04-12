@@ -880,12 +880,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87e261cf233b4604ebd77107b664f47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  authorImageRenderer: {fileID: 0}
-  dataDisplayGroup: {fileID: 0}
-  dataDisplay: {fileID: 0}
-  idTextMesh: {fileID: 0}
-  valueTextMesh: {fileID: 0}
-  dateTextMesh: {fileID: 0}
+  authorImageRenderer: {fileID: 956765188184458659}
+  dataDisplayGroup: {fileID: 6267973708315997545}
+  dataDisplay: {fileID: 6273558467313846602}
+  idTextMesh: {fileID: 331037838285813005}
+  valueTextMesh: {fileID: 9158151067388218360}
+  dateTextMesh: {fileID: 483348215258021050}
 --- !u!1 &5148261334088139178
 GameObject:
   m_ObjectHideFlags: 0
