@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/DataSkopAR/UIComponents/VisSelector/VisSelector.uss?fileID=7433441132597879392&amp;guid=766a3ef431cf9d94e91eddf09be3bad5&amp;type=3#VisSelector" />
-    <ui:VisualElement name="vis-selector-container" class="vis-selector-container" style="bottom: 300px;">
+    <ui:VisualElement name="vis-selector-container" class="vis-selector-container" style="bottom: 280px;">
         <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="attribute-selector" mode="Horizontal" horizontal-scroller-visibility="Hidden" nested-interaction-kind="ForwardScrolling" focusable="false" class="attribute-selector" />
         <ui:ScrollView name="vis-selector" mode="Horizontal" class="vis-selector" />
     </ui:VisualElement>

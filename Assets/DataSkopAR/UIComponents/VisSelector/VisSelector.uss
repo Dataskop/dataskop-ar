@@ -22,49 +22,54 @@
     border-bottom-left-radius: 50px;
     border-top-right-radius: 50px;
     border-bottom-right-radius: 50px;
-    border-left-color: rgb(255, 255, 255);
-    border-right-color: rgb(255, 255, 255);
-    border-top-color: rgb(255, 255, 255);
-    border-bottom-color: rgb(255, 255, 255);
+    border-left-color: rgb(37, 89, 176);
+    border-right-color: rgb(37, 89, 176);
+    border-top-color: rgb(37, 89, 176);
+    border-bottom-color: rgb(37, 89, 176);
     border-left-width: 0;
     border-right-width: 0;
     border-top-width: 0;
-    border-bottom-width: 0;
+    border-bottom-width: 3px;
 }
 
 .attr-btn {
     background-color: rgb(255, 255, 255);
-    font-size: 30px;
     -unity-text-align: middle-center;
     width: auto;
-    height: 60px;
+    height: 70px;
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
-    border-left-color: rgb(255, 255, 255);
-    border-right-color: rgb(255, 255, 255);
-    border-top-color: rgb(255, 255, 255);
-    border-bottom-color: rgb(255, 255, 255);
+    border-left-color: rgb(37, 89, 176);
+    border-right-color: rgb(37, 89, 176);
+    border-top-color: rgb(37, 89, 176);
+    border-bottom-color: rgb(37, 89, 176);
     border-left-width: 0;
     border-right-width: 0;
     border-top-width: 0;
-    border-bottom-width: 0;
+    border-bottom-width: 3px;
     margin-left: 10px;
     margin-right: 10px;
     min-width: 200px;
+    -unity-font-definition: initial;
+    -unity-font: url('project://database/Assets/DataSkopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
+    font-size: 28px;
 }
 
 .selected {
-    border-left-width: 3px;
-    border-right-width: 3px;
-    border-top-width: 3px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
     border-bottom-width: 3px;
     border-left-color: rgb(219, 105, 11);
     border-right-color: rgb(219, 105, 11);
     border-top-color: rgb(219, 105, 11);
     border-bottom-color: rgb(219, 105, 11);
     color: rgb(219, 105, 11);
+    -unity-font-definition: initial;
+    -unity-font: url('project://database/Assets/DataSkopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
+    -unity-font-style: bold;
 }
 
 .vis-icon {

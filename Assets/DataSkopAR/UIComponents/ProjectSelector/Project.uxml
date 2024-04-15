@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/DataSkopAR/UIComponents/SettingsMenu/SettingsMenuStyles.uss?fileID=7433441132597879392&amp;guid=3ea82a0a9c67db041b4dad349eb75bbd&amp;type=3#SettingsMenuStyles" />
     <ui:VisualElement name="ProjectButtonContainer" style="width: 100%; align-items: center;">
-        <ui:Button text="Button" display-tooltip-when-elided="true" name="project-button" class="option-button" style="align-items: center; -unity-text-align: middle-left; width: 90%; height: 60px; border-left-color: rgb(37, 89, 176); border-right-color: rgb(37, 89, 176); border-top-color: rgb(37, 89, 176); border-bottom-color: rgb(37, 89, 176);" />
+        <ui:Button text="Button" display-tooltip-when-elided="true" name="project-button" class="option-button" style="align-items: center; -unity-text-align: middle-left; width: 90%; border-left-color: rgb(37, 89, 176); border-right-color: rgb(37, 89, 176); border-top-color: rgb(37, 89, 176); border-bottom-color: rgb(37, 89, 176); -unity-font-definition: initial; -unity-font: url(&apos;project://database/Assets/DataSkopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&amp;guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&amp;type=3#OpenSans-Regular&apos;); font-size: 28px;" />
     </ui:VisualElement>
 </ui:UXML>
