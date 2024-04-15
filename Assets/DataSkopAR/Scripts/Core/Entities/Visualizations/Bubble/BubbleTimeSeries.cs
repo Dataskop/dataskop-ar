@@ -5,12 +5,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 	public class BubbleTimeSeries : TimeSeries {
 
-#region Constants
-
-		private static readonly int Alpha = Shader.PropertyToID("_Alpha");
-
-#endregion
-
 #region Fields
 
 		[SerializeField] private float minScale;
@@ -21,47 +15,26 @@ namespace DataskopAR.Entities.Visualizations {
 #region Methods
 
 		private void Awake() {
-			TimeSeriesSpawned += SetSize;
-			TimeSeriesStartMoved += SetSize;
+			TimeElementSpawned += SetSize;
+			TimeElementMoved += SetSize;
 		}
 
-		private void SetSize() {
+		private void SetSize(TimeElement e) {
 
-			foreach (TimeElement e in TimeElements) {
+			float elementValue = Mathf.Clamp(e.MeasurementResult.ReadAsFloat(), DataPoint.Attribute.Minimum,
+				DataPoint.Attribute.Maximum);
 
-				float elementValue = Mathf.Clamp(e.MeasurementResult.ReadAsFloat(), DataPoint.Attribute.Minimum,
-					DataPoint.Attribute.Maximum);
+			// calc min and max area out of desired min and max scale
+			float minArea = Mathf.PI * Mathf.Pow(minScale, 2);
+			float maxArea = Mathf.PI * Mathf.Pow(maxScale, 2);
 
-				// calc min and max area out of desired min and max scale
-				float minArea = Mathf.PI * Mathf.Pow(minScale, 2);
-				float maxArea = Mathf.PI * Mathf.Pow(maxScale, 2);
+			float newArea = MathExtensions.Map(elementValue, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum, minArea,
+				maxArea);
 
-				float newArea = MathExtensions.Map(elementValue, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum, minArea,
-					maxArea);
+			float bubbleSize = Mathf.Sqrt(newArea / Mathf.PI);
 
-				float bubbleSize = Mathf.Sqrt(newArea / Mathf.PI);
+			e.transform.localScale = new Vector3(bubbleSize, bubbleSize, bubbleSize);
 
-				e.transform.localScale = new Vector3(bubbleSize, bubbleSize, bubbleSize);
-
-			}
-
-			//TODO: Make it work with the new shader
-			if (!Configuration.isFading) return;
-
-			foreach (TimeElement e in TimeElements) {
-
-				if (ShouldDrawTimeElement(Configuration.visibleHistoryCount, e)) {
-					e.GetComponentInChildren<SpriteRenderer>().material
-						.SetFloat(Alpha, 1f - MathExtensions.Map01(Mathf.Abs(e.DistanceToDataPoint), 0, Configuration.visibleHistoryCount));
-				}
-
-			}
-
-		}
-
-		private void OnDisable() {
-			TimeSeriesSpawned -= SetSize;
-			TimeSeriesStartMoved -= SetSize;
 		}
 
 #endregion

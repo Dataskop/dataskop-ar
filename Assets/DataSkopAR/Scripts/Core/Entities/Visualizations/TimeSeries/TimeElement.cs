@@ -36,14 +36,13 @@ namespace DataskopAR.Entities.Visualizations {
 			set {
 				measurementResult = value;
 				SetAuthorSprite();
+				SetDisplayData();
 			}
 		}
 
 		public int DistanceToDataPoint { get; set; }
 
 		public Image AuthorSprite => authorImageRenderer;
-
-		public Transform DataDisplay => dataDisplay;
 
 #endregion
 
@@ -52,11 +51,11 @@ namespace DataskopAR.Entities.Visualizations {
 		private void SetAuthorSprite() {
 
 			if (MeasurementResult.Author != string.Empty) {
-				authorImageRenderer.sprite = Series.DataPoint.AuthorRepository.AuthorSprites[MeasurementResult.Author];
-				authorImageRenderer.enabled = true;
+				AuthorSprite.sprite = Series.DataPoint.AuthorRepository.AuthorSprites[MeasurementResult.Author];
+				AuthorSprite.enabled = true;
 			}
 			else {
-				authorImageRenderer.enabled = false;
+				AuthorSprite.enabled = false;
 			}
 
 		}

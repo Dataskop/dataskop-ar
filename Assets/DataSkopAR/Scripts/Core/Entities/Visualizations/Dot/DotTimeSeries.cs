@@ -15,38 +15,29 @@ namespace DataskopAR.Entities.Visualizations {
 #region Methods
 
 		private void Awake() {
-			TimeSeriesSpawned += DrawDotTimeElement;
-			TimeSeriesSpawned += OnTimeSeriesSpawn;
-			TimeSeriesFinishMoved += DrawDotTimeElement;
+			TimeElementSpawned += OnTimeElementSpawned;
+			TimeElementMoved += DrawDotTimeElement;
 		}
 
-		private void OnTimeSeriesSpawn() {
-
-			foreach (TimeElement e in TimeElements) {
-				e.transform.localScale *= DataPoint.Vis.Scale;
-			}
-
+		private void OnTimeElementSpawned(TimeElement e) {
+			e.transform.localScale *= DataPoint.Vis.Scale;
+			DrawDotTimeElement(e);
 		}
 
-		private void DrawDotTimeElement() {
+		private void DrawDotTimeElement(TimeElement e) {
 
 			if (!Configuration.isFading) return;
 
-			foreach (TimeElement e in TimeElements) {
-
-				if (ShouldDrawTimeElement(Configuration.visibleHistoryCount, e)) {
-					e.GetComponentInChildren<Image>().material
-						.SetFloat(Alpha, 1f - MathExtensions.Map01(Mathf.Abs(e.DistanceToDataPoint), 0, Configuration.visibleHistoryCount));
-				}
-
+			if (ShouldDrawTimeElement(Configuration.visibleHistoryCount, e)) {
+				e.GetComponentInChildren<Image>().material
+					.SetFloat(Alpha, 1f - MathExtensions.Map01(Mathf.Abs(e.DistanceToDataPoint), 0, Configuration.visibleHistoryCount));
 			}
 
 		}
 
 		private void OnDisable() {
-			TimeSeriesSpawned -= DrawDotTimeElement;
-			TimeSeriesSpawned -= OnTimeSeriesSpawn;
-			TimeSeriesFinishMoved -= DrawDotTimeElement;
+			TimeElementSpawned -= OnTimeElementSpawned;
+			TimeElementMoved -= DrawDotTimeElement;
 		}
 
 #endregion

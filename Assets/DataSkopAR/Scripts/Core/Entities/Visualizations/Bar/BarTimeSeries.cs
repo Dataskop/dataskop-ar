@@ -14,25 +14,17 @@ namespace DataskopAR.Entities.Visualizations {
 #region Methods
 
 		private void Awake() {
-			TimeSeriesSpawned += OnTimeSeriesSpawned;
-			TimeSeriesStartMoved += OnTimeSeriesMoved;
+			TimeElementSpawned += OnTimeElementSpawned;
+			TimeElementMoved += OnTimeElementMoved;
 		}
 
-		private void OnTimeSeriesSpawned() {
-
-			foreach (TimeElement te in TimeElements) {
-				te.transform.localScale *= DataPoint.Vis.Scale;
-				SetBarHeight(te, te.MeasurementResult.ReadAsFloat(), DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
-			}
-
+		private void OnTimeElementSpawned(TimeElement e) {
+			e.transform.localScale *= DataPoint.Vis.Scale;
+			SetBarHeight(e, e.MeasurementResult.ReadAsFloat(), DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
 		}
 
-		private void OnTimeSeriesMoved() {
-
-			foreach (TimeElement te in TimeElements) {
-				SetBarHeight(te, te.MeasurementResult.ReadAsFloat(), DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
-			}
-
+		private void OnTimeElementMoved(TimeElement e) {
+			SetBarHeight(e, e.MeasurementResult.ReadAsFloat(), DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
 		}
 
 		private void SetBarHeight(TimeElement e, float value, float min, float max) {
@@ -55,8 +47,8 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		private void OnDisable() {
-			TimeSeriesSpawned -= OnTimeSeriesSpawned;
-			TimeSeriesStartMoved -= OnTimeSeriesMoved;
+			TimeElementSpawned -= OnTimeElementSpawned;
+			TimeElementMoved += OnTimeElementMoved;
 		}
 
 #endregion
