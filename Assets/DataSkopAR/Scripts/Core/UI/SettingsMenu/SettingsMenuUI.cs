@@ -192,9 +192,21 @@ namespace DataskopAR.UI {
 			if (IsOpen) {
 
 				if (CurrentView == requestedView) {
+
 					MenuContainer.RemoveFromClassList(MenuOpenAnimation);
 					SettingsIcon.style.unityBackgroundImageTintColor = new StyleColor(deselectedIconColor);
 					ProjectsIcon.style.unityBackgroundImageTintColor = new StyleColor(deselectedIconColor);
+
+					SettingsMenuButton.style.borderBottomColor = deselectedIconColor;
+					SettingsMenuButton.style.borderLeftColor = deselectedIconColor;
+					SettingsMenuButton.style.borderRightColor = deselectedIconColor;
+					SettingsMenuButton.style.borderTopColor = deselectedIconColor;
+
+					ProjectSelectorButton.style.borderBottomColor = deselectedIconColor;
+					ProjectSelectorButton.style.borderLeftColor = deselectedIconColor;
+					ProjectSelectorButton.style.borderRightColor = deselectedIconColor;
+					ProjectSelectorButton.style.borderTopColor = deselectedIconColor;
+
 					IsOpen = false;
 					return;
 				}
@@ -216,11 +228,20 @@ namespace DataskopAR.UI {
 			switch (view) {
 				case MenuView.Projects:
 					SettingsIcon.style.unityBackgroundImageTintColor = new StyleColor(deselectedIconColor);
+					SettingsMenuButton.style.borderBottomColor = deselectedIconColor;
+					SettingsMenuButton.style.borderLeftColor = deselectedIconColor;
+					SettingsMenuButton.style.borderRightColor = deselectedIconColor;
+					SettingsMenuButton.style.borderTopColor = deselectedIconColor;
+
 					SettingsMenuContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 
 					TitleLabel.text = ProjectSelectionTitle;
 					ProjectsIcon.style.unityBackgroundImageTintColor = new StyleColor(selectedIconColor);
 					ProjectSelectorContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
+					ProjectSelectorButton.style.borderBottomColor = selectedIconColor;
+					ProjectSelectorButton.style.borderLeftColor = selectedIconColor;
+					ProjectSelectorButton.style.borderRightColor = selectedIconColor;
+					ProjectSelectorButton.style.borderTopColor = selectedIconColor;
 
 					SortButton.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
 
@@ -230,10 +251,19 @@ namespace DataskopAR.UI {
 				case MenuView.Settings:
 					ProjectsIcon.style.unityBackgroundImageTintColor = new StyleColor(deselectedIconColor);
 					ProjectSelectorContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+					ProjectSelectorButton.style.borderBottomColor = deselectedIconColor;
+					ProjectSelectorButton.style.borderLeftColor = deselectedIconColor;
+					ProjectSelectorButton.style.borderRightColor = deselectedIconColor;
+					ProjectSelectorButton.style.borderTopColor = deselectedIconColor;
 
 					TitleLabel.text = SettingsTitle;
 					SettingsIcon.style.unityBackgroundImageTintColor = new StyleColor(selectedIconColor);
 					SettingsMenuContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
+
+					SettingsMenuButton.style.borderBottomColor = selectedIconColor;
+					SettingsMenuButton.style.borderLeftColor = selectedIconColor;
+					SettingsMenuButton.style.borderRightColor = selectedIconColor;
+					SettingsMenuButton.style.borderTopColor = selectedIconColor;
 
 					SortButton.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 
@@ -256,6 +286,14 @@ namespace DataskopAR.UI {
 			historyButtonPressed?.Invoke();
 			HistoryIcon.style.unityBackgroundImageTintColor =
 				new StyleColor(isHistorySliderActive ? selectedIconColor : deselectedIconColor);
+
+			HistoryButton.style.borderBottomColor = isHistorySliderActive ? selectedIconColor : deselectedIconColor;
+			HistoryButton.style.borderLeftColor = isHistorySliderActive ? selectedIconColor : deselectedIconColor;
+			;
+			HistoryButton.style.borderRightColor = isHistorySliderActive ? selectedIconColor : deselectedIconColor;
+			;
+			HistoryButton.style.borderTopColor = isHistorySliderActive ? selectedIconColor : deselectedIconColor;
+			;
 
 		}
 
