@@ -69,6 +69,8 @@ namespace DataskopAR.Entities.Visualizations {
 			set => scaleFactor = value;
 		}
 
+		public VisualizationType Type { get; protected set; }
+
 #endregion
 
 #region Methods
