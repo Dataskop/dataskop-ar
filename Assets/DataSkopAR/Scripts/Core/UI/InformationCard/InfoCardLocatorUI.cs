@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 namespace DataskopAR.UI {
 
-	public class InfoCardHeaderUI : InfoCardComponent {
+	public class InfoCardLocatorUI : InfoCardComponent {
 
 #region Properties
 
@@ -17,7 +17,7 @@ namespace DataskopAR.UI {
 
 		public override void Init(VisualElement infoCard) {
 			InfoCard = infoCard;
-			ComponentRoot = InfoCard.Q<VisualElement>("HeaderContainer");
+			ComponentRoot = InfoCard.Q<VisualElement>("LocatorContainer");
 		}
 
 		public void OnUserAreaLocated(LocationArea locationArea) {

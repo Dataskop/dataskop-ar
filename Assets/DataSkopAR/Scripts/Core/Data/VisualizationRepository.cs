@@ -20,16 +20,15 @@ namespace DataskopAR.Data {
 #region Methods
 
 		private void Start() {
-			visTypeDict.Add(VisualizationType.dot, dotVis);
-			visTypeDict.Add(VisualizationType.bubble, bubbleVis);
-			visTypeDict.Add(VisualizationType.bar, barVis);
 
-			foreach (VisualizationType visType in visTypeDict.Keys.ToList()) availableVisTypes.Add(visType.ToString());
+			visTypeDict.Add(VisualizationType.Dot, dotVis);
+			visTypeDict.Add(VisualizationType.Bubble, bubbleVis);
+			visTypeDict.Add(VisualizationType.Bar, barVis);
 
-		}
+			foreach (VisualizationType visType in visTypeDict.Keys.ToList()) {
+				availableVisTypes.Add(visType.ToString());
+			}
 
-		public GameObject GetVisualization(VisualizationType type) {
-			return visTypeDict[type];
 		}
 
 		public List<VisualizationType> GetAvailableVisualizations() {
@@ -37,15 +36,14 @@ namespace DataskopAR.Data {
 		}
 
 		public bool IsAvailable(string visName) {
-
-			if (availableVisTypes.Contains(visName))
-				return true;
-
-			return false;
-
+			return availableVisTypes.Contains(visName);
 		}
 
-		public GameObject GetVisualizationByName(string visName) {
+		public GameObject GetVisualization(VisualizationType type) {
+			return visTypeDict[type];
+		}
+
+		public GameObject GetVisualization(string visName) {
 			Enum.TryParse(visName, out VisualizationType visType);
 			return GetVisualization(visType);
 		}

@@ -194,7 +194,19 @@ VisualElement {
 .refresh-button {
     color: rgb(37, 89, 176);
     -unity-background-image-tint-color: rgb(37, 89, 176);
-    background-color: rgb(37, 89, 176);
+    background-color: rgb(245, 245, 245);
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-left-width: 0;
+    border-right-width: 3px;
+    border-top-width: 0;
+    border-bottom-width: 3px;
+    border-bottom-color: rgb(37, 89, 176);
+    border-left-color: rgb(37, 89, 176);
+    border-right-color: rgb(37, 89, 176);
+    border-top-color: rgb(37, 89, 176);
 }
 
 .tab-label {
@@ -248,4 +260,39 @@ VisualElement {
     transform-origin: bottom;
     font-size: 58px;
     -unity-text-align: middle-center;
+}
+
+.locator-container {
+    width: 96%;
+    height: 60px;
+    justify-content: center;
+}
+
+.map {
+    background-image: url('project://database/Assets/DataSkopAR/Materials/MapRenderTexture.renderTexture?fileID=8400000&guid=6c002e83dc0e47546b0a92796d0ed167&type=2#MapRenderTexture');
+    flex-grow: 0;
+    flex-shrink: 1;
+    justify-content: flex-start;
+    align-items: stretch;
+    width: 98%;
+    height: 30%;
+    background-color: rgb(238, 238, 238);
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    margin-top: 10px;
+    border-left-color: rgb(37, 89, 176);
+    border-right-color: rgb(37, 89, 176);
+    border-top-color: rgb(37, 89, 176);
+    border-bottom-color: rgb(37, 89, 176);
+    border-bottom-width: 5px;
+    -unity-background-scale-mode: scale-and-crop;
+    margin-bottom: 35px;
+}
+
+.locator-text {
+    -unity-text-align: middle-right;
+    font-size: 24px;
+    -unity-font: url('project://database/Assets/Mapbox/Fonts/OpenSans-Bold.ttf?fileID=12800000&guid=7dfc2e1472ac84e1bb749a8a9f934483&type=3#OpenSans-Bold');
 }

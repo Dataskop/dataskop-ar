@@ -135,16 +135,11 @@ namespace DataskopAR.UI {
 
 			VisOptionButtons = new List<Button>();
 
-			List<string> visNames = new();
-
-			foreach (VisualizationType visType in visRepo.GetAvailableVisualizations()) {
-				string visName = visType.ToString();
-				visNames.Add(visName);
-			}
+			List<string> visNames = visRepo.GetAvailableVisualizations().Select(visType => visType.ToString()).ToList();
 
 			foreach (VisualizationOption visOpt in AvailableVisOptions) {
 
-				if (visNames.Contains(visOpt.Type) == false) {
+				if (visNames.Contains(visOpt.Type.FirstCharToUpper()) == false) {
 					visOpt.Type = visNames[0];
 				}
 
@@ -156,6 +151,7 @@ namespace DataskopAR.UI {
 			if (VisOptionButtons.Count > 0) {
 				SelectVisOptionButton(VisOptionButtons[0]);
 			}
+
 		}
 
 		private Button CreateVisOptElement(VisualizationOption visOpt) {
