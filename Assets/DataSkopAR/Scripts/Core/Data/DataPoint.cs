@@ -11,12 +11,16 @@ namespace DataskopAR.Data {
 
 		public event Action<MeasurementResult> MeasurementResultChanged;
 
+		public event Action<VisualizationType> VisualizationTypeChanged;
+
 #endregion
 
 #region Fields
 
 		[Header("References")]
 		[SerializeField] private SpriteRenderer mapIconBorder;
+		[SerializeField] private SpriteRenderer visIcon;
+		[SerializeField] private Sprite[] visIcons;
 
 		[Header("Values")]
 		[SerializeField] private Color mapSelectionColor;
@@ -54,6 +58,10 @@ namespace DataskopAR.Data {
 
 #region Methods
 
+		private void Awake() {
+			VisualizationTypeChanged += OnVisChanged;
+		}
+
 		/// <summary>
 		///     Sets and replaces the current visualization form with another.
 		/// </summary>
@@ -64,6 +72,7 @@ namespace DataskopAR.Data {
 			Vis.DataPoint = this;
 			Vis.SwipedUp += NextMeasurementResult;
 			Vis.SwipedDown += PreviousMeasurementResult;
+			VisualizationTypeChanged?.Invoke(Vis.Type);
 		}
 
 		public void RemoveVis() {
@@ -74,6 +83,7 @@ namespace DataskopAR.Data {
 			Vis.SwipedDown -= PreviousMeasurementResult;
 			Vis.OnTimeSeriesToggled(false);
 			Vis.Despawn();
+
 		}
 
 		/// <summary>
@@ -131,6 +141,17 @@ namespace DataskopAR.Data {
 
 		private void SetMapIconColor(Color color) {
 			mapIconBorder.color = color;
+		}
+
+		private void OnVisChanged(VisualizationType visType) {
+
+			visIcon.sprite = visType switch {
+				VisualizationType.Dot => visIcons[0],
+				VisualizationType.Bubble => visIcons[1],
+				VisualizationType.Bar => visIcons[2],
+				_ => throw new ArgumentOutOfRangeException(nameof(visType), visType, null)
+			};
+
 		}
 
 #endregion

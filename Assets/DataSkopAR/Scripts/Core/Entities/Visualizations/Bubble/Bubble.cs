@@ -46,8 +46,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 #region Properties
 
-		public VisualizationType Type => VisualizationType.bubble;
-
 		private float BubbleSize {
 			get => bubbleSize;
 			set {
@@ -79,6 +77,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 		protected override void OnDataPointChanged() {
 			base.OnDataPointChanged();
+			Type = VisualizationType.Bubble;
 			Options = Instantiate(options);
 
 			visImageRenderer.enabled = false;

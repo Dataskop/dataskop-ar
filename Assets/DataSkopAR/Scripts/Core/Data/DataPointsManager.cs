@@ -96,8 +96,9 @@ namespace DataskopAR.Data {
 
 		public void SetDataPointVisualization(VisualizationOption visOpt) {
 
-			if (VisualizationRepository.IsAvailable(visOpt.Type)) {
-				GameObject vis = VisualizationRepository.GetVisualizationByName(visOpt.Type);
+			if (VisualizationRepository.IsAvailable(visOpt.Type.FirstCharToUpper())) {
+
+				GameObject vis = VisualizationRepository.GetVisualization(visOpt.Type.FirstCharToUpper());
 
 				foreach (DataPoint dp in DataPoints) {
 					ToggleTimeSeries(dp, false);
