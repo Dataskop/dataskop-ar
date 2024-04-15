@@ -141,7 +141,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 			if (isActive) {
 				groundLine.enabled = false;
-				TimeSeries.SpawnSeries(timeSeriesConfiguration, DataPoint, timeElementsContainer);
+				TimeSeries.Spawn(timeSeriesConfiguration, DataPoint, timeElementsContainer);
 			}
 			else {
 				groundLine.enabled = true;

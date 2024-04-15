@@ -13,8 +13,9 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public Action TimeSeriesBeforeSpawn;
 		public Action TimeSeriesSpawned;
+		public Action<TimeElement> TimeElementSpawned;
 		public Action TimeSeriesDespawned;
-		public Action TimeSeriesFinishMoved;
+		public Action<TimeElement> TimeElementMoved;
 		public Action TimeSeriesStartMoved;
 
 #endregion
@@ -37,6 +38,8 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public bool IsSpawned { get; private set; }
 
+		private Coroutine spawnRoutine;
+
 #endregion
 
 #region Methods
@@ -45,18 +48,28 @@ namespace DataskopAR.Entities.Visualizations {
 			TimeElements = new List<TimeElement>();
 		}
 
-		//TODO: Refactor to support a large amount of Data
-		public void SpawnSeries(TimeSeriesConfig config, DataPoint dp, Transform container) {
+		public void Spawn(TimeSeriesConfig config, DataPoint dp, Transform container) {
+
+			if (spawnRoutine != null) {
+				StopCoroutine(spawnRoutine);
+				DespawnSeries();
+				spawnRoutine = null;
+			}
+
+			spawnRoutine = StartCoroutine(SpawnSeries(config, dp, container));
+
+		}
+
+		private IEnumerator SpawnSeries(TimeSeriesConfig config, DataPoint dp, Transform container) {
 
 			DataPoint = dp;
 			Configuration = config;
 
 			if (DataPoint.MeasurementDefinition?.MeasurementResults == null)
-				return;
+				yield break;
 
 			TimeSeriesBeforeSpawn?.Invoke();
-
-			//TODO: Spawn around currently selected MeasurementResult instead of resetting DataPoint MR
+			IsSpawned = true;
 			DataPoint.CurrentMeasurementResult = DataPoint.MeasurementDefinition.GetLatestMeasurementResult();
 			MeasurementResults = DataPoint.MeasurementDefinition.MeasurementResults.ToList();
 			SwipeCount = 0;
@@ -67,10 +80,8 @@ namespace DataskopAR.Entities.Visualizations {
 
 			for (int i = 0; i < ResultsCount - 1; i++) {
 
-				Vector3 elementPos = new(visPosition.x, visPosition.y + config.elementDistance * (i + 1),
-					visPosition.z);
+				Vector3 elementPos = new(visPosition.x, visPosition.y + config.elementDistance * (i + 1), visPosition.z);
 				GameObject newElement = Instantiate(Configuration.elementVis, elementPos, visTransform.rotation);
-
 				newElement.transform.SetParent(container);
 
 				TimeElement timeElement = newElement.GetComponent<TimeElement>();
@@ -81,32 +92,38 @@ namespace DataskopAR.Entities.Visualizations {
 				timeElement.MeasurementResult = MeasurementResults?[timeElement.DistanceToDataPoint];
 				timeElement.SetDisplayData();
 				timeElement.gameObject.SetActive(ShouldDrawTimeElement(Configuration.visibleHistoryCount, timeElement));
-
-				TimeElements.Add(newElement.GetComponent<TimeElement>());
+				TimeElements.Add(timeElement);
+				TimeElementSpawned?.Invoke(timeElement);
+				yield return new WaitForEndOfFrame();
 
 			}
 
 			DataPoint.Vis.SwipedUp += OnSwipedUp;
 			DataPoint.Vis.SwipedDown += OnSwipedDown;
-			IsSpawned = true;
 			TimeSeriesSpawned?.Invoke();
 
 		}
 
 		public void DespawnSeries() {
 
-			if (!IsSpawned)
+			if (!IsSpawned) {
 				return;
+			}
 
-			if (TimeElements == null)
+			if (TimeElements == null) {
 				return;
+			}
+
+			if (spawnRoutine != null) {
+				StopCoroutine(spawnRoutine);
+				spawnRoutine = null;
+			}
 
 			foreach (TimeElement e in TimeElements) {
 				Destroy(e.gameObject);
 			}
 
 			TimeElements.Clear();
-
 			DataPoint.Vis.SwipedUp -= OnSwipedUp;
 			DataPoint.Vis.SwipedDown -= OnSwipedDown;
 			DataPoint.CurrentMeasurementResult = DataPoint.MeasurementDefinition.GetLatestMeasurementResult();
@@ -216,7 +233,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 			e.transform.position = targetPosition;
 			e.gameObject.SetActive(ShouldDrawTimeElement(Configuration.visibleHistoryCount, e));
-			TimeSeriesFinishMoved?.Invoke();
+			TimeElementMoved?.Invoke(e);
 
 		}
 

@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Linq;
 using DataskopAR.Data;
@@ -172,14 +173,14 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		public override void OnTimeSeriesToggled(bool isActive) {
+
 			if (isActive) {
-				RotateVisualization();
-				TimeSeries.SpawnSeries(timeSeriesConfiguration, DataPoint, timeElementsContainer);
+				TimeSeries.Spawn(timeSeriesConfiguration, DataPoint, timeElementsContainer);
 			}
 			else {
 				TimeSeries.DespawnSeries();
-				ResetRotation();
 			}
+
 		}
 
 		public override void OnMeasurementResultsUpdated() {
@@ -236,11 +237,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 		private void HideAllUserDirectionCanvas() {
 			canvasGroup.alpha = 0;
-		}
-
-		private void OnDisable() {
-			TimeSeries.TimeSeriesBeforeSpawn -= RotateVisualization;
-			TimeSeries.TimeSeriesDespawned -= ResetRotation;
 		}
 
 #endregion

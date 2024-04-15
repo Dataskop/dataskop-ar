@@ -245,7 +245,7 @@ namespace DataskopAR.Entities.Visualizations {
 			if (isActive) {
 				groundLine.enabled = false;
 				labelLine.enabled = false;
-				TimeSeries.SpawnSeries(timeSeriesConfiguration, DataPoint, timeElementsContainer);
+				TimeSeries.Spawn(timeSeriesConfiguration, DataPoint, timeElementsContainer);
 			}
 			else {
 				TimeSeries.DespawnSeries();
