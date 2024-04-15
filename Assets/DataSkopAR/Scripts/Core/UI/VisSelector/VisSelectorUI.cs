@@ -138,7 +138,7 @@ namespace DataskopAR.UI {
 			List<string> visNames = new();
 
 			foreach (VisualizationType visType in visRepo.GetAvailableVisualizations()) {
-				string visName = visType.ToString();
+				string visName = visType.ToString().ToLower();
 				visNames.Add(visName);
 			}
 

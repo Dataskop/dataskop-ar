@@ -49,8 +49,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 #region Properties
 
-		public VisualizationType Type => VisualizationType.dot;
-
 		private DotOptions Options { get; set; }
 
 		private DotTimeSeries TimeSeries => dotTimeSeries;
@@ -69,6 +67,7 @@ namespace DataskopAR.Entities.Visualizations {
 		protected override void OnDataPointChanged() {
 
 			base.OnDataPointChanged();
+			Type = VisualizationType.Dot;
 			Options = Instantiate(options);
 
 			Transform displayTransform = dataDisplay.transform;

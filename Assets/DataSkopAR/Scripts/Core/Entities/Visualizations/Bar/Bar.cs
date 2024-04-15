@@ -40,8 +40,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 #region Properties
 
-		public VisualizationType Type => VisualizationType.bar;
-
 		private Vector3 BarFillScale { get; set; }
 
 		private float BarHeight { get; set; }
@@ -76,6 +74,7 @@ namespace DataskopAR.Entities.Visualizations {
 
 		protected override void OnDataPointChanged() {
 			base.OnDataPointChanged();
+			Type = VisualizationType.Bar;
 			Options = Instantiate(options);
 
 			VisTransform.root.localPosition = Offset;
