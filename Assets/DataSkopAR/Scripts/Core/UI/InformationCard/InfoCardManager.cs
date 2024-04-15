@@ -15,7 +15,7 @@ namespace DataskopAR.UI {
 		[SerializeField] private UIDocument informationCardUIDoc;
 		[SerializeField] private InfoCardStateManager infoCardStateManager;
 		[SerializeField] private InfoCardNotificationUI infoCardNotificationUI;
-		[SerializeField] private InfoCardHeaderUI infoCardHeaderUI;
+		[SerializeField] private InfoCardLocatorUI infoCardLocatorUI;
 		[SerializeField] private InfoCardProjectDataUI infoCardProjectDataUI;
 		[SerializeField] private InfoCardDataUI infoCardDataUI;
 		[SerializeField] private InfoCardMap infoCardMap;
@@ -87,7 +87,7 @@ namespace DataskopAR.UI {
 
 			infoCardNotificationUI.Init(InfoCard);
 			infoCardProjectDataUI.Init(InfoCard);
-			infoCardHeaderUI.Init(InfoCard);
+			infoCardLocatorUI.Init(InfoCard);
 			infoCardDataUI.Init(InfoCard);
 			infoCardMap.Init(InfoCard);
 
@@ -98,7 +98,7 @@ namespace DataskopAR.UI {
 		}
 
 		public void OnUserAreaLocated(LocationArea locationArea) {
-			infoCardHeaderUI.OnUserAreaLocated(locationArea);
+			infoCardLocatorUI.OnUserAreaLocated(locationArea);
 		}
 
 		public void OnProjectDataUpdated(Project selectedProject) {

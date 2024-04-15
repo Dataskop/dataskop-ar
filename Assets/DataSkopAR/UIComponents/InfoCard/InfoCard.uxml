@@ -13,8 +13,8 @@
             <ui:Label text="No Project Selected" display-tooltip-when-elided="true" name="ProjectName" class="meta-info-text" style="-unity-font-style: bold; font-size: 32px; color: rgb(60, 60, 60);" />
             <ui:VisualElement name="LastUpdatedContainer" style="flex-direction: row; visibility: hidden;">
                 <ui:Label display-tooltip-when-elided="true" name="LastUpdated" text="Last Update: -" class="meta-info-text" style="font-size: 32px; color: rgb(60, 60, 60);" />
-                <ui:Button display-tooltip-when-elided="true" name="UpdateProject" class="refresh-button" style="width: 50px; height: 50px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 1px; margin-right: 1px; margin-top: 1px; margin-bottom: 1px; justify-content: center; align-items: center; background-color: rgba(192, 59, 59, 0); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0;">
-                    <ui:IMGUIContainer style="background-image: url(&apos;project://database/Assets/DataSkopAR/Images/Icons/refresh_1024px.png?fileID=21300000&amp;guid=c76b05f6d283e804dba8cf6ecb94d3b0&amp;type=3#refresh_1024px&apos;); -unity-background-image-tint-color: rgb(37, 89, 176); background-color: rgba(0, 0, 0, 0); width: 75%; height: 75%;" />
+                <ui:Button display-tooltip-when-elided="true" name="UpdateProject" class="refresh-button" style="width: 50px; height: 50px; justify-content: center; align-items: center; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;">
+                    <ui:IMGUIContainer style="background-image: url(&apos;project://database/Assets/DataSkopAR/Images/Icons/refresh_1024px.png?fileID=21300000&amp;guid=c76b05f6d283e804dba8cf6ecb94d3b0&amp;type=3#refresh_1024px&apos;); -unity-background-image-tint-color: rgb(37, 89, 176); background-color: rgba(0, 0, 0, 0); width: 70%; height: 70%;" />
                 </ui:Button>
             </ui:VisualElement>
         </ui:VisualElement>
@@ -27,10 +27,6 @@
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="DetailsContainer" class="data-container" style="display: none;">
-            <ui:VisualElement name="HeaderContainer" class="data-display-container" style="width: 100%; background-color: rgb(224, 224, 224); height: 120px; justify-content: center;">
-                <ui:Label text="Location" display-tooltip-when-elided="true" name="Location" class="text-container sub-header" />
-                <ui:Label text="Area" display-tooltip-when-elided="true" name="Area" class="text-container header" />
-            </ui:VisualElement>
             <ui:VisualElement name="DataContainer" class="data-display-container" style="flex-grow: 0;">
                 <ui:VisualElement class="data-row" style="background-color: rgba(255, 255, 255, 0);">
                     <ui:Label text="ID:" display-tooltip-when-elided="true" name="ID" class="data-text data-title" />
@@ -55,9 +51,13 @@
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="MapContainer" class="data-container" style="display: flex;">
-            <ui:VisualElement name="Map" style="background-image: url(&apos;project://database/Assets/DataSkopAR/Materials/MapRenderTexture.renderTexture?fileID=8400000&amp;guid=6c002e83dc0e47546b0a92796d0ed167&amp;type=2#MapRenderTexture&apos;); flex-grow: 0; flex-shrink: 1; justify-content: flex-start; align-items: stretch; width: 98%; height: 30%; background-color: rgb(238, 238, 238); border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; margin-top: 10px; border-left-color: rgb(37, 89, 176); border-right-color: rgb(37, 89, 176); border-top-color: rgb(37, 89, 176); border-bottom-color: rgb(37, 89, 176); border-bottom-width: 5px; -unity-background-scale-mode: scale-and-crop;" />
+            <ui:VisualElement name="Map" class="map" />
             <ui:Button display-tooltip-when-elided="true" name="ZoomInButton" text="+" class="app-button" style="position: absolute; top: 70px; left: auto; right: 70px; font-size: 64px; -unity-text-align: middle-center; margin-left: 4px; margin-right: 4px; margin-top: 4px; margin-bottom: 4px; -unity-font: url(&apos;project://database/Assets/Mapbox/Fonts/OpenSans-Bold.ttf?fileID=12800000&amp;guid=7dfc2e1472ac84e1bb749a8a9f934483&amp;type=3#OpenSans-Bold&apos;); padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 17px; justify-content: center; color: rgb(37, 89, 176); -unity-font-style: bold;" />
             <ui:Button display-tooltip-when-elided="true" name="ZoomOutButton" text="-" class="app-button" style="position: absolute; top: 170px; left: auto; right: 70px; margin-left: 4px; margin-right: 4px; margin-top: 4px; margin-bottom: 4px; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 17px; font-size: 72px; -unity-font: url(&apos;project://database/Assets/Mapbox/Fonts/OpenSans-Bold.ttf?fileID=12800000&amp;guid=7dfc2e1472ac84e1bb749a8a9f934483&amp;type=3#OpenSans-Bold&apos;); color: rgb(37, 89, 176); -unity-font-style: bold;" />
+            <ui:VisualElement name="LocatorContainer" class="locator-container data-display-container" style="flex-direction: row; justify-content: space-between;">
+                <ui:Label text="Location" display-tooltip-when-elided="true" name="Location" class="locator-text" style="-unity-text-align: middle-left;" />
+                <ui:Label text="Area" display-tooltip-when-elided="true" name="Area" class="locator-text" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
