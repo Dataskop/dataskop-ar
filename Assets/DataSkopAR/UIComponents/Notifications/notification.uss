@@ -75,6 +75,7 @@
     margin-left: 10px;
     -unity-font-style: normal;
     font-size: 28px;
-    -unity-font: url('project://database/Assets/DataSkopAR/UIComponents/MainMenu/Fonts/Inter-Regular.ttf?fileID=12800000&guid=c3cdfb8736a165d448335bd86d03cbbb&type=3#Inter-Regular');
+    -unity-font: url('project://database/Assets/DataSkopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
     width: 80%;
+    -unity-font-definition: initial;
 }

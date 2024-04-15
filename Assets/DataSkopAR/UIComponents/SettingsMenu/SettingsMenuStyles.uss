@@ -95,11 +95,13 @@ VisualElement {
 }
 
 .option-label {
-    font-size: 24px;
+    font-size: 26px;
+    -unity-font-definition: initial;
+    -unity-font: url('project://database/Assets/DataSkopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
 }
 
 .option-button {
-    height: 55px;
+    height: 70px;
     width: 80%;
     align-items: stretch;
     left: auto;
@@ -123,6 +125,8 @@ VisualElement {
     border-right-color: rgb(37, 89, 176);
     border-top-color: rgb(37, 89, 176);
     border-bottom-color: rgb(37, 89, 176);
+    -unity-font-definition: initial;
+    -unity-font: url('project://database/Assets/DataSkopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
 }
 
 .splitter {
@@ -202,6 +206,8 @@ VisualElement {
     color: rgb(60, 60, 60);
     -unity-text-align: middle-left;
     letter-spacing: -4px;
+    -unity-font-definition: initial;
+    -unity-font: url('project://database/Assets/DataSkopAR/Fonts/OpenSans-Semibold.ttf?fileID=12800000&guid=218956a5c2a6e42d6a60afccf80b002b&type=3#OpenSans-Semibold');
 }
 
 .button-icon {

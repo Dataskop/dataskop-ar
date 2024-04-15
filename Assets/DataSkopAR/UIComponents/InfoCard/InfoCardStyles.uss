@@ -124,12 +124,16 @@ VisualElement {
 
 .data-text {
     font-size: 26px;
+    -unity-font-definition: initial;
+    -unity-font: url('project://database/Assets/DataSkopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
 }
 
 .data-title {
     color: rgb(37, 89, 176);
     -unity-font-style: bold;
     font-size: 26px;
+    -unity-font-definition: initial;
+    -unity-font: url('project://database/Assets/DataSkopAR/Fonts/OpenSans-Semibold.ttf?fileID=12800000&guid=218956a5c2a6e42d6a60afccf80b002b&type=3#OpenSans-Semibold');
 }
 
 .data-value {
@@ -200,7 +204,7 @@ VisualElement {
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
     border-left-width: 0;
-    border-right-width: 3px;
+    border-right-width: 0;
     border-top-width: 0;
     border-bottom-width: 3px;
     border-bottom-color: rgb(37, 89, 176);
@@ -214,6 +218,8 @@ VisualElement {
     color: rgb(60, 60, 60);
     -unity-text-align: middle-center;
     -unity-font-style: normal;
+    -unity-font-definition: initial;
+    -unity-font: url('project://database/Assets/DataSkopAR/Fonts/OpenSans-Semibold.ttf?fileID=12800000&guid=218956a5c2a6e42d6a60afccf80b002b&type=3#OpenSans-Semibold');
 }
 
 .tab {
@@ -294,5 +300,6 @@ VisualElement {
 .locator-text {
     -unity-text-align: middle-right;
     font-size: 24px;
-    -unity-font: url('project://database/Assets/Mapbox/Fonts/OpenSans-Bold.ttf?fileID=12800000&guid=7dfc2e1472ac84e1bb749a8a9f934483&type=3#OpenSans-Bold');
+    -unity-font: url('project://database/Assets/DataSkopAR/Fonts/OpenSans-Bold.ttf?fileID=12800000&guid=7dfc2e1472ac84e1bb749a8a9f934483&type=3#OpenSans-Bold');
+    -unity-font-definition: initial;
 }
