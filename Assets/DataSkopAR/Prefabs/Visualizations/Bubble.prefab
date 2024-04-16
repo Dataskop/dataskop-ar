@@ -528,8 +528,8 @@ MonoBehaviour:
   scaleFactor: 1
   timeSeriesConfiguration:
     elementVis: {fileID: 4044058376309783487, guid: dc787ffa3086d1041893fd11fc92a97d, type: 3}
-    visibleHistoryCount: 20
-    elementDistance: 0.85
+    visibleHistoryCount: 100
+    elementDistance: 0.62
     animationDuration: 0.125
     isFading: 0
   deselectColor: {r: 0.14618193, g: 0.3496184, b: 0.6886792, a: 1}
