@@ -714,7 +714,7 @@ MonoBehaviour:
   timeSeriesConfiguration:
     elementVis: {fileID: 1958504234192534124, guid: dfe66c67caab47e4ca181cd65cdd7251, type: 3}
     visibleHistoryCount: 30
-    elementDistance: 0.5
+    elementDistance: 0.32
     animationDuration: 0.1
     isFading: 0
   deselectColor: {r: 0.14618193, g: 0.3496184, b: 0.6886792, a: 1}
