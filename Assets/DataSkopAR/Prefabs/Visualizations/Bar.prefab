@@ -653,7 +653,7 @@ MonoBehaviour:
     elementVis: {fileID: 4622183919543581581, guid: 0a5cb2a5cbd4a314eaf6d5a57ca3bc23, type: 3}
     visibleHistoryCount: 100
     elementDistance: 0.25
-    animationDuration: 0.1
+    animationDuration: 0.125
     isFading: 0
   deselectColor: {r: 0.14618193, g: 0.3496184, b: 0.6886792, a: 1}
   hoverColor: {r: 0.8584906, g: 0.31990921, b: 0.66226315, a: 1}
