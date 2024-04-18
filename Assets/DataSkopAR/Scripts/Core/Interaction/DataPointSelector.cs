@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Threading.Tasks;
 using DataskopAR.Data;
 using DataskopAR.Entities.Visualizations;
 using UnityEngine;
@@ -75,6 +76,7 @@ namespace DataskopAR.Interaction {
 #region Methods
 
 		private void FixedUpdate() {
+			Debug.DrawRay(TapScreenToWorldRay.origin, TapScreenToWorldRay.direction * 10, Color.yellow);
 
 			if (Physics.Raycast(ReticuleToWorldRay, out RaycastHit hit, Mathf.Infinity, TargetLayerMask)) {
 
@@ -149,18 +151,14 @@ namespace DataskopAR.Interaction {
 			TapPosition = ctx.ReadValue<Vector2>();
 		}
 
-		public void TapInput(InputAction.CallbackContext ctx) {
+		public async void TapInput() {
 
-			if (ctx.canceled) {
-
-				if (UIInteractionDetection.IsPointerOverUi) {
-					UIInteractionDetection.IsPointerOverUi = false;
-					return;
-				}
-
-				TapScreenToWorldRay = cam.ScreenPointToRay(new Vector3(TapPosition.x, TapPosition.y, -5));
-				SetSelectedDataPoint(TapScreenToWorldRay);
-			}
+			// Needed this delay to avoid having a wrong camera position due to input event order through
+			// UI Toolkits events.
+			await Task.Delay(10);
+			
+			TapScreenToWorldRay = cam.ScreenPointToRay(new Vector3(TapPosition.x, TapPosition.y, -5));
+			SetSelectedDataPoint(TapScreenToWorldRay);
 
 		}
 
