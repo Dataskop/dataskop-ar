@@ -9,9 +9,9 @@ namespace DataskopAR {
 
 #region Events
 
-		public event Action<Vector3> WorldPointerDowned;
+		public event Action<Vector2> WorldPointerDowned;
 
-		public event Action<Vector3> WorldPointerUpped;
+		public event Action<Vector2> WorldPointerUpped;
 
 #endregion
 
@@ -22,17 +22,13 @@ namespace DataskopAR {
 		}
 
 		public async void OnPointerDownInWorld(Vector3 screenPosition) {
-
 			await Task.Delay(10);
 			WorldPointerDowned?.Invoke(screenPosition);
-
 		}
 
 		public async void OnPointerUpInWorld(Vector3 screenPosition) {
-
 			await Task.Delay(10);
 			WorldPointerUpped?.Invoke(screenPosition);
-
 		}
 
 	}

@@ -45,9 +45,7 @@ namespace DataskopAR.Interaction {
 		public void LookInput(InputAction.CallbackContext ctx) {
 			if (ctx.performed) {
 				if (Mouse.current.leftButton.isPressed) {
-					if (!UIInteractionDetection.IsPointerOverUi) {
-						LookDelta = ctx.ReadValue<Vector2>();
-					}
+					LookDelta = ctx.ReadValue<Vector2>();
 				}
 			}
 

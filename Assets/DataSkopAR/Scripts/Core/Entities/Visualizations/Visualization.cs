@@ -123,9 +123,10 @@ namespace DataskopAR.Entities.Visualizations {
 		public abstract void ApplyStyle(VisualizationStyle style);
 
 		public void Swiped(Swipe swipe) {
-
+/*
 			if (UIInteractionDetection.IsPointerOverUi && !UIInteractionDetection.HasPointerStartedOverSlider)
 				return;
+				*/
 
 			if (swipe.StartingGameObject == null)
 				return;

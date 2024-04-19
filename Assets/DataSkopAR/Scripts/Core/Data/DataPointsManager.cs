@@ -164,13 +164,13 @@ namespace DataskopAR.Data {
 				historySwipe.Direction = Vector2.down;
 				historySwipe.YDistance = 100;
 				historySwipe.StartingGameObject = dummyVisObject;
-				historySwipe.HasStartedOverSlider = UIInteractionDetection.HasPointerStartedOverSlider;
+				//historySwipe.HasStartedOverSlider = UIInteractionDetection.HasPointerStartedOverSlider;
 			}
 			else {
 				historySwipe.Direction = Vector2.up;
 				historySwipe.YDistance = 100;
 				historySwipe.StartingGameObject = dummyVisObject;
-				historySwipe.HasStartedOverSlider = UIInteractionDetection.HasPointerStartedOverSlider;
+				//historySwipe.HasStartedOverSlider = UIInteractionDetection.HasPointerStartedOverSlider;
 			}
 
 			foreach (DataPoint dp in DataPoints) {

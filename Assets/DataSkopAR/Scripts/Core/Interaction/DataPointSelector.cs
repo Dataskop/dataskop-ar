@@ -80,8 +80,15 @@ namespace DataskopAR.Interaction {
 		}
 
 		private void FixedUpdate() {
+			SetHoveredDataPoint(ReticuleToWorldRay);
+		}
 
-			Debug.DrawRay(TapScreenToWorldRay.origin, TapScreenToWorldRay.direction * 10, Color.yellow);
+		private void OnWorldPointerUpReceived(Vector2 screenPosition) {
+			TapScreenToWorldRay = cam.ScreenPointToRay(inputHandler.TapPosition);
+			SetSelectedDataPoint(TapScreenToWorldRay);
+		}
+
+		private void SetHoveredDataPoint(Ray ray) {
 
 			if (Physics.Raycast(ReticuleToWorldRay, out RaycastHit hit, Mathf.Infinity, TargetLayerMask)) {
 
@@ -150,11 +157,6 @@ namespace DataskopAR.Interaction {
 
 			}
 
-		}
-
-		private void OnWorldPointerUpReceived(Vector3 screenPosition) {
-			TapScreenToWorldRay = cam.ScreenPointToRay(inputHandler.TapPosition);
-			SetSelectedDataPoint(TapScreenToWorldRay);
 		}
 
 		private void SetSelectedDataPoint(Ray ray) {
