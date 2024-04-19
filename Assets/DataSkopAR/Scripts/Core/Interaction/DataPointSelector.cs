@@ -1,10 +1,9 @@
 ﻿using System.Collections;
-using System.Threading.Tasks;
 using DataskopAR.Data;
 using DataskopAR.Entities.Visualizations;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 
 namespace DataskopAR.Interaction {
 
@@ -21,6 +20,9 @@ namespace DataskopAR.Interaction {
 		[Header("References")]
 		[SerializeField] private Camera cam;
 		[SerializeField] private Vector3 screenRayPosition = Vector3.zero;
+		[SerializeField] private InputHandler inputHandler;
+		[SerializeField] private LineRenderer lineRenderer;
+		[SerializeField] private TrackedPoseDriver tpd;
 
 		[Header("Events")]
 		public UnityEvent<DataPoint> onDataPointSelected;
@@ -69,13 +71,16 @@ namespace DataskopAR.Interaction {
 
 		private Ray ReticuleToWorldRay => cam.ViewportPointToRay(screenRayPosition);
 
-		private Vector2 TapPosition { get; set; }
-
 #endregion
 
 #region Methods
 
+		private void Awake() {
+			inputHandler.WorldPointerUpped += OnWorldPointerUpReceived;
+		}
+
 		private void FixedUpdate() {
+
 			Debug.DrawRay(TapScreenToWorldRay.origin, TapScreenToWorldRay.direction * 10, Color.yellow);
 
 			if (Physics.Raycast(ReticuleToWorldRay, out RaycastHit hit, Mathf.Infinity, TargetLayerMask)) {
@@ -147,19 +152,9 @@ namespace DataskopAR.Interaction {
 
 		}
 
-		public void TapPositionInput(InputAction.CallbackContext ctx) {
-			TapPosition = ctx.ReadValue<Vector2>();
-		}
-
-		public async void TapInput() {
-
-			// Needed this delay to avoid having a wrong camera position due to input event order through
-			// UI Toolkits events.
-			await Task.Delay(10);
-			
-			TapScreenToWorldRay = cam.ScreenPointToRay(new Vector3(TapPosition.x, TapPosition.y, -5));
+		private void OnWorldPointerUpReceived(Vector3 screenPosition) {
+			TapScreenToWorldRay = cam.ScreenPointToRay(inputHandler.TapPosition);
 			SetSelectedDataPoint(TapScreenToWorldRay);
-
 		}
 
 		private void SetSelectedDataPoint(Ray ray) {

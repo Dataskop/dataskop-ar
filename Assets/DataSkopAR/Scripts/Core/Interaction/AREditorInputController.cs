@@ -27,6 +27,8 @@ namespace DataskopAR.Interaction {
 
 #region Methods
 
+#if UNITY_EDITOR
+
 		private void Update() {
 			xRotation -= LookDelta.y * rotationSpeedModifier;
 			yRotation += LookDelta.x * rotationSpeedModifier;
@@ -53,6 +55,8 @@ namespace DataskopAR.Interaction {
 				LookDelta = Vector2.zero;
 			}
 		}
+
+#endif
 
 #endregion
 

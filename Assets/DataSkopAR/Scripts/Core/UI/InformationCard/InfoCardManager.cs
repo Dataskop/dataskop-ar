@@ -47,25 +47,6 @@ namespace DataskopAR.UI {
 
 			InfoCard = informationCardUIDoc.rootVisualElement.Q<VisualElement>("InfoCard");
 
-			InfoCard.RegisterCallback<PointerDownEvent>(e => {
-					UIInteractionDetection.IsPointerOverUi = true;
-					UIInteractionDetection.HasPointerStartedOverSwipeArea = true;
-				}
-			);
-
-#if UNITY_EDITOR
-
-			InfoCard.RegisterCallback<PointerEnterEvent>(e => {
-				UIInteractionDetection.IsPointerOverUi = true;
-				UIInteractionDetection.HasPointerStartedOverSwipeArea = true;
-			});
-			InfoCard.RegisterCallback<PointerLeaveEvent>(e => {
-				UIInteractionDetection.IsPointerOverUi = false;
-				UIInteractionDetection.HasPointerStartedOverSwipeArea = false;
-			});
-
-#endif
-
 			DetailsContainer = InfoCard.Q<VisualElement>("DetailsContainer");
 			MapContainer = InfoCard.Q<VisualElement>("MapContainer");
 
