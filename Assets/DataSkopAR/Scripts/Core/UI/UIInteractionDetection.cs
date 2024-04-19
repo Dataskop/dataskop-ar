@@ -23,16 +23,6 @@ namespace DataskopAR {
 
 #endregion
 
-#region Properties
-
-		public static bool IsPointerOverUi { get; set; }
-
-		public static bool HasPointerStartedOverSwipeArea { get; set; }
-
-		public static bool HasPointerStartedOverSlider { get; set; }
-
-#endregion
-
 #region Methods
 
 		private void Awake() {

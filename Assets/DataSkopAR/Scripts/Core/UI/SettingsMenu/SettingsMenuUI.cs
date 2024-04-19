@@ -112,26 +112,10 @@ namespace DataskopAR.UI {
 			MenuContainer = Root.Q<VisualElement>("MenuContainer");
 
 			SettingsMenuContainer = Root.Q<VisualElement>("SettingsMenuContainer");
-			SettingsMenuContainer.RegisterCallback<PointerDownEvent>(_ => { UIInteractionDetection.IsPointerOverUi = true; });
 
 			ProjectSelectorContainer = Root.Q<VisualElement>("ProjectSelectionContainer");
-			ProjectSelectorContainer.RegisterCallback<PointerDownEvent>(_ => { UIInteractionDetection.IsPointerOverUi = true; });
 
 			AppButtonsContainer = Root.Q<VisualElement>("AppButtonsContainer");
-			AppButtonsContainer.RegisterCallback<PointerEnterEvent>(_ => { UIInteractionDetection.IsPointerOverUi = true; });
-
-#if UNITY_EDITOR
-
-			SettingsMenuContainer.RegisterCallback<PointerEnterEvent>(_ => { UIInteractionDetection.IsPointerOverUi = true; });
-			SettingsMenuContainer.RegisterCallback<PointerLeaveEvent>(_ => { UIInteractionDetection.IsPointerOverUi = false; });
-
-			ProjectSelectorContainer.RegisterCallback<PointerEnterEvent>(_ => { UIInteractionDetection.IsPointerOverUi = true; });
-			ProjectSelectorContainer.RegisterCallback<PointerLeaveEvent>(_ => { UIInteractionDetection.IsPointerOverUi = false; });
-
-			AppButtonsContainer.RegisterCallback<PointerEnterEvent>(_ => { UIInteractionDetection.IsPointerOverUi = true; });
-			AppButtonsContainer.RegisterCallback<PointerLeaveEvent>(_ => { UIInteractionDetection.IsPointerOverUi = false; });
-
-#endif
 
 			SettingsMenuButton = Root.Q<Button>("SettingsMenuButton");
 			SettingsMenuButton.RegisterCallback<ClickEvent>(_ => ToggleMenu(MenuView.Settings));

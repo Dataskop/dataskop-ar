@@ -97,8 +97,6 @@ namespace DataskopAR.UI {
 			TemplateContainer attributeTemplateContainer = attributeUIAsset.Instantiate();
 
 			Button attributeButton = attributeTemplateContainer.Q<Button>("attribute");
-			attributeButton.RegisterCallback<PointerDownEvent>(
-				e => { UIInteractionDetection.IsPointerOverUi = true; });
 
 			attributeButton.text = attributeLabel;
 			attributeButton.name = attributeId;
@@ -159,7 +157,6 @@ namespace DataskopAR.UI {
 			TemplateContainer visOptTemplateContainer = visualizationOptionUIAsset.Instantiate();
 
 			Button visOptButton = visOptTemplateContainer.Q<Button>("opt");
-			visOptButton.RegisterCallback<PointerDownEvent>(e => { UIInteractionDetection.IsPointerOverUi = true; });
 
 			visOptButton.name = visOpt.Type;
 
