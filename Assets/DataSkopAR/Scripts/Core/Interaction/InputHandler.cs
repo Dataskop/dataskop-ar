@@ -40,7 +40,7 @@ namespace DataskopAR.Interaction {
 
 #region Properties
 
-		public Vector2 TapPosition { get; private set; }
+		private Vector2 TapPosition { get; set; }
 
 		private PointerInteraction CurrentPointerInteraction { get; set; }
 
@@ -157,9 +157,6 @@ namespace DataskopAR.Interaction {
 
 			PointerRay = mainCamera.ScreenPointToRay(position);
 
-			//lineRenderer.SetPosition(0, PointerRay.origin);
-			//lineRenderer.SetPosition(1, PointerRay.origin + PointerRay.direction * 100f);
-
 			return Physics.Raycast(PointerRay, out RaycastHit hit, Mathf.Infinity, TargetLayerMask)
 				? hit.collider.gameObject
 				: null;
@@ -191,13 +188,14 @@ namespace DataskopAR.Interaction {
 		}
 
 		private void EditorSwipe(Vector2 dir) {
-
+			/*
 			PointerInteraction lastPointerInteraction = new() {
 				startingGameObject = GetRayHitObject(),
 				endingGameObject = GetRayHitObject(),
 				endPosition = Vector2.zero,
 				startPosition = dir
 			};
+			*/
 
 			//OnSwipe?.Invoke(lastSwipe);
 
