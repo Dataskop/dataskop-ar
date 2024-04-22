@@ -129,8 +129,6 @@ namespace DataskopAR.Entities.Visualizations {
 
 			if (!pointerInteraction.startingGameObject.CompareTag("Vis")) return;
 
-			Debug.Log(pointerInteraction.Direction);
-
 			switch (pointerInteraction.Direction.y) {
 				case < -0.20f:
 					SwipedUp?.Invoke();
