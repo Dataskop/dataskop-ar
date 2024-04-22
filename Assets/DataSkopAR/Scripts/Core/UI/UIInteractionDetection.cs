@@ -32,13 +32,11 @@ namespace DataskopAR.UI {
 		}
 
 		private void OnPointerDown(PointerDownEvent e) {
-			//Vector2 processedPos = new(e.position.x, blockerRoot.resolvedStyle.height - e.position.y);
 			Vector2 processedPos = new(e.position.x, Screen.height - e.position.y);
 			hasPointerDownOutsideOfUi?.Invoke(processedPos);
 		}
 
 		private void OnPointerUp(PointerUpEvent e) {
-			//Vector2 processedPos = new(e.position.x, blockerRoot.resolvedStyle.height - e.position.y);
 			Vector2 processedPos = new(e.position.x, Screen.height - e.position.y);
 			hasPointerUpOutsideOfUi?.Invoke(processedPos);
 		}
