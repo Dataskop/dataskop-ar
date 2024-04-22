@@ -132,10 +132,10 @@ namespace DataskopAR.Entities.Visualizations {
 			Debug.Log(pointerInteraction.Direction);
 
 			switch (pointerInteraction.Direction.y) {
-				case < -0.45f:
+				case < -0.20f:
 					SwipedUp?.Invoke();
 					break;
-				case > 0.45f:
+				case > 0.20f:
 					SwipedDown?.Invoke();
 					break;
 			}
