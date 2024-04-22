@@ -62,35 +62,20 @@ namespace DataskopAR.UI {
 
 		}
 
-		public void OnSwipe(Swipe swipe) {
+		public void OnSwipe(PointerInteraction pointerInteraction) {
 
 			if (!InfoCard.visible) return;
 
-			if (!swipe.HasStartedOverSwipeAreaInUI)
-				return;
-
-			if (IsLocked && !swipe.HasStartedOverSwipeAreaInUI)
-				return;
-
-			// Only move info card if user did not swipe over a selected vis
-			if (swipe.StartingGameObject != null) {
-				Visualization vis = swipe.StartingGameObject.GetComponent<Visualization>();
-
-				if (vis != null)
-					if (vis.IsSelected)
-						return;
-			}
-
 			SetPreviousState();
 
-			if (swipe.Direction.y > 0f)
+			if (pointerInteraction.Direction.y > 0f)
 				CurrentCardState = CurrentCardState switch {
 					InfoCardState.Collapsed => InfoCardState.Short,
 					InfoCardState.Short => InfoCardState.Fullscreen,
 					_ => CurrentCardState
 				};
 
-			if (swipe.Direction.y < 0)
+			if (pointerInteraction.Direction.y < 0)
 				CurrentCardState = CurrentCardState switch {
 					InfoCardState.Fullscreen => InfoCardState.Short,
 					InfoCardState.Short => InfoCardState.Collapsed,

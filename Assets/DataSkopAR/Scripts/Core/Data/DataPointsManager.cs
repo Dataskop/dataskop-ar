@@ -15,7 +15,6 @@ namespace DataskopAR.Data {
 
 		[Header("Events")]
 		public UnityEvent<VisualizationOption> onVisualizationChanged;
-
 		public UnityEvent dataPointsResultsUpdated;
 		public UnityEvent<int> dataPointHistorySwiped;
 
@@ -25,7 +24,7 @@ namespace DataskopAR.Data {
 
 		[Header("References")]
 		[SerializeField] private DataManager dataManager;
-
+		[SerializeField] private InputHandler inputHandler;
 		[SerializeField] private AbstractMap map;
 		[SerializeField] private GameObject dataPointPrefab;
 		[SerializeField] private Transform dataPointsContainer;
@@ -65,13 +64,13 @@ namespace DataskopAR.Data {
 
 #region Methods
 
-		private void OnEnable() {
+		private void Awake() {
 			DataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
 		}
 
 		private void Start() {
 
-			SwipeDetector.OnSwipe += OnSwiped;
+			inputHandler.WorldPointerUpped += OnSwiped;
 
 			dummyVisObject = new GameObject {
 				tag = "Vis"
@@ -139,13 +138,15 @@ namespace DataskopAR.Data {
 
 		}
 
-		private void OnSwiped(Swipe swipe) {
+		private void OnSwiped(PointerInteraction pointerInteraction) {
+
+			if (!pointerInteraction.isSwipe) return;
 
 			if (!HasLoadedDataPoints)
 				return;
 
 			foreach (DataPoint dp in DataPoints) {
-				dp.Vis.Swiped(swipe);
+				dp.Vis.Swiped(pointerInteraction);
 			}
 
 			dataPointHistorySwiped?.Invoke(DataPoints[0].CurrentMeasurementResultIndex);
@@ -158,23 +159,17 @@ namespace DataskopAR.Data {
 			if (!HasLoadedDataPoints)
 				return;
 
-			Swipe historySwipe = new();
+			PointerInteraction historyPointerInteraction = new();
 
 			if (newCount > prevCount) {
-				historySwipe.Direction = Vector2.down;
-				historySwipe.YDistance = 100;
-				historySwipe.StartingGameObject = dummyVisObject;
-				//historySwipe.HasStartedOverSlider = UIInteractionDetection.HasPointerStartedOverSlider;
+				historyPointerInteraction.startingGameObject = dummyVisObject;
 			}
 			else {
-				historySwipe.Direction = Vector2.up;
-				historySwipe.YDistance = 100;
-				historySwipe.StartingGameObject = dummyVisObject;
-				//historySwipe.HasStartedOverSlider = UIInteractionDetection.HasPointerStartedOverSlider;
+				historyPointerInteraction.startingGameObject = dummyVisObject;
 			}
 
 			foreach (DataPoint dp in DataPoints) {
-				dp.Vis.Swiped(historySwipe);
+				dp.Vis.Swiped(historyPointerInteraction);
 			}
 
 		}
@@ -294,11 +289,6 @@ namespace DataskopAR.Data {
 			}
 
 			DataPoints.Clear();
-		}
-
-		public void OnDisable() {
-			SwipeDetector.OnSwipe -= OnSwiped;
-			DataManager.HasUpdatedMeasurementResults -= OnMeasurementResultsUpdated;
 		}
 
 #endregion

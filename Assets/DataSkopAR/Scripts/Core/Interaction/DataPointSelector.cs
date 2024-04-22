@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿#nullable enable
+
+using System.Collections;
 using DataskopAR.Data;
 using DataskopAR.Entities.Visualizations;
 using UnityEngine;
@@ -21,16 +23,15 @@ namespace DataskopAR.Interaction {
 		[SerializeField] private Camera cam;
 		[SerializeField] private Vector3 screenRayPosition = Vector3.zero;
 		[SerializeField] private InputHandler inputHandler;
-		[SerializeField] private LineRenderer lineRenderer;
 		[SerializeField] private TrackedPoseDriver tpd;
 
 		[Header("Events")]
-		public UnityEvent<DataPoint> onDataPointSelected;
-		public UnityEvent<DataPoint> onDataPointSoftSelected;
-		public UnityEvent<bool> onVisChangeWithSelection;
+		public UnityEvent<DataPoint?>? onDataPointSelected;
+		public UnityEvent<DataPoint?>? onDataPointSoftSelected;
+		public UnityEvent<bool>? onVisChangeWithSelection;
 
-		private DataPoint selectedDataPoint;
-		private DataPoint softSelectedDataPoint;
+		private DataPoint? selectedDataPoint;
+		private DataPoint? softSelectedDataPoint;
 
 #endregion
 
@@ -39,7 +40,7 @@ namespace DataskopAR.Interaction {
 		/// <summary>
 		///     The DataPoint which got selected with a tap.
 		/// </summary>
-		public DataPoint SelectedDataPoint {
+		public DataPoint? SelectedDataPoint {
 			get => selectedDataPoint;
 
 			private set {
@@ -48,12 +49,12 @@ namespace DataskopAR.Interaction {
 			}
 		}
 
-		private DataPoint PreviouslySelectedDataPoint { get; set; }
+		private DataPoint? PreviouslySelectedDataPoint { get; set; }
 
 		/// <summary>
 		///     The DataPoint which got selected with the reticule.
 		/// </summary>
-		public DataPoint SoftSelectedDataPoint {
+		public DataPoint? SoftSelectedDataPoint {
 			get => softSelectedDataPoint;
 
 			private set {
@@ -65,9 +66,7 @@ namespace DataskopAR.Interaction {
 			}
 		}
 
-		public TimeElement HoveredTimeElement { get; set; }
-
-		private Ray TapScreenToWorldRay { get; set; }
+		public TimeElement? HoveredTimeElement { get; set; }
 
 		private Ray ReticuleToWorldRay => cam.ViewportPointToRay(screenRayPosition);
 
@@ -83,9 +82,12 @@ namespace DataskopAR.Interaction {
 			SetHoveredDataPoint(ReticuleToWorldRay);
 		}
 
-		private void OnWorldPointerUpReceived(Vector2 screenPosition) {
-			TapScreenToWorldRay = cam.ScreenPointToRay(inputHandler.TapPosition);
-			SetSelectedDataPoint(TapScreenToWorldRay);
+		private void OnWorldPointerUpReceived(PointerInteraction i) {
+
+			if (i.isSwipe) return;
+
+			SetSelectedDataPoint(i.startingGameObject);
+
 		}
 
 		private void SetHoveredDataPoint(Ray ray) {
@@ -159,35 +161,28 @@ namespace DataskopAR.Interaction {
 
 		}
 
-		private void SetSelectedDataPoint(Ray ray) {
+		private void SetSelectedDataPoint(GameObject? pointedGameObject) {
 
-			if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, TargetLayerMask)) {
-
-				if (!hit.collider.gameObject.CompareTag("Vis"))
-					return;
-
-				DataPoint tappedDataPoint = hit.collider.gameObject.GetComponentInParent<Visualization>().DataPoint;
-
-				if (tappedDataPoint == SelectedDataPoint) {
-					RemoveSelection();
-					return;
-				}
-
-				if (SelectedDataPoint != null)
-					RemoveSelection();
-
-				SelectedDataPoint = tappedDataPoint;
-
-				if (SoftSelectedDataPoint == SelectedDataPoint)
-					SoftSelectedDataPoint = null;
-
-				SelectedDataPoint.SetSelectionStatus(true, false);
+			if (pointedGameObject != null && !pointedGameObject.CompareTag("Vis"))
 				return;
 
+			DataPoint? tappedDataPoint = pointedGameObject?.GetComponentInParent<Visualization>().DataPoint;
+
+			if (tappedDataPoint == SelectedDataPoint) {
+				RemoveSelection();
+				return;
 			}
 
 			if (SelectedDataPoint != null)
 				RemoveSelection();
+
+			SelectedDataPoint = tappedDataPoint;
+
+			if (SoftSelectedDataPoint == SelectedDataPoint)
+				SoftSelectedDataPoint = null;
+
+			SelectedDataPoint?.SetSelectionStatus(true, false);
+
 		}
 
 		public void SelectDataPointOnVisualizationChange() {
@@ -200,14 +195,14 @@ namespace DataskopAR.Interaction {
 		}
 
 		private void RemoveSelection() {
-			SelectedDataPoint.SetSelectionStatus(false, false);
+			SelectedDataPoint?.SetSelectionStatus(false, false);
 			SelectedDataPoint = null;
 		}
 
 		private IEnumerator SelectPreviouslySelectedDataPoint() {
 			yield return new WaitForEndOfFrame();
 			SelectedDataPoint = PreviouslySelectedDataPoint;
-			SelectedDataPoint.SetSelectionStatus(true, false);
+			SelectedDataPoint?.SetSelectionStatus(true, false);
 			onVisChangeWithSelection?.Invoke(false);
 		}
 
