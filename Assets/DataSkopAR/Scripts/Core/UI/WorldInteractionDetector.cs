@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace DataskopAR.UI {
 
-	public class UIInteractionDetection : MonoBehaviour {
+	public class WorldInteractionDetector : MonoBehaviour {
 
 #region Events
 
