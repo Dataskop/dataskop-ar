@@ -122,22 +122,18 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public abstract void ApplyStyle(VisualizationStyle style);
 
-		public void Swiped(Swipe swipe) {
-/*
-			if (UIInteractionDetection.IsPointerOverUi && !UIInteractionDetection.HasPointerStartedOverSlider)
-				return;
-				*/
+		public void Swiped(PointerInteraction pointerInteraction) {
 
-			if (swipe.StartingGameObject == null)
+			if (pointerInteraction.startingGameObject == null)
 				return;
 
-			if (!swipe.StartingGameObject.CompareTag("Vis")) return;
+			if (!pointerInteraction.startingGameObject.CompareTag("Vis")) return;
 
-			switch (swipe.Direction.y) {
-				case > 0f:
+			switch (pointerInteraction.Direction.y) {
+				case < 0f:
 					SwipedUp?.Invoke();
 					break;
-				case < 0f:
+				case > 0f:
 					SwipedDown?.Invoke();
 					break;
 			}

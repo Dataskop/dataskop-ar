@@ -107,10 +107,10 @@ namespace DataskopAR.UI {
 					ProjectButtons.Add(button);
 					button.text = project.Information.Name;
 
-					button.clickable.clicked += () => {
+					button.RegisterCallback<ClickEvent>(_ => {
 						onProjectSelected?.Invoke();
 						dataManager.LoadProject(project.ID);
-					};
+					});
 
 					VisualElement companyProjectsBox = groupOfProjectsTemplateContainer.Q<VisualElement>("company-projects-box");
 					companyProjectsBox.Add(projectTemplateContainer);
