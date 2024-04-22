@@ -68,14 +68,14 @@ namespace DataskopAR.UI {
 
 			SetPreviousState();
 
-			if (pointerInteraction.Direction.y > 0.45f)
+			if (pointerInteraction.Direction.y > 0.20f)
 				CurrentCardState = CurrentCardState switch {
 					InfoCardState.Collapsed => InfoCardState.Short,
 					InfoCardState.Short => InfoCardState.Fullscreen,
 					_ => CurrentCardState
 				};
 
-			if (pointerInteraction.Direction.y < -0.45f)
+			if (pointerInteraction.Direction.y < -0.20f)
 				CurrentCardState = CurrentCardState switch {
 					InfoCardState.Fullscreen => InfoCardState.Short,
 					InfoCardState.Short => InfoCardState.Collapsed,
