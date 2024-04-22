@@ -1,4 +1,5 @@
 ﻿#nullable enable
+
 using DataskopAR.UI;
 using UnityEngine;
 
@@ -28,6 +29,10 @@ namespace DataskopAR.Interaction {
 
 		public UISection uiEndSection;
 
+		public float startTime;
+
+		public float endTime;
+
 #endregion
 
 #region Properties
@@ -40,13 +45,15 @@ namespace DataskopAR.Interaction {
 
 		public float YDistance => Mathf.Abs(endPosition.y - startPosition.y);
 
+		public float DeltaTime => endTime - startTime;
+
 #endregion
 
 #region Methods
 
 		public new string ToString() {
 			return
-				$"Interaction: \nStartPoint: {startPosition}\nEndPoint: {endPosition}\nDistance: {Distance}\nStart on: {startingGameObject}\nEnd on: {endingGameObject} \nDirection: {Direction}\nDownPhase: {isDownPhase}\nUpPhase: {isUpPhase}\nSwipe: {isSwipe}\nUI: {isUI}";
+				$"StartPoint: {startPosition}\nEndPoint: {endPosition}\nDistance: {Distance}\nStart on: {startingGameObject}\nEnd on: {endingGameObject} \nDirection: {Direction}\nDownPhase: {isDownPhase}\nUpPhase: {isUpPhase}\nSwipe: {isSwipe}\nUI: {isUI}";
 		}
 
 #endregion
