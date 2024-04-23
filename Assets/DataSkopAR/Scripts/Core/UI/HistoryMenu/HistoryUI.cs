@@ -18,8 +18,6 @@ namespace DataskopAR.UI {
 		[SerializeField] private UIDocument historyMenuDoc;
 		[SerializeField] private DataManager dataManager;
 
-		private bool isExternalInteraction;
-
 #endregion
 
 #region Properties
@@ -45,6 +43,7 @@ namespace DataskopAR.UI {
 #region Methods
 
 		private void OnEnable() {
+
 			Root = historyMenuDoc.rootVisualElement;
 			HistoryContainer = Root.Q<VisualElement>("HistoryContainer");
 			HistorySliderContainer = HistoryContainer.Q<VisualElement>("HistorySliderContainer");
@@ -63,13 +62,8 @@ namespace DataskopAR.UI {
 		}
 
 		private void SliderValueChanged(ChangeEvent<int> e) {
-
-			if (!isExternalInteraction) {
-				sliderChanged?.Invoke(e.newValue, e.previousValue);
-			}
-
+			sliderChanged?.Invoke(e.newValue, e.previousValue);
 			AdjustTimeLabelPosition();
-
 		}
 
 		private void AdjustTimeLabelPosition() {
@@ -108,9 +102,7 @@ namespace DataskopAR.UI {
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
-			isExternalInteraction = true;
-			HistorySlider.value = newCount;
-			isExternalInteraction = false;
+			HistorySlider.SetValueWithoutNotify(newCount);
 		}
 
 		public void OnVisualizationOptionChanged(VisualizationOption currentVisOption) {
@@ -164,7 +156,7 @@ namespace DataskopAR.UI {
 		}
 
 		private void OnDisable() {
-			HistorySliderContainer.UnregisterCallback<ChangeEvent<int>>(e => sliderChanged?.Invoke(e.newValue, e.previousValue));
+			HistorySliderContainer.UnregisterCallback<ChangeEvent<int>>(SliderValueChanged);
 		}
 
 		private IEnumerator DelayToggle() {
