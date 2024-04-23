@@ -103,7 +103,8 @@ namespace DataskopAR.UI {
 		}
 
 		private void UpdateTimeLabel(MeasurementResult currentDataPointMeasurementResult) {
-			CurrentTimeLabel.text = $"{currentDataPointMeasurementResult.GetDate()}<br>{currentDataPointMeasurementResult.GetClockTime()}";
+			CurrentTimeLabel.text =
+				$"{currentDataPointMeasurementResult.GetDate()}<br>{currentDataPointMeasurementResult.GetClockTime()}";
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
