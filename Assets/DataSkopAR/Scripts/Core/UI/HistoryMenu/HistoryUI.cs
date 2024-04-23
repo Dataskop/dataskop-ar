@@ -49,24 +49,12 @@ namespace DataskopAR.UI {
 			HistoryContainer = Root.Q<VisualElement>("HistoryContainer");
 			HistorySliderContainer = HistoryContainer.Q<VisualElement>("HistorySliderContainer");
 
-			HistorySliderContainer.RegisterCallback<PointerDownEvent>(e => { UIInteractionDetection.IsPointerOverUi = true; });
-
 			HistorySlider = HistorySliderContainer.Q<SliderInt>("Slider");
 			HistorySlider.RegisterCallback<ChangeEvent<int>>(SliderValueChanged);
-			HistorySlider.RegisterCallback<PointerDownEvent>(e => { UIInteractionDetection.HasPointerStartedOverSlider = true; });
-			HistorySlider.RegisterCallback<PointerUpEvent>(e => { UIInteractionDetection.HasPointerStartedOverSlider = false; });
 
 			CurrentTimeLabel = HistorySliderContainer.Q<Label>("CurrentTime");
 			Dragger = HistorySlider.Q<VisualElement>("unity-dragger");
 
-#if UNITY_EDITOR
-
-			HistorySliderContainer.RegisterCallback<PointerEnterEvent>(e => { UIInteractionDetection.IsPointerOverUi = true; });
-			HistorySlider.RegisterCallback<PointerDownEvent>(e => { UIInteractionDetection.HasPointerStartedOverSlider = true; });
-			HistorySliderContainer.RegisterCallback<PointerLeaveEvent>(e => { UIInteractionDetection.IsPointerOverUi = false; });
-			HistorySlider.RegisterCallback<PointerUpEvent>(e => { UIInteractionDetection.HasPointerStartedOverSlider = false; });
-
-#endif
 		}
 
 		private void Start() {

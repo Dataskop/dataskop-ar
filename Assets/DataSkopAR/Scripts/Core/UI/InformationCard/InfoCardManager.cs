@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DataskopAR.Data;
 using DataskopAR.Interaction;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UIElements;
 
 namespace DataskopAR.UI {
@@ -20,6 +21,7 @@ namespace DataskopAR.UI {
 		[SerializeField] private InfoCardDataUI infoCardDataUI;
 		[SerializeField] private InfoCardMap infoCardMap;
 		[SerializeField] private DataManager dataManager;
+		[SerializeField] private InputHandler inputHandler;
 
 		private Coroutine uiInteractionRoutine;
 
@@ -43,28 +45,9 @@ namespace DataskopAR.UI {
 
 #region Methods
 
-		private void OnEnable() {
+		private void Awake() {
 
 			InfoCard = informationCardUIDoc.rootVisualElement.Q<VisualElement>("InfoCard");
-
-			InfoCard.RegisterCallback<PointerDownEvent>(e => {
-					UIInteractionDetection.IsPointerOverUi = true;
-					UIInteractionDetection.HasPointerStartedOverSwipeArea = true;
-				}
-			);
-
-#if UNITY_EDITOR
-
-			InfoCard.RegisterCallback<PointerEnterEvent>(e => {
-				UIInteractionDetection.IsPointerOverUi = true;
-				UIInteractionDetection.HasPointerStartedOverSwipeArea = true;
-			});
-			InfoCard.RegisterCallback<PointerLeaveEvent>(e => {
-				UIInteractionDetection.IsPointerOverUi = false;
-				UIInteractionDetection.HasPointerStartedOverSwipeArea = false;
-			});
-
-#endif
 
 			DetailsContainer = InfoCard.Q<VisualElement>("DetailsContainer");
 			MapContainer = InfoCard.Q<VisualElement>("MapContainer");
@@ -79,11 +62,11 @@ namespace DataskopAR.UI {
 			CallToAction.visible = false;
 
 			infoCardStateManager.Init(InfoCard);
+			inputHandler.InfoCardPointerUpped += OnPointerInteraction;
 
 			dataManager.HasLoadedProjectData += OnProjectDataUpdated;
 			dataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
 			ErrorHandler.OnErrorReceived += OnErrorReceived;
-			SwipeDetector.OnSwipe += OnSwiped;
 
 			infoCardNotificationUI.Init(InfoCard);
 			infoCardProjectDataUI.Init(InfoCard);
@@ -118,7 +101,6 @@ namespace DataskopAR.UI {
 			infoCardStateManager.OnDataPointSelected(dp);
 			infoCardDataUI.UpdateDataPointData(dp);
 			SetCallToActionState(false);
-
 		}
 
 		public void OnDataPointSoftSelected(DataPoint dp) {
@@ -149,8 +131,12 @@ namespace DataskopAR.UI {
 			infoCardNotificationUI.OnErrorReceived(e.Error);
 		}
 
-		private void OnSwiped(Swipe swipe) {
-			infoCardStateManager.OnSwipe(swipe);
+		private void OnPointerInteraction(PointerInteraction pointerInteraction) {
+
+			if (pointerInteraction.isSwipe) {
+				infoCardStateManager.OnSwipe(pointerInteraction);
+			}
+
 		}
 
 		public void OnMinimapTapped() {
@@ -195,13 +181,6 @@ namespace DataskopAR.UI {
 
 			}
 
-		}
-
-		private void OnDisable() {
-			SwipeDetector.OnSwipe -= OnSwiped;
-			ErrorHandler.OnErrorReceived -= OnErrorReceived;
-			dataManager.HasLoadedProjectData -= OnProjectDataUpdated;
-			dataManager.HasUpdatedMeasurementResults -= OnMeasurementResultsUpdated;
 		}
 
 #endregion
