@@ -1,7 +1,6 @@
 using System;
 using Mapbox.Unity.Map;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.XR.ARFoundation;
 
 namespace DataskopAR.Interaction {
@@ -19,7 +18,6 @@ namespace DataskopAR.Interaction {
 
 #region Constants
 
-		private const int TargetLayerMask = 1 << 10;
 		private const string PlaneTag = "ARPlane";
 
 #endregion
@@ -31,8 +29,6 @@ namespace DataskopAR.Interaction {
 		[SerializeField] private AbstractMap map;
 		[SerializeField] private InputHandler inputHandler;
 
-		private Camera cam;
-
 #endregion
 
 #region Properties
@@ -40,12 +36,6 @@ namespace DataskopAR.Interaction {
 		public float GroundLevelYPosition { get; set; }
 
 		public bool IsEnabled { get; set; }
-
-		private ARPlane LowestPlane { get; set; }
-
-		private Ray TapScreenToWorldRay { get; set; }
-
-		private Vector2 TapPosition { get; set; }
 
 #endregion
 
@@ -60,7 +50,6 @@ namespace DataskopAR.Interaction {
 		public ICalibration Enable() {
 
 			IsEnabled = true;
-			cam = Camera.main;
 			arPlaneManager.enabled = IsEnabled;
 			TogglePlanes(IsEnabled);
 			return this;
@@ -90,7 +79,6 @@ namespace DataskopAR.Interaction {
 
 			if (GroundLevelYPosition > yPos) {
 				GroundLevelYPosition = yPos;
-				LowestPlane = foundPlane;
 			}
 
 		}
@@ -105,7 +93,6 @@ namespace DataskopAR.Interaction {
 
 		public void ResetGroundLevelCalibration() {
 
-			LowestPlane = null;
 			GroundLevelYPosition = 0;
 			Vector3 mapPosition = map.Root.position;
 			mapPosition = new Vector3(mapPosition.x, GroundLevelYPosition, mapPosition.z);
@@ -137,7 +124,6 @@ namespace DataskopAR.Interaction {
 				return;
 			}
 
-			LowestPlane = tappedPlane.GetComponent<ARPlane>();
 			GroundLevelYPosition = tappedPlane.transform.position.y;
 			SetMapRootGroundLevel(GroundLevelYPosition);
 			CalibrationCompleted?.Invoke();
@@ -159,6 +145,7 @@ namespace DataskopAR.Interaction {
 		private void OnDisable() {
 			map.OnUpdated -= OnMapUpdated;
 			arPlaneManager.planesChanged -= OnArPlanesChanged;
+			inputHandler.WorldPointerUpped -= OnPointerInteractionReceived;
 		}
 
 #endregion
