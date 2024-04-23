@@ -7,7 +7,7 @@ namespace DataskopAR.Entities.Visualizations {
 	public struct TimeSeriesConfig {
 
 		public GameObject elementVis;
-		[Tooltip("Max Amount: 20")] public int visibleHistoryCount;
+		public int visibleHistoryCount;
 		public float elementDistance;
 		public float animationDuration;
 		public bool isFading;
@@ -15,7 +15,7 @@ namespace DataskopAR.Entities.Visualizations {
 		public TimeSeriesConfig(GameObject elementVis, int visibleHistoryCount, float elementDistance,
 			float animationDuration, bool isFading) {
 			this.elementVis = elementVis;
-			this.visibleHistoryCount = Mathf.Clamp(visibleHistoryCount, 0, 20);
+			this.visibleHistoryCount = visibleHistoryCount;
 			this.elementDistance = elementDistance;
 			this.animationDuration = animationDuration;
 			this.isFading = isFading;
