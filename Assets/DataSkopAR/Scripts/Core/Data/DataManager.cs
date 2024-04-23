@@ -265,7 +265,7 @@ namespace DataskopAR.Data {
 		///     Gets available Projects from a set of Companies.
 		/// </summary>
 		/// <param name="userCompanies">A collection of companies</param>
-		/// <returns>An Enumerable of available projects for the given companies.</returns>
+		/// <returns>A collection of available projects for the given companies.</returns>
 		public static IEnumerable<Project> GetAvailableProjects(IEnumerable<Company> userCompanies) {
 
 			List<Project> availableProjects = new();
@@ -326,6 +326,13 @@ namespace DataskopAR.Data {
 
 			await SelectedProject.UpdateDeviceMeasurements(FetchAmount);
 			HasUpdatedMeasurementResults?.Invoke();
+
+			int fetchedResultsAmount = SelectedProject.Devices.First().MeasurementDefinitions.First().MeasurementResults.Count;
+
+			if (fetchedResultsAmount != FetchAmount) {
+				FetchAmount = fetchedResultsAmount;
+			}
+
 			fetchedAmountChanged?.Invoke(FetchAmount);
 
 			LoadingIndicator.Hide();
@@ -346,7 +353,7 @@ namespace DataskopAR.Data {
 		}
 
 		public void OnAmountInputChanged(int newValue) {
-			FetchAmount = Mathf.Clamp(newValue, 1, 1000);
+			FetchAmount = Mathf.Clamp(newValue, 1, 999);
 		}
 
 		private void OnDisable() {
