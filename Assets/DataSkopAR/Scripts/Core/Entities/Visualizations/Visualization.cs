@@ -130,10 +130,10 @@ namespace DataskopAR.Entities.Visualizations {
 			if (!pointerInteraction.startingGameObject.CompareTag("Vis")) return;
 
 			switch (pointerInteraction.Direction.y) {
-				case < -0.20f:
+				case > 0.20f:
 					SwipedUp?.Invoke();
 					break;
-				case > 0.20f:
+				case < -0.20f:
 					SwipedDown?.Invoke();
 					break;
 			}

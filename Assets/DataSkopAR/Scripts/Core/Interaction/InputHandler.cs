@@ -103,7 +103,7 @@ namespace DataskopAR.Interaction {
 
 		}
 
-		public void OnPointerDownOnUI(Vector2 screenPosition, UISection section) {
+		public void OnPointerDownOnUI(Vector2 elementLocalPointerPosition, UISection section) {
 
 			if (isInteracting) return;
 
@@ -111,7 +111,7 @@ namespace DataskopAR.Interaction {
 
 			PointerInteraction newPointerInteraction = new() {
 				isDownPhase = true,
-				startPosition = screenPosition,
+				startPosition = TapPosition,
 				startingGameObject = null,
 				isUI = true,
 				uiStartSection = section
@@ -125,14 +125,14 @@ namespace DataskopAR.Interaction {
 
 		}
 
-		public void OnPointerUpOnUI(Vector2 screenPosition, UISection section) {
+		public void OnPointerUpOnUI(Vector2 elementLocalPointerPosition, UISection section) {
 
 			if (!CurrentPointerInteraction.isDownPhase) return;
 
 			PointerInteraction currentPointerInteraction = CurrentPointerInteraction;
 
 			currentPointerInteraction.isUpPhase = true;
-			currentPointerInteraction.endPosition = screenPosition;
+			currentPointerInteraction.endPosition = TapPosition;
 			currentPointerInteraction.endingGameObject = null;
 			currentPointerInteraction.isSwipe = currentPointerInteraction.Distance > minimumSwipeDistance;
 			currentPointerInteraction.uiEndSection = section;
