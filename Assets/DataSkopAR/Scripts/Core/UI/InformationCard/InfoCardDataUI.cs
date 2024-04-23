@@ -1,4 +1,5 @@
 using DataskopAR.Data;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -18,6 +19,7 @@ namespace DataskopAR.UI {
 
 		private VisualElement InfoCard { get; set; }
 
+		[CanBeNull]
 		private DataPoint SelectedDataPoint { get; set; }
 
 		private Label IdLabel { get; set; }
