@@ -29,6 +29,7 @@ namespace DataskopAR.Interaction {
 		[Header("References")]
 		[SerializeField] private ARPlaneManager arPlaneManager;
 		[SerializeField] private AbstractMap map;
+		[SerializeField] private InputHandler inputHandler;
 
 		private Camera cam;
 
@@ -53,6 +54,7 @@ namespace DataskopAR.Interaction {
 		private void OnEnable() {
 			arPlaneManager.planesChanged += OnArPlanesChanged;
 			map.OnUpdated += OnMapUpdated;
+			inputHandler.WorldPointerUpped += OnPointerInteractionReceived;
 		}
 
 		public ICalibration Enable() {
@@ -123,53 +125,27 @@ namespace DataskopAR.Interaction {
 
 		}
 
-		public void TapPositionInput(InputAction.CallbackContext ctx) {
+		private void OnPointerInteractionReceived(PointerInteraction i) {
 
-			if (IsEnabled) {
-				TapPosition = ctx.ReadValue<Vector2>();
+			if (!IsEnabled) {
+				return;
 			}
+
+			GameObject tappedPlane = GetTappedPArPlane(i.startingGameObject);
+
+			if (tappedPlane == null) {
+				return;
+			}
+
+			LowestPlane = tappedPlane.GetComponent<ARPlane>();
+			GroundLevelYPosition = tappedPlane.transform.position.y;
+			SetMapRootGroundLevel(GroundLevelYPosition);
+			CalibrationCompleted?.Invoke();
 
 		}
 
-		public void TapInput(InputAction.CallbackContext ctx) {
-
-			if (ctx.canceled) {
-
-				if (!IsEnabled) {
-					return;
-				}
-
-				GameObject tappedPlane = GetTappedPArPlane(TapPosition);
-
-				if (tappedPlane == null) {
-					return;
-				}
-
-				LowestPlane = tappedPlane.GetComponent<ARPlane>();
-				GroundLevelYPosition = tappedPlane.transform.position.y;
-				SetMapRootGroundLevel(GroundLevelYPosition);
-				CalibrationCompleted?.Invoke();
-
-			}
-
-		}
-
-		private GameObject GetTappedPArPlane(Vector3 tapPos) {
-
-			TapScreenToWorldRay = cam.ScreenPointToRay(new Vector3(tapPos.x, tapPos.y, -5));
-
-			if (!Physics.Raycast(TapScreenToWorldRay, out RaycastHit hit, Mathf.Infinity, TargetLayerMask)) {
-				return null;
-			}
-
-			GameObject tappedObject = hit.collider.gameObject;
-
-			if (!tappedObject.CompareTag(PlaneTag)) {
-				return null;
-			}
-
-			return hit.collider.gameObject;
-
+		private GameObject GetTappedPArPlane(GameObject pointedObject) {
+			return !pointedObject.CompareTag(PlaneTag) ? null : pointedObject;
 		}
 
 		public void Disable() {
