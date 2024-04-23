@@ -153,19 +153,23 @@ namespace DataskopAR.Data {
 
 		}
 
-		// idk
 		public void OnHistorySliderMoved(int newCount, int prevCount) {
 
 			if (!HasLoadedDataPoints)
 				return;
 
 			PointerInteraction historyPointerInteraction = new();
+			historyPointerInteraction.startingGameObject = dummyVisObject;
+			historyPointerInteraction.endingGameObject = dummyVisObject;
+			historyPointerInteraction.isSwipe = true;
 
 			if (newCount > prevCount) {
-				historyPointerInteraction.startingGameObject = dummyVisObject;
+				historyPointerInteraction.startPosition = Vector2.zero;
+				historyPointerInteraction.endPosition = Vector2.down * 100f;
 			}
 			else {
-				historyPointerInteraction.startingGameObject = dummyVisObject;
+				historyPointerInteraction.startPosition = Vector2.zero;
+				historyPointerInteraction.endPosition = Vector2.up * 100f;
 			}
 
 			foreach (DataPoint dp in DataPoints) {
