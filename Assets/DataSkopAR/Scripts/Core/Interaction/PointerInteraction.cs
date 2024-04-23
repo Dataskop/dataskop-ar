@@ -39,7 +39,7 @@ namespace DataskopAR.Interaction {
 
 		public float Distance => Mathf.Abs(Vector2.Distance(startPosition, endPosition));
 
-		public Vector2 Direction => (startPosition - endPosition).normalized;
+		public Vector2 Direction => (endPosition - startPosition).normalized;
 
 		public float XDistance => Mathf.Abs(endPosition.x - startPosition.x);
 
