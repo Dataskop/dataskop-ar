@@ -10,12 +10,6 @@ namespace DataskopAR.Interaction {
 
 	public class InputHandler : MonoBehaviour {
 
-#region Constants
-
-		private const int TargetLayerMask = 1 << 7;
-
-#endregion
-
 #region Events
 
 		public event Action<PointerInteraction>? WorldPointerDowned;
@@ -157,7 +151,7 @@ namespace DataskopAR.Interaction {
 
 			PointerRay = mainCamera.ScreenPointToRay(position);
 
-			return Physics.Raycast(PointerRay, out RaycastHit hit, Mathf.Infinity, TargetLayerMask)
+			return Physics.Raycast(PointerRay, out RaycastHit hit, Mathf.Infinity)
 				? hit.collider.gameObject
 				: null;
 		}
