@@ -157,9 +157,21 @@ namespace DataskopAR.UI {
 
 		}
 
-		private static void OnDemoButtonPressed() {
+		private void OnDemoButtonPressed() {
+
+			if (HasEnteredToken) {
+				Token = TokenTextField.value;
+			}
+			else {
+				NotificationHandler.Add(new Notification {
+					Category = NotificationCategory.Error,
+					Text = "Please enter a Demo Token!",
+					DisplayDuration = NotificationDuration.Short
+				});
+			}
+
 			AppOptions.DemoMode = true;
-			AccountManager.Login("");
+			AccountManager.Login(Token);
 			SceneHandler.LoadScene("World");
 		}
 
