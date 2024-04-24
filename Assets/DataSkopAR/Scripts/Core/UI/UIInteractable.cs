@@ -7,8 +7,8 @@ namespace DataskopAR.UI {
 	public class UIInteractable : MonoBehaviour {
 
 		[Header("Events")]
-		public UnityEvent<Vector2, UISection> hasPointerDowned;
-		public UnityEvent<Vector2, UISection> hasPointerUpped;
+		public UnityEvent<UIPointerEventArgs> hasPointerDowned;
+		public UnityEvent<UIPointerEventArgs> hasPointerUpped;
 
 		[Header("Values")]
 		public UISection section;
@@ -24,11 +24,11 @@ namespace DataskopAR.UI {
 		}
 
 		private void OnPointerDown(PointerDownEvent e) {
-			hasPointerDowned?.Invoke(e.position, section);
+			hasPointerDowned?.Invoke(new UIPointerEventArgs(e.position, section, e.pointerId));
 		}
 
 		private void OnPointerUp(PointerUpEvent e) {
-			hasPointerUpped?.Invoke(e.position, section);
+			hasPointerUpped?.Invoke(new UIPointerEventArgs(e.position, section, e.pointerId));
 		}
 
 	}
