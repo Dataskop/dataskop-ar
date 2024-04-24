@@ -53,7 +53,7 @@ namespace DataskopAR.Interaction {
 			TapPosition = ctx.ReadValue<Vector2>();
 		}
 
-		public async void OnPointerDownInWorld(Vector2 screenPosition) {
+		public async void OnPointerDownInWorld(WorldPointerEventArgs e) {
 			await Task.Delay(10);
 
 			if (isInteracting) return;
@@ -62,7 +62,7 @@ namespace DataskopAR.Interaction {
 
 			PointerInteraction newPointerInteraction = new() {
 				isDownPhase = true,
-				startPosition = screenPosition,
+				startPosition = e.screenPosition,
 				startingGameObject = TryGetPointerGameObject(TapPosition),
 				isUI = false
 			};
@@ -72,15 +72,17 @@ namespace DataskopAR.Interaction {
 			WorldPointerDowned?.Invoke(CurrentPointerInteraction);
 		}
 
-		public async void OnPointerUpInWorld(Vector2 screenPosition) {
+		public async void OnPointerUpInWorld(WorldPointerEventArgs e) {
 			await Task.Delay(10);
+
+			if (CurrentPointerInteraction.pointerId != e.pointerId) return;
 
 			if (!CurrentPointerInteraction.isDownPhase) return;
 
 			PointerInteraction currentPointerInteraction = CurrentPointerInteraction;
 
 			currentPointerInteraction.isUpPhase = true;
-			currentPointerInteraction.endPosition = screenPosition;
+			currentPointerInteraction.endPosition = e.screenPosition;
 			currentPointerInteraction.endingGameObject = TryGetPointerGameObject(TapPosition);
 			currentPointerInteraction.isSwipe = currentPointerInteraction.Distance > minimumSwipeDistance;
 
