@@ -1,7 +1,6 @@
 #nullable enable
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using DataskopAR.UI;
 using UnityEngine;
@@ -44,10 +43,6 @@ namespace DataskopAR.Interaction {
 #endregion
 
 #region Methods
-
-		private void Awake() {
-			//CurrentPointerInteractions = new List<PointerInteraction>();
-		}
 
 		public void TapPositionInput(InputAction.CallbackContext ctx) {
 			TapPosition = ctx.ReadValue<Vector2>();
@@ -162,6 +157,7 @@ namespace DataskopAR.Interaction {
 			return Physics.Raycast(PointerRay, out RaycastHit hit, Mathf.Infinity)
 				? hit.collider.gameObject
 				: null;
+
 		}
 
 #if UNITY_EDITOR
