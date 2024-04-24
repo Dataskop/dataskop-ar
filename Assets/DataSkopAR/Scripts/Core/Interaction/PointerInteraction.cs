@@ -9,6 +9,8 @@ namespace DataskopAR.Interaction {
 
 #region Fields
 
+		public int pointerId;
+
 		public Vector2 startPosition;
 
 		public Vector2 endPosition;

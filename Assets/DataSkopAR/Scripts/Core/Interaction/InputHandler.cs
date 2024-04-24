@@ -1,6 +1,7 @@
 #nullable enable
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DataskopAR.UI;
 using UnityEngine;
@@ -43,6 +44,10 @@ namespace DataskopAR.Interaction {
 #endregion
 
 #region Methods
+
+		private void Awake() {
+			//CurrentPointerInteractions = new List<PointerInteraction>();
+		}
 
 		public void TapPositionInput(InputAction.CallbackContext ctx) {
 			TapPosition = ctx.ReadValue<Vector2>();
@@ -97,7 +102,7 @@ namespace DataskopAR.Interaction {
 
 		}
 
-		public void OnPointerDownOnUI(Vector2 elementLocalPointerPosition, UISection section) {
+		public void OnPointerDownOnUI(UIPointerEventArgs e) {
 
 			if (isInteracting) return;
 
@@ -108,7 +113,8 @@ namespace DataskopAR.Interaction {
 				startPosition = TapPosition,
 				startingGameObject = null,
 				isUI = true,
-				uiStartSection = section
+				uiStartSection = e.uiPointerSection,
+				pointerId = e.pointerId
 			};
 
 			CurrentPointerInteraction = newPointerInteraction;
@@ -119,7 +125,9 @@ namespace DataskopAR.Interaction {
 
 		}
 
-		public void OnPointerUpOnUI(Vector2 elementLocalPointerPosition, UISection section) {
+		public void OnPointerUpOnUI(UIPointerEventArgs e) {
+
+			if (CurrentPointerInteraction.pointerId != e.pointerId) return;
 
 			if (!CurrentPointerInteraction.isDownPhase) return;
 
@@ -129,7 +137,7 @@ namespace DataskopAR.Interaction {
 			currentPointerInteraction.endPosition = TapPosition;
 			currentPointerInteraction.endingGameObject = null;
 			currentPointerInteraction.isSwipe = currentPointerInteraction.Distance > minimumSwipeDistance;
-			currentPointerInteraction.uiEndSection = section;
+			currentPointerInteraction.uiEndSection = e.uiPointerSection;
 
 			CurrentPointerInteraction = currentPointerInteraction;
 
