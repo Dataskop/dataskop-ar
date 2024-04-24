@@ -9,36 +9,36 @@ namespace DataskopAR.UI {
 #region Events
 
 		[Header("Events")]
-		public UnityEvent<Vector2> hasPointerDownOutsideOfUi;
-		public UnityEvent<Vector2> hasPointerUpOutsideOfUi;
+		public UnityEvent<WorldPointerEventArgs> hasPointerDownedInWorld;
+		public UnityEvent<WorldPointerEventArgs> hasPointerUppedInWorld;
 
 #endregion
 
 #region Fields
 
 		[Header("References")]
-		[SerializeField] private UIDocument blockerDoc;
+		[SerializeField] private UIDocument detectorDocument;
 
-		private VisualElement blockerRoot;
+		private VisualElement detectorRoot;
 
 #endregion
 
 #region Methods
 
 		private void Awake() {
-			blockerRoot = blockerDoc.rootVisualElement;
-			blockerRoot.RegisterCallback<PointerDownEvent>(OnPointerDown);
-			blockerRoot.RegisterCallback<PointerUpEvent>(OnPointerUp);
+			detectorRoot = detectorDocument.rootVisualElement;
+			detectorRoot.RegisterCallback<PointerDownEvent>(OnPointerDown);
+			detectorRoot.RegisterCallback<PointerUpEvent>(OnPointerUp);
 		}
 
 		private void OnPointerDown(PointerDownEvent e) {
 			Vector2 processedPos = new(e.position.x, Screen.height - e.position.y);
-			hasPointerDownOutsideOfUi?.Invoke(processedPos);
+			hasPointerDownedInWorld?.Invoke(new WorldPointerEventArgs(processedPos, e.pointerId));
 		}
 
 		private void OnPointerUp(PointerUpEvent e) {
 			Vector2 processedPos = new(e.position.x, Screen.height - e.position.y);
-			hasPointerUpOutsideOfUi?.Invoke(processedPos);
+			hasPointerUppedInWorld?.Invoke(new WorldPointerEventArgs(processedPos, e.pointerId));
 		}
 
 #endregion
