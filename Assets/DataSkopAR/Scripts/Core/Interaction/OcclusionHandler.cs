@@ -4,34 +4,29 @@ using UnityEngine.XR.ARSubsystems;
 
 namespace DataskopAR {
 
+	[RequireComponent(typeof(AROcclusionManager))]
 	public class OcclusionHandler : MonoBehaviour {
 
 #region Fields
 
-		[Header("References")]
-		[SerializeField] private AROcclusionManager arOcclusionManager;
+		private AROcclusionManager arOcclusionManager;
 
 #endregion
 
 #region Methods
 
+		private void Awake() {
+			arOcclusionManager = GetComponent<AROcclusionManager>();
+		}
+
 		public void ToggleOcclusion() {
+			
+			Debug.Log(arOcclusionManager.currentEnvironmentDepthMode);
 
-			if (arOcclusionManager.requestedEnvironmentDepthMode == EnvironmentDepthMode.Disabled) {
-				arOcclusionManager.requestedEnvironmentDepthMode = EnvironmentDepthMode.Fastest;
+			if (arOcclusionManager.descriptor?.environmentDepthImageSupported == Supported.Unsupported)
 				return;
-			}
 
-			arOcclusionManager.requestedEnvironmentDepthMode = EnvironmentDepthMode.Disabled;
-
-		}
-
-		public void OcclusionEnabler() {
-			arOcclusionManager.requestedEnvironmentDepthMode = EnvironmentDepthMode.Fastest;
-		}
-
-		public void OcclusionDisabler() {
-			arOcclusionManager.requestedEnvironmentDepthMode = EnvironmentDepthMode.Disabled;
+			arOcclusionManager.enabled = !arOcclusionManager.enabled;
 		}
 
 #endregion
