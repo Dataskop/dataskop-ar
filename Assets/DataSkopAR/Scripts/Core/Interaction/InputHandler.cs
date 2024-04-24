@@ -75,8 +75,6 @@ namespace DataskopAR.Interaction {
 		public async void OnPointerUpInWorld(WorldPointerEventArgs e) {
 			await Task.Delay(10);
 
-			if (CurrentPointerInteraction.pointerId != e.pointerId) return;
-
 			if (!CurrentPointerInteraction.isDownPhase) return;
 
 			PointerInteraction currentPointerInteraction = CurrentPointerInteraction;

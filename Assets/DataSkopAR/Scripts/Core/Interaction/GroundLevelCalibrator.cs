@@ -118,8 +118,6 @@ namespace DataskopAR.Interaction {
 				return;
 			}
 
-			Debug.Log(i.ToString());
-
 			GameObject tappedPlane = GetTappedPArPlane(i.startingGameObject);
 
 			if (tappedPlane == null) {
