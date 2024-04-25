@@ -47,7 +47,7 @@ namespace DataskopAR.Entities {
 		}
 
 		public void ChangeCameraSizeBy(float value) {
-			birdViewCamera.orthographicSize = GetCurrentCameraSize() + value;
+			birdViewCamera.orthographicSize = Mathf.Clamp(GetCurrentCameraSize() + value, 3, 150);
 		}
 
 		public void ResetCameraSize() {
