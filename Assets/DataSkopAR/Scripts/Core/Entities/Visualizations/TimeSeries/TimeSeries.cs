@@ -11,12 +11,17 @@ namespace DataskopAR.Entities.Visualizations {
 
 #region Events
 
-		public Action TimeSeriesBeforeSpawn;
-		public Action TimeSeriesSpawned;
-		public Action<TimeElement> TimeElementSpawned;
-		public Action TimeSeriesDespawned;
-		public Action<TimeElement> TimeElementMoved;
-		public Action TimeSeriesStartMoved;
+		public event Action TimeSeriesBeforeSpawn;
+
+		public event Action TimeSeriesSpawned;
+
+		public event Action<TimeElement> TimeElementSpawned;
+
+		public event Action TimeSeriesDespawned;
+
+		public event Action<TimeElement> TimeElementMoved;
+
+		public event Action TimeSeriesStartMoved;
 
 #endregion
 
