@@ -4,34 +4,34 @@ using UnityEngine.XR.ARSubsystems;
 
 namespace DataskopAR {
 
+	[RequireComponent(typeof(AROcclusionManager))]
 	public class OcclusionHandler : MonoBehaviour {
 
 #region Fields
 
-		[Header("References")]
-		[SerializeField] private AROcclusionManager arOcclusionManager;
+		private AROcclusionManager arOcclusionManager;
 
 #endregion
 
 #region Methods
 
+		private void Awake() {
+			arOcclusionManager = GetComponent<AROcclusionManager>();
+		}
+
 		public void ToggleOcclusion() {
 
-			if (arOcclusionManager.requestedEnvironmentDepthMode == EnvironmentDepthMode.Disabled) {
-				arOcclusionManager.requestedEnvironmentDepthMode = EnvironmentDepthMode.Fastest;
+			if (arOcclusionManager.descriptor == null ||
+			    arOcclusionManager.descriptor.environmentDepthImageSupported == Supported.Unsupported) {
 				return;
 			}
 
-			arOcclusionManager.requestedEnvironmentDepthMode = EnvironmentDepthMode.Disabled;
+			arOcclusionManager.requestedEnvironmentDepthMode = arOcclusionManager.currentEnvironmentDepthMode switch {
+				EnvironmentDepthMode.Disabled => EnvironmentDepthMode.Medium,
+				EnvironmentDepthMode.Medium => EnvironmentDepthMode.Disabled,
+				_ => arOcclusionManager.requestedEnvironmentDepthMode
+			};
 
-		}
-
-		public void OcclusionEnabler() {
-			arOcclusionManager.requestedEnvironmentDepthMode = EnvironmentDepthMode.Fastest;
-		}
-
-		public void OcclusionDisabler() {
-			arOcclusionManager.requestedEnvironmentDepthMode = EnvironmentDepthMode.Disabled;
 		}
 
 #endregion
