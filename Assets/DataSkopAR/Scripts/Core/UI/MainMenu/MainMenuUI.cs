@@ -133,7 +133,7 @@ namespace DataskopAR.UI {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
 					Text = "No token entered!",
-					DisplayDuration = NotificationDuration.Short
+					DisplayDuration = NotificationDuration.Medium
 				});
 			}
 
@@ -151,7 +151,7 @@ namespace DataskopAR.UI {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
 					Text = "The provided token is not valid!",
-					DisplayDuration = NotificationDuration.Short
+					DisplayDuration = NotificationDuration.Medium
 				});
 			}
 
@@ -166,7 +166,7 @@ namespace DataskopAR.UI {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
 					Text = "Please enter a Demo Token!",
-					DisplayDuration = NotificationDuration.Short
+					DisplayDuration = NotificationDuration.Medium
 				});
 			}
 
