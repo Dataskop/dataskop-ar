@@ -60,7 +60,7 @@
             <ui:IMGUIContainer name="Icon" picking-mode="Ignore" class="button-icon" style="background-image: url(&apos;project://database/Assets/DataskopAR/Images/Icons/layers.png?fileID=21300000&amp;guid=75ce9a85f62a3cc488ca084e37b7d189&amp;type=3#layers&apos;);" />
         </ui:Button>
         <ui:Button display-tooltip-when-elided="true" name="HistoryButton" class="history-button app-button" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; align-items: center; visibility: hidden;">
-            <ui:VisualElement name="Icon" style="width: 80%; height: 80%; background-image: url(&apos;project://database/Assets/DataskopAR/Images/Icons/history.png?fileID=21300000&amp;guid=b77594151ea4321489aa1e626c9f8281&amp;type=3#history&apos;); background-color: rgba(27, 27, 27, 0); -unity-background-image-tint-color: rgb(0, 80, 150); font-size: 22px; color: rgba(255, 255, 255, 0.22); align-items: center; justify-content: center;" />
+            <ui:VisualElement name="Icon" style="width: 80%; height: 80%; background-image: url(&apos;project://database/Assets/DataskopAR/Images/Icons/history_2.png?fileID=21300000&amp;guid=05f81af70211b944ca68708381346964&amp;type=3#history_2&apos;); background-color: rgba(27, 27, 27, 0); -unity-background-image-tint-color: rgb(0, 80, 150); font-size: 22px; color: rgba(255, 255, 255, 0.22); align-items: center; justify-content: center;" />
         </ui:Button>
     </ui:VisualElement>
 </ui:UXML>
