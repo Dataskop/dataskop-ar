@@ -5,7 +5,6 @@ using DataskopAR.Data;
 using DataskopAR.Entities.Visualizations;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem.XR;
 
 namespace DataskopAR.Interaction {
 
@@ -20,10 +19,9 @@ namespace DataskopAR.Interaction {
 #region Fields
 
 		[Header("References")]
-		[SerializeField] private Camera cam;
+		[SerializeField] private Camera cam = null!;
 		[SerializeField] private Vector3 screenRayPosition = Vector3.zero;
-		[SerializeField] private InputHandler inputHandler;
-		[SerializeField] private TrackedPoseDriver tpd;
+		[SerializeField] private InputHandler inputHandler = null!;
 
 		[Header("Events")]
 		public UnityEvent<DataPoint?>? onDataPointSelected;
@@ -40,10 +38,9 @@ namespace DataskopAR.Interaction {
 		/// <summary>
 		///     The DataPoint which got selected with a tap.
 		/// </summary>
-		public DataPoint? SelectedDataPoint {
+		private DataPoint? SelectedDataPoint {
 			get => selectedDataPoint;
-
-			private set {
+			set {
 				selectedDataPoint = value;
 				onDataPointSelected?.Invoke(SelectedDataPoint);
 			}
@@ -54,10 +51,9 @@ namespace DataskopAR.Interaction {
 		/// <summary>
 		///     The DataPoint which got selected with the reticule.
 		/// </summary>
-		public DataPoint? SoftSelectedDataPoint {
+		private DataPoint? SoftSelectedDataPoint {
 			get => softSelectedDataPoint;
-
-			private set {
+			set {
 				softSelectedDataPoint = value;
 
 				if (SelectedDataPoint == null) {
@@ -66,7 +62,7 @@ namespace DataskopAR.Interaction {
 			}
 		}
 
-		public TimeElement? HoveredTimeElement { get; set; }
+		private TimeElement? HoveredTimeElement { get; set; }
 
 		private Ray ReticuleToWorldRay => cam.ViewportPointToRay(screenRayPosition);
 
@@ -92,7 +88,7 @@ namespace DataskopAR.Interaction {
 
 		private void SetHoveredDataPoint(Ray ray) {
 
-			if (Physics.Raycast(ReticuleToWorldRay, out RaycastHit hit, Mathf.Infinity, TargetLayerMask)) {
+			if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, TargetLayerMask)) {
 
 				GameObject hitGameObject = hit.collider.gameObject;
 
@@ -129,8 +125,6 @@ namespace DataskopAR.Interaction {
 					DataPoint hoveredDataPoint = hitGameObject.GetComponentInParent<Visualization>().DataPoint;
 
 					if (!hoveredDataPoint.Vis.IsSpawned) return;
-
-					//Debug.DrawRay(ReticuleToWorldRay.origin, ReticuleToWorldRay.direction * 50f, Color.green, 20f);
 
 					if (SelectedDataPoint == hoveredDataPoint) return;
 
