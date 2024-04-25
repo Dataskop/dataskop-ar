@@ -156,12 +156,11 @@ namespace DataskopAR.Entities.Visualizations {
 
 				if (scaleRoutine != null) {
 					StopCoroutine(scaleRoutine);
-					VisTransform.localScale = newBubbleScale;
-					dataDisplay.localScale = newBubbleScale;
 				}
 
 				scaleRoutine = StartCoroutine(Lerper.TransformLerpOnCurve(VisTransform, TransformValue.Scale, VisTransform.localScale,
-					new Vector3(BubbleSize, BubbleSize, BubbleSize), 0.1f, curve, null));
+					newBubbleScale, 0.12f, curve, null));
+				dataDisplay.localScale = newBubbleScale;
 
 			}
 
