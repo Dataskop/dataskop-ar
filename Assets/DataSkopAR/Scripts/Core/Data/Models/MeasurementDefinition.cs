@@ -98,7 +98,7 @@ namespace DataskopAR.Data {
 				NotificationHandler.AddUnique(new Notification {
 					Category = NotificationCategory.Warning,
 					Text = $"Amount fetched too high. Clamping to {totalCount}!",
-					DisplayDuration = NotificationDuration.Short,
+					DisplayDuration = NotificationDuration.Medium,
 					UniqueID = 2
 				});
 

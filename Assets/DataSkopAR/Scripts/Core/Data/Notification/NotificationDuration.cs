@@ -2,9 +2,9 @@ namespace DataskopAR.Data {
 
 	public static class NotificationDuration {
 
-		public const float Short = 2f;
-		public const float Medium = 4f;
-		public const float Long = 6f;
+		public const float Short = 5f;
+		public const float Medium = 10f;
+		public const float Long = 30f;
 
 	}
 

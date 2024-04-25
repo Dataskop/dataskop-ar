@@ -295,7 +295,7 @@ namespace DataskopAR.Data {
 			NotificationHandler.Add(new Notification {
 				Category = NotificationCategory.Check,
 				Text = "Project loaded!",
-				DisplayDuration = NotificationDuration.Medium
+				DisplayDuration = NotificationDuration.Short
 			});
 
 			ShouldRefetch = true;
