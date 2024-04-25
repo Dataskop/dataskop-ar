@@ -20,13 +20,18 @@ namespace DataskopAR {
 		}
 
 		public void ToggleOcclusion() {
-			
-			Debug.Log(arOcclusionManager.currentEnvironmentDepthMode);
 
-			if (arOcclusionManager.descriptor?.environmentDepthImageSupported == Supported.Unsupported)
+			if (arOcclusionManager.descriptor == null ||
+			    arOcclusionManager.descriptor.environmentDepthImageSupported == Supported.Unsupported) {
 				return;
+			}
 
-			arOcclusionManager.enabled = !arOcclusionManager.enabled;
+			arOcclusionManager.requestedEnvironmentDepthMode = arOcclusionManager.currentEnvironmentDepthMode switch {
+				EnvironmentDepthMode.Disabled => EnvironmentDepthMode.Medium,
+				EnvironmentDepthMode.Medium => EnvironmentDepthMode.Disabled,
+				_ => arOcclusionManager.requestedEnvironmentDepthMode
+			};
+
 		}
 
 #endregion
