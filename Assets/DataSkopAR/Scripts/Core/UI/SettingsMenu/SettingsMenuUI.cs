@@ -22,12 +22,8 @@ namespace DataskopAR.UI {
 #region Fields
 
 		[Header("Events")]
-		public UnityEvent onToggleBuildingsButtonPressed;
-		public UnityEvent onToggleCompassButtonPressed;
 		public UnityEvent onToggleOcclusionButtonPressed;
-		public UnityEvent onToggleFloorCalibrationButtonPressed;
 		public UnityEvent onToggleMinimapButtonPressed;
-		public UnityEvent onCompassCalibrationButtonPressed;
 		public UnityEvent onResetCalibrationButtonPressed;
 		public UnityEvent onLogoutButtonPressed;
 		public UnityEvent historyButtonPressed;
@@ -62,25 +58,15 @@ namespace DataskopAR.UI {
 
 		private VisualElement ProjectSelectorContainer { get; set; }
 
-		private VisualElement AppButtonsContainer { get; set; }
-
 		private Button SettingsMenuButton { get; set; }
 
 		private Button ProjectSelectorButton { get; set; }
 
 		private Button HistoryButton { get; set; }
 
-		private Button ToggleBuildingsButton { get; set; }
-
-		private Button ToggleCompassButton { get; set; }
-
 		private Button ToggleOcclusionButton { get; set; }
 
-		private Button ToggleFloorCalibrationButton { get; set; }
-
 		private Button ToggleMinimapButton { get; set; }
-
-		private Button CompassCalibrationButton { get; set; }
 
 		private Button ResetCalibrationButton { get; set; }
 
@@ -115,8 +101,6 @@ namespace DataskopAR.UI {
 
 			ProjectSelectorContainer = Root.Q<VisualElement>("ProjectSelectionContainer");
 
-			AppButtonsContainer = Root.Q<VisualElement>("AppButtonsContainer");
-
 			SettingsMenuButton = Root.Q<Button>("SettingsMenuButton");
 			SettingsMenuButton.RegisterCallback<ClickEvent>(_ => ToggleMenu(MenuView.Settings));
 
@@ -132,23 +116,11 @@ namespace DataskopAR.UI {
 
 			HistoryIcon = HistoryButton.Q<VisualElement>("Icon");
 
-			ToggleBuildingsButton = SettingsMenuContainer.Q<Button>("Option_01");
-			ToggleBuildingsButton.RegisterCallback<ClickEvent>(_ => ToggleBuildings());
-
-			ToggleCompassButton = SettingsMenuContainer.Q<Button>("Option_02");
-			ToggleCompassButton.RegisterCallback<ClickEvent>(_ => ToggleCompass());
-
 			ToggleOcclusionButton = SettingsMenuContainer.Q<Button>("Option_03");
 			ToggleOcclusionButton.RegisterCallback<ClickEvent>(_ => ToggleOcclusion());
 
-			ToggleFloorCalibrationButton = SettingsMenuContainer.Q<Button>("Option_04");
-			ToggleFloorCalibrationButton.RegisterCallback<ClickEvent>(_ => ToggleFloorCalibration());
-
 			ToggleMinimapButton = SettingsMenuContainer.Q<Button>("Option_05");
 			ToggleMinimapButton.RegisterCallback<ClickEvent>(_ => ToggleMinimap());
-
-			CompassCalibrationButton = SettingsMenuContainer.Q<Button>("CalibrateCompassButton");
-			CompassCalibrationButton.RegisterCallback<ClickEvent>(_ => CompassCalibrationPressed());
 
 			ResetCalibrationButton = SettingsMenuContainer.Q<Button>("ResetCalibrationButton");
 			ResetCalibrationButton.RegisterCallback<ClickEvent>(_ => ResetCalibrationPressed());
@@ -273,11 +245,8 @@ namespace DataskopAR.UI {
 
 			HistoryButton.style.borderBottomColor = isHistorySliderActive ? selectedIconColor : deselectedIconColor;
 			HistoryButton.style.borderLeftColor = isHistorySliderActive ? selectedIconColor : deselectedIconColor;
-			;
 			HistoryButton.style.borderRightColor = isHistorySliderActive ? selectedIconColor : deselectedIconColor;
-			;
 			HistoryButton.style.borderTopColor = isHistorySliderActive ? selectedIconColor : deselectedIconColor;
-			;
 
 		}
 
@@ -297,24 +266,9 @@ namespace DataskopAR.UI {
 
 		}
 
-		private void ToggleBuildings() {
-			Toggle(ToggleBuildingsButton);
-			onToggleBuildingsButtonPressed?.Invoke();
-		}
-
-		private void ToggleCompass() {
-			Toggle(ToggleCompassButton);
-			onToggleCompassButtonPressed?.Invoke();
-		}
-
 		private void ToggleOcclusion() {
 			Toggle(ToggleOcclusionButton);
 			onToggleOcclusionButtonPressed?.Invoke();
-		}
-
-		private void ToggleFloorCalibration() {
-			Toggle(ToggleFloorCalibrationButton);
-			onToggleFloorCalibrationButtonPressed?.Invoke();
 		}
 
 		private void ToggleMinimap() {
@@ -325,10 +279,6 @@ namespace DataskopAR.UI {
 		private static void Toggle(VisualElement pressedButton) {
 			pressedButton.Q<VisualElement>(null, "knob-off").ToggleInClassList(KnobAnimation);
 			pressedButton.Q<VisualElement>(null, "toggler-off").ToggleInClassList(TogglerAnimation);
-		}
-
-		private void CompassCalibrationPressed() {
-			onCompassCalibrationButtonPressed?.Invoke();
 		}
 
 		private void ResetCalibrationPressed() {
@@ -385,7 +335,6 @@ namespace DataskopAR.UI {
 		private void OnDisable() {
 			SettingsMenuButton.UnregisterCallback<ClickEvent>(_ => ToggleMenu(MenuView.Settings));
 			ProjectSelectorButton.UnregisterCallback<ClickEvent>(_ => ToggleMenu(MenuView.Projects));
-			CompassCalibrationButton.UnregisterCallback<ClickEvent>(_ => CompassCalibrationPressed());
 			ResetCalibrationButton.UnregisterCallback<ClickEvent>(_ => ResetCalibrationPressed());
 		}
 
