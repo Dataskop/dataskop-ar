@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <ui:GroupBox name="company-box" style="width: 100%; align-items: stretch; left: auto; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;">
         <ui:VisualElement name="CompanyTitleContainer" style="height: auto; width: 100%; align-items: flex-start; justify-content: center;">
-            <ui:Label text="Label" display-tooltip-when-elided="true" name="company-name" picking-mode="Ignore" style="color: rgb(22, 22, 22); padding-left: 10px; padding-right: 10px; padding-top: 2px; padding-bottom: 2px; -unity-font-style: bold; font-size: 26px; -unity-font-definition: initial; -unity-font: url(&apos;project://database/Assets/DataSkopAR/Fonts/OpenSans-Semibold.ttf?fileID=12800000&amp;guid=218956a5c2a6e42d6a60afccf80b002b&amp;type=3#OpenSans-Semibold&apos;);" />
+            <ui:Label text="Label" display-tooltip-when-elided="true" name="company-name" picking-mode="Ignore" style="color: rgb(22, 22, 22); padding-left: 10px; padding-right: 10px; padding-top: 2px; padding-bottom: 2px; -unity-font-style: bold; font-size: 26px; -unity-font-definition: initial; -unity-font: url(&apos;project://database/Assets/DataskopAR/Fonts/OpenSans-Semibold.ttf?fileID=12800000&amp;guid=218956a5c2a6e42d6a60afccf80b002b&amp;type=3#OpenSans-Semibold&apos;);" />
         </ui:VisualElement>
         <ui:GroupBox name="company-projects-box" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; align-items: stretch;" />
     </ui:GroupBox>

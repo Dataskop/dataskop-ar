@@ -125,7 +125,7 @@ VisualElement {
 .data-text {
     font-size: 26px;
     -unity-font-definition: initial;
-    -unity-font: url('project://database/Assets/DataSkopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
+    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
 }
 
 .data-title {
@@ -133,7 +133,7 @@ VisualElement {
     -unity-font-style: bold;
     font-size: 26px;
     -unity-font-definition: initial;
-    -unity-font: url('project://database/Assets/DataSkopAR/Fonts/OpenSans-Semibold.ttf?fileID=12800000&guid=218956a5c2a6e42d6a60afccf80b002b&type=3#OpenSans-Semibold');
+    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Semibold.ttf?fileID=12800000&guid=218956a5c2a6e42d6a60afccf80b002b&type=3#OpenSans-Semibold');
 }
 
 .data-value {
@@ -219,7 +219,7 @@ VisualElement {
     -unity-text-align: middle-center;
     -unity-font-style: normal;
     -unity-font-definition: initial;
-    -unity-font: url('project://database/Assets/DataSkopAR/Fonts/OpenSans-Semibold.ttf?fileID=12800000&guid=218956a5c2a6e42d6a60afccf80b002b&type=3#OpenSans-Semibold');
+    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Semibold.ttf?fileID=12800000&guid=218956a5c2a6e42d6a60afccf80b002b&type=3#OpenSans-Semibold');
 }
 
 .tab {
@@ -275,7 +275,7 @@ VisualElement {
 }
 
 .map {
-    background-image: url('project://database/Assets/DataSkopAR/Materials/MapRenderTexture.renderTexture?fileID=8400000&guid=6c002e83dc0e47546b0a92796d0ed167&type=2#MapRenderTexture');
+    background-image: url('project://database/Assets/DataskopAR/Materials/MapRenderTexture.renderTexture?fileID=8400000&guid=6c002e83dc0e47546b0a92796d0ed167&type=2#MapRenderTexture');
     flex-grow: 0;
     flex-shrink: 1;
     justify-content: flex-start;
@@ -300,6 +300,6 @@ VisualElement {
 .locator-text {
     -unity-text-align: middle-right;
     font-size: 24px;
-    -unity-font: url('project://database/Assets/DataSkopAR/Fonts/OpenSans-Bold.ttf?fileID=12800000&guid=7dfc2e1472ac84e1bb749a8a9f934483&type=3#OpenSans-Bold');
+    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Bold.ttf?fileID=12800000&guid=7dfc2e1472ac84e1bb749a8a9f934483&type=3#OpenSans-Bold');
     -unity-font-definition: initial;
 }

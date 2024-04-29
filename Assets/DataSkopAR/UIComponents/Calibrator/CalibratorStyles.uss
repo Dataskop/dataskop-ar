@@ -12,7 +12,7 @@ VisualElement {
     margin-top: 15px;
     margin-bottom: 5px;
     -unity-font-definition: initial;
-    -unity-font: url('project://database/Assets/DataSkopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
+    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
     justify-content: flex-start;
     flex-wrap: nowrap;
 }
@@ -23,7 +23,7 @@ VisualElement {
     -unity-font-style: normal;
     padding-bottom: 15px;
     -unity-font-definition: initial;
-    -unity-font: url('project://database/Assets/DataSkopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
+    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
 }
 
 .option-button {
@@ -52,5 +52,5 @@ VisualElement {
     border-top-color: rgb(37, 89, 176);
     border-bottom-color: rgb(37, 89, 176);
     -unity-font-definition: initial;
-    -unity-font: url('project://database/Assets/DataSkopAR/Fonts/OpenSans-Bold.ttf?fileID=12800000&guid=7dfc2e1472ac84e1bb749a8a9f934483&type=3#OpenSans-Bold');
+    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Bold.ttf?fileID=12800000&guid=7dfc2e1472ac84e1bb749a8a9f934483&type=3#OpenSans-Bold');
 }
