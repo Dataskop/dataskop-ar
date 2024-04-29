@@ -73,7 +73,7 @@ namespace DataskopAR.UI {
 				.RegisterCallback<ClickEvent>(_ => { OnLoginButtonPressed(); });
 
 			TokenTextField = Root.Q<TextField>("txtAPISecret");
-			TokenTextField.value = "";
+			TokenTextField.value = TokenTextField.text;
 
 			VersionLabel = Root.Q<Label>("footerCopyright");
 			VersionLabel.text = Version.ID + " ©FHSTP (2022-2024)";
