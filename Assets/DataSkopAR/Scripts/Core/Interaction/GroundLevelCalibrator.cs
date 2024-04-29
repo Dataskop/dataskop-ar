@@ -10,15 +10,15 @@ namespace DataskopAR.Interaction {
 	/// </summary>
 	public class GroundLevelCalibrator : MonoBehaviour, ICalibration {
 
-#region Events
-
-		public event Action CalibrationCompleted;
-
-#endregion
-
 #region Constants
 
 		private const string PlaneTag = "ARPlane";
+
+#endregion
+
+#region Events
+
+		public event Action CalibrationCompleted;
 
 #endregion
 
