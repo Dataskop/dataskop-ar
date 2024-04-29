@@ -14,6 +14,7 @@
     border-bottom-width: 0;
 }
 
+/* Base style for unity-base-slider__dragger */
 .unity-base-slider__dragger {
     width: 80px;
     height: 40px;
@@ -35,6 +36,21 @@
     border-bottom-right-radius: 12px;
     align-items: stretch;
     justify-content: flex-end;
+    transition: transform 0.3s, box-shadow 0.3s; /* Adding transitions for smooth effect */
+}
+
+/* Hover state for enhanced user feedback */
+.unity-base-slider__dragger:hover {
+    background-color: rgb(230, 230, 250); /* Lighter color to indicate hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for 3D effect */
+}
+
+/* Active state for tactile response */
+.unity-base-slider__dragger:active {
+    background-color: rgb(210, 210, 230); /* Even lighter to simulate button press */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Deeper shadow for "pressed" effect */
+    transform: scale(0.95); /* Slightly decrease size to mimic press */
 }
 
 .history-slider-container {
@@ -57,4 +73,11 @@
     padding-top: 25px;
     padding-bottom: 25px;
     top: 180px;
+}
+
+.slider-tick {
+    position: absolute;
+    width: 2px;
+    height: 10px;
+    background-color: white;
 }
