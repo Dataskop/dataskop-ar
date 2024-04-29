@@ -1,4 +1,4 @@
-Shader "DataSkopAR/PillarFrameOutline"
+Shader "DataskopAR/PillarFrameOutline"
 {
     Properties
     {
