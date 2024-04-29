@@ -56,7 +56,10 @@ namespace DataskopAR.UI {
 			StepLabel = CalibratorRoot.Q<Label>("StepText");
 
 			CalibratorButton = CalibratorRoot.Q<Button>("CalibratorButton");
-			CalibratorButton.RegisterCallback<ClickEvent>(e => { Calibrator.OnCalibratorContinued(); });
+
+			CalibratorButton.RegisterCallback<ClickEvent>(e => {
+				Calibrator.OnCalibratorContinued();
+			});
 
 			ProgressIndicatorContainer = CalibratorRoot.Q<VisualElement>("ProgressIndicatorContainer");
 
@@ -64,9 +67,6 @@ namespace DataskopAR.UI {
 			NorthAlignmentProgressContainer = CalibratorRoot.Q<VisualElement>("NorthAlignmentContainer");
 			RoomScanContainer = CalibratorRoot.Q<VisualElement>("RoomScanContainer");
 			RoomScanProgress = CalibratorRoot.Q<VisualElement>("RoomScanProgress");
-
-			PhaseCounter = 0;
-			SetStepCounter(PhaseCounter);
 
 		}
 
@@ -85,7 +85,7 @@ namespace DataskopAR.UI {
 				case CalibratorPhase.NorthAlignStart:
 					StepLabel.visible = true;
 					SetVisibility(true);
-					SetStepCounter(1);
+					SetPhaseCounter(1);
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.NorthAlignProcess:
@@ -104,7 +104,7 @@ namespace DataskopAR.UI {
 					NorthAlignmentProgressBar.visible = false;
 					NorthAlignmentProgressContainer.visible = false;
 					SetProgressIndicatorStatus(false);
-					SetStepCounter(1);
+					SetPhaseCounter(2);
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.GroundProcess:
@@ -114,7 +114,7 @@ namespace DataskopAR.UI {
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.RoomStart:
-					SetStepCounter(1);
+					SetPhaseCounter(3);
 					SetButtonEnabledStatus(true);
 					break;
 				case CalibratorPhase.RoomProcess:
@@ -163,8 +163,8 @@ namespace DataskopAR.UI {
 			CalibratorButton.text = CalibratorTextRepository.CalibratorButtonTextDict[phase];
 		}
 
-		private void SetStepCounter(int nextPhaseCounter) {
-			PhaseCounter += nextPhaseCounter;
+		private void SetPhaseCounter(int value) {
+			PhaseCounter = value;
 			StepLabel.text = $"Phase {PhaseCounter}/{numberOfPhases}";
 		}
 
@@ -177,7 +177,9 @@ namespace DataskopAR.UI {
 		}
 
 		private void OnDisable() {
-			CalibratorButton.UnregisterCallback<ClickEvent>(e => { Calibrator.OnCalibratorContinued(); });
+			CalibratorButton.UnregisterCallback<ClickEvent>(e => {
+				Calibrator.OnCalibratorContinued();
+			});
 		}
 
 #endregion
