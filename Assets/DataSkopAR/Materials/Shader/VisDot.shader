@@ -1,4 +1,4 @@
-Shader "DataSkopAR/VisDot"
+Shader "DataskopAR/VisDot"
 {
     Properties
     {
