@@ -1,4 +1,4 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/DataSkopAR/Prefabs/UI/Icons/icon.uss?fileID=7433441132597879392&amp;guid=68e2cd5ad8ff1df4c97e6a83c10b6070&amp;type=3#icon" />
-    <Style src="project://database/Assets/DataSkopAR/Prefabs/UI/variables.uss?fileID=7433441132597879392&amp;guid=23af47ffc3ef28f43943c55011ed8487&amp;type=3#variables" />
+    <Style src="project://database/Assets/DataskopAR/Prefabs/UI/Icons/icon.uss?fileID=7433441132597879392&amp;guid=68e2cd5ad8ff1df4c97e6a83c10b6070&amp;type=3#icon" />
+    <Style src="project://database/Assets/DataskopAR/Prefabs/UI/variables.uss?fileID=7433441132597879392&amp;guid=23af47ffc3ef28f43943c55011ed8487&amp;type=3#variables" />
 </ui:UXML>
