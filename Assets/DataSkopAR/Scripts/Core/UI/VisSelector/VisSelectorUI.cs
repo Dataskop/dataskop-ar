@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using DataskopAR.Data;
@@ -41,11 +40,17 @@ namespace DataskopAR.UI {
 #region Properties
 
 		private VisualElement VisSelectorRoot { get; set; }
+
 		private VisualElement VisOptionSelector { get; set; }
+
 		private VisualElement AttributeSelector { get; set; }
+
 		private ICollection<DataAttribute> AvailableAttributes { get; set; }
+
 		private ICollection<VisualizationOption> AvailableVisOptions { get; set; }
+
 		private List<Button> AttributeButtons { get; set; }
+
 		private List<Button> VisOptionButtons { get; set; }
 
 #endregion
@@ -92,8 +97,6 @@ namespace DataskopAR.UI {
 			TemplateContainer attributeTemplateContainer = attributeUIAsset.Instantiate();
 
 			Button attributeButton = attributeTemplateContainer.Q<Button>("attribute");
-			attributeButton.RegisterCallback<PointerDownEvent>(
-				(e) => { UIInteractionDetection.IsPointerOverUi = true; });
 
 			attributeButton.text = attributeLabel;
 			attributeButton.name = attributeId;
@@ -130,16 +133,11 @@ namespace DataskopAR.UI {
 
 			VisOptionButtons = new List<Button>();
 
-			List<string> visNames = new();
-
-			foreach (VisualizationType visType in visRepo.GetAvailableVisualizations()) {
-				string visName = visType.ToString();
-				visNames.Add(visName);
-			}
+			List<string> visNames = visRepo.GetAvailableVisualizations().Select(visType => visType.ToString()).ToList();
 
 			foreach (VisualizationOption visOpt in AvailableVisOptions) {
 
-				if (visNames.Contains(visOpt.Type) == false) {
+				if (visNames.Contains(visOpt.Type.FirstCharToUpper()) == false) {
 					visOpt.Type = visNames[0];
 				}
 
@@ -151,6 +149,7 @@ namespace DataskopAR.UI {
 			if (VisOptionButtons.Count > 0) {
 				SelectVisOptionButton(VisOptionButtons[0]);
 			}
+
 		}
 
 		private Button CreateVisOptElement(VisualizationOption visOpt) {
@@ -158,7 +157,6 @@ namespace DataskopAR.UI {
 			TemplateContainer visOptTemplateContainer = visualizationOptionUIAsset.Instantiate();
 
 			Button visOptButton = visOptTemplateContainer.Q<Button>("opt");
-			visOptButton.RegisterCallback<PointerDownEvent>((e) => { UIInteractionDetection.IsPointerOverUi = true; });
 
 			visOptButton.name = visOpt.Type;
 

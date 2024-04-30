@@ -2,18 +2,11 @@ VisualElement {
 }
 
 .settings-menu-container {
-    width: 480px;
+    width: 100%;
     height: auto;
-    background-color: rgba(255, 255, 255, 0.8);
-    position: absolute;
-    left: 105%;
-    top: 15%;
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
     justify-content: flex-end;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0);
 }
 
 .app-buttons-container {
@@ -38,15 +31,15 @@ VisualElement {
     border-bottom-left-radius: 12px;
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
-    border-left-color: rgba(0, 0, 0, 0);
-    border-right-color: rgba(0, 0, 0, 0);
-    border-top-color: rgba(0, 0, 0, 0);
-    border-bottom-color: rgba(0, 0, 0, 0);
+    border-left-color: rgb(37, 89, 176);
+    border-right-color: rgb(37, 89, 176);
+    border-top-color: rgb(37, 89, 176);
+    border-bottom-color: rgb(37, 89, 176);
     margin-bottom: 25px;
     border-left-width: 0;
     border-right-width: 0;
     border-top-width: 0;
-    border-bottom-width: 0;
+    border-bottom-width: 3px;
 }
 
 .option-container {
@@ -102,11 +95,13 @@ VisualElement {
 }
 
 .option-label {
-    font-size: 24px;
+    font-size: 26px;
+    -unity-font-definition: initial;
+    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
 }
 
 .option-button {
-    height: 55px;
+    height: 70px;
     width: 80%;
     align-items: stretch;
     left: auto;
@@ -126,10 +121,12 @@ VisualElement {
     justify-content: flex-start;
     margin-top: 8px;
     margin-bottom: 8px;
-    border-left-color: rgb(0, 80, 150);
-    border-right-color: rgb(0, 80, 150);
-    border-top-color: rgb(0, 80, 150);
-    border-bottom-color: rgb(0, 80, 150);
+    border-left-color: rgb(37, 89, 176);
+    border-right-color: rgb(37, 89, 176);
+    border-top-color: rgb(37, 89, 176);
+    border-bottom-color: rgb(37, 89, 176);
+    -unity-font-definition: initial;
+    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
 }
 
 .splitter {
@@ -158,7 +155,7 @@ VisualElement {
 }
 
 .knob-on {
-    background-color: rgb(42, 109, 219);
+    background-color: rgb(37, 89, 176);
     transition-property: translate;
     transition-duration: 0.2s;
     transition-timing-function: ease;
@@ -171,7 +168,7 @@ VisualElement {
     transition-duration: 0.2s;
     transition-timing-function: ease;
     transition-delay: 0s;
-    background-color: rgb(42, 109, 219);
+    background-color: rgb(37, 89, 176);
 }
 
 .toggler-off {
@@ -209,16 +206,15 @@ VisualElement {
     color: rgb(60, 60, 60);
     -unity-text-align: middle-left;
     letter-spacing: -4px;
+    -unity-font-definition: initial;
+    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Semibold.ttf?fileID=12800000&guid=218956a5c2a6e42d6a60afccf80b002b&type=3#OpenSans-Semibold');
 }
 
 .button-icon {
     width: 80%;
     height: 80%;
-    -unity-background-image-tint-color: rgb(0, 80, 150);
+    -unity-background-image-tint-color: rgb(37, 89, 176);
     -unity-background-scale-mode: stretch-to-fill;
-}
-
-.appinfo {
 }
 
 .titlecontainer {
@@ -239,4 +235,12 @@ VisualElement {
     height: 65%;
     font-size: 22px;
     -unity-font-style: normal;
+}
+
+.project-selection-container {
+    width: 100%;
+    height: auto;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0);
 }

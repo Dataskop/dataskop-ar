@@ -10,14 +10,6 @@ namespace DataskopAR.Data {
 	[UsedImplicitly]
 	public class Company {
 
-#region Properties
-
-		public int ID { get; set; }
-		public CompanyInformation Information { get; set; }
-		public ICollection<Project> Projects { get; private set; }
-
-#endregion
-
 #region Constructors
 
 		public Company(int id, CompanyInformation information, List<Project> companyProjects) {
@@ -43,6 +35,18 @@ namespace DataskopAR.Data {
 			}
 
 		}
+
+#endregion
+
+#region Properties
+
+		private int ID {
+			get;
+		}
+
+		public CompanyInformation Information { get; set; }
+
+		public ICollection<Project> Projects { get; private set; }
 
 #endregion
 

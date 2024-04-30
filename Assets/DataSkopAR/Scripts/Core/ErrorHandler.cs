@@ -27,32 +27,32 @@ namespace DataskopAR {
 #region Constants
 
 		private static readonly List<Error> ErrorList = new() {
-			new() {
+			new Error {
 				ErrorCode = 100,
 				ErrorMessage = "No data points in view - move your camera to see data around you.",
 				Type = ErrorType.Tip
 			},
-			new() {
+			new Error {
 				ErrorCode = 101,
 				ErrorMessage = "Select a data point to pin it to the information card.",
 				Type = ErrorType.Tip
 			},
-			new() {
+			new Error {
 				ErrorCode = 200,
 				ErrorMessage = "Data from this data point was not updated in the past 32 hours",
 				Type = ErrorType.Warning
 			},
-			new() {
+			new Error {
 				ErrorCode = 201,
 				ErrorMessage = "Initial GPS data inaccurate! Move around to get better position data.",
 				Type = ErrorType.Warning
 			},
-			new() {
+			new Error {
 				ErrorCode = 300,
 				ErrorMessage = "Compass data is unreliable! Please move around and re-calibrate.",
 				Type = ErrorType.Error
 			},
-			new() {
+			new Error {
 				ErrorCode = 301,
 				ErrorMessage = "World alignment is off! Please move around and re-calibrate.",
 				Type = ErrorType.Error
@@ -78,7 +78,9 @@ namespace DataskopAR {
 			Error thrownError = GetError(errorCode);
 			thrownError.TimeStamp = DateTime.Now;
 			ErrorQueue.Enqueue(thrownError);
-			OnErrorReceived?.Invoke(sender, new ErrorReceivedEventArgs { Error = thrownError });
+			OnErrorReceived?.Invoke(sender, new ErrorReceivedEventArgs {
+				Error = thrownError
+			});
 		}
 
 		/// <summary>
@@ -92,7 +94,9 @@ namespace DataskopAR {
 			thrownError.TimeStamp = DateTime.Now;
 			thrownError.Value = value;
 			ErrorQueue.Enqueue(thrownError);
-			OnErrorReceived?.Invoke(sender, new ErrorReceivedEventArgs { Error = thrownError });
+			OnErrorReceived?.Invoke(sender, new ErrorReceivedEventArgs {
+				Error = thrownError
+			});
 		}
 
 		/// <summary>
@@ -122,13 +126,17 @@ namespace DataskopAR {
 		public struct Error {
 
 			public int ErrorCode { get; set; }
+
 			public string ErrorMessage { get; set; }
+
 			public ErrorType Type { get; set; }
+
 			public DateTime TimeStamp { get; set; }
+
 			public float? Value { get; set; }
 
 			public new string ToString() {
-				return $"{TimeStamp} - {ErrorCode}: {ErrorMessage}";
+				return $"[{TimeStamp.Hour}:{TimeStamp.Minute}:{TimeStamp.Second}] - {ErrorCode}: {ErrorMessage}";
 			}
 
 		}

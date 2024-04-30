@@ -6,12 +6,6 @@ namespace DataskopAR.Data {
 
 	public sealed class ApiRequestHandler {
 
-#region Fields
-
-		private readonly UserData _user = UserData.Instance;
-
-#endregion
-
 #region Properties
 
 		public static ApiRequestHandler Instance { get; } = new();
@@ -32,7 +26,7 @@ namespace DataskopAR.Data {
 
 			using UnityWebRequest request = UnityWebRequest.Get(url);
 			request.SetRequestHeader("Content-Type", "application/json");
-			request.SetRequestHeader("Authorization", UserData.Instance.Token);
+			request.SetRequestHeader("Authorization", UserData.Instance.Token!);
 			UnityWebRequestAsyncOperation operation = request.SendWebRequest();
 
 			while (!operation.isDone) {

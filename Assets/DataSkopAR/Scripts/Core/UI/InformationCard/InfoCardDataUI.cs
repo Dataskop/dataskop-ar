@@ -1,4 +1,5 @@
 using DataskopAR.Data;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -15,12 +16,20 @@ namespace DataskopAR.UI {
 #region Properties
 
 		protected override VisualElement ComponentRoot { get; set; }
+
 		private VisualElement InfoCard { get; set; }
+
+		[CanBeNull]
 		private DataPoint SelectedDataPoint { get; set; }
+
 		private Label IdLabel { get; set; }
+
 		private Label MeasurementLabel { get; set; }
+
 		private Label LocationLabel { get; set; }
+
 		private Label TimeStampLabel { get; set; }
+
 		private VisualElement AuthorIcon { get; set; }
 
 #endregion

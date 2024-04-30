@@ -1,33 +1,46 @@
+#nullable enable
 using UnityEngine;
 
 namespace DataskopAR {
 
 	public static class AccountManager {
 
+#region Constants
+
+		private const string APITokenKey = "API_TOKEN";
+
+#endregion
+
 #region Properties
 
-		public static bool IsLoggedIn => PlayerPrefs.HasKey("API_TOKEN") && !string.IsNullOrEmpty(PlayerPrefs.GetString("API_TOKEN"));
+		public static bool IsLoggedIn => TryGetLoginToken() != null;
 
 #endregion
 
 #region Methods
 
+		private static bool HasToken() {
+			return PlayerPrefs.HasKey(APITokenKey);
+		}
+
 		public static void Login(string loginToken) {
-			PlayerPrefs.SetString("API_TOKEN", loginToken);
+			PlayerPrefs.SetString(APITokenKey, loginToken);
 		}
 
 		public static void Logout() {
 
-			if (PlayerPrefs.HasKey("API_TOKEN")) {
-				PlayerPrefs.DeleteKey("API_TOKEN");
+			if (HasToken()) {
+				PlayerPrefs.DeleteKey(APITokenKey);
 			}
 
-			SceneMaster.LoadScene(0);
-
+			SceneHandler.LoadScene("MainMenu");
 		}
 
-		public static string GetLoginToken() {
-			return IsLoggedIn ? PlayerPrefs.GetString("API_TOKEN") : string.Empty;
+		public static string? TryGetLoginToken() {
+			string? token = PlayerPrefs.GetString(APITokenKey, null);
+			if (token == null) return null;
+
+			return !string.IsNullOrEmpty(token) ? token : null;
 		}
 
 #endregion

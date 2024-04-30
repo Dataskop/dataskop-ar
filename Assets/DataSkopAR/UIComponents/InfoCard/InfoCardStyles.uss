@@ -18,7 +18,7 @@ VisualElement {
 }
 
 .swipe-handle {
-    background-color: rgb(0, 80, 150);
+    background-color: rgb(37, 89, 176);
     height: 8px;
     width: 12%;
     border-top-left-radius: 5px;
@@ -59,10 +59,10 @@ VisualElement {
 .data-display-container {
     width: 100%;
     height: auto;
-    border-left-color: rgba(0, 80, 150, 0.86);
-    border-right-color: rgba(0, 80, 150, 0.86);
-    border-top-color: rgba(0, 80, 150, 0.86);
-    border-bottom-color: rgba(0, 80, 150, 0.86);
+    border-left-color: rgb(37, 89, 176);
+    border-right-color: rgb(37, 89, 176);
+    border-top-color: rgb(37, 89, 176);
+    border-bottom-color: rgb(37, 89, 176);
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
     border-top-right-radius: 12px;
@@ -107,7 +107,7 @@ VisualElement {
 .header {
     font-size: 36px;
     -unity-font-style: bold;
-    color: rgb(0, 80, 150);
+    color: rgb(37, 89, 176);
 }
 
 .data-row {
@@ -124,12 +124,16 @@ VisualElement {
 
 .data-text {
     font-size: 26px;
+    -unity-font-definition: initial;
+    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
 }
 
 .data-title {
-    color: rgb(0, 80, 150);
+    color: rgb(37, 89, 176);
     -unity-font-style: bold;
     font-size: 26px;
+    -unity-font-definition: initial;
+    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Semibold.ttf?fileID=12800000&guid=218956a5c2a6e42d6a60afccf80b002b&type=3#OpenSans-Semibold');
 }
 
 .data-value {
@@ -160,11 +164,11 @@ VisualElement {
     transition-timing-function: ease;
     transition-delay: 0s;
     transition-property: translate;
-    translate: 0 0.01%;
+    translate: 0 0.02%;
 }
 
 .info-card-short {
-    translate: 0 -30%;
+    translate: 0 -33%;
     transition-property: translate;
     transition-duration: 0.33s;
     transition-timing-function: ease;
@@ -189,4 +193,113 @@ VisualElement {
 
 .meta-info-text {
     font-size: 28px;
+}
+
+.refresh-button {
+    color: rgb(37, 89, 176);
+    -unity-background-image-tint-color: rgb(37, 89, 176);
+    background-color: rgb(245, 245, 245);
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 3px;
+    border-bottom-color: rgb(37, 89, 176);
+    border-left-color: rgb(37, 89, 176);
+    border-right-color: rgb(37, 89, 176);
+    border-top-color: rgb(37, 89, 176);
+}
+
+.tab-label {
+    font-size: 48px;
+    color: rgb(60, 60, 60);
+    -unity-text-align: middle-center;
+    -unity-font-style: normal;
+    -unity-font-definition: initial;
+    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Semibold.ttf?fileID=12800000&guid=218956a5c2a6e42d6a60afccf80b002b&type=3#OpenSans-Semibold');
+}
+
+.tab {
+    height: 100%;
+    background-color: rgba(243, 243, 243, 0.8);
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    margin-right: 8px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-left-color: rgb(37, 89, 176);
+    border-right-color: rgb(37, 89, 176);
+    border-top-color: rgb(37, 89, 176);
+    border-bottom-color: rgba(67, 67, 67, 0.31);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 4px;
+    border-bottom-width: 0;
+    transform-origin: bottom;
+    font-size: 58px;
+    -unity-text-align: middle-center;
+}
+
+.tab-selected {
+    height: 100%;
+    background-color: rgba(243, 243, 243, 0.8);
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    margin-right: 8px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-left-color: rgb(219, 105, 11);
+    border-right-color: rgb(219, 105, 11);
+    border-top-color: rgb(219, 105, 11);
+    border-bottom-color: rgb(219, 105, 11);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 8px;
+    border-bottom-width: 0;
+    transform-origin: bottom;
+    font-size: 58px;
+    -unity-text-align: middle-center;
+}
+
+.locator-container {
+    width: 96%;
+    height: 60px;
+    justify-content: center;
+}
+
+.map {
+    background-image: url('project://database/Assets/DataskopAR/Materials/MapRenderTexture.renderTexture?fileID=8400000&guid=6c002e83dc0e47546b0a92796d0ed167&type=2#MapRenderTexture');
+    flex-grow: 0;
+    flex-shrink: 1;
+    justify-content: flex-start;
+    align-items: stretch;
+    width: 98%;
+    height: 30%;
+    background-color: rgb(238, 238, 238);
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    margin-top: 10px;
+    border-left-color: rgb(37, 89, 176);
+    border-right-color: rgb(37, 89, 176);
+    border-top-color: rgb(37, 89, 176);
+    border-bottom-color: rgb(37, 89, 176);
+    border-bottom-width: 5px;
+    -unity-background-scale-mode: scale-and-crop;
+    margin-bottom: 35px;
+}
+
+.locator-text {
+    -unity-text-align: middle-right;
+    font-size: 24px;
+    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Bold.ttf?fileID=12800000&guid=7dfc2e1472ac84e1bb749a8a9f934483&type=3#OpenSans-Bold');
+    -unity-font-definition: initial;
 }

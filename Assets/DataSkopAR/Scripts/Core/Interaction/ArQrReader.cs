@@ -31,8 +31,11 @@ namespace DataskopAR.Interaction {
 #region Properties
 
 		private BarcodeReader QrReader { get; set; }
+
 		private Texture2D ReadTexture { get; set; }
+
 		private bool HasReadQrCode { get; set; }
+
 		private bool ShouldLookForQrCode { get; set; }
 
 #endregion

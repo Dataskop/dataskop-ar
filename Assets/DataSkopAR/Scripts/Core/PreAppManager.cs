@@ -6,16 +6,14 @@ namespace DataskopAR {
 
 #region Methods
 
-		private void Start() {
+		private void Awake() {
 
-			SetApplicationTargetFrameRate(60);
+			FPSManager.SetApplicationTargetFrameRate(30);
 
-			if (SceneMaster.GetCurrentScene() == 0) SceneMaster.LoadScene(AccountManager.IsLoggedIn ? 2 : 1);
+			if (SceneHandler.GetCurrentScene() == 0) {
+				SceneHandler.LoadScene(AccountManager.IsLoggedIn ? 2 : 1);
+			}
 
-		}
-
-		private static void SetApplicationTargetFrameRate(int targetFrameRate) {
-			Application.targetFrameRate = targetFrameRate;
 		}
 
 #endregion

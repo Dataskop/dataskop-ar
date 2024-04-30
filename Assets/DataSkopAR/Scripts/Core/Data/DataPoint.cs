@@ -11,9 +11,21 @@ namespace DataskopAR.Data {
 
 		public event Action<MeasurementResult> MeasurementResultChanged;
 
+		public event Action<VisualizationType> VisualizationTypeChanged;
+
 #endregion
 
 #region Fields
+
+		[Header("References")]
+		[SerializeField] private SpriteRenderer mapIconBorder;
+		[SerializeField] private SpriteRenderer visIcon;
+		[SerializeField] private Sprite[] visIcons;
+
+		[Header("Values")]
+		[SerializeField] private Color mapSelectionColor;
+		[SerializeField] private Color mapHoverColor;
+		[SerializeField] private Color mapDefaultColor;
 
 		private MeasurementResult mResult;
 
@@ -25,23 +37,30 @@ namespace DataskopAR.Data {
 
 		public MeasurementResult CurrentMeasurementResult {
 			get => mResult;
+
 			set {
 				mResult = value;
 				MeasurementResultChanged?.Invoke(CurrentMeasurementResult);
 			}
 		}
 
-		public int CurrentMeasurementResultIndex =>
-			MeasurementDefinition.MeasurementResults.ToList().IndexOf(CurrentMeasurementResult);
+		public int CurrentMeasurementResultIndex => MeasurementDefinition.MeasurementResults.ToList().IndexOf(CurrentMeasurementResult);
 
 		public DataAttribute Attribute { get; set; }
-		public Visualization Vis { get; set; }
+
+		public Visualization Vis { get; private set; }
+
 		public Device Device { get; set; }
+
 		public AuthorRepository AuthorRepository { get; set; }
 
 #endregion
 
 #region Methods
+
+		private void Awake() {
+			VisualizationTypeChanged += OnVisChanged;
+		}
 
 		/// <summary>
 		///     Sets and replaces the current visualization form with another.
@@ -50,9 +69,10 @@ namespace DataskopAR.Data {
 		public void SetVis(GameObject visPrefab) {
 			RemoveVis();
 			Vis = Instantiate(visPrefab, transform).GetComponent<Visualization>();
-			Vis.Create(this);
+			Vis.DataPoint = this;
 			Vis.SwipedUp += NextMeasurementResult;
 			Vis.SwipedDown += PreviousMeasurementResult;
+			VisualizationTypeChanged?.Invoke(Vis.Type);
 		}
 
 		public void RemoveVis() {
@@ -63,6 +83,7 @@ namespace DataskopAR.Data {
 			Vis.SwipedDown -= PreviousMeasurementResult;
 			Vis.OnTimeSeriesToggled(false);
 			Vis.Despawn();
+
 		}
 
 		/// <summary>
@@ -74,15 +95,18 @@ namespace DataskopAR.Data {
 
 			if (isHovered) {
 				Vis.Hover();
+				SetMapIconColor(mapHoverColor);
 				return;
 			}
 
 			if (isSelected) {
 				Vis.Select();
+				SetMapIconColor(mapSelectionColor);
 				return;
 			}
 
 			Vis.Deselect();
+			SetMapIconColor(mapDefaultColor);
 
 		}
 
@@ -90,7 +114,7 @@ namespace DataskopAR.Data {
 			CurrentMeasurementResult = mRes;
 		}
 
-		public void NextMeasurementResult() {
+		private void NextMeasurementResult() {
 
 			if (MeasurementDefinition.MeasurementResults != null) {
 				int i = CurrentMeasurementResultIndex;
@@ -102,7 +126,7 @@ namespace DataskopAR.Data {
 			}
 		}
 
-		public void PreviousMeasurementResult() {
+		private void PreviousMeasurementResult() {
 
 			if (MeasurementDefinition.MeasurementResults != null) {
 				int i = CurrentMeasurementResultIndex;
@@ -112,6 +136,21 @@ namespace DataskopAR.Data {
 
 				SetMeasurementResult(MeasurementDefinition.MeasurementResults.ToList()[i + 1]);
 			}
+
+		}
+
+		private void SetMapIconColor(Color color) {
+			mapIconBorder.color = color;
+		}
+
+		private void OnVisChanged(VisualizationType visType) {
+
+			visIcon.sprite = visType switch {
+				VisualizationType.Dot => visIcons[0],
+				VisualizationType.Bubble => visIcons[1],
+				VisualizationType.Bar => visIcons[2],
+				_ => throw new ArgumentOutOfRangeException(nameof(visType), visType, null)
+			};
 
 		}
 

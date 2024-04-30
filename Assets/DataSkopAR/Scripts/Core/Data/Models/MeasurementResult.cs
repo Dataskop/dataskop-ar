@@ -4,23 +4,11 @@ using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using UnityEngine;
 
 namespace DataskopAR.Data {
 
 	[UsedImplicitly]
 	public class MeasurementResult {
-
-#region Properties
-
-		public string Value { get; }
-		public int ValueType { get; }
-		public DateTime Timestamp { get; }
-		public Position Position { get; }
-		private MeasurementDefinition MeasurementDefinition { get; }
-		public string Author { get; }
-
-#endregion
 
 #region Constructors
 
@@ -52,6 +40,40 @@ namespace DataskopAR.Data {
 			}
 
 		}
+
+#endregion
+
+#region Nested type: AdditionalMeasurementResultsProperties
+
+#region Sub-Classes
+
+		public class AdditionalMeasurementResultsProperties {
+
+			public AdditionalMeasurementResultsProperties(string author) {
+				Author = author;
+			}
+
+			public string Author { get; }
+
+		}
+
+#endregion
+
+#endregion
+
+#region Properties
+
+		public string Value { get; }
+
+		public int ValueType { get; }
+
+		public DateTime Timestamp { get; }
+
+		public Position Position { get; }
+
+		private MeasurementDefinition MeasurementDefinition { get; }
+
+		public string Author { get; }
 
 #endregion
 
@@ -111,22 +133,26 @@ namespace DataskopAR.Data {
 		}
 
 		public string GetTime() {
-			return $"{GetDate()} {GetClockTime()}";
+			return $"{GetDate()}";
 		}
 
 		public string GetDate() {
-			return $"{Timestamp.ToLocalTime().ToShortDateString()}";
+			return $"{Timestamp.ToString(new CultureInfo("de-DE"))}";
 		}
 
 		public string GetClockTime() {
-			return $"{Timestamp.ToLocalTime().ToLongTimeString()}";
+			return $"{Timestamp.ToLongTimeString()}";
 		}
 
 		/// <summary>
 		///     Returns an interpolated value for a given timestamp.
 		/// </summary>
 		public static float GetValueAtTime(List<MeasurementResult> mResults, DateTime time, string strategy) {
-			List<string> validStrategies = new() { "steps", "average", "linear_interpolation" };
+			List<string> validStrategies = new() {
+				"steps",
+				"average",
+				"linear_interpolation"
+			};
 
 			if (!validStrategies.Contains(strategy))
 				throw new ArgumentOutOfRangeException(nameof(strategy), "Invalid strategy");
@@ -175,20 +201,6 @@ namespace DataskopAR.Data {
 
 			// Steps result (is also the fallback)
 			return leftItem.ReadAsFloat();
-		}
-
-#endregion
-
-#region Sub-Classes
-
-		public class AdditionalMeasurementResultsProperties {
-
-			public string Author { get; }
-
-			public AdditionalMeasurementResultsProperties(string author) {
-				Author = author;
-			}
-
 		}
 
 #endregion

@@ -14,7 +14,7 @@ namespace DataskopAR.Data {
 
 #region Properties
 
-		private List<LocationArea> LocationAreas { get; set; }
+		private ISet<LocationArea> LocationAreas { get; set; }
 
 #endregion
 
@@ -22,6 +22,7 @@ namespace DataskopAR.Data {
 
 		[Header("References")]
 		[SerializeField] private LocationProviderFactory locationProviderFactory;
+
 		[SerializeField] [Space] private LocationData[] locationData;
 
 		[Header("Events")]
@@ -33,9 +34,12 @@ namespace DataskopAR.Data {
 
 #region Methods
 
+		private void OnEnable() {
+			locationProviderFactory.DefaultLocationProvider.OnLocationUpdated += CheckUserLocationInAreas;
+		}
+
 		private void Start() {
 
-			locationProviderFactory.DefaultLocationProvider.OnLocationUpdated += CheckUserLocationInAreas;
 			InitializeAreas(locationData);
 			userAreaLocated?.Invoke(lastLocatedArea);
 
@@ -43,12 +47,12 @@ namespace DataskopAR.Data {
 
 		private void InitializeAreas(IEnumerable<LocationData> locations) {
 
-			LocationAreas = new List<LocationArea>();
+			LocationAreas = new HashSet<LocationArea>();
 
 			foreach (LocationData data in locations)
 			foreach (LocationData.Area area in data.areas) {
 
-				LocationArea locArea = new LocationArea {
+				LocationArea locArea = new() {
 					AreaName = area.areaName,
 					LocationName = data.locationName
 				};

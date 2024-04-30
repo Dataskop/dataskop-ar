@@ -23,10 +23,10 @@
     transition-property: opacity;
     transition-duration: 0.3s;
     transition-timing-function: ease-in-out;
-    border-left-color: rgb(180, 86, 9);
-    border-right-color: rgb(180, 86, 9);
-    border-top-color: rgb(180, 86, 9);
-    border-bottom-color: rgb(180, 86, 9);
+    border-left-color: rgb(219, 105, 11);
+    border-right-color: rgb(219, 105, 11);
+    border-top-color: rgb(219, 105, 11);
+    border-bottom-color: rgb(219, 105, 11);
     border-left-width: 4px;
     border-right-width: 4px;
     border-top-width: 0;
@@ -75,6 +75,7 @@
     margin-left: 10px;
     -unity-font-style: normal;
     font-size: 28px;
-    -unity-font: url('project://database/Assets/DataSkopAR/UIComponents/MainMenu/Fonts/Inter-Regular.ttf?fileID=12800000&guid=c3cdfb8736a165d448335bd86d03cbbb&type=3#Inter-Regular');
+    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
     width: 80%;
+    -unity-font-definition: initial;
 }

@@ -6,7 +6,6 @@ using Mapbox.Unity.Utilities;
 using Mapbox.Utils;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.XR.ARFoundation;
 
 namespace DataskopAR.Data {
 
@@ -25,17 +24,15 @@ namespace DataskopAR.Data {
 
 		[Header("References")]
 		[SerializeField] private DataManager dataManager;
+		[SerializeField] private InputHandler inputHandler;
 		[SerializeField] private AbstractMap map;
 		[SerializeField] private GameObject dataPointPrefab;
 		[SerializeField] private Transform dataPointsContainer;
 		[SerializeField] private VisualizationRepository visRepository;
 		[SerializeField] private DataAttributeManager dataAttrRepo;
 		[SerializeField] private AuthorRepository authorRepository;
-		[SerializeField] private bool isDemoScene;
 
 		private GameObject dummyVisObject;
-
-		public static bool IsDemoScene;
 
 #endregion
 
@@ -44,9 +41,9 @@ namespace DataskopAR.Data {
 		/// <summary>
 		///     List of currently placed markers in the AR world.
 		/// </summary>
-		public IList<DataPoint> DataPoints { get; set; }
+		public IList<DataPoint> DataPoints { get; private set; }
 
-		public Dictionary<Device, Vector3> LastKnownDevicePositions { get; set; }
+		public Dictionary<Device, Vector3> LastKnownDevicePositions { get; private set; }
 
 		/// <summary>
 		///     Array of precise marker locations in the AR world.
@@ -54,9 +51,13 @@ namespace DataskopAR.Data {
 		private Vector2d[] DataPointsLocations { get; set; }
 
 		private DataAttributeManager DataAttributeManager => dataAttrRepo;
+
 		private VisualizationRepository VisualizationRepository => visRepository;
+
 		private AuthorRepository AuthorRepository => authorRepository;
+
 		private bool HasLoadedDataPoints { get; set; }
+
 		private DataManager DataManager => dataManager;
 
 #endregion
@@ -64,16 +65,12 @@ namespace DataskopAR.Data {
 #region Methods
 
 		private void Awake() {
-			IsDemoScene = isDemoScene;
-		}
-
-		private void OnEnable() {
 			DataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
 		}
 
 		private void Start() {
 
-			SwipeDetector.OnSwipe += OnSwiped;
+			inputHandler.WorldPointerUpped += OnSwiped;
 
 			dummyVisObject = new GameObject {
 				tag = "Vis"
@@ -88,7 +85,7 @@ namespace DataskopAR.Data {
 			if (!HasLoadedDataPoints)
 				return;
 
-			if (IsDemoScene) return;
+			if (AppOptions.DemoMode) return;
 
 			for (int i = 0; i < DataPoints.Count; i++) {
 				DataPoints[i].transform.localPosition = map.GeoToWorldPosition(DataPointsLocations[i]);
@@ -98,14 +95,15 @@ namespace DataskopAR.Data {
 
 		public void SetDataPointVisualization(VisualizationOption visOpt) {
 
-			if (VisualizationRepository.IsAvailable(visOpt.Type)) {
-				GameObject vis = VisualizationRepository.GetVisualizationByName(visOpt.Type);
+			if (VisualizationRepository.IsAvailable(visOpt.Type.FirstCharToUpper())) {
+
+				GameObject vis = VisualizationRepository.GetVisualization(visOpt.Type.FirstCharToUpper());
 
 				foreach (DataPoint dp in DataPoints) {
 					ToggleTimeSeries(dp, false);
 					dp.SetVis(vis);
 					dp.Vis.VisOption = visOpt;
-					dp.Vis.ApplyStyle();
+					dp.Vis.ApplyStyle(dp.Vis.VisOption.Style);
 				}
 
 				onVisualizationChanged?.Invoke(visOpt);
@@ -140,42 +138,42 @@ namespace DataskopAR.Data {
 
 		}
 
-		private void OnSwiped(Swipe swipe) {
+		private void OnSwiped(PointerInteraction pointerInteraction) {
+
+			if (!pointerInteraction.isSwipe) return;
 
 			if (!HasLoadedDataPoints)
 				return;
 
 			foreach (DataPoint dp in DataPoints) {
-				dp.Vis.Swiped(swipe);
+				dp.Vis.Swiped(pointerInteraction);
 			}
 
 			dataPointHistorySwiped?.Invoke(DataPoints[0].CurrentMeasurementResultIndex);
 
 		}
 
-		// idk
 		public void OnHistorySliderMoved(int newCount, int prevCount) {
 
 			if (!HasLoadedDataPoints)
 				return;
 
-			Swipe historySwipe = new Swipe();
+			PointerInteraction historyPointerInteraction = new();
+			historyPointerInteraction.startingGameObject = dummyVisObject;
+			historyPointerInteraction.endingGameObject = dummyVisObject;
+			historyPointerInteraction.isSwipe = true;
 
 			if (newCount > prevCount) {
-				historySwipe.Direction = Vector2.down;
-				historySwipe.YDistance = 100;
-				historySwipe.StartingGameObject = dummyVisObject;
-				historySwipe.HasStartedOverSlider = UIInteractionDetection.HasPointerStartedOverSlider;
+				historyPointerInteraction.startPosition = Vector2.zero;
+				historyPointerInteraction.endPosition = Vector2.down * 100f;
 			}
 			else {
-				historySwipe.Direction = Vector2.up;
-				historySwipe.YDistance = 100;
-				historySwipe.StartingGameObject = dummyVisObject;
-				historySwipe.HasStartedOverSlider = UIInteractionDetection.HasPointerStartedOverSlider;
+				historyPointerInteraction.startPosition = Vector2.zero;
+				historyPointerInteraction.endPosition = Vector2.up * 100f;
 			}
 
 			foreach (DataPoint dp in DataPoints) {
-				dp.Vis.Swiped(historySwipe);
+				dp.Vis.Swiped(historyPointerInteraction);
 			}
 
 		}
@@ -233,7 +231,7 @@ namespace DataskopAR.Data {
 					dataPointInstance.SetMeasurementResult(dataPointInstance.MeasurementDefinition.GetLatestMeasurementResult());
 
 					//Move the DataPoint to its location
-					if (IsDemoScene) {
+					if (AppOptions.DemoMode) {
 
 						Vector3 GetLastKnownDevicePosition(Device device) {
 
@@ -295,11 +293,6 @@ namespace DataskopAR.Data {
 			}
 
 			DataPoints.Clear();
-		}
-
-		public void OnDisable() {
-			SwipeDetector.OnSwipe -= OnSwiped;
-			DataManager.HasUpdatedMeasurementResults -= OnMeasurementResultsUpdated;
 		}
 
 #endregion

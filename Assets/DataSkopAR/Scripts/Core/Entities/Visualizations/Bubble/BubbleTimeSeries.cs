@@ -12,51 +12,29 @@ namespace DataskopAR.Entities.Visualizations {
 
 #endregion
 
-#region Properties
-
-		private Vector3 CameraPosition => DataPoint.Vis.ARCamera.transform.position;
-
-#endregion
-
-#region Constants
-
-		private static readonly int Alpha = Shader.PropertyToID("_Alpha");
-
-#endregion
-
 #region Methods
 
 		private void Awake() {
-			TimeSeriesSpawned += SetSize;
-			TimeSeriesStartMoved += SetSize;
+			TimeElementSpawned += SetSize;
+			TimeElementMoved += SetSize;
 		}
 
-		private void SetSize() {
+		private void SetSize(TimeElement e) {
 
-			foreach (TimeElement e in TimeElements) { 
-				float elementValue = Mathf.Clamp(e.MeasurementResult.ReadAsFloat(), DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
-				
-				
-				float bubbleSize = MathExtensions.Map(elementValue, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum, minScale, maxScale);
-				e.transform.localScale = new Vector3(bubbleSize, bubbleSize, bubbleSize);
-			}
+			float elementValue = Mathf.Clamp(e.MeasurementResult.ReadAsFloat(), DataPoint.Attribute.Minimum,
+				DataPoint.Attribute.Maximum);
 
-			if (!Configuration.isFading) return;
+			// calc min and max area out of desired min and max scale
+			float minArea = Mathf.PI * Mathf.Pow(minScale, 2);
+			float maxArea = Mathf.PI * Mathf.Pow(maxScale, 2);
 
-			foreach (TimeElement e in TimeElements) {
+			float newArea = MathExtensions.Map(elementValue, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum, minArea,
+				maxArea);
 
-				if (ShouldDrawTimeElement(Configuration.visibleHistoryCount, e)) {
-					e.GetComponentInChildren<SpriteRenderer>().material
-						.SetFloat(Alpha, 1f - MathExtensions.Map01(Mathf.Abs(e.DistanceToDataPoint), 0, Configuration.visibleHistoryCount));
-				}
+			float bubbleSize = Mathf.Sqrt(newArea / Mathf.PI);
 
-			}
+			e.transform.localScale = new Vector3(bubbleSize, bubbleSize, bubbleSize);
 
-		}
-
-		private void OnDisable() {
-			TimeSeriesSpawned -= SetSize;
-			TimeSeriesStartMoved -= SetSize;
 		}
 
 #endregion

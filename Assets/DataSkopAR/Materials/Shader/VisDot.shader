@@ -1,4 +1,4 @@
-Shader "DataSkopAR/VisDot"
+Shader "DataskopAR/VisDot"
 {
     Properties
     {
@@ -11,15 +11,16 @@ Shader "DataSkopAR/VisDot"
         {
             "RenderType"="Transparent"
             "Queue"="Transparent"
-            "RenderPipeline"="UniversalRenderPipeline"
+            "IgnoreProjector"="True"
+            "CanUseSpriteAtlas"="true"
+            "PreviewType"="Plane"
+            "SortingLayer"="Custom/WorldSpaceCanvas"
+            "Order in Layer"="0"
         }
 
-        Blend SrcAlpha OneMinusSrcAlpha
-        LOD 100
-
         Cull Off
-        ZWrite On
-        ZTest LEqual
+        ZWrite Off
+        Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {
@@ -31,14 +32,12 @@ Shader "DataSkopAR/VisDot"
 
             #include "UnityCG.cginc"
 
-            struct appdata
-            {
+            struct appdata {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
             };
 
-            struct v2f
-            {
+            struct v2f {
                 float2 uv : TEXCOORD0;
                 UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
@@ -46,8 +45,8 @@ Shader "DataSkopAR/VisDot"
 
             sampler2D _MainTex;
             CBUFFER_START(UnityPerMaterial)
-            float4 _MainTex_ST;
-            float4 _Color;
+                float4 _MainTex_ST;
+                float4 _Color;
             CBUFFER_END
 
             v2f vert(appdata v)
@@ -61,17 +60,19 @@ Shader "DataSkopAR/VisDot"
 
             half4 frag(v2f i) : SV_Target
             {
-                // sample the texture
                 half4 col = tex2D(_MainTex, i.uv);
+                half3 rgb = col.rgb;
 
-                if (any(col.rgb != half3(1, 1, 1)))
-                {
-                    UNITY_APPLY_FOG(i.fogCoord, _Color);
-                    return _Color;
-                }
+                // linear RGB to luminance/brightness (luma)
+                float brightness = dot(rgb, half3(0.222, 0.707, 0.071));
+                float blendFactor = smoothstep(0.0, 0.5, 1.0 - brightness); // Adjust thresholds as needed
 
-                UNITY_APPLY_FOG(i.fogCoord, col);
-                return col;
+                //  blend based on the blendFactor
+                half3 blend_rgb = lerp(half3(1, 1, 1), _Color.rgb, blendFactor);
+                half4 blend_color = half4(blend_rgb, col.a);
+
+                UNITY_APPLY_FOG(i.fogCoord, blend_color);
+                return blend_color;
             }
             ENDHLSL
         }

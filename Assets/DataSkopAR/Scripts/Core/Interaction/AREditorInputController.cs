@@ -20,11 +20,14 @@ namespace DataskopAR.Interaction {
 #region Properties
 
 		private Vector3 MoveDirection { get; set; }
+
 		private Vector2 LookDelta { get; set; }
 
 #endregion
 
 #region Methods
+
+#if UNITY_EDITOR
 
 		private void Update() {
 			xRotation -= LookDelta.y * rotationSpeedModifier;
@@ -42,9 +45,7 @@ namespace DataskopAR.Interaction {
 		public void LookInput(InputAction.CallbackContext ctx) {
 			if (ctx.performed) {
 				if (Mouse.current.leftButton.isPressed) {
-					if (!UIInteractionDetection.IsPointerOverUi) {
-						LookDelta = ctx.ReadValue<Vector2>();
-					}
+					LookDelta = ctx.ReadValue<Vector2>();
 				}
 			}
 
@@ -52,6 +53,8 @@ namespace DataskopAR.Interaction {
 				LookDelta = Vector2.zero;
 			}
 		}
+
+#endif
 
 #endregion
 

@@ -2,12 +2,12 @@ using UnityEngine;
 
 namespace DataskopAR {
 
-	public class FPSManager : MonoBehaviour {
+	public static class FPSManager {
 
 #region Methods
 
-		private void Start() {
-			Application.targetFrameRate = 30;
+		public static void SetApplicationTargetFrameRate(int targetFrameRate) {
+			Application.targetFrameRate = targetFrameRate;
 		}
 
 #endregion

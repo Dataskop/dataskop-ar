@@ -7,34 +7,24 @@ namespace DataskopAR.Entities.Visualizations {
 
 #region Fields
 
-		[SerializeField] private Gradient timeElementGradient;
+		[SerializeField] private Color timeElementColor;
 
 #endregion
 
 #region Methods
 
 		private void Awake() {
-			TimeSeriesSpawned += ScaleBars;
-			TimeSeriesStartMoved += SetBarValue;
+			TimeElementSpawned += OnTimeElementSpawned;
+			TimeElementMoved += OnTimeElementMoved;
 		}
 
-		private void ScaleBars() {
-
-			foreach (TimeElement te in TimeElements) {
-				te.transform.localScale *= DataPoint.Vis.Scale;
-				te.AuthorSprite.gameObject.transform.Rotate(new Vector3(0, 0, -90));
-			}
-
-			SetBarValue();
-
+		private void OnTimeElementSpawned(TimeElement e) {
+			e.transform.localScale *= DataPoint.Vis.Scale;
+			SetBarHeight(e, e.MeasurementResult.ReadAsFloat(), DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
 		}
 
-		private void SetBarValue() {
-
-			foreach (TimeElement te in TimeElements) {
-				SetBarHeight(te, te.MeasurementResult.ReadAsFloat(), DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
-			}
-
+		private void OnTimeElementMoved(TimeElement e) {
+			SetBarHeight(e, e.MeasurementResult.ReadAsFloat(), DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
 		}
 
 		private void SetBarHeight(TimeElement e, float value, float min, float max) {
@@ -42,11 +32,11 @@ namespace DataskopAR.Entities.Visualizations {
 			Transform pillarFill = e.gameObject.transform.GetChild(0).GetChild(0);
 			value = Mathf.Clamp(value, min, max);
 			Vector3 localScale = pillarFill.localScale;
-			localScale = new Vector3(localScale.x, MathExtensions.Map01(value, min, max), localScale.z);
+			localScale = new Vector3(localScale.x, MathExtensions.Map(value, min, max, 0, 3), localScale.z);
 			pillarFill.localScale = localScale;
 
 			Material meshMaterial = e.gameObject.transform.GetChild(0).GetChild(0).GetComponentInChildren<MeshRenderer>().material;
-			meshMaterial.color = timeElementGradient.Evaluate(MathExtensions.Map01(value, min, max));
+			meshMaterial.color = timeElementColor;
 
 			if (!Configuration.isFading) return;
 			if (!ShouldDrawTimeElement(Configuration.visibleHistoryCount, e)) return;
@@ -57,8 +47,8 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		private void OnDisable() {
-			TimeSeriesSpawned -= ScaleBars;
-			TimeSeriesStartMoved -= SetBarValue;
+			TimeElementSpawned -= OnTimeElementSpawned;
+			TimeElementMoved += OnTimeElementMoved;
 		}
 
 #endregion

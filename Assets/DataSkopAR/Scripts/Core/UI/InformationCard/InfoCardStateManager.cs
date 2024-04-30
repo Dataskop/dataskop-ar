@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using DataskopAR.Data;
-using DataskopAR.Entities.Visualizations;
 using DataskopAR.Interaction;
 using UnityEngine;
 using UnityEngine.Events;
@@ -31,7 +30,7 @@ namespace DataskopAR.UI {
 
 		private VisualElement InfoCard { get; set; }
 
-		private InfoCardState CurrentCardState { get; set; }
+		public InfoCardState CurrentCardState { get; private set; }
 
 		private InfoCardState PreviousCardState { get; set; }
 
@@ -46,9 +45,13 @@ namespace DataskopAR.UI {
 			InfoCard = infoCard;
 
 			InfoCardStateTransitionClasses = new Dictionary<InfoCardState, string> {
-				{ InfoCardState.Collapsed, "info-card-collapsed" },
-				{ InfoCardState.Short, "info-card-short" },
-				{ InfoCardState.Fullscreen, "info-card-full" }
+				{
+					InfoCardState.Collapsed, "info-card-collapsed"
+				}, {
+					InfoCardState.Short, "info-card-short"
+				}, {
+					InfoCardState.Fullscreen, "info-card-full"
+				}
 			};
 
 			CurrentCardState = InfoCardState.Collapsed;
@@ -58,35 +61,20 @@ namespace DataskopAR.UI {
 
 		}
 
-		public void OnSwipe(Swipe swipe) {
+		public void OnSwipe(PointerInteraction pointerInteraction) {
 
 			if (!InfoCard.visible) return;
 
-			if (!swipe.HasStartedOverSwipeAreaInUI)
-				return;
-
-			if (IsLocked && !swipe.HasStartedOverSwipeAreaInUI)
-				return;
-
-			// Only move info card if user did not swipe over a selected vis
-			if (swipe.StartingGameObject != null) {
-				Visualization vis = swipe.StartingGameObject.GetComponent<Visualization>();
-
-				if (vis != null)
-					if (vis.IsSelected)
-						return;
-			}
-
 			SetPreviousState();
 
-			if (swipe.Direction.y > 0f)
+			if (pointerInteraction.Direction.y > 0.20f)
 				CurrentCardState = CurrentCardState switch {
 					InfoCardState.Collapsed => InfoCardState.Short,
 					InfoCardState.Short => InfoCardState.Fullscreen,
 					_ => CurrentCardState
 				};
 
-			if (swipe.Direction.y < 0)
+			if (pointerInteraction.Direction.y < -0.20f)
 				CurrentCardState = CurrentCardState switch {
 					InfoCardState.Fullscreen => InfoCardState.Short,
 					InfoCardState.Short => InfoCardState.Collapsed,

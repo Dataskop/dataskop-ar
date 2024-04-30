@@ -2,10 +2,9 @@ namespace DataskopAR {
 
 	public enum VisualizationType {
 
-		dot,
-		bubble,
-		bar,
-		box
+		Dot,
+		Bubble,
+		Bar
 
 	}
 

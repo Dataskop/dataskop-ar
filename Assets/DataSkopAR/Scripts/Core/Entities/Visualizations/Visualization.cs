@@ -20,21 +20,41 @@ namespace DataskopAR.Entities.Visualizations {
 		[SerializeField] private Vector3 offset;
 		[SerializeField] private float scaleFactor;
 		[SerializeField] protected TimeSeriesConfig timeSeriesConfiguration;
+		[SerializeField] protected Color deselectColor;
+		[SerializeField] protected Color hoverColor;
+		[SerializeField] protected Color selectColor;
+
+		private DataPoint dataPoint;
 
 #endregion
 
 #region Properties
 
-		public DataPoint DataPoint { get; set; }
+		public DataPoint DataPoint {
+			get => dataPoint;
+
+			set {
+				dataPoint = value;
+				if (value != null) {
+					OnDataPointChanged();
+				}
+			}
+		}
+
 		public VisualizationOption VisOption { get; set; }
+
 		public Camera ARCamera { get; set; }
+
 		public bool IsSelected { get; set; }
-		public bool IsSpawned { get; set; }
-		public Transform VisTransform { get; set; }
+
+		public bool IsSpawned => DataPoint != null;
+
+		public abstract Transform VisTransform { get; }
+
 		public abstract MeasurementType[] AllowedMeasurementTypes { get; set; }
 
 		/// <summary>
-		/// The offset of the visualization to the ground.
+		///     The offset of the visualization to the ground.
 		/// </summary>
 		public Vector3 Offset {
 			get => offset;
@@ -42,12 +62,14 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		/// <summary>
-		/// The factor that gets multiplied with the objects default size.
+		///     The factor that gets multiplied with the objects default size.
 		/// </summary>
 		public float Scale {
 			get => scaleFactor;
 			set => scaleFactor = value;
 		}
+
+		public VisualizationType Type { get; protected set; }
 
 #endregion
 
@@ -58,37 +80,38 @@ namespace DataskopAR.Entities.Visualizations {
 		}
 
 		/// <summary>
-		///  Creates a visualization for a given Data Point.
+		///     Creates a visualization for a given Data Point.
 		/// </summary>
-		/// <param name="dataPoint">The DataPoint the Visualization is connected to.</param>
-		public abstract void Create(DataPoint dataPoint);
+		protected virtual void OnDataPointChanged() {
+			DataPoint.MeasurementResultChanged += OnMeasurementResultChanged;
+		}
 
 		/// <summary>
-		/// Gets called when the user points the reticule over the visible visualization.
+		///     Gets called when the user points the reticule over the visible visualization.
 		/// </summary>
 		public abstract void Hover();
 
 		/// <summary>
-		/// Gets called when the visualization gets selected.
+		///     Gets called when the visualization gets selected.
 		/// </summary>
 		public abstract void Select();
 
 		/// <summary>
-		/// Gets called when the visualization gets deselected.
+		///     Gets called when the visualization gets deselected.
 		/// </summary>
 		public abstract void Deselect();
 
 		/// <summary>
-		/// Gets called before the visualization is removed.
+		///     Gets called before the visualization is removed.
 		/// </summary>
 		public virtual void Despawn() {
-			IsSpawned = false;
 			DataPoint.MeasurementResultChanged -= OnMeasurementResultChanged;
+			DataPoint = null;
 			Destroy(gameObject);
 		}
 
 		/// <summary>
-		/// Gets called when the time view gets toggled.
+		///     Gets called when the time view gets toggled.
 		/// </summary>
 		/// <param name="isActive"></param>
 		public abstract void OnTimeSeriesToggled(bool isActive);
@@ -97,23 +120,20 @@ namespace DataskopAR.Entities.Visualizations {
 
 		public abstract void OnMeasurementResultChanged(MeasurementResult mr);
 
-		public abstract void ApplyStyle();
+		public abstract void ApplyStyle(VisualizationStyle style);
 
-		public void Swiped(Swipe swipe) {
+		public void Swiped(PointerInteraction pointerInteraction) {
 
-			if (UIInteractionDetection.IsPointerOverUi && !UIInteractionDetection.HasPointerStartedOverSlider)
+			if (pointerInteraction.startingGameObject == null)
 				return;
 
-			if (swipe.StartingGameObject == null)
-				return;
+			if (!pointerInteraction.startingGameObject.CompareTag("Vis")) return;
 
-			if (!swipe.StartingGameObject.CompareTag("Vis")) return;
-
-			switch (swipe.Direction.y) {
-				case > 0f:
+			switch (pointerInteraction.Direction.y) {
+				case > 0.20f:
 					SwipedUp?.Invoke();
 					break;
-				case < 0f:
+				case < -0.20f:
 					SwipedDown?.Invoke();
 					break;
 			}

@@ -26,7 +26,7 @@ namespace DataskopAR.Data {
 			foreach (Sprite s in authorSprites) {
 				AuthorSprites.Add(s.name, s);
 			}
-			
+
 		}
 
 #endregion

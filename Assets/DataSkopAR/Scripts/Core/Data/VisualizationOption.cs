@@ -7,18 +7,16 @@ namespace DataskopAR.Data {
 	[UsedImplicitly]
 	public class VisualizationOption {
 
-#region Properties
-
-		public string Type { get; set; }
-		public VisualizationStyle Style { get; set; }
-
-#endregion
-
 #region Constructor
 
 		public VisualizationOption(string type, VisualizationStyle style) {
 
-			string[] acceptedTypes = { "dot", "bubble", "bar", "box" };
+			string[] acceptedTypes = {
+				"dot",
+				"bubble",
+				"bar",
+				"box"
+			};
 
 			if (!acceptedTypes.Contains(type)) {
 				throw new ArgumentOutOfRangeException(nameof(type), "Type not supported.");
@@ -28,6 +26,14 @@ namespace DataskopAR.Data {
 			Style = style;
 
 		}
+
+#endregion
+
+#region Properties
+
+		public string Type { get; set; }
+
+		public VisualizationStyle Style { get; set; }
 
 #endregion
 

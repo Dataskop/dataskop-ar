@@ -5,8 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataskopAR.UI;
 using JetBrains.Annotations;
-using UnityEngine;
 using Newtonsoft.Json;
+using UnityEngine;
+using UnityEngine.Events;
 using Debug = UnityEngine.Debug;
 
 namespace DataskopAR.Data {
@@ -22,18 +23,26 @@ namespace DataskopAR.Data {
 #region Events
 
 		/// <summary>
-		/// Invoked when companies and their projects are loaded, without additional info on single projects.
+		///     Invoked when companies and their projects are loaded, without additional info on single projects.
 		/// </summary>
+#pragma warning disable CS0067 // Event is never used
 		public event Action<IReadOnlyCollection<Company>> HasLoadedProjectList;
+#pragma warning restore CS0067 // Event is never used
 
 		/// <summary>
-		/// Invoked once data for the selected project finished loading.
+		///     Invoked once data for the selected project finished loading.
 		/// </summary>
 		public event Action<Project> HasLoadedProjectData;
 
+		/// <summary>
+		///     Invoked when measurement results has been updated.
+		/// </summary>
 		public event Action HasUpdatedMeasurementResults;
 
-		public event Action<int> FetchedAmountChanged;
+		[Header("Events")]
+		public UnityEvent<int> fetchedAmountChanged;
+		public UnityEvent<IReadOnlyCollection<Company>> projectListLoaded;
+		public UnityEvent<Project> projectLoaded;
 
 #endregion
 
@@ -41,7 +50,9 @@ namespace DataskopAR.Data {
 
 		[Header("References")]
 		[SerializeField] private LoadingIndicator loadingIndicator;
-		[SerializeField] private int fetchAmount;
+
+		[Header("Values")]
+		[SerializeField] private int fetchAmount = 1;
 		[SerializeField] private int fetchInterval = 30000;
 
 #endregion
@@ -49,6 +60,7 @@ namespace DataskopAR.Data {
 #region Properties
 
 		private IReadOnlyCollection<Company> Companies { get; set; }
+
 		public Project SelectedProject { get; private set; }
 
 		public int FetchAmount {
@@ -57,14 +69,16 @@ namespace DataskopAR.Data {
 		}
 
 		private LoadingIndicator LoadingIndicator => loadingIndicator;
+
 		private Stopwatch FetchTimer { get; set; }
+
 		private bool ShouldRefetch { get; set; }
 
 #endregion
 
 #region Methods
 
-		private void Start() {
+		public void Initialize() {
 
 #if UNITY_EDITOR
 
@@ -89,9 +103,9 @@ namespace DataskopAR.Data {
 				return;
 			}
 
-			UserData.Instance.Token = AccountManager.GetLoginToken();
+			UserData.Instance.Token = AccountManager.TryGetLoginToken();
 
-			if (UserData.Instance.Token == string.Empty) {
+			if (UserData.Instance.Token == null) {
 
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
@@ -108,9 +122,9 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
-		/// Starts process of loading data for the application.
+		///     Starts process of loading data for the application.
 		/// </summary>
-		private async void LoadAppData() {
+		async private void LoadAppData() {
 
 			LoadingIndicator.Show();
 
@@ -133,12 +147,12 @@ namespace DataskopAR.Data {
 				await c.UpdateProjects();
 			}
 
-			HasLoadedProjectList?.Invoke(Companies);
+			projectListLoaded?.Invoke(Companies);
 			LoadingIndicator.Hide();
 
 		}
 
-		private static async Task<IReadOnlyCollection<Company>> UpdateCompanies() {
+		async private static Task<IReadOnlyCollection<Company>> UpdateCompanies() {
 
 			const string url = "https://backend.dataskop.at/api/company/list";
 			string rawResponse = await RequestHandler.Get(url);
@@ -155,7 +169,7 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
-		/// Loads a project based on its ID.
+		///     Loads a project based on its ID.
 		/// </summary>
 		/// <param name="projectId">The ID of the project to be loaded.</param>
 		public async void LoadProject(int projectId) {
@@ -190,7 +204,7 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
-		/// Loads a project based on a given QR-Code-Result
+		///     Loads a project based on a given QR-Code-Result
 		/// </summary>
 		/// <param name="result">A QrResult</param>
 		[UsedImplicitly]
@@ -248,10 +262,10 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
-		/// Gets available Projects from a set of Companies.
+		///     Gets available Projects from a set of Companies.
 		/// </summary>
 		/// <param name="userCompanies">A collection of companies</param>
-		/// <returns>An Enumerable of available projects for the given companies.</returns>
+		/// <returns>A collection of available projects for the given companies.</returns>
 		public static IEnumerable<Project> GetAvailableProjects(IEnumerable<Company> userCompanies) {
 
 			List<Project> availableProjects = new();
@@ -274,12 +288,14 @@ namespace DataskopAR.Data {
 		private void OnProjectDataLoaded(Project selectedProject) {
 
 			HasLoadedProjectData?.Invoke(selectedProject);
+			projectLoaded?.Invoke(selectedProject);
+
 			LoadingIndicator.Hide();
 
 			NotificationHandler.Add(new Notification {
 				Category = NotificationCategory.Check,
 				Text = "Project loaded!",
-				DisplayDuration = NotificationDuration.Medium
+				DisplayDuration = NotificationDuration.Short
 			});
 
 			ShouldRefetch = true;
@@ -289,7 +305,7 @@ namespace DataskopAR.Data {
 
 		}
 
-		private async void RefetchDataTimer() {
+		async private void RefetchDataTimer() {
 
 			while (ShouldRefetch) {
 
@@ -310,13 +326,20 @@ namespace DataskopAR.Data {
 
 			await SelectedProject.UpdateDeviceMeasurements(FetchAmount);
 			HasUpdatedMeasurementResults?.Invoke();
-			FetchedAmountChanged?.Invoke(FetchAmount);
+
+			int fetchedResultsAmount = SelectedProject.Devices.First().MeasurementDefinitions.First().MeasurementResults.Count;
+
+			if (fetchedResultsAmount != FetchAmount) {
+				FetchAmount = fetchedResultsAmount;
+			}
+
+			fetchedAmountChanged?.Invoke(FetchAmount);
 
 			LoadingIndicator.Hide();
 
 		}
 
-		private async void OnRefetchTimerElapsed() {
+		async private void OnRefetchTimerElapsed() {
 			await UpdateProjectMeasurements();
 		}
 
@@ -330,7 +353,7 @@ namespace DataskopAR.Data {
 		}
 
 		public void OnAmountInputChanged(int newValue) {
-			FetchAmount = Mathf.Clamp(newValue, 1, 1000);
+			FetchAmount = Mathf.Clamp(newValue, 1, 999);
 		}
 
 		private void OnDisable() {

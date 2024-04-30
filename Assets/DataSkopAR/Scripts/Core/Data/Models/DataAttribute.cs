@@ -9,18 +9,6 @@ namespace DataskopAR.Data {
 	[UsedImplicitly]
 	public class DataAttribute {
 
-#region Properties
-
-		public string ID { get; set; }
-		public string Label { get; set; }
-		public string Type { get; set; }
-		public string Unit { get; set; }
-		public float Minimum { get; set; }
-		public float Maximum { get; set; }
-		public ICollection<VisualizationOption> VisOptions { get; set; }
-
-#endregion
-
 #region Constructors
 
 		public DataAttribute(string id, string label, string unit, string attributeType, string min, string max,
@@ -38,7 +26,13 @@ namespace DataskopAR.Data {
 				Maximum = maxVal;
 			}
 
-			string[] acceptedTypes = { "nominal", "binary", "ordinal", "discrete", "continuous" };
+			string[] acceptedTypes = {
+				"nominal",
+				"binary",
+				"ordinal",
+				"discrete",
+				"continuous"
+			};
 
 			if (!acceptedTypes.Contains(attributeType)) {
 				throw new ArgumentOutOfRangeException(nameof(attributeType), "Type not supported.");
@@ -48,6 +42,24 @@ namespace DataskopAR.Data {
 			VisOptions = visualizationOptions;
 
 		}
+
+#endregion
+
+#region Properties
+
+		public string ID { get; set; }
+
+		public string Label { get; set; }
+
+		public string Type { get; set; }
+
+		public string Unit { get; set; }
+
+		public float Minimum { get; set; }
+
+		public float Maximum { get; set; }
+
+		public ICollection<VisualizationOption> VisOptions { get; set; }
 
 #endregion
 

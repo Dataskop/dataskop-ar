@@ -36,10 +36,12 @@ namespace DataskopAR.UI {
 #region Properties
 
 		private VisualElement Root { get; set; }
+
 		private TextField TokenTextField { get; set; }
 
 		private string Token {
 			get => token;
+
 			set {
 				token = value;
 				TokenTextField.value = token;
@@ -47,6 +49,7 @@ namespace DataskopAR.UI {
 		}
 
 		private Label VersionLabel { get; set; }
+
 		private bool HasEnteredToken => TokenTextField?.value != string.Empty;
 
 #endregion
@@ -56,7 +59,7 @@ namespace DataskopAR.UI {
 		public void OnEnable() {
 			Root = mainMenuUIDoc.rootVisualElement;
 
-			Root.Q<UnityEngine.UIElements.Button>("btnScan").RegisterCallback<ClickEvent>(e => {
+			Root.Q<UnityEngine.UIElements.Button>("btnScan").RegisterCallback<ClickEvent>(_ => {
 				closeBtn.gameObject.SetActive(true);
 				scanButtonPressed?.Invoke();
 				ToggleMainMenuScreen(false);
@@ -64,16 +67,18 @@ namespace DataskopAR.UI {
 			});
 
 			Root.Q<UnityEngine.UIElements.Button>("btnDemo")
-				.RegisterCallback<ClickEvent>(e => { OnDemoButtonPressed(); });
+				.RegisterCallback<ClickEvent>(_ => { OnDemoButtonPressed(); });
 
 			Root.Q<UnityEngine.UIElements.Button>("btnLogin")
-				.RegisterCallback<ClickEvent>(e => { OnLoginButtonPressed(); });
+				.RegisterCallback<ClickEvent>(_ => { OnLoginButtonPressed(); });
 
 			TokenTextField = Root.Q<TextField>("txtAPISecret");
-			TokenTextField.value = "";
+			TokenTextField.value = TokenTextField.text;
 
 			VersionLabel = Root.Q<Label>("footerCopyright");
-			VersionLabel.text = Version.ID + " ©FHSTP (2022, 2023)";
+			VersionLabel.text = Version.ID + " ©FHSTP (2022-2024)";
+
+			AppOptions.DemoMode = false;
 		}
 
 		private IEnumerator Start() {
@@ -81,7 +86,10 @@ namespace DataskopAR.UI {
 #if UNITY_IOS
 			yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
 #elif UNITY_ANDROID
-			Permission.RequestUserPermissions(new[] { Permission.Camera, Permission.FineLocation });
+			Permission.RequestUserPermissions(new[] {
+				Permission.Camera,
+				Permission.FineLocation
+			});
 			yield return Permission.HasUserAuthorizedPermission(Permission.Camera);
 #else
 			yield break;
@@ -125,7 +133,7 @@ namespace DataskopAR.UI {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
 					Text = "No token entered!",
-					DisplayDuration = NotificationDuration.Short
+					DisplayDuration = NotificationDuration.Medium
 				});
 			}
 
@@ -137,21 +145,34 @@ namespace DataskopAR.UI {
 
 			if (isValid) {
 				AccountManager.Login(Token);
-				SceneMaster.LoadScene(2);
+				SceneHandler.LoadScene("World");
 			}
 			else {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
 					Text = "The provided token is not valid!",
-					DisplayDuration = NotificationDuration.Short
+					DisplayDuration = NotificationDuration.Medium
 				});
 			}
 
 		}
 
-		private static void OnDemoButtonPressed() {
-			AccountManager.Login("313f1398d57643ac90915b1b497db58141826a3d0c9a4f97a1cebc9f10db4e1e");
-			SceneMaster.LoadScene(3);
+		private void OnDemoButtonPressed() {
+
+			if (HasEnteredToken) {
+				Token = TokenTextField.value;
+			}
+			else {
+				NotificationHandler.Add(new Notification {
+					Category = NotificationCategory.Error,
+					Text = "Please enter a Demo Token!",
+					DisplayDuration = NotificationDuration.Medium
+				});
+			}
+
+			AppOptions.DemoMode = true;
+			AccountManager.Login(Token);
+			SceneHandler.LoadScene("World");
 		}
 
 #endregion

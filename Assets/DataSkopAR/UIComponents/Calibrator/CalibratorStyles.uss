@@ -1,52 +1,56 @@
 VisualElement {
 }
 
-.calibrator-container {
-    align-items: center;
-    width: 100%;
-    height: auto;
-    background-color: rgba(180, 86, 9, 0.09);
-    top: 75%;
-    justify-content: space-around;
-}
-
 .guide-text {
     width: 90%;
     align-items: center;
-    font-size: 36px;
+    font-size: 38px;
     -unity-font-style: normal;
-    -unity-text-align: upper-center;
-    color: rgb(255, 255, 255);
+    -unity-text-align: lower-center;
+    color: rgb(0, 0, 0);
     white-space: normal;
-    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.45);
+    margin-top: 15px;
+    margin-bottom: 5px;
+    -unity-font-definition: initial;
+    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
+    justify-content: flex-start;
+    flex-wrap: nowrap;
 }
 
-.calibrator-button {
-    width: 220px;
-    height: 60px;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: column;
-    font-size: 22px;
-    -unity-text-align: middle-center;
+.step-text {
+    font-size: 28px;
+    color: rgb(0, 0, 0);
+    -unity-font-style: normal;
+    padding-bottom: 15px;
+    -unity-font-definition: initial;
+    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
+}
+
+.option-button {
+    height: 70px;
+    width: 380px;
+    align-items: stretch;
+    left: auto;
+    background-color: rgb(255, 255, 255);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 3px;
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
-    background-color: rgb(255, 255, 255);
-    border-left-color: rgb(48, 48, 48);
-    border-right-color: rgb(48, 48, 48);
-    border-top-color: rgb(48, 48, 48);
-    border-bottom-color: rgb(48, 48, 48);
-    border-left-width: 3px;
-    border-right-width: 3px;
-    border-top-width: 3px;
-    border-bottom-width: 3px;
-}
-
-.step-text {
-    font-size: 24px;
-    color: rgb(255, 255, 255);
+    font-size: 36px;
+    color: rgb(0, 0, 0);
     -unity-font-style: normal;
-    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.45);
+    -unity-text-align: middle-center;
+    justify-content: flex-start;
+    margin-top: 75px;
+    margin-bottom: 8px;
+    border-left-color: rgb(37, 89, 176);
+    border-right-color: rgb(37, 89, 176);
+    border-top-color: rgb(37, 89, 176);
+    border-bottom-color: rgb(37, 89, 176);
+    -unity-font-definition: initial;
+    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Bold.ttf?fileID=12800000&guid=7dfc2e1472ac84e1bb749a8a9f934483&type=3#OpenSans-Bold');
 }

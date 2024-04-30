@@ -4,21 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using UnityEngine;
 
 namespace DataskopAR.Data {
 
 	[UsedImplicitly]
 	public class Project {
-
-#region Properties
-
-		public int ID { get; set; }
-		public ProjectInformation Information { get; set; }
-		public AdditionalProperties Properties { get; set; }
-		public ICollection<Device> Devices { get; set; }
-
-#endregion
 
 #region Constructors
 
@@ -36,6 +26,18 @@ namespace DataskopAR.Data {
 			}
 
 		}
+
+#endregion
+
+#region Properties
+
+		public int ID { get; set; }
+
+		public ProjectInformation Information { get; set; }
+
+		public AdditionalProperties Properties { get; set; }
+
+		public ICollection<Device> Devices { get; set; }
 
 #endregion
 
@@ -124,7 +126,9 @@ namespace DataskopAR.Data {
 					devices.Add(new Device(
 						measurementDefinition.DeviceId,
 						measurementDefinition.DeviceId,
-						new List<MeasurementDefinition> { measurementDefinition }
+						new List<MeasurementDefinition> {
+							measurementDefinition
+						}
 					));
 				else {
 					foundDevice.MeasurementDefinitions.Add(measurementDefinition);
