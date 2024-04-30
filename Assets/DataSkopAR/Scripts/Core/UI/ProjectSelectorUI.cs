@@ -128,8 +128,12 @@ namespace DataskopAR.UI {
 			}
 
 			Label noProjectsText = new() {
-				text = "No Projects found!"
+				text = "No Projects available!"
 			};
+
+			noProjectsText.style.fontSize = new StyleLength(32);
+			noProjectsText.style.unityFontStyleAndWeight = new StyleEnum<FontStyle>(FontStyle.Bold);
+			noProjectsText.style.alignSelf = new StyleEnum<Align>(Align.Center);
 
 			ProjectsContainer.Add(noProjectsText);
 
