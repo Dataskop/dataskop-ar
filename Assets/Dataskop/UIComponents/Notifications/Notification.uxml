@@ -1,11 +1,11 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Template name="Icon" src="project://database/Assets/DataskopAR/UIComponents/Icons/Icon.uxml?fileID=9197481963319205126&amp;guid=aaf0827bc96ca404f8870f30bd1c327c&amp;type=3#Icon" />
-    <Style src="project://database/Assets/DataskopAR/UIComponents/Icons/icon.uss?fileID=7433441132597879392&amp;guid=68e2cd5ad8ff1df4c97e6a83c10b6070&amp;type=3#icon" />
-    <Style src="project://database/Assets/DataskopAR/UIComponents/Notifications/notification.uss?fileID=7433441132597879392&amp;guid=de3c2176b03eb014b8050f9e5302d46d&amp;type=3#notification" />
-    <Style src="project://database/Assets/DataskopAR/Prefabs/UI/variables.uss?fileID=7433441132597879392&amp;guid=23af47ffc3ef28f43943c55011ed8487&amp;type=3#variables" />
+    <ui:Template name="Icon" src="project://database/Assets/Dataskop/UIComponents/Icons/Icon.uxml?fileID=9197481963319205126&amp;guid=aaf0827bc96ca404f8870f30bd1c327c&amp;type=3#Icon" />
+    <Style src="project://database/Assets/Dataskop/UIComponents/Icons/icon.uss?fileID=7433441132597879392&amp;guid=68e2cd5ad8ff1df4c97e6a83c10b6070&amp;type=3#icon" />
+    <Style src="project://database/Assets/Dataskop/UIComponents/Notifications/notification.uss?fileID=7433441132597879392&amp;guid=de3c2176b03eb014b8050f9e5302d46d&amp;type=3#notification" />
+    <Style src="project://database/Assets/Dataskop/Prefabs/UI/variables.uss?fileID=7433441132597879392&amp;guid=23af47ffc3ef28f43943c55011ed8487&amp;type=3#variables" />
     <ui:VisualElement name="container" picking-mode="Ignore" style="align-items: flex-end; flex-wrap: nowrap; width: 100%; height: 100%;">
         <ui:VisualElement name="notification-box" class="notification notification--white" style="left: 640px; right: 0; align-items: center; justify-content: flex-start; top: 100px; position: relative; white-space: normal; flex-wrap: nowrap; background-color: rgba(255, 255, 255, 0.8); height: auto; min-height: 120px; flex-direction: row; max-height: none; -unity-text-align: middle-left;">
-            <ui:Instance template="Icon" name="icon" style="background-image: url(&apos;project://database/Assets/DataskopAR/Images/Icons/alert.png?fileID=21300000&amp;guid=6fe7ad4363d6fe744966294110d7dde9&amp;type=3#alert&apos;); width: 100px; height: 100px; align-items: flex-start; justify-content: flex-start;" />
+            <ui:Instance template="Icon" name="icon" style="background-image: url(&apos;project://database/Assets/Dataskop/Images/Icons/alert.png?fileID=21300000&amp;guid=6fe7ad4363d6fe744966294110d7dde9&amp;type=3#alert&apos;); width: 100px; height: 100px; align-items: flex-start; justify-content: flex-start;" />
             <ui:Label text="ERROR_MESSAGE_001 #$!&amp;%--..." name="text" class="notification__text" style="white-space: normal; height: 100px; align-items: stretch; -unity-text-align: middle-left; color: rgb(27, 27, 27); font-size: 32px; width: 80%;" />
         </ui:VisualElement>
     </ui:VisualElement>
