@@ -3,5 +3,6 @@
 	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=5071444F9D07EB488182B6366F1EBD51/RelativePath/@EntryValue">..\Dataskop.DotSettings</s:String>
 	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=5071444F9D07EB488182B6366F1EBD51/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File5071444F9D07EB488182B6366F1EBD51/@KeyIndexDefined">True</s:Boolean>
+	
 	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File5071444F9D07EB488182B6366F1EBD51/RelativePriority/@EntryValue">1</s:Double>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=FHSTP/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
