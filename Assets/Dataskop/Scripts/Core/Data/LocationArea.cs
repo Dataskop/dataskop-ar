@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Mapbox.Utils;
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	public class LocationArea {
 

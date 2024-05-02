@@ -1,11 +1,11 @@
 {
-    "name": "DataskopAR.PlayMode.Tests",
-    "rootNamespace": "DataskopAR.PlayMode.Tests",
+    "name": "Dataskop.PlayMode.Tests",
+    "rootNamespace": "Dataskop.PlayMode.Tests",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "DataskopAR",
-        "Unity.XR.ARFoundation"
+        "Unity.XR.ARFoundation",
+        "Dataskop"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

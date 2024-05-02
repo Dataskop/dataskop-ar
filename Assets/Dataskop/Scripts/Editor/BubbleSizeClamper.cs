@@ -1,4 +1,4 @@
-using DataskopAR.Entities.Visualizations;
+using Dataskop.Entities.Visualizations;
 using UnityEditor;
 using UnityEngine;
 

@@ -1,4 +1,4 @@
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	public class Notification {
 

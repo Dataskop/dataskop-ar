@@ -3,7 +3,7 @@ using System.Collections;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace DataskopAR {
+namespace Dataskop {
 
 	public static class Lerper {
 

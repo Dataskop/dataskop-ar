@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	[CreateAssetMenu(fileName = "Location", menuName = "Locations/Add Location...", order = 1)]
 	public class LocationData : ScriptableObject {

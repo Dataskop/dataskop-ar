@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DataskopAR.Data;
+using Dataskop.Data;
 using UnityEngine;
 
-namespace DataskopAR.Entities.Visualizations {
+namespace Dataskop.Entities.Visualizations {
 
 	public class TimeSeries : MonoBehaviour {
 

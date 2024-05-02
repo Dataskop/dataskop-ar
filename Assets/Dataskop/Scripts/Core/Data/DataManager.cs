@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using DataskopAR.UI;
+using Dataskop.UI;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Events;
 using Debug = UnityEngine.Debug;
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	public class DataManager : MonoBehaviour {
 

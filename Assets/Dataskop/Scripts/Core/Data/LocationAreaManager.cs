@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using DataskopAR.Utils;
+using Dataskop.Utils;
 using Mapbox.Unity.Location;
 using Mapbox.Unity.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	/// <summary>
 	///     Responsible for tracking if the user is in a predefined location area.

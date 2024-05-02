@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using DataskopAR.Data;
+using Dataskop.Data;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public class NotificationHandlerUI : MonoBehaviour {
 

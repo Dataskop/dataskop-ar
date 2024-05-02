@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DataskopAR.Interaction;
+using Dataskop.Interaction;
 using Mapbox.Unity.Map;
 using Mapbox.Unity.Utilities;
 using Mapbox.Utils;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	public class DataPointsManager : MonoBehaviour {
 

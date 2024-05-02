@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DataskopAR.Utils;
+using Dataskop.Utils;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
-namespace DataskopAR.Interaction {
+namespace Dataskop.Interaction {
 
 	/// <summary>
 	///     Responsible for aligning the AR Worlds forward axis to North of earth.

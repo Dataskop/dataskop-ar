@@ -1,9 +1,9 @@
-using DataskopAR.UI;
+using Dataskop.UI;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-namespace DataskopAR {
+namespace Dataskop {
 
 	public class InfoCardMap : InfoCardComponent {
 

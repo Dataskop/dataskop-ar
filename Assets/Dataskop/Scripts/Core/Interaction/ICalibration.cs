@@ -1,6 +1,6 @@
 using System;
 
-namespace DataskopAR.Interaction {
+namespace Dataskop.Interaction {
 
 	public interface ICalibration {
 
