@@ -1,6 +1,6 @@
 using System;
 
-namespace DataskopAR.Utils {
+namespace Dataskop.Utils {
 
 	public static class RandomExtensions {
 

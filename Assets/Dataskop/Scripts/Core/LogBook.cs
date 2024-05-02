@@ -2,7 +2,7 @@ using Mapbox.Utils;
 using TMPro;
 using UnityEngine;
 
-namespace DataskopAR {
+namespace Dataskop {
 
 	/// <summary>
 	///     Used for printing out simple debugging messages and values in a log window on the screen.

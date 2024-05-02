@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	public class Position {
 

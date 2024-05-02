@@ -1,4 +1,4 @@
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public enum UISection {
 

@@ -1,11 +1,11 @@
 {
-    "name": "DataskopAR.EditMode.Tests",
-    "rootNamespace": "DataskopAR.EditMode.Tests",
+    "name": "Dataskop.EditMode.Tests",
+    "rootNamespace": "Dataskop.EditMode.Tests",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "DataskopAR",
-        "Unity.XR.ARFoundation"
+        "Unity.XR.ARFoundation",
+        "Dataskop"
     ],
     "includePlatforms": [
         "Editor"

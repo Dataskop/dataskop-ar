@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	[UsedImplicitly]
 	public class DataAttribute {

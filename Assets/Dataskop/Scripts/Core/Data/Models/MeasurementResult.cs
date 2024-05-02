@@ -5,7 +5,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	[UsedImplicitly]
 	public class MeasurementResult {

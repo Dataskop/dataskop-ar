@@ -1,12 +1,12 @@
 ﻿#nullable enable
 
 using System.Collections;
-using DataskopAR.Data;
-using DataskopAR.Entities.Visualizations;
+using Dataskop.Data;
+using Dataskop.Entities.Visualizations;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace DataskopAR.Interaction {
+namespace Dataskop.Interaction {
 
 	public class DataPointSelector : MonoBehaviour {
 

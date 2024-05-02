@@ -1,10 +1,10 @@
 using System.Collections;
-using DataskopAR.Data;
+using Dataskop.Data;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
     public class HistoryUI : MonoBehaviour {
 

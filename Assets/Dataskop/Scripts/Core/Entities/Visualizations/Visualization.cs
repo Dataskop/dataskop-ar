@@ -1,9 +1,9 @@
 using System;
-using DataskopAR.Data;
-using DataskopAR.Interaction;
+using Dataskop.Data;
+using Dataskop.Interaction;
 using UnityEngine;
 
-namespace DataskopAR.Entities.Visualizations {
+namespace Dataskop.Entities.Visualizations {
 
 	public abstract class Visualization : MonoBehaviour {
 

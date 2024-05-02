@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using DataskopAR.Data;
+using Dataskop.Data;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public class VisSelectorUI : MonoBehaviour {
 

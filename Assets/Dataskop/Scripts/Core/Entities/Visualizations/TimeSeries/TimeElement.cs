@@ -1,11 +1,11 @@
 using System.Globalization;
-using DataskopAR.Data;
+using Dataskop.Data;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DataskopAR.Entities.Visualizations {
+namespace Dataskop.Entities.Visualizations {
 
 	public class TimeElement : MonoBehaviour {
 

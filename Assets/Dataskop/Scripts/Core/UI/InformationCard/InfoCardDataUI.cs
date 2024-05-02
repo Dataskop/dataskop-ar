@@ -1,9 +1,9 @@
-using DataskopAR.Data;
+using Dataskop.Data;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public class InfoCardDataUI : InfoCardComponent {
 

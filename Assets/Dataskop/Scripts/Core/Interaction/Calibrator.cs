@@ -1,12 +1,12 @@
 using System;
-using DataskopAR.Data;
+using Dataskop.Data;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.ARFoundation;
 
-namespace DataskopAR.Interaction {
+namespace Dataskop.Interaction {
 
 	public class Calibrator : MonoBehaviour {
 
