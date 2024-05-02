@@ -59,7 +59,10 @@ namespace DataskopAR.Interaction {
 			groundLevelCalibrator.CalibrationCompleted += OnCalibratorContinued;
 			roomCalibrator.CalibrationCompleted += OnCalibratorContinued;
 
-			FPSManager.SetApplicationTargetFrameRate(60);
+		}
+
+		private void Awake() {
+			FPSManager.SetApplicationTargetFrameRate(30);
 		}
 
 		private void Start() {
