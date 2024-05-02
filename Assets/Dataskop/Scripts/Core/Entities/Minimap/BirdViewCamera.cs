@@ -1,7 +1,7 @@
 using Mapbox.Unity.Map;
 using UnityEngine;
 
-namespace DataskopAR.Entities {
+namespace Dataskop.Entities {
 
 	public class BirdViewCamera : MonoBehaviour {
 

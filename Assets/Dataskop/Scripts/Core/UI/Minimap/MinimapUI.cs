@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-namespace DataskopAR {
+namespace Dataskop {
 
 	public class MinimapUI : MonoBehaviour {
 

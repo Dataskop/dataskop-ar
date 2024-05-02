@@ -1,7 +1,7 @@
-using DataskopAR.Entities.Visualizations;
+using Dataskop.Entities.Visualizations;
 using NUnit.Framework;
 
-namespace DataskopAR.EditMode.Tests {
+namespace Dataskop.EditMode.Tests {
 
 	[TestFixture] [Category("Dataskop")]
 	public class BubbleUtilsTests {

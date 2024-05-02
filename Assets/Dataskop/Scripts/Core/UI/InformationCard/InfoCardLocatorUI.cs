@@ -1,7 +1,7 @@
-using DataskopAR.Data;
+using Dataskop.Data;
 using UnityEngine.UIElements;
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public class InfoCardLocatorUI : InfoCardComponent {
 

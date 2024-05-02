@@ -1,6 +1,6 @@
 ﻿#nullable enable
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	public sealed class UserData {
 

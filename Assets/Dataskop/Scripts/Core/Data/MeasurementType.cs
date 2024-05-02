@@ -1,4 +1,4 @@
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	public enum MeasurementType {
 

@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using DataskopAR.Data;
-using DataskopAR.Interaction;
+using Dataskop.Data;
+using Dataskop.Interaction;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public class InfoCardStateManager : MonoBehaviour {
 

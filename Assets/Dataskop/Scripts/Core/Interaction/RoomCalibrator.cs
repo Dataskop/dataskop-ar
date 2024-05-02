@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
-namespace DataskopAR.Interaction {
+namespace Dataskop.Interaction {
 
 	public class RoomCalibrator : MonoBehaviour, ICalibration {
 

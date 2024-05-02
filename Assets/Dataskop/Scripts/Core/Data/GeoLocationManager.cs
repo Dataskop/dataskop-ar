@@ -2,7 +2,7 @@ using Mapbox.Unity.Location;
 using Mapbox.Unity.Utilities;
 using UnityEngine;
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	public class GeoLocationManager : MonoBehaviour {
 

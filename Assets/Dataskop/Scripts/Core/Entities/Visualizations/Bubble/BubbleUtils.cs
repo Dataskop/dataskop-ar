@@ -1,7 +1,7 @@
-using DataskopAR.Utils;
+using Dataskop.Utils;
 using UnityEngine;
 
-namespace DataskopAR.Entities.Visualizations {
+namespace Dataskop.Entities.Visualizations {
 
 	public static class BubbleUtils {
 

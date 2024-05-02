@@ -2,11 +2,11 @@
 
 using System;
 using System.Threading.Tasks;
-using DataskopAR.UI;
+using Dataskop.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace DataskopAR.Interaction {
+namespace Dataskop.Interaction {
 
 	public class InputHandler : MonoBehaviour {
 

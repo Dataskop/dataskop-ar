@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace DataskopAR {
+namespace Dataskop {
 
 	[Serializable]
 	public struct Style {

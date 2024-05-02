@@ -1,9 +1,9 @@
 #nullable enable
 
-using DataskopAR.Utils;
+using Dataskop.Utils;
 using UnityEngine;
 
-namespace DataskopAR.Entities {
+namespace Dataskop.Entities {
 
 	public class FaceCamera : MonoBehaviour {
 

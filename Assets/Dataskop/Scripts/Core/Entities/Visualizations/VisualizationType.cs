@@ -1,4 +1,4 @@
-namespace DataskopAR {
+namespace Dataskop {
 
 	public enum VisualizationType {
 

@@ -1,8 +1,8 @@
 using System;
-using DataskopAR.UI;
+using Dataskop.UI;
 using UnityEngine;
 
-namespace DataskopAR {
+namespace Dataskop {
 
 	public class UIPointerEventArgs : EventArgs {
 

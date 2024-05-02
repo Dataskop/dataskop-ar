@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace DataskopAR.Entities.Visualizations {
+namespace Dataskop.Entities.Visualizations {
 
 	[Serializable]
 	public struct TimeSeriesConfig {

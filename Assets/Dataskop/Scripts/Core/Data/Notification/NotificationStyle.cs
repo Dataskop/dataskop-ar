@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	public struct NotificationStyle {
 

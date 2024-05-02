@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace DataskopAR.Interaction {
+namespace Dataskop.Interaction {
 
 	public class AREditorInputController : MonoBehaviour {
 
