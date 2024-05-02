@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	public class DataAttributeManager : MonoBehaviour {
 

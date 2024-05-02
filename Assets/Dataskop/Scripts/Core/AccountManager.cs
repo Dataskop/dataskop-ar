@@ -1,7 +1,7 @@
 #nullable enable
 using UnityEngine;
 
-namespace DataskopAR {
+namespace Dataskop {
 
 	public static class AccountManager {
 

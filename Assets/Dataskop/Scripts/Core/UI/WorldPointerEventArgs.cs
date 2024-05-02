@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace DataskopAR {
+namespace Dataskop {
 
 	public class WorldPointerEventArgs : EventArgs {
 

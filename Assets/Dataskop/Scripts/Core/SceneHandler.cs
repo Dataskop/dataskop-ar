@@ -1,7 +1,7 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.ARFoundation;
 
-namespace DataskopAR {
+namespace Dataskop {
 
 	/// <summary>
 	///     Manages Scenes and their functions across the app.

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
-namespace DataskopAR {
+namespace Dataskop {
 
 	[RequireComponent(typeof(AROcclusionManager))]
 	public class OcclusionHandler : MonoBehaviour {

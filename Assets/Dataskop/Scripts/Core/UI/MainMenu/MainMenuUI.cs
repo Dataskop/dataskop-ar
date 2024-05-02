@@ -1,5 +1,5 @@
 using System.Collections;
-using DataskopAR.Data;
+using Dataskop.Data;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
@@ -14,7 +14,7 @@ using UnityEngine.Android;
 using UnityEngine.iOS;
 #endif
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public class MainMenuUI : MonoBehaviour {
 

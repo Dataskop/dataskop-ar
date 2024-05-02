@@ -1,10 +1,10 @@
 using System;
-using DataskopAR.Interaction;
-using DataskopAR.Utils;
+using Dataskop.Interaction;
+using Dataskop.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public class CalibratorUI : MonoBehaviour {
 

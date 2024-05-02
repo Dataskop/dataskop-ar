@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using DataskopAR.Data;
-using DataskopAR.Interaction;
+using Dataskop.Data;
+using Dataskop.Interaction;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public class InfoCardManager : MonoBehaviour {
 

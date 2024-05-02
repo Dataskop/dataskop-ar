@@ -1,9 +1,9 @@
 ﻿#nullable enable
 
-using DataskopAR.UI;
+using Dataskop.UI;
 using UnityEngine;
 
-namespace DataskopAR.Interaction {
+namespace Dataskop.Interaction {
 
 	public struct PointerInteraction {
 
