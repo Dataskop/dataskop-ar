@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using DataskopAR.Data;
 using UnityEngine;
 using UnityEngine.Events;
@@ -181,8 +182,8 @@ namespace DataskopAR.UI {
             float tickSpacing = sliderTrackHeight / (dataPointsCount / (float)tickInterval);
 
             // Generate ticks
-            for (int i = 0; i < dataPointsCount; i += tickInterval) {
-                VisualElement tick = new VisualElement();
+            for (int i = tickInterval; i < dataPointsCount; i += tickInterval) {
+                VisualElement tick = new();
                 tick.AddToClassList("slider-tick");
 
                 // Set the size of the tick
@@ -194,19 +195,44 @@ namespace DataskopAR.UI {
 
                 // The position is calculated from the bottom (sliderTrackHeight - position - half height of tick)
                 // to correctly align with the vertical slider's orientation
-                tick.style.top = sliderTrackHeight - tickPosition - (tick.resolvedStyle.height / 2);
-                Debug.Log(sliderTrackHeight + " " + tickPosition + " " + tick.style.height);
+                float topValue = sliderTrackHeight - tickPosition - 6 / 2; // 6 is the height of the tick
+                tick.style.top = new StyleLength(new Length(topValue, LengthUnit.Pixel));
+                
                 // Add the tick to the slider container
                 HistorySliderContainer.Add(tick);
             }
+            
+            // Add labels for start, middle, and end data points
+            AddLabelAtPosition("1", sliderTrackHeight); // Bottom label
+            AddLabelAtPosition((dataPointsCount / 2).ToString(), sliderTrackHeight / 2); // Middle label
+            AddLabelAtPosition(dataPointsCount.ToString(), 0); // Top label
         }
 
         private void ClearTicks() {
             // Get all tick elements and remove them
-            var ticks = HistorySliderContainer.Query(className: "slider-tick").ToList();
-            foreach (var tick in ticks) {
+            List<VisualElement> ticks = HistorySliderContainer.Query(className: "slider-tick").ToList();
+            foreach (VisualElement tick in ticks) {
                 tick.RemoveFromHierarchy();
             }
+        }
+        
+        private void AddLabelAtPosition(string text, float positionFromBottom) {
+            Label label = new() {
+                text = text,
+                style = {
+                    position = UnityEngine.UIElements.Position.Absolute,
+                    bottom = positionFromBottom,
+                    width = 100,
+                    height = 100,
+                    color = Color.white,
+                    fontSize = 72,
+                    unityTextAlign = TextAnchor.MiddleCenter,
+                    justifyContent = Justify.Center,
+                }
+            };
+            
+            // Additional styling here (font, color, etc.)
+            HistorySliderContainer.Add(label);
         }
 #endregion
 
