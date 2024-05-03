@@ -116,10 +116,10 @@ namespace Dataskop.UI {
 
 			HistoryIcon = HistoryButton.Q<VisualElement>("Icon");
 
-			ToggleOcclusionButton = SettingsMenuContainer.Q<Button>("Option_03");
+			ToggleOcclusionButton = SettingsMenuContainer.Q<Button>("Option_Occlusion");
 			ToggleOcclusionButton.RegisterCallback<ClickEvent>(_ => ToggleOcclusion());
 
-			ToggleMinimapButton = SettingsMenuContainer.Q<Button>("Option_05");
+			ToggleMinimapButton = SettingsMenuContainer.Q<Button>("Option_Minimap");
 			ToggleMinimapButton.RegisterCallback<ClickEvent>(_ => ToggleMinimap());
 
 			ResetCalibrationButton = SettingsMenuContainer.Q<Button>("ResetCalibrationButton");
@@ -134,7 +134,7 @@ namespace Dataskop.UI {
 			VersionLabel.text = "DataskopAR - " + Version.ID;
 
 			TitleLabel = Root.Q<Label>("MenuTitle");
-
+			
 			AmountInput = SettingsMenuContainer.Q<TextField>("AmountInput");
 			AmountInput.RegisterCallback<ChangeEvent<string>>(OnFetchAmountInputChanged);
 
