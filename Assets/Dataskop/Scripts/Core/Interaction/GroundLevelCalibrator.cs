@@ -131,7 +131,11 @@ namespace Dataskop.Interaction {
 		}
 
 		private GameObject GetTappedPArPlane(GameObject pointedObject) {
-			return !pointedObject.CompareTag(PlaneTag) ? null : pointedObject;
+
+			if (pointedObject == null) return null;
+
+			return pointedObject.CompareTag(PlaneTag) ? pointedObject : null;
+
 		}
 
 		public void Disable() {
