@@ -29,12 +29,13 @@ namespace Dataskop.Data {
 
 		private void OnEnable() {
 			dataManager.HasLoadedProjectData += ActivateTracking;
-			imageManager.trackedImagesChanged += OnTrackedImagesChanged;
-			ARImageObjects = new Dictionary<ARTrackedImage, Device>();
 		}
 
 		private void ActivateTracking(Project loadedProject) {
 			ShouldTrackImages = true;
+			imageManager.enabled = true;
+			imageManager.trackedImagesChanged += OnTrackedImagesChanged;
+			ARImageObjects = new Dictionary<ARTrackedImage, Device>();
 		}
 
 		private void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs e) {
@@ -48,90 +49,104 @@ namespace Dataskop.Data {
 			}
 
 			foreach (ARTrackedImage i in e.added) {
-
-				string encodedDeviceName = i.referenceImage.name;
-
-				Device scannedDevice = dataManager.SelectedProject.Devices.FirstOrDefault(device => device.ID == encodedDeviceName);
-
-				if (scannedDevice == null) {
-					continue;
-				}
-
-				ARImageObjects.Add(i, scannedDevice);
-
-				string scannedAttribute = scannedDevice!.MeasurementDefinitions?.FirstOrDefault()!.AttributeId;
-
-				if (string.IsNullOrEmpty(scannedAttribute)) {
-					continue;
-				}
-
-				dataAttributeManager.SetSelectedAttribute(scannedAttribute);
-
-				DataPoint dataPoint = dataPointManager.DataPoints.FirstOrDefault(dp => dp.Device == scannedDevice);
-
-				if (dataPoint == null) {
-					continue;
-				}
-
-				float visOffset = dataPoint.Vis.Offset.y;
-				Vector3 position = i.transform.position;
-				Vector3 imagePosition = new(position.x, position.y - visOffset, position.z);
-				dataPointManager.PlaceDataPoint(imagePosition, dataPoint.transform);
-
+				OnARImageAdded(i);
 			}
 
 			foreach (ARTrackedImage i in e.updated) {
+				OnARImageUpdated(i);
+			}
 
-				if (i.trackingState == TrackingState.Tracking) {
+		}
 
-					if (ARImageObjects.TryGetValue(i, out Device device)) {
+		private void OnARImageAdded(ARTrackedImage trackedImage) {
 
-						string scannedAttribute = device!.MeasurementDefinitions?.FirstOrDefault()!.AttributeId;
+			string encodedDeviceName = trackedImage.referenceImage.name;
 
-						if (string.IsNullOrEmpty(scannedAttribute)) {
-							continue;
-						}
+			Device scannedDevice = dataManager.SelectedProject.Devices.FirstOrDefault(device => device.ID == encodedDeviceName);
 
-						dataAttributeManager.SetSelectedAttribute(scannedAttribute);
+			if (scannedDevice == null) {
+				return;
+			}
 
-						DataPoint dataPoint = dataPointManager.DataPoints.FirstOrDefault(dp => dp.Device == device);
+			ARImageObjects.Add(trackedImage, scannedDevice);
 
-						if (dataPoint == null) {
-							continue;
-						}
+			string scannedAttribute = scannedDevice!.MeasurementDefinitions?.FirstOrDefault()!.AttributeId;
 
-						if (dataPoint.gameObject.TryGetComponent(out ARAnchor anchor)) {
-							Destroy(anchor);
-						}
+			if (string.IsNullOrEmpty(scannedAttribute)) {
+				return;
+			}
 
-						Vector3 position = i.transform.position;
-						Vector3 imagePosition = new(position.x, position.y - dataPoint.Vis.Offset.y, position.z);
-						dataPointManager.PlaceDataPoint(imagePosition, dataPoint.transform);
+			dataAttributeManager.SetSelectedAttribute(scannedAttribute);
 
+			DataPoint dataPoint = dataPointManager.DataPoints.FirstOrDefault(dp => dp.Device == scannedDevice);
+
+			if (dataPoint == null) {
+				return;
+			}
+
+			float visOffset = dataPoint.Vis.Offset.y;
+			Vector3 position = trackedImage.transform.position;
+			Vector3 imagePosition = new(position.x, position.y - visOffset, position.z);
+			dataPointManager.PlaceDataPoint(imagePosition, dataPoint.transform);
+
+		}
+
+		private void OnARImageUpdated(ARTrackedImage trackedImage) {
+
+			// Add the AR Image if it is already added to the System before Projects are loaded
+			// but not in the local Dictionary.
+			if (!ARImageObjects.ContainsKey(trackedImage)) {
+				OnARImageAdded(trackedImage);
+			}
+
+			if (trackedImage.trackingState == TrackingState.Tracking) {
+
+				if (ARImageObjects.TryGetValue(trackedImage, out Device device)) {
+
+					string scannedAttribute = device!.MeasurementDefinitions?.FirstOrDefault()!.AttributeId;
+
+					if (string.IsNullOrEmpty(scannedAttribute)) {
+						return;
 					}
 
-				}
-
-				if (i.trackingState == TrackingState.Limited) {
-
-					if (!ARImageObjects.TryGetValue(i, out Device device)) {
-						continue;
-					}
+					dataAttributeManager.SetSelectedAttribute(scannedAttribute);
 
 					DataPoint dataPoint = dataPointManager.DataPoints.FirstOrDefault(dp => dp.Device == device);
 
 					if (dataPoint == null) {
-						continue;
+						return;
 					}
 
-					if (dataPoint.gameObject.TryGetComponent(out ARAnchor _)) {
-						continue;
+					if (dataPoint.gameObject.TryGetComponent(out ARAnchor anchor)) {
+						Destroy(anchor);
 					}
 
-					dataPoint.gameObject.AddComponent<ARAnchor>();
-					dataPointManager.LastKnownDevicePositions[device] = dataPoint.transform.position;
+					Vector3 position = trackedImage.transform.position;
+					Vector3 imagePosition = new(position.x, position.y - dataPoint.Vis.Offset.y, position.z);
+					dataPointManager.PlaceDataPoint(imagePosition, dataPoint.transform);
 
 				}
+
+			}
+
+			if (trackedImage.trackingState == TrackingState.Limited) {
+
+				if (!ARImageObjects.TryGetValue(trackedImage, out Device device)) {
+					return;
+				}
+
+				DataPoint dataPoint = dataPointManager.DataPoints.FirstOrDefault(dp => dp.Device == device);
+
+				if (dataPoint == null) {
+					return;
+				}
+
+				if (dataPoint.gameObject.TryGetComponent(out ARAnchor _)) {
+					return;
+				}
+
+				dataPoint.gameObject.AddComponent<ARAnchor>();
+				dataPointManager.LastKnownDevicePositions[device] = dataPoint.transform.position;
 
 			}
 
