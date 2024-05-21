@@ -93,19 +93,16 @@ namespace Dataskop.Data {
 
 		}
 
-		public void SetDataPointVisualization(VisualizationOption visOpt) {
+		private void SetDataPointVisualization(DataPoint dp, VisualizationOption visOpt) {
 
 			if (VisualizationRepository.IsAvailable(visOpt.Type.FirstCharToUpper())) {
 
 				GameObject vis = VisualizationRepository.GetVisualization(visOpt.Type.FirstCharToUpper());
 
-				foreach (DataPoint dp in DataPoints) {
-					ToggleTimeSeries(dp, false);
-					dp.SetVis(vis);
-					dp.Vis.VisOption = visOpt;
-					dp.Vis.ApplyStyle(dp.Vis.VisOption.Style);
-				}
-
+				ToggleTimeSeries(dp, false);
+				dp.SetVis(vis);
+				dp.Vis.VisOption = visOpt;
+				dp.Vis.ApplyStyle(dp.Vis.VisOption.Style);
 				onVisualizationChanged?.Invoke(visOpt);
 
 			}
@@ -194,6 +191,14 @@ namespace Dataskop.Data {
 
 		}
 
+		public void OnVisualizationSelected(VisualizationOption visOpt) {
+
+			foreach (DataPoint dp in DataPoints) {
+				SetDataPointVisualization(dp, visOpt);
+			}
+
+		}
+
 		public void UpdateDataPoints(DataAttribute attribute) {
 
 			if (HasLoadedDataPoints) {
@@ -230,20 +235,18 @@ namespace Dataskop.Data {
 					dataPointInstance.AuthorRepository = AuthorRepository;
 					dataPointInstance.SetMeasurementResult(dataPointInstance.MeasurementDefinition.GetLatestMeasurementResult());
 
+					SetDataPointVisualization(dataPointInstance, DataAttributeManager.SelectedAttribute.VisOptions.First());
+
 					//Move the DataPoint to its location
 					if (AppOptions.DemoMode) {
 
 						Vector3 GetLastKnownDevicePosition(Device device) {
-
-							if (LastKnownDevicePositions.TryGetValue(device, out Vector3 position)) {
-								return position;
-							}
-
-							return new Vector3(-1000, -1000, -1000);
-
+							return LastKnownDevicePositions.TryGetValue(device, out Vector3 position) ? position
+								: new Vector3(-1000, -1000, -1000);
 						}
 
-						PlaceDataPoint(GetLastKnownDevicePosition(projectDevices[i]), dataPointInstance.transform);
+						// Subtract Offset to place the Vis on top of the found images
+						PlaceDataPoint(GetLastKnownDevicePosition(projectDevices[i]) - dataPointInstance.Vis.Offset, dataPointInstance.transform);
 
 					}
 					else {
@@ -255,8 +258,6 @@ namespace Dataskop.Data {
 				}
 
 			}
-
-			SetDataPointVisualization(DataAttributeManager.SelectedAttribute.VisOptions.First());
 
 		}
 
