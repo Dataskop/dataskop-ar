@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Dataskop/Scenes/PreApp.unity
-    guid: f1273edaceb16304ebd11e37db9c0e84
-  - enabled: 1
     path: Assets/Dataskop/Scenes/MainMenu.unity
     guid: 8e4e0da8c8dbcde4a9f507596c2cdc8b
   - enabled: 1
