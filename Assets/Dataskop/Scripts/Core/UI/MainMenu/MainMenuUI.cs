@@ -40,6 +40,10 @@ namespace Dataskop.UI {
 
 		private TextField TokenTextField { get; set; }
 
+		private UnityEngine.UIElements.Button DemoUserButton { get; set; }
+
+		private Label VersionLabel { get; set; }
+
 		private string Token {
 			get => token;
 
@@ -48,8 +52,6 @@ namespace Dataskop.UI {
 				TokenTextField.value = token;
 			}
 		}
-
-		private Label VersionLabel { get; set; }
 
 		private bool HasEnteredToken => TokenTextField?.value != string.Empty;
 
@@ -73,9 +75,17 @@ namespace Dataskop.UI {
 			Root.Q<UnityEngine.UIElements.Button>("btnLogin")
 				.RegisterCallback<ClickEvent>(_ => { OnLoginButtonPressed(); });
 
+			DemoUserButton = Root.Q<UnityEngine.UIElements.Button>("demoUserButton");
+			DemoUserButton.RegisterCallback<ClickEvent>(_ => {
+				TokenTextField.value = defaultToken;
+			});
+
 			TokenTextField = Root.Q<TextField>("txtAPISecret");
-			TokenTextField.value = TokenTextField.text;
 			defaultToken = TokenTextField.value;
+
+			if (AccountManager.IsLoggedIn && AccountManager.TryGetLoginToken() != TokenTextField.value) {
+				TokenTextField.value = AccountManager.TryGetLoginToken();
+			}
 
 			VersionLabel = Root.Q<Label>("footerCopyright");
 			VersionLabel.text = Version.ID + " ©FHSTP (2022-2024)";
@@ -84,6 +94,8 @@ namespace Dataskop.UI {
 		}
 
 		private IEnumerator Start() {
+
+			FPSManager.SetApplicationTargetFrameRate(30);
 
 #if UNITY_IOS
 			yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
