@@ -22,7 +22,7 @@
     -unity-text-align: middle-center;
     white-space: normal;
     color: rgb(27, 27, 27);
-    -unity-font: url('project://database/Assets/Dataskop/UIComponents/MainMenu/Fonts/Inter-Regular.ttf?fileID=12800000&guid=c3cdfb8736a165d448335bd86d03cbbb&type=3#Inter-Regular');
+    -unity-font: url("project://database/Assets/Dataskop/UIComponents/MainMenu/Fonts/Inter-Regular.ttf?fileID=12800000&guid=c3cdfb8736a165d448335bd86d03cbbb&type=3#Inter-Regular");
     justify-content: center;
     height: auto;
 }
@@ -34,7 +34,7 @@
     position: relative;
     background-color: rgb(255, 255, 255);
     font-size: 50px;
-    -unity-font: url('project://database/Assets/Dataskop/Fonts/OpenSans-Semibold.ttf?fileID=12800000&guid=218956a5c2a6e42d6a60afccf80b002b&type=3#OpenSans-Semibold');
+    -unity-font: url("project://database/Assets/Dataskop/Fonts/OpenSans-Semibold.ttf?fileID=12800000&guid=218956a5c2a6e42d6a60afccf80b002b&type=3#OpenSans-Semibold");
     color: rgb(27, 27, 27);
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
@@ -52,7 +52,7 @@
     padding-right: 80px;
     padding-top: 20px;
     padding-bottom: 20px;
-    cursor: url('project://database/Assets/Dataskop/UIComponents/MainMenu/Graphics/mouse-pointer.png?fileID=2800000&guid=390b30118e5d6ac4e96fa9122660a79a&type=3#mouse-pointer');
+    cursor: url("project://database/Assets/Dataskop/UIComponents/MainMenu/Graphics/mouse-pointer.png?fileID=2800000&guid=390b30118e5d6ac4e96fa9122660a79a&type=3#mouse-pointer");
     flex-shrink: 1;
     flex-grow: 0;
     flex-direction: column;
@@ -74,7 +74,7 @@
     flex-wrap: wrap;
     align-items: stretch;
     justify-content: flex-start;
-    -unity-font: url('project://database/Assets/Dataskop/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
+    -unity-font: url("project://database/Assets/Dataskop/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular");
     color: rgb(60, 60, 60);
     -unity-text-align: middle-left;
     white-space: normal;
@@ -88,7 +88,7 @@
     -unity-text-outline-color: rgb(46, 52, 64);
     font-size: 80px;
     -unity-font-style: bold;
-    -unity-font: url('project://database/Assets/Dataskop/Fonts/OpenSans-Bold.ttf?fileID=12800000&guid=7dfc2e1472ac84e1bb749a8a9f934483&type=3#OpenSans-Bold');
+    -unity-font: url("project://database/Assets/Dataskop/Fonts/OpenSans-Bold.ttf?fileID=12800000&guid=7dfc2e1472ac84e1bb749a8a9f934483&type=3#OpenSans-Bold");
     -unity-font-definition: initial;
 }
 
@@ -99,7 +99,7 @@
     position: relative;
     background-color: rgb(180, 86, 9);
     font-size: 50px;
-    -unity-font: url('project://database/Assets/Dataskop/Fonts/OpenSans-Semibold.ttf?fileID=12800000&guid=218956a5c2a6e42d6a60afccf80b002b&type=3#OpenSans-Semibold');
+    -unity-font: url("project://database/Assets/Dataskop/Fonts/OpenSans-Semibold.ttf?fileID=12800000&guid=218956a5c2a6e42d6a60afccf80b002b&type=3#OpenSans-Semibold");
     color: rgb(245, 245, 245);
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
@@ -109,7 +109,7 @@
     border-right-width: 0;
     border-top-width: 0;
     border-bottom-width: 6px;
-    cursor: url('project://database/Assets/Dataskop/UIComponents/MainMenu/Graphics/mouse-pointer.png?fileID=2800000&guid=390b30118e5d6ac4e96fa9122660a79a&type=3#mouse-pointer');
+    cursor: url("project://database/Assets/Dataskop/UIComponents/MainMenu/Graphics/mouse-pointer.png?fileID=2800000&guid=390b30118e5d6ac4e96fa9122660a79a&type=3#mouse-pointer");
     flex-shrink: 1;
     flex-grow: 0;
     flex-direction: column;
@@ -137,4 +137,10 @@
     border-top-color: rgb(60, 60, 60);
     border-bottom-color: rgb(60, 60, 60);
     border-bottom-width: 6px;
+}
+
+.token-container {
+    flex-grow: 1;
+    width: 90%;
+    justify-content: space-between;
 }
