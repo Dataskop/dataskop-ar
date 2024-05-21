@@ -96,6 +96,10 @@ namespace Dataskop.Data {
 				return;
 			}
 
+			if (AppOptions.DemoMode) {
+				return;
+			}
+
 			string[] splitResult = qrResult.Code.Split('@', 2);
 			string dataPointLocation = splitResult[1];
 
