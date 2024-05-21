@@ -103,7 +103,6 @@ namespace Dataskop.Data {
 				dp.SetVis(vis);
 				dp.Vis.VisOption = visOpt;
 				dp.Vis.ApplyStyle(dp.Vis.VisOption.Style);
-				onVisualizationChanged?.Invoke(visOpt);
 
 			}
 			else {
@@ -197,6 +196,8 @@ namespace Dataskop.Data {
 				SetDataPointVisualization(dp, visOpt);
 			}
 
+			onVisualizationChanged?.Invoke(visOpt);
+
 		}
 
 		public void UpdateDataPoints(DataAttribute attribute) {
@@ -246,7 +247,8 @@ namespace Dataskop.Data {
 						}
 
 						// Subtract Offset to place the Vis on top of the found images
-						PlaceDataPoint(GetLastKnownDevicePosition(projectDevices[i]) - dataPointInstance.Vis.Offset, dataPointInstance.transform);
+						PlaceDataPoint(GetLastKnownDevicePosition(projectDevices[i]) - dataPointInstance.Vis.Offset,
+							dataPointInstance.transform);
 
 					}
 					else {
