@@ -30,6 +30,7 @@ namespace Dataskop.UI {
 		public UnityEvent scanButtonPressed;
 
 		private string token = string.Empty;
+		private string defaultToken = string.Empty;
 
 #endregion
 
@@ -74,6 +75,7 @@ namespace Dataskop.UI {
 
 			TokenTextField = Root.Q<TextField>("txtAPISecret");
 			TokenTextField.value = TokenTextField.text;
+			defaultToken = TokenTextField.value;
 
 			VersionLabel = Root.Q<Label>("footerCopyright");
 			VersionLabel.text = Version.ID + " ©FHSTP (2022-2024)";
