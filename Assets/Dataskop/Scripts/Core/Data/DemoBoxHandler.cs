@@ -122,8 +122,7 @@ namespace Dataskop.Data {
 					}
 
 					Vector3 position = trackedImage.transform.position;
-					Vector3 imagePosition = new(position.x, position.y - dataPoint.Vis.Offset.y, position.z);
-					dataPointManager.PlaceDataPoint(imagePosition, dataPoint.transform);
+					dataPointManager.PlaceDataPoint(position - dataPoint.Vis.Offset, dataPoint.transform);
 
 				}
 
