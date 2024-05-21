@@ -18,7 +18,7 @@
     border-bottom-left-radius: 12px;
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
-    font-size: 28px;
+    font-size: 20px;
     -unity-text-align: middle-center;
     white-space: normal;
     color: rgb(27, 27, 27);
@@ -140,7 +140,7 @@
 }
 
 .token-container {
-    flex-grow: 1;
     width: 90%;
     justify-content: space-between;
+    margin-bottom: 16px;
 }
