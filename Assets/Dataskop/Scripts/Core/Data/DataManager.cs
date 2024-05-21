@@ -233,6 +233,23 @@ namespace Dataskop.Data {
 				SelectedProject = GetAvailableProjects(Companies)
 					.FirstOrDefault(project => project.Information.Name == projectName);
 
+				if (SelectedProject != null) {
+
+					if (!SelectedProject.Properties.IsDemo) {
+
+						NotificationHandler.Add(new Notification {
+							Category = NotificationCategory.Error,
+							Text = $"Can not load '{projectName}'! Project is not a demo project.",
+							DisplayDuration = NotificationDuration.Medium
+						});
+
+						LoadingIndicator.Hide();
+						return;
+
+					}
+
+				}
+
 				if (SelectedProject == null) {
 					NotificationHandler.Add(new Notification {
 						Category = NotificationCategory.Error,
