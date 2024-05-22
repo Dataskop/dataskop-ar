@@ -6,15 +6,6 @@
       "source": "builtin",
       "dependencies": {}
     },
-    "com.unity.ai.navigation": {
-      "version": "1.1.5",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.modules.ai": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
     "com.unity.burst": {
       "version": "1.8.13",
       "depth": 1,
@@ -270,12 +261,6 @@
         "com.unity.xr.legacyinputhelpers": "2.1.7"
       },
       "url": "https://packages.unity.com"
-    },
-    "com.unity.modules.ai": {
-      "version": "1.0.0",
-      "depth": 1,
-      "source": "builtin",
-      "dependencies": {}
     },
     "com.unity.modules.androidjni": {
       "version": "1.0.0",
