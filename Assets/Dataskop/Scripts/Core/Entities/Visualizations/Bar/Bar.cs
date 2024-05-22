@@ -122,31 +122,40 @@ namespace Dataskop.Entities.Visualizations {
 			IsRotated = false;
 		}
 
-		private void OnVisualizationRotated(bool rotationState) {
+		private void OnVisualizationRotated(bool isRotated) {
 
 			dataDisplay.GetComponent<RectTransform>().sizeDelta = new Vector2(
-				rotationState ? barFrame.localScale.y * 100 : barFrame.localScale.x * 100,
-				rotationState ? barFrame.localScale.x * 100 : barFrame.localScale.y * 100
+				isRotated ? barFrame.localScale.y * 100 : barFrame.localScale.x * 100,
+				isRotated ? barFrame.localScale.x * 100 : barFrame.localScale.y * 100
 			);
 
 			RectTransform maxValueTransform = maxValueTextMesh.GetComponent<RectTransform>();
-			maxValueTransform.anchorMin = rotationState ? new Vector2(1, 0) : new Vector2(0, 1);
-			maxValueTransform.pivot = rotationState ? new Vector2(1, 0.5f) : new Vector2(0.5f, 1);
+			maxValueTransform.anchorMin = isRotated ? new Vector2(1, 0) : new Vector2(0, 1);
+			maxValueTransform.pivot = isRotated ? new Vector2(1, 0.5f) : new Vector2(0.5f, 1);
 
-			maxValueTransform.sizeDelta = rotationState
+			maxValueTransform.sizeDelta = isRotated
 				? new Vector2(80, maxValueTransform.sizeDelta.y)
 				: new Vector2(maxValueTransform.sizeDelta.x, 10);
 
 			RectTransform minValueTransform = minValueTextMesh.GetComponent<RectTransform>();
-			minValueTransform.anchorMax = rotationState ? new Vector2(0, 1) : new Vector2(1, 0);
-			minValueTransform.pivot = rotationState ? new Vector2(0, 0.5f) : new Vector2(0.5f, 0);
+			minValueTransform.anchorMax = isRotated ? new Vector2(0, 1) : new Vector2(1, 0);
+			minValueTransform.pivot = isRotated ? new Vector2(0, 0.5f) : new Vector2(0.5f, 0);
 
-			minValueTransform.sizeDelta = rotationState
+			minValueTransform.sizeDelta = isRotated
 				? new Vector2(80, minValueTransform.sizeDelta.y)
 				: new Vector2(minValueTransform.sizeDelta.x, 10);
 
-			maxValueTextMesh.alignment = rotationState ? TextAlignmentOptions.Right : TextAlignmentOptions.Center;
-			minValueTextMesh.alignment = rotationState ? TextAlignmentOptions.Left : TextAlignmentOptions.Center;
+			RectTransform authorIconTransform = authorIconImageRenderer.GetComponent<RectTransform>();
+			authorIconTransform.anchorMax = isRotated ? new Vector2(0, 0.5f) : new Vector2(0.5f, 1);
+			authorIconTransform.anchorMin = isRotated ? new Vector2(0, 0.5f) : new Vector2(0.5f, 1);
+			authorIconTransform.pivot = isRotated ? new Vector2(0, 0.5f) : new Vector2(0.5f, 1);
+			
+			authorIconTransform.sizeDelta = isRotated
+				? new Vector2(30, minValueTransform.sizeDelta.y)
+				: new Vector2(minValueTransform.sizeDelta.x, -40);
+
+			maxValueTextMesh.alignment = isRotated ? TextAlignmentOptions.Right : TextAlignmentOptions.Center;
+			minValueTextMesh.alignment = isRotated ? TextAlignmentOptions.Left : TextAlignmentOptions.Center;
 		}
 
 		public override void ApplyStyle(VisualizationStyle style) { }
