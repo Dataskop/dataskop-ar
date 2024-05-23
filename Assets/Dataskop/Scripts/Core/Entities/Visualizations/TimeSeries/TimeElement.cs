@@ -43,7 +43,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public int DistanceToDataPoint { get; set; }
 
-		public Image AuthorSprite => authorImageRenderer;
+		private Image AuthorSprite => authorImageRenderer;
 
 #endregion
 
