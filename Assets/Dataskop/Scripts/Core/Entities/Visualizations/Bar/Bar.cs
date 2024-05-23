@@ -21,12 +21,13 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private BarTimeSeries barTimeSeries;
 		[SerializeField] private BoxCollider barCollider;
 		[SerializeField] private Transform visTransform;
-		[SerializeField] private Image authorIconImageRenderer;
 		[SerializeField] private Transform timeElementsContainer;
 
 		[Header("Display References")]
 		[SerializeField] private Transform dataDisplay;
+		[SerializeField] private Transform authorDisplay;
 		[SerializeField] private CanvasGroup canvasGroup;
+		[SerializeField] private Image authorIconImageRenderer;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI minValueTextMesh;
 		[SerializeField] private TextMeshProUGUI maxValueTextMesh;
@@ -112,11 +113,13 @@ namespace Dataskop.Entities.Visualizations {
 			VisTransform.localRotation = Quaternion.Euler(0, 0, -90);
 			VisTransform.localPosition = new Vector3(0, 0, 0);
 			dataDisplay.localRotation = Quaternion.Euler(0, 0, 90);
+			authorDisplay.localRotation = Quaternion.Euler(0, 0, 90);
 			IsRotated = true;
 		}
 
 		private void ResetRotation() {
 			dataDisplay.localRotation = Quaternion.Euler(0, 0, 0);
+			authorDisplay.localRotation = Quaternion.Euler(0, 0, 0);
 			VisTransform.localPosition = new Vector3(0, 0, 0);
 			VisTransform.localRotation = Quaternion.Euler(0, 0, 0);
 			IsRotated = false;
@@ -125,6 +128,11 @@ namespace Dataskop.Entities.Visualizations {
 		private void OnVisualizationRotated(bool isRotated) {
 
 			dataDisplay.GetComponent<RectTransform>().sizeDelta = new Vector2(
+				isRotated ? barFrame.localScale.y * 100 : barFrame.localScale.x * 100,
+				isRotated ? barFrame.localScale.x * 100 : barFrame.localScale.y * 100
+			);
+			
+			authorDisplay.GetComponent<RectTransform>().sizeDelta = new Vector2(
 				isRotated ? barFrame.localScale.y * 100 : barFrame.localScale.x * 100,
 				isRotated ? barFrame.localScale.x * 100 : barFrame.localScale.y * 100
 			);

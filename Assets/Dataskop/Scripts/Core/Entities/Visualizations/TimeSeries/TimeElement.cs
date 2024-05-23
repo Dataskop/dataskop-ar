@@ -15,6 +15,7 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private Image authorImageRenderer;
 		[SerializeField] private CanvasGroup dataDisplayGroup;
 		[SerializeField] private Transform dataDisplay;
+		[SerializeField] private Transform authorDisplay;
 		[SerializeField] private TextMeshProUGUI idTextMesh;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI dateTextMesh;
