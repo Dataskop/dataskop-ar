@@ -674,11 +674,11 @@ MonoBehaviour:
   barTimeSeries: {fileID: 7115935197513389783}
   barCollider: {fileID: 8227051107050634163}
   visTransform: {fileID: 111384382076272558}
-  authorIconImageRenderer: {fileID: 8170059683810698376}
   timeElementsContainer: {fileID: 3192991928674431645}
   dataDisplay: {fileID: 4829779556340036457}
   authorDisplay: {fileID: 3567268958389512691}
   canvasGroup: {fileID: 5703666661579741374}
+  authorIconImageRenderer: {fileID: 8170059683810698376}
   valueTextMesh: {fileID: 7218180205001926802}
   minValueTextMesh: {fileID: 2602751140391987743}
   maxValueTextMesh: {fileID: 4043066396322243113}
