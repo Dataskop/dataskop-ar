@@ -205,7 +205,7 @@ namespace Dataskop.Entities.Visualizations {
 			switch (DataPoint.MeasurementDefinition.MeasurementType) {
 				case MeasurementType.Bool: {
 					bool receivedValue = mr.ReadAsBool();
-					SetPillarHeight(receivedValue ? 1f : 0f, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum, 0,
+					SetPillarHeight(receivedValue ? 1f : 0f, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum, 0.01f,
 						barFrame.localScale.y);
 					SetDisplayValue(receivedValue);
 					dateMesh.text = mr.GetTime();
@@ -213,7 +213,7 @@ namespace Dataskop.Entities.Visualizations {
 				}
 				case MeasurementType.Float: {
 					float receivedValue = mr.ReadAsFloat();
-					SetPillarHeight(receivedValue, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum, 0,
+					SetPillarHeight(receivedValue, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum, 0.01f,
 						barFrame.localScale.y);
 					SetDisplayValue(receivedValue);
 					SetMinMaxDisplayValues(DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
