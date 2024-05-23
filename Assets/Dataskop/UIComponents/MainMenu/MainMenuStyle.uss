@@ -144,3 +144,16 @@
     justify-content: space-between;
     margin-bottom: 16px;
 }
+
+.close-button {
+    flex-grow: 1;
+    position: absolute;
+    left: auto;
+    width: 100px;
+    height: 100px;
+    right: 80px;
+    top: 80px;
+    background-image: url("project://database/Assets/Dataskop/Images/Icons/close.png?fileID=21300000&guid=4a30c3071e8d73845a8a3894b5052fc0&type=3#close");
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    display: none;
+}
