@@ -58,10 +58,10 @@
     flex-direction: column;
     flex-wrap: nowrap;
     -unity-font-style: normal;
-    border-left-color: rgb(0, 80, 150);
-    border-right-color: rgb(0, 80, 150);
-    border-bottom-color: rgb(0, 80, 150);
-    border-top-color: rgb(0, 0, 0);
+    border-left-color: rgb(37, 89, 176);
+    border-right-color: rgb(37, 89, 176);
+    border-bottom-color: rgb(37, 89, 176);
+    border-top-color: rgb(37, 89, 176);
     -unity-font-definition: initial;
     height: 100px;
     width: 400px;
