@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 3144969235732143464}
   - component: {fileID: 3364899615009398887}
   - component: {fileID: 3727521884508567973}
+  - component: {fileID: 153184574128209509}
   m_Layer: 5
   m_Name: AuthorDisplay
   m_TagString: UI
@@ -185,6 +186,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &153184574128209509
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183144034460848072}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &277273715808467015
 GameObject:
   m_ObjectHideFlags: 0
@@ -737,9 +750,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.8509804}
-  m_RaycastTarget: 1
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.7490196}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -822,7 +835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87e261cf233b4604ebd77107b664f47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  authorImageRenderer: {fileID: 6942029397887537568}
+  authorImageRenderer: {fileID: 55894813827171733}
   dataDisplayGroup: {fileID: 7766509825913232323}
   dataDisplay: {fileID: 5459769178977506207}
   authorDisplay: {fileID: 5084747752307191131}

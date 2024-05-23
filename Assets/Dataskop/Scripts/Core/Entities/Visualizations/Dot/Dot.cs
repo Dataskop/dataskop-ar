@@ -75,6 +75,7 @@ namespace Dataskop.Entities.Visualizations {
 			VisTransform.localScale *= Scale;
 			dropShadow.transform.localScale *= Scale;
 			displayTransform.localScale *= Scale;
+			authorIconImageRenderer.transform.localScale *= Scale;
 
 			VisTransform.root.localPosition = Offset;
 			dropShadow.transform.localPosition -= Offset;

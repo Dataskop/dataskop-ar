@@ -32,7 +32,7 @@ namespace Dataskop.Entities.Visualizations {
 			Transform pillarFill = e.gameObject.transform.GetChild(0).GetChild(0);
 			value = Mathf.Clamp(value, min, max);
 			Vector3 localScale = pillarFill.localScale;
-			localScale = new Vector3(localScale.x, MathExtensions.Map(value, min, max, 0, 3), localScale.z);
+			localScale = new Vector3(localScale.x, MathExtensions.Map(value, min, max, 0.01f, 3), localScale.z);
 			pillarFill.localScale = localScale;
 
 			Material meshMaterial = e.gameObject.transform.GetChild(0).GetChild(0).GetComponentInChildren<MeshRenderer>().material;

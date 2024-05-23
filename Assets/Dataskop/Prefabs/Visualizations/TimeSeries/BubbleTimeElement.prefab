@@ -325,7 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.59607846}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -413,6 +413,7 @@ MonoBehaviour:
   authorImageRenderer: {fileID: 2953966143126734680}
   dataDisplayGroup: {fileID: 8892708793082284678}
   dataDisplay: {fileID: 981841606453424108}
+  authorDisplay: {fileID: 0}
   idTextMesh: {fileID: 2778485901469244919}
   valueTextMesh: {fileID: 5945334999765679176}
   dateTextMesh: {fileID: 2442854690279200614}

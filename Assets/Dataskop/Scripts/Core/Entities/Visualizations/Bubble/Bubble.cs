@@ -150,6 +150,7 @@ namespace Dataskop.Entities.Visualizations {
 			if (!visImageRenderer.enabled) {
 				VisTransform.localScale = newBubbleScale;
 				dataDisplay.localScale = newBubbleScale;
+				authorIconImageRenderer.transform.localScale = newBubbleScale * 0.85f;
 				visImageRenderer.enabled = true;
 			}
 			else {
