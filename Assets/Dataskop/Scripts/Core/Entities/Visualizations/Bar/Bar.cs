@@ -149,10 +149,7 @@ namespace Dataskop.Entities.Visualizations {
 			authorIconTransform.anchorMax = isRotated ? new Vector2(0, 0.5f) : new Vector2(0.5f, 1);
 			authorIconTransform.anchorMin = isRotated ? new Vector2(0, 0.5f) : new Vector2(0.5f, 1);
 			authorIconTransform.pivot = isRotated ? new Vector2(0, 0.5f) : new Vector2(0.5f, 1);
-			
-			authorIconTransform.sizeDelta = isRotated
-				? new Vector2(30, minValueTransform.sizeDelta.y)
-				: new Vector2(minValueTransform.sizeDelta.x, -40);
+			authorIconTransform.anchoredPosition = isRotated ? new Vector2(40, 0) : new Vector2(0, -40);
 
 			maxValueTextMesh.alignment = isRotated ? TextAlignmentOptions.Right : TextAlignmentOptions.Center;
 			minValueTextMesh.alignment = isRotated ? TextAlignmentOptions.Left : TextAlignmentOptions.Center;
