@@ -1,10 +1,10 @@
 using System.Collections;
 using Dataskop.Data;
+using Dataskop.Interaction;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 using UnityEngine.XR.ARFoundation;
-using Button = UnityEngine.UI.Button;
 
 #if UNITY_ANDROID
 using UnityEngine.Android;
@@ -22,12 +22,11 @@ namespace Dataskop.UI {
 
 		[Header("References")]
 		[SerializeField] private UIDocument mainMenuUIDoc;
-		[SerializeField] private Button closeBtn;
+		[SerializeField] private ArQrReader qrReader;
 		[SerializeField] private ARSession arSession;
 
 		[Header("Events")]
 		public UnityEvent<string> loginButtonPressed;
-		public UnityEvent scanButtonPressed;
 
 		private string token = string.Empty;
 		private string defaultToken = string.Empty;
@@ -36,11 +35,13 @@ namespace Dataskop.UI {
 
 #region Properties
 
-		private VisualElement Root { get; set; }
+		private VisualElement Container { get; set; }
 
 		private TextField TokenTextField { get; set; }
 
-		private UnityEngine.UIElements.Button DemoUserButton { get; set; }
+		private Button CloseButton { get; set; }
+
+		private Button DemoUserButton { get; set; }
 
 		private Label VersionLabel { get; set; }
 
@@ -60,35 +61,44 @@ namespace Dataskop.UI {
 #region Methods
 
 		public void OnEnable() {
-			Root = mainMenuUIDoc.rootVisualElement;
 
-			Root.Q<UnityEngine.UIElements.Button>("btnScan").RegisterCallback<ClickEvent>(_ => {
-				closeBtn.gameObject.SetActive(true);
-				scanButtonPressed?.Invoke();
-				ToggleMainMenuScreen(false);
+			Container = mainMenuUIDoc.rootVisualElement.Q<VisualElement>("container");
+			CloseButton = mainMenuUIDoc.rootVisualElement.Q<Button>("closeButton");
+
+			Container.Q<Button>("btnScan").RegisterCallback<ClickEvent>(_ => {
+				ToggleElement(CloseButton, true);
+				ToggleElement(Container, false);
 				ToggleCamera(true);
+				qrReader.SetQrScanStatus(true);
 			});
 
-			Root.Q<UnityEngine.UIElements.Button>("btnDemo")
+			Container.Q<Button>("btnDemo")
 				.RegisterCallback<ClickEvent>(_ => { OnDemoButtonPressed(); });
 
-			Root.Q<UnityEngine.UIElements.Button>("btnLogin")
+			Container.Q<Button>("btnLogin")
 				.RegisterCallback<ClickEvent>(_ => { OnLoginButtonPressed(); });
 
-			DemoUserButton = Root.Q<UnityEngine.UIElements.Button>("demoUserButton");
+			DemoUserButton = Container.Q<Button>("demoUserButton");
 			DemoUserButton.RegisterCallback<ClickEvent>(_ => {
 				TokenTextField.value = defaultToken;
 			});
 
-			TokenTextField = Root.Q<TextField>("txtAPISecret");
+			TokenTextField = Container.Q<TextField>("txtAPISecret");
 			defaultToken = TokenTextField.value;
 
 			if (AccountManager.IsLoggedIn && AccountManager.TryGetLoginToken() != TokenTextField.value) {
 				TokenTextField.value = AccountManager.TryGetLoginToken();
 			}
 
-			VersionLabel = Root.Q<Label>("footerCopyright");
+			VersionLabel = Container.Q<Label>("footerCopyright");
 			VersionLabel.text = Version.ID + " ©FHSTP (2022-2024)";
+
+			CloseButton.RegisterCallback<ClickEvent>(_ => {
+				qrReader.SetQrScanStatus(false);
+				ToggleCamera(false);
+				ToggleElement(CloseButton, false);
+				ToggleElement(Container, true);
+			});
 
 			AppOptions.DemoMode = false;
 		}
@@ -111,22 +121,21 @@ namespace Dataskop.UI {
 
 		}
 
-		public void ToggleMainMenuScreen(bool status) {
-			Root.style.visibility = new StyleEnum<Visibility>(status ? Visibility.Visible : Visibility.Hidden);
+		private void ToggleElement(VisualElement element, bool status) {
+			element.style.display = new StyleEnum<DisplayStyle>(status ? DisplayStyle.Flex : DisplayStyle.None);
 		}
 
-		public void ToggleCamera(bool status) {
+		private void ToggleCamera(bool status) {
 			arSession.enabled = status;
-		}
-
-		public void DisableCloseButton() {
-			closeBtn.gameObject.SetActive(false);
 		}
 
 		public void OnQrCodeScanned(QrResult result) {
 
-			DisableCloseButton();
-			ToggleMainMenuScreen(true);
+			qrReader.SetQrScanStatus(false);
+			ToggleCamera(false);
+			ToggleElement(CloseButton, false);
+			ToggleElement(Container, true);
+
 			Token = result.Code;
 
 			NotificationHandler.Add(new Notification {
@@ -147,7 +156,7 @@ namespace Dataskop.UI {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
 					Text = "No token entered!",
-					DisplayDuration = NotificationDuration.Medium
+					DisplayDuration = NotificationDuration.Short
 				});
 			}
 
@@ -165,7 +174,7 @@ namespace Dataskop.UI {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
 					Text = "The provided token is not valid!",
-					DisplayDuration = NotificationDuration.Medium
+					DisplayDuration = NotificationDuration.Short
 				});
 			}
 
@@ -180,7 +189,7 @@ namespace Dataskop.UI {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
 					Text = "Please enter a Demo Token!",
-					DisplayDuration = NotificationDuration.Medium
+					DisplayDuration = NotificationDuration.Short
 				});
 			}
 
