@@ -80,18 +80,6 @@ namespace Dataskop.Data {
 
 		public void Initialize() {
 
-#if UNITY_EDITOR
-
-			if (!AccountManager.IsLoggedIn) {
-
-				if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer) {
-					AccountManager.Login(Environment.GetEnvironmentVariable("DATASKOP_TOKEN", EnvironmentVariableTarget.User));
-				}
-
-			}
-
-#endif
-
 			if (!AccountManager.IsLoggedIn) {
 
 				NotificationHandler.Add(new Notification {
