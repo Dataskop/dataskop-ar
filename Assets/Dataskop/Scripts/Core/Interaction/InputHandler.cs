@@ -48,8 +48,7 @@ namespace Dataskop.Interaction {
 			TapPosition = ctx.ReadValue<Vector2>();
 		}
 
-		public async void OnPointerDownInWorld(WorldPointerEventArgs e) {
-			await Task.Delay(10);
+		public void OnPointerDownInWorld(WorldPointerEventArgs e) {
 
 			if (isInteracting) return;
 
@@ -67,8 +66,7 @@ namespace Dataskop.Interaction {
 			WorldPointerDowned?.Invoke(CurrentPointerInteraction);
 		}
 
-		public async void OnPointerUpInWorld(WorldPointerEventArgs e) {
-			await Task.Delay(10);
+		public void OnPointerUpInWorld(WorldPointerEventArgs e) {
 
 			if (!CurrentPointerInteraction.isDownPhase) return;
 
