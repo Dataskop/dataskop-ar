@@ -5,6 +5,8 @@ namespace Dataskop.Interaction {
 
 	public class AREditorInputController : MonoBehaviour {
 
+#if UNITY_EDITOR
+
 #region Fields
 
 		[SerializeField] private Transform arCamera;
@@ -26,8 +28,6 @@ namespace Dataskop.Interaction {
 #endregion
 
 #region Methods
-
-#if UNITY_EDITOR
 
 		private void Update() {
 			xRotation -= LookDelta.y * rotationSpeedModifier;
@@ -54,9 +54,9 @@ namespace Dataskop.Interaction {
 			}
 		}
 
-#endif
-
 #endregion
+
+#endif
 
 	}
 
