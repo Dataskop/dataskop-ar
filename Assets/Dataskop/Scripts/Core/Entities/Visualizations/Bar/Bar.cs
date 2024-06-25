@@ -131,7 +131,7 @@ namespace Dataskop.Entities.Visualizations {
 				isRotated ? barFrame.localScale.y * 100 : barFrame.localScale.x * 100,
 				isRotated ? barFrame.localScale.x * 100 : barFrame.localScale.y * 100
 			);
-			
+
 			authorDisplay.GetComponent<RectTransform>().sizeDelta = new Vector2(
 				isRotated ? barFrame.localScale.y * 100 : barFrame.localScale.x * 100,
 				isRotated ? barFrame.localScale.x * 100 : barFrame.localScale.y * 100

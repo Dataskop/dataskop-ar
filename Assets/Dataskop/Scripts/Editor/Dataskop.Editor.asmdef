@@ -1,18 +1,18 @@
 {
-    "name": "Dataskop.Editor",
-    "rootNamespace": "Dataskop.Editor",
-    "references": [
-        "GUID:b2fe1ee1a73ab334882a24f8d82da013"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "Dataskop.Editor",
+  "rootNamespace": "Dataskop.Editor",
+  "references": [
+    "GUID:b2fe1ee1a73ab334882a24f8d82da013"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }
