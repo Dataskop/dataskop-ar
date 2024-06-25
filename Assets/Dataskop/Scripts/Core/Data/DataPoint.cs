@@ -7,15 +7,15 @@ namespace Dataskop.Data {
 
 	public class DataPoint : MonoBehaviour {
 
-#region Event
+ 
 
 		public event Action<MeasurementResult> MeasurementResultChanged;
 
 		public event Action<VisualizationType> VisualizationTypeChanged;
 
-#endregion
+  
 
-#region Fields
+ 
 
 		[Header("References")]
 		[SerializeField] private SpriteRenderer mapIconBorder;
@@ -29,9 +29,9 @@ namespace Dataskop.Data {
 
 		private MeasurementResult mResult;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		public MeasurementDefinition MeasurementDefinition { get; set; }
 
@@ -54,9 +54,9 @@ namespace Dataskop.Data {
 
 		public AuthorRepository AuthorRepository { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void Awake() {
 			VisualizationTypeChanged += OnVisChanged;
@@ -154,7 +154,7 @@ namespace Dataskop.Data {
 
 		}
 
-#endregion
+  
 
 	}
 

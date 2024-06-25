@@ -7,7 +7,7 @@ namespace Dataskop.Interaction {
 
 #if UNITY_EDITOR
 
-#region Fields
+ 
 
 		[SerializeField] private Transform arCamera;
 		[SerializeField] private float speedModifier;
@@ -17,17 +17,17 @@ namespace Dataskop.Interaction {
 		private float xRotation;
 		private float yRotation;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private Vector3 MoveDirection { get; set; }
 
 		private Vector2 LookDelta { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void Update() {
 			xRotation -= LookDelta.y * rotationSpeedModifier;
@@ -54,7 +54,7 @@ namespace Dataskop.Interaction {
 			}
 		}
 
-#endregion
+  
 
 #endif
 

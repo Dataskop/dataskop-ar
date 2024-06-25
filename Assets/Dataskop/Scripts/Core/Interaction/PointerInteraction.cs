@@ -7,7 +7,7 @@ namespace Dataskop.Interaction {
 
 	public struct PointerInteraction {
 
-#region Fields
+ 
 
 		public int pointerId;
 
@@ -35,9 +35,9 @@ namespace Dataskop.Interaction {
 
 		public float endTime;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		public float Distance => Mathf.Abs(Vector2.Distance(startPosition, endPosition));
 
@@ -49,16 +49,16 @@ namespace Dataskop.Interaction {
 
 		public float DeltaTime => endTime - startTime;
 
-#endregion
+  
 
-#region Methods
+ 
 
 		public new string ToString() {
 			return
 				$"StartPoint: {startPosition}\nEndPoint: {endPosition}\nDistance: {Distance}\nStart on: {startingGameObject}\nEnd on: {endingGameObject} \nDirection: {Direction}\nDownPhase: {isDownPhase}\nUpPhase: {isUpPhase}\nSwipe: {isSwipe}\nUI: {isUI}";
 		}
 
-#endregion
+  
 
 	}
 

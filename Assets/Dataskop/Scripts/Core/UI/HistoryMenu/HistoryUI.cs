@@ -9,7 +9,7 @@ namespace Dataskop.UI {
 
 	public class HistoryUI : MonoBehaviour {
 
-#region Fields
+ 
 
 		[Header("Events")]
 		public UnityEvent<int, int> sliderChanged;
@@ -19,9 +19,9 @@ namespace Dataskop.UI {
 		[SerializeField] private UIDocument historyMenuDoc;
 		[SerializeField] private DataManager dataManager;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private VisualElement Root { get; set; }
 
@@ -39,9 +39,9 @@ namespace Dataskop.UI {
 
 		private DataPoint SelectedDataPoint { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void OnEnable() {
 
@@ -210,7 +210,7 @@ namespace Dataskop.UI {
 			}
 		}
 
-#endregion
+  
 
 	}
 

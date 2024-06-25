@@ -8,22 +8,22 @@ namespace Dataskop.Interaction {
 
 	public class RoomCalibrator : MonoBehaviour, ICalibration {
 
-#region Constants
+ 
 
 		private const float ProgressDistanceThreshold = 45f;
 
-#endregion
+  
 
-#region Events
+ 
 
 		[Header("Events")]
 		public UnityEvent<float> roomScanProgressed;
 
 		public event Action CalibrationCompleted;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private Camera ArCamera { get; set; }
 
@@ -33,9 +33,9 @@ namespace Dataskop.Interaction {
 
 		public bool IsEnabled { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		public ICalibration Enable() {
 			ArCamera = Camera.main;
@@ -74,7 +74,7 @@ namespace Dataskop.Interaction {
 			IsEnabled = false;
 		}
 
-#endregion
+  
 
 	}
 

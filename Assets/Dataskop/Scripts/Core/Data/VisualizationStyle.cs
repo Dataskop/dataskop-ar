@@ -5,7 +5,7 @@ namespace Dataskop.Data {
 	[UsedImplicitly]
 	public class VisualizationStyle {
 
-#region Constructor
+ 
 
 		public VisualizationStyle(bool timeSeries, bool dropShadow, bool groundLine) {
 
@@ -15,9 +15,9 @@ namespace Dataskop.Data {
 
 		}
 
-#endregion
+  
 
-#region Properties
+ 
 
 		public bool IsTimeSeries { get; set; }
 
@@ -25,7 +25,7 @@ namespace Dataskop.Data {
 
 		public bool HasGroundLine { get; set; }
 
-#endregion
+  
 
 	}
 

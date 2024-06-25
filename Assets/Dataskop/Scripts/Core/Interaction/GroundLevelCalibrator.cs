@@ -10,36 +10,36 @@ namespace Dataskop.Interaction {
 	/// </summary>
 	public class GroundLevelCalibrator : MonoBehaviour, ICalibration {
 
-#region Constants
+ 
 
 		private const string PlaneTag = "ARPlane";
 
-#endregion
+  
 
-#region Events
+ 
 
 		public event Action CalibrationCompleted;
 
-#endregion
+  
 
-#region Fields
+ 
 
 		[Header("References")]
 		[SerializeField] private ARPlaneManager arPlaneManager;
 		[SerializeField] private AbstractMap map;
 		[SerializeField] private InputHandler inputHandler;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		public float GroundLevelYPosition { get; set; }
 
 		public bool IsEnabled { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void OnEnable() {
 			arPlaneManager.planesChanged += OnArPlanesChanged;
@@ -152,7 +152,7 @@ namespace Dataskop.Interaction {
 			inputHandler.WorldPointerUpped -= OnPointerInteractionReceived;
 		}
 
-#endregion
+  
 
 	}
 

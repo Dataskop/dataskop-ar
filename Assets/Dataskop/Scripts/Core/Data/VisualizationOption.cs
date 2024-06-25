@@ -7,7 +7,7 @@ namespace Dataskop.Data {
 	[UsedImplicitly]
 	public class VisualizationOption {
 
-#region Constructor
+ 
 
 		public VisualizationOption(string type, VisualizationStyle style) {
 
@@ -27,15 +27,15 @@ namespace Dataskop.Data {
 
 		}
 
-#endregion
+  
 
-#region Properties
+ 
 
 		public string Type { get; set; }
 
 		public VisualizationStyle Style { get; set; }
 
-#endregion
+  
 
 	}
 

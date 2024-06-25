@@ -9,7 +9,7 @@ namespace Dataskop.Data {
 	[UsedImplicitly]
 	public class DataAttribute {
 
-#region Constructors
+ 
 
 		public DataAttribute(string id, string label, string unit, string attributeType, string min, string max,
 			ICollection<VisualizationOption> visualizationOptions) {
@@ -43,9 +43,9 @@ namespace Dataskop.Data {
 
 		}
 
-#endregion
+  
 
-#region Properties
+ 
 
 		public string ID { get; set; }
 
@@ -61,7 +61,7 @@ namespace Dataskop.Data {
 
 		public ICollection<VisualizationOption> VisOptions { get; set; }
 
-#endregion
+  
 
 	}
 

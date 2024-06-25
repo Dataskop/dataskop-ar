@@ -10,7 +10,7 @@ namespace Dataskop.Data {
 	[UsedImplicitly]
 	public class Company {
 
-#region Constructors
+ 
 
 		public Company(int id, CompanyInformation information, List<Project> companyProjects) {
 			ID = id;
@@ -18,9 +18,9 @@ namespace Dataskop.Data {
 			Projects = companyProjects;
 		}
 
-#endregion
+  
 
-#region Methods
+ 
 
 		public async Task UpdateProjects() {
 
@@ -36,9 +36,9 @@ namespace Dataskop.Data {
 
 		}
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private int ID {
 			get;
@@ -48,11 +48,11 @@ namespace Dataskop.Data {
 
 		public ICollection<Project> Projects { get; private set; }
 
-#endregion
+  
 
 	}
 
-#region Sub-Classes
+ 
 
 	[UsedImplicitly]
 	public class CompanyInformation {
@@ -61,6 +61,6 @@ namespace Dataskop.Data {
 
 	}
 
-#endregion
+  
 
 }

@@ -10,7 +10,7 @@ namespace Dataskop.Data {
 	[UsedImplicitly]
 	public class Project {
 
-#region Constructors
+ 
 
 		public Project(int id, ProjectInformation information, string additionalProperties) {
 
@@ -27,9 +27,9 @@ namespace Dataskop.Data {
 
 		}
 
-#endregion
+  
 
-#region Properties
+ 
 
 		public int ID { get; set; }
 
@@ -39,9 +39,9 @@ namespace Dataskop.Data {
 
 		public ICollection<Device> Devices { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		public async Task UpdateDevices() {
 
@@ -139,11 +139,11 @@ namespace Dataskop.Data {
 			return devices;
 		}
 
-#endregion
+  
 
 	}
 
-#region Sub-Classes
+ 
 
 	[UsedImplicitly]
 	public class ProjectInformation {
@@ -162,6 +162,6 @@ namespace Dataskop.Data {
 
 	}
 
-#endregion
+  
 
 }

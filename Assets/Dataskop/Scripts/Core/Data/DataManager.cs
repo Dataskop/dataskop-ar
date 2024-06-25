@@ -14,13 +14,13 @@ namespace Dataskop.Data {
 
 	public class DataManager : MonoBehaviour {
 
-#region Constants
+ 
 
 		public static readonly ApiRequestHandler RequestHandler = ApiRequestHandler.Instance;
 
-#endregion
+  
 
-#region Events
+ 
 
 		/// <summary>
 		///     Invoked when companies and their projects are loaded, without additional info on single projects.
@@ -44,9 +44,9 @@ namespace Dataskop.Data {
 		public UnityEvent<IReadOnlyCollection<Company>> projectListLoaded;
 		public UnityEvent<Project> projectLoaded;
 
-#endregion
+  
 
-#region Fields
+ 
 
 		[Header("References")]
 		[SerializeField] private LoadingIndicator loadingIndicator;
@@ -55,9 +55,9 @@ namespace Dataskop.Data {
 		[SerializeField] private int fetchAmount = 1;
 		[SerializeField] private int fetchInterval = 30000;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private IReadOnlyCollection<Company> Companies { get; set; }
 
@@ -74,9 +74,9 @@ namespace Dataskop.Data {
 
 		private bool ShouldRefetch { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		public void Initialize() {
 
@@ -366,7 +366,7 @@ namespace Dataskop.Data {
 			FetchTimer?.Stop();
 		}
 
-#endregion
+  
 
 	}
 

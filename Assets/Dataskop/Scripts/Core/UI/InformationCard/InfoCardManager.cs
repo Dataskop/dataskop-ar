@@ -9,7 +9,7 @@ namespace Dataskop.UI {
 
 	public class InfoCardManager : MonoBehaviour {
 
-#region Fields
+ 
 
 		[Header("References")]
 		[SerializeField] private UIDocument informationCardUIDoc;
@@ -24,9 +24,9 @@ namespace Dataskop.UI {
 
 		private Coroutine uiInteractionRoutine;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private VisualElement InfoCard { get; set; }
 
@@ -40,9 +40,9 @@ namespace Dataskop.UI {
 
 		private Label CallToAction { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void Awake() {
 
@@ -182,7 +182,7 @@ namespace Dataskop.UI {
 
 		}
 
-#endregion
+  
 
 	}
 

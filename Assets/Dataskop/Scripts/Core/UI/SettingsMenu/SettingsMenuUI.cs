@@ -7,7 +7,7 @@ namespace Dataskop.UI {
 
 	public class SettingsMenuUI : MonoBehaviour {
 
-#region Constants
+ 
 
 		private const string MenuOpenAnimation = "settings-menu-open";
 		private const string TogglerAnimation = "toggler-on";
@@ -17,9 +17,9 @@ namespace Dataskop.UI {
 		private const string ProjectSelectionTitle = "Projects";
 		private const string SettingsTitle = "Settings";
 
-#endregion
+  
 
-#region Fields
+ 
 
 		[Header("Events")]
 		public UnityEvent onToggleOcclusionButtonPressed;
@@ -42,9 +42,9 @@ namespace Dataskop.UI {
 		private bool isProjectSelectorActive;
 		private bool isHistorySliderActive;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private MenuView CurrentView { get; set; } = MenuView.Settings;
 
@@ -88,9 +88,9 @@ namespace Dataskop.UI {
 
 		private TextField CooldownInput { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void OnEnable() {
 			Root = menuDocument.rootVisualElement;
@@ -338,7 +338,7 @@ namespace Dataskop.UI {
 			ResetCalibrationButton.UnregisterCallback<ClickEvent>(_ => ResetCalibrationPressed());
 		}
 
-#endregion
+  
 
 	}
 

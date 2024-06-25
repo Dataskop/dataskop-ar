@@ -10,8 +10,6 @@ namespace Dataskop.Data {
 	[UsedImplicitly]
 	public class MeasurementResult {
 
-#region Constructors
-
 		/// <summary>
 		///     Creates and returns a MeasurementResult from a given DTO.
 		/// </summary>
@@ -41,27 +39,15 @@ namespace Dataskop.Data {
 
 		}
 
-#endregion
-
-#region Nested type: AdditionalMeasurementResultsProperties
-
-#region Sub-Classes
-
 		public class AdditionalMeasurementResultsProperties {
+
+			public string Author { get; }
 
 			public AdditionalMeasurementResultsProperties(string author) {
 				Author = author;
 			}
 
-			public string Author { get; }
-
 		}
-
-#endregion
-
-#endregion
-
-#region Properties
 
 		public string Value { get; }
 
@@ -74,10 +60,6 @@ namespace Dataskop.Data {
 		private MeasurementDefinition MeasurementDefinition { get; }
 
 		public string Author { get; }
-
-#endregion
-
-#region Methods
 
 		/// <summary>
 		///     Returns the measurement result's value as a double (if suitable).
@@ -202,8 +184,6 @@ namespace Dataskop.Data {
 			// Steps result (is also the fallback)
 			return leftItem.ReadAsFloat();
 		}
-
-#endregion
 
 	}
 

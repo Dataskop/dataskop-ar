@@ -10,7 +10,7 @@ namespace Dataskop.Entities.Visualizations {
 
 	public class Bar : Visualization {
 
-#region Fields
+ 
 
 		[Header("References")]
 		[SerializeField] private MeshRenderer barFillMeshRenderer;
@@ -37,9 +37,9 @@ namespace Dataskop.Entities.Visualizations {
 		private Vector3 origin;
 		private bool isRotated;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private Vector3 BarFillScale { get; set; }
 
@@ -64,9 +64,9 @@ namespace Dataskop.Entities.Visualizations {
 			}
 		}
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void Awake() {
 			TimeSeries.TimeSeriesBeforeSpawn += RotateVisualization;
@@ -252,7 +252,7 @@ namespace Dataskop.Entities.Visualizations {
 			canvasGroup.alpha = 0;
 		}
 
-#endregion
+  
 
 	}
 

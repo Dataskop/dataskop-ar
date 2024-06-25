@@ -6,13 +6,13 @@ namespace Dataskop.Data {
 
 	public sealed class ApiRequestHandler {
 
-#region Properties
+ 
 
 		public static ApiRequestHandler Instance { get; } = new();
 
-#endregion
+  
 
-#region Methods
+ 
 
 		/// <summary>
 		///     Performs a GET request to a given API endpoint.
@@ -89,7 +89,7 @@ namespace Dataskop.Data {
 
 		}
 
-#endregion
+  
 
 	}
 

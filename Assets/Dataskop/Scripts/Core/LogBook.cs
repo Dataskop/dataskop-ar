@@ -9,19 +9,19 @@ namespace Dataskop {
 	/// </summary>
 	public class LogBook : MonoBehaviour {
 
-#region Fields
+ 
 
 		[SerializeField] private TMP_Text debugMesh;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		public static LogBook Instance { get; private set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void Awake() {
 
@@ -64,7 +64,7 @@ namespace Dataskop {
 			debugMesh.SetText("");
 		}
 
-#endregion
+  
 
 	}
 

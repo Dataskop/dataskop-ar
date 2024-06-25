@@ -8,24 +8,24 @@ namespace Dataskop.Data {
 
 	public class DemoBoxHandler : MonoBehaviour {
 
-#region Fields
+ 
 
 		[SerializeField] private ARTrackedImageManager imageManager;
 		[SerializeField] private DataPointsManager dataPointManager;
 		[SerializeField] private DataManager dataManager;
 		[SerializeField] private DataAttributeManager dataAttributeManager;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private Dictionary<ARTrackedImage, Device> ARImageObjects { get; set; }
 
 		private bool ShouldTrackImages { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void OnEnable() {
 			dataManager.HasLoadedProjectData += ActivateTracking;
@@ -156,7 +156,7 @@ namespace Dataskop.Data {
 			imageManager.trackedImagesChanged -= OnTrackedImagesChanged;
 		}
 
-#endregion
+  
 
 	}
 

@@ -5,7 +5,7 @@ namespace Dataskop.Data {
 
 	public class Device {
 
-#region Constructors
+ 
 
 		public Device(string id, string label, ICollection<MeasurementDefinition> measurementDefinitions) {
 
@@ -15,9 +15,9 @@ namespace Dataskop.Data {
 
 		}
 
-#endregion
+  
 
-#region Properties
+ 
 
 		public string ID { get; set; }
 
@@ -30,9 +30,9 @@ namespace Dataskop.Data {
 		/// </summary>
 		public Position Position => GetPosition();
 
-#endregion
+  
 
-#region Methods
+ 
 
 		public MeasurementDefinition GetMeasurementDefinitionByID(int id) {
 			return MeasurementDefinitions.First(item => item.ID == id);
@@ -71,7 +71,7 @@ namespace Dataskop.Data {
 
 		}
 
-#endregion
+  
 
 	}
 

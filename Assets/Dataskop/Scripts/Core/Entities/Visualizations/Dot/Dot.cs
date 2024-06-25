@@ -10,7 +10,7 @@ namespace Dataskop.Entities.Visualizations {
 
 	public class Dot : Visualization {
 
-#region Fields
+ 
 
 		[Header("References")]
 		[SerializeField] private Image visImageRenderer;
@@ -45,9 +45,9 @@ namespace Dataskop.Entities.Visualizations {
 		private Vector3 animationTarget;
 		private Coroutine moveLineCoroutine;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private DotOptions Options { get; set; }
 
@@ -60,9 +60,9 @@ namespace Dataskop.Entities.Visualizations {
 			MeasurementType.Bool
 		};
 
-#endregion
+  
 
-#region Methods
+ 
 
 		protected override void OnDataPointChanged() {
 
@@ -246,7 +246,7 @@ namespace Dataskop.Entities.Visualizations {
 			}
 		}
 
-#endregion
+  
 
 	}
 

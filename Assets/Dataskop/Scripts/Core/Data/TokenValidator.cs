@@ -8,16 +8,16 @@ namespace Dataskop.Data {
 
 	public class TokenValidator : MonoBehaviour {
 
-#region Fields
+ 
 
 		[Header("Events")]
 		public UnityEvent<string, bool> tokenChecked;
 
 		private const string URL = "https://backend.dataskop.at/api/company/list";
 
-#endregion
+  
 
-#region Methods
+ 
 
 		public void Validate(string token) {
 			StartCoroutine(CheckResponseStatus(token, status => { tokenChecked?.Invoke(token, status); }));
@@ -55,7 +55,7 @@ namespace Dataskop.Data {
 
 		}
 
-#endregion
+  
 
 	}
 

@@ -7,7 +7,7 @@ namespace Dataskop.Data {
 
 	public class VisualizationRepository : MonoBehaviour {
 
-#region Fields
+ 
 
 		[SerializeField] private GameObject dotVis;
 		[SerializeField] private GameObject bubbleVis;
@@ -15,9 +15,9 @@ namespace Dataskop.Data {
 		private readonly Dictionary<VisualizationType, GameObject> visTypeDict = new();
 		private readonly List<string> availableVisTypes = new();
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void Start() {
 
@@ -48,7 +48,7 @@ namespace Dataskop.Data {
 			return GetVisualization(visType);
 		}
 
-#endregion
+  
 
 	}
 

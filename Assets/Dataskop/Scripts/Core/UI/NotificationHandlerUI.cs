@@ -8,13 +8,13 @@ namespace Dataskop.UI {
 
 	public class NotificationHandlerUI : MonoBehaviour {
 
-#region Constants
+ 
 
 		private const string MenuOpenAnimation = "notification-animation";
 
-#endregion
+  
 
-#region Fields
+ 
 
 		[Header("References")]
 		[SerializeField] private UIDocument notificationUiDocument;
@@ -25,9 +25,9 @@ namespace Dataskop.UI {
 
 		private Coroutine notificationCoroutine;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private Dictionary<NotificationCategory, NotificationStyle> NotificationStyles { get; set; }
 
@@ -39,9 +39,9 @@ namespace Dataskop.UI {
 
 		private Label MessageTextElement { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void OnEnable() {
 			NotificationHandler.notificationAdded += OnNotificationAdded;
@@ -108,7 +108,7 @@ namespace Dataskop.UI {
 			NotificationHandler.notificationAdded -= OnNotificationAdded;
 		}
 
-#endregion
+  
 
 	}
 

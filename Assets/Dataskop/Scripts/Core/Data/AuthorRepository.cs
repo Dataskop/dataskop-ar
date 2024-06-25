@@ -5,19 +5,19 @@ namespace Dataskop.Data {
 
 	public class AuthorRepository : MonoBehaviour {
 
-#region Fields
+ 
 
 		[SerializeField] private Sprite[] authorSprites;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		public IDictionary<string, Sprite> AuthorSprites { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void Awake() {
 
@@ -29,7 +29,7 @@ namespace Dataskop.Data {
 
 		}
 
-#endregion
+  
 
 	}
 
