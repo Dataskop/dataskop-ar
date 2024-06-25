@@ -5,14 +5,14 @@ namespace Dataskop.Entities.Visualizations {
 
 	public class BubbleTimeSeries : TimeSeries {
 
-#region Fields
+ 
 
 		[SerializeField] private float minScale;
 		[SerializeField] private float maxScale;
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void Awake() {
 			TimeElementSpawned += SetSize;
@@ -37,7 +37,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-#endregion
+  
 
 	}
 

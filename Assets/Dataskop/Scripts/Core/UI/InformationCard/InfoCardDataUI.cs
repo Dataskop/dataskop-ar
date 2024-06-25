@@ -7,13 +7,13 @@ namespace Dataskop.UI {
 
 	public class InfoCardDataUI : InfoCardComponent {
 
-#region Fields
+ 
 
 		[SerializeField] private AuthorRepository authorRepository;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		protected override VisualElement ComponentRoot { get; set; }
 
@@ -32,9 +32,9 @@ namespace Dataskop.UI {
 
 		private VisualElement AuthorIcon { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		public override void Init(VisualElement infoCard) {
 			InfoCard = infoCard;
@@ -86,7 +86,7 @@ namespace Dataskop.UI {
 			IdLabel.text = newDefinition.ID.ToString();
 		}
 
-#endregion
+  
 
 	}
 

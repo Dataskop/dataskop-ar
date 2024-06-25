@@ -10,7 +10,17 @@ namespace Dataskop.Data {
 	[UsedImplicitly]
 	public class MeasurementDefinition {
 
-#region Constructors
+		public int ID { get; }
+
+		public MeasurementType MeasurementType { get; }
+
+		public MeasurementDefinitionInformation MeasurementDefinitionInformation { get; }
+
+		public string DeviceId { get; }
+
+		public string AttributeId { get; }
+
+		public ICollection<MeasurementResult> MeasurementResults { get; private set; }
 
 		public MeasurementDefinition(int id, MeasurementDefinitionInformation information, string additionalProperties,
 			int measurementInterval, int valueType, int downstreamType) {
@@ -49,25 +59,7 @@ namespace Dataskop.Data {
 
 		}
 
-#endregion
-
-#region Properties
-
-		public int ID { get; }
-
-		public MeasurementType MeasurementType { get; }
-
-		public MeasurementDefinitionInformation MeasurementDefinitionInformation { get; }
-
-		public string DeviceId { get; }
-
-		public string AttributeId { get; }
-
-		public ICollection<MeasurementResult> MeasurementResults { get; private set; }
-
-#endregion
-
-#region Methods
+ 
 
 		/// <summary>
 		///     Fetches a list of measurement results belonging to the measurement definition.
@@ -129,38 +121,38 @@ namespace Dataskop.Data {
 			return MeasurementResults?.FirstOrDefault();
 		}
 
-#endregion
+  
 
 	}
 
-#region Sub-Classes
+ 
 
 	public class AdditionalMeasurementDefinitionProperties {
+
+		public string DeviceId { get; }
+
+		public string AttributeId { get; }
 
 		public AdditionalMeasurementDefinitionProperties(string deviceId, string attributeId) {
 			DeviceId = deviceId;
 			AttributeId = attributeId;
 		}
 
-		public string DeviceId { get; }
-
-		public string AttributeId { get; }
-
 	}
 
 	public class MeasurementResultsResponse {
+
+		public int Count { get; set; }
+
+		public ICollection<MeasurementResult> MeasurementResults { get; }
 
 		public MeasurementResultsResponse(int count, ICollection<MeasurementResult> measurementResults) {
 			Count = count;
 			MeasurementResults = measurementResults;
 		}
 
-		public int Count { get; set; }
-
-		public ICollection<MeasurementResult> MeasurementResults { get; }
-
 	}
 
-#endregion
+  
 
 }

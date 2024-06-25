@@ -6,7 +6,7 @@ namespace Dataskop.UI {
 
 	public class InfoCardNotificationUI : InfoCardComponent {
 
-#region Fields
+ 
 
 		[Header("Message Colors")]
 		[SerializeField] private Color tipColor;
@@ -18,9 +18,9 @@ namespace Dataskop.UI {
 
 		private WaitForSeconds errorDecay;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		protected override VisualElement ComponentRoot { get; set; }
 
@@ -28,9 +28,9 @@ namespace Dataskop.UI {
 
 		private Label ErrorLabel { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		public override void Init(VisualElement infoCard) {
 			InfoCard = infoCard;
@@ -58,7 +58,7 @@ namespace Dataskop.UI {
 			ErrorLabel.text = "";
 		}
 
-#endregion
+  
 
 	}
 

@@ -8,7 +8,7 @@ namespace Dataskop.UI {
 
 	public class CalibratorUI : MonoBehaviour {
 
-#region Fields
+ 
 
 		[Header("References")]
 		[SerializeField] private UIDocument calibratorUiDoc;
@@ -17,9 +17,9 @@ namespace Dataskop.UI {
 		[Header("Values")]
 		[SerializeField] private int numberOfPhases;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private VisualElement CalibratorRoot { get; set; }
 
@@ -43,9 +43,9 @@ namespace Dataskop.UI {
 
 		private Calibrator Calibrator => calibrator;
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void OnEnable() {
 
@@ -182,7 +182,7 @@ namespace Dataskop.UI {
 			});
 		}
 
-#endregion
+  
 
 	}
 

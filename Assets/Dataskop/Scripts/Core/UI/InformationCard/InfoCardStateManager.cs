@@ -10,21 +10,21 @@ namespace Dataskop.UI {
 
 	public class InfoCardStateManager : MonoBehaviour {
 
-#region Events
+ 
 
 		[Header("Events")]
 		public UnityEvent<InfoCardState> infoCardStateChanged;
 
-#endregion
+  
 
-#region Fields
+ 
 
 		[SerializeField] private float stickyTime;
 		private Coroutine stickyCoroutine;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private Dictionary<InfoCardState, string> InfoCardStateTransitionClasses { get; set; }
 
@@ -36,9 +36,9 @@ namespace Dataskop.UI {
 
 		private bool IsLocked { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		public void Init(VisualElement infoCard) {
 
@@ -153,7 +153,7 @@ namespace Dataskop.UI {
 			stickyCoroutine = null;
 		}
 
-#endregion
+  
 
 	}
 

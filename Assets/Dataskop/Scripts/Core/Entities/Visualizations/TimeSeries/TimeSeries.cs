@@ -9,7 +9,7 @@ namespace Dataskop.Entities.Visualizations {
 
 	public class TimeSeries : MonoBehaviour {
 
-#region Events
+ 
 
 		public event Action TimeSeriesBeforeSpawn;
 
@@ -23,9 +23,9 @@ namespace Dataskop.Entities.Visualizations {
 
 		public event Action TimeSeriesStartMoved;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		protected List<TimeElement> TimeElements { get; private set; }
 
@@ -45,9 +45,9 @@ namespace Dataskop.Entities.Visualizations {
 
 		private Coroutine spawnRoutine;
 
-#endregion
+  
 
-#region Methods
+ 
 
 		public void Start() {
 			TimeElements = new List<TimeElement>();
@@ -242,7 +242,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-#endregion
+  
 
 	}
 

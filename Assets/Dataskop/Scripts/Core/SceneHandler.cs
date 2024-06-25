@@ -8,7 +8,7 @@ namespace Dataskop {
 	/// </summary>
 	public static class SceneHandler {
 
-#region Methods
+ 
 
 		/// <summary>
 		///     Loads and switches to a scene.
@@ -36,7 +36,7 @@ namespace Dataskop {
 			return SceneManager.GetActiveScene().buildIndex;
 		}
 
-#endregion
+  
 
 	}
 

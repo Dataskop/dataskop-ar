@@ -5,7 +5,7 @@ namespace Dataskop.Data {
 
 	public class LocationArea {
 
-#region Properties
+ 
 
 		public string LocationName { get; set; }
 
@@ -13,7 +13,7 @@ namespace Dataskop.Data {
 
 		public List<Vector2d> LatLonShapePoints { get; set; } = new();
 
-#endregion
+  
 
 	}
 

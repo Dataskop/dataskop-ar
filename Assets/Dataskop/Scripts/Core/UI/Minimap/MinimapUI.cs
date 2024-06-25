@@ -6,27 +6,27 @@ namespace Dataskop {
 
 	public class MinimapUI : MonoBehaviour {
 
-#region Events
+ 
 
 		[Header("Events")]
 		public UnityEvent minimapTapped;
 
-#endregion
+  
 
-#region Fields
+ 
 
 		[Header("References")]
 		[SerializeField] private UIDocument minimapDocument;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private VisualElement MinimapRoot { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void Awake() {
 			MinimapRoot = minimapDocument.rootVisualElement;
@@ -49,7 +49,7 @@ namespace Dataskop {
 			MinimapRoot.UnregisterCallback<ClickEvent>(_ => minimapTapped?.Invoke());
 		}
 
-#endregion
+  
 
 	}
 

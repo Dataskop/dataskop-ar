@@ -10,7 +10,7 @@ namespace Dataskop.Interaction {
 
 	public class Calibrator : MonoBehaviour {
 
-#region Events
+ 
 
 		[Header("UI Events")]
 		public UnityEvent calibrationInitialized;
@@ -18,9 +18,9 @@ namespace Dataskop.Interaction {
 		public UnityEvent<CalibratorPhase> phaseChanged;
 		public UnityEvent calibrationFinished;
 
-#endregion
+  
 
-#region Fields
+ 
 
 		[Header("References")]
 		[SerializeField] private GroundLevelCalibrator groundLevelCalibrator;
@@ -30,9 +30,9 @@ namespace Dataskop.Interaction {
 
 		private CalibratorPhase currentPhase;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		[CanBeNull] public ICalibration ActiveCalibration { get; private set; }
 
@@ -50,9 +50,9 @@ namespace Dataskop.Interaction {
 
 		public bool IsCalibrating { get; private set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void OnEnable() {
 			northAlignmentCalibrator.CalibrationCompleted += OnCalibratorContinued;
@@ -178,7 +178,7 @@ namespace Dataskop.Interaction {
 			roomCalibrator.CalibrationCompleted -= OnCalibratorContinued;
 		}
 
-#endregion
+  
 
 	}
 

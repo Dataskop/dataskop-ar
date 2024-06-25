@@ -7,14 +7,14 @@ namespace Dataskop.Entities.Visualizations {
 
 	public abstract class Visualization : MonoBehaviour {
 
-#region Events
+ 
 
 		public Action SwipedUp;
 		public Action SwipedDown;
 
-#endregion
+  
 
-#region Fields
+ 
 
 		[Header("Vis Values")]
 		[SerializeField] private Vector3 offset;
@@ -26,9 +26,9 @@ namespace Dataskop.Entities.Visualizations {
 
 		private DataPoint dataPoint;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		public DataPoint DataPoint {
 			get => dataPoint;
@@ -71,9 +71,9 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisualizationType Type { get; protected set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		public void Start() {
 			ARCamera = Camera.main;
@@ -140,7 +140,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-#endregion
+  
 
 	}
 

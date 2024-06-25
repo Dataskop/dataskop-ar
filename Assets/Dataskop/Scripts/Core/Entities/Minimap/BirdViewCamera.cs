@@ -5,7 +5,7 @@ namespace Dataskop.Entities {
 
 	public class BirdViewCamera : MonoBehaviour {
 
-#region Fields
+ 
 
 		[Header("References")]
 		[SerializeField] private AbstractMap map;
@@ -15,9 +15,9 @@ namespace Dataskop.Entities {
 		[Header("Values")]
 		[SerializeField] private float defaultCameraSize = 20;
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void Awake() {
 			SetCameraSize(defaultCameraSize);
@@ -55,7 +55,7 @@ namespace Dataskop.Entities {
 			birdViewCamera.orthographicSize = defaultCameraSize;
 		}
 
-#endregion
+  
 
 	}
 

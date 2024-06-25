@@ -7,7 +7,7 @@ namespace Dataskop {
 
 	public class InfoCardMap : InfoCardComponent {
 
-#region Events
+ 
 
 		[Header("Events")]
 		public UnityEvent<float> zoomButtonPressed;
@@ -19,9 +19,9 @@ namespace Dataskop {
 		[Range(0, 20)] [SerializeField]
 		private float zoomOutValue;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		protected override VisualElement ComponentRoot { get; set; }
 
@@ -31,9 +31,9 @@ namespace Dataskop {
 
 		private Button ZoomOutButton { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		public override void Init(VisualElement infoCard) {
 
@@ -50,7 +50,7 @@ namespace Dataskop {
 			zoomButtonPressed?.Invoke(zoomChange);
 		}
 
-#endregion
+  
 
 	}
 

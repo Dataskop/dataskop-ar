@@ -5,7 +5,7 @@ namespace Dataskop.UI {
 
 	public static class CalibratorTextRepository {
 
-#region Constants
+ 
 		
 		// @formatter:off
 
@@ -41,7 +41,7 @@ namespace Dataskop.UI {
 		
 		// @formatter:on
 
-#endregion
+  
 
 	}
 

@@ -9,7 +9,7 @@ namespace Dataskop.UI {
 
 	public class ProjectSelectorUI : MonoBehaviour {
 
-#region Fields
+ 
 
 		[Header("Events")]
 		public UnityEvent onProjectSelected;
@@ -26,9 +26,9 @@ namespace Dataskop.UI {
 
 		private bool isDescending;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private VisualElement MenuContainer { get; set; }
 
@@ -44,9 +44,9 @@ namespace Dataskop.UI {
 
 		private IReadOnlyCollection<Company> Companies { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void Awake() {
 
@@ -165,7 +165,7 @@ namespace Dataskop.UI {
 
 		}
 
-#endregion
+  
 
 	}
 

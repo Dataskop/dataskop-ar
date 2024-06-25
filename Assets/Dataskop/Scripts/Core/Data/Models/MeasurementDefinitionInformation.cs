@@ -2,7 +2,7 @@ namespace Dataskop.Data {
 
 	public class MeasurementDefinitionInformation {
 
-#region Constructor
+ 
 
 		public MeasurementDefinitionInformation(string name, string uiShortName, string description, string info,
 			string createdDate, string updatedDate) {
@@ -14,9 +14,9 @@ namespace Dataskop.Data {
 			UpdatedDate = updatedDate;
 		}
 
-#endregion
+  
 
-#region Properties
+ 
 
 		public string Name { get; set; }
 
@@ -30,7 +30,7 @@ namespace Dataskop.Data {
 
 		public string UpdatedDate { get; set; }
 
-#endregion
+  
 
 	}
 

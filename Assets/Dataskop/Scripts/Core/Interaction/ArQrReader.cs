@@ -12,23 +12,23 @@ namespace Dataskop.Interaction {
 
 	public class ArQrReader : MonoBehaviour {
 
-#region Events
+ 
 
 		[Header("Events")]
 		public UnityEvent<QrResult> onQrCodeRead;
 
-#endregion
+  
 
-#region Fields
+ 
 
 		[Header("References")]
 		[SerializeField] private ARCameraManager arCamManager;
 
 		private readonly WaitForSeconds qrReadCooldown = new(5f);
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private BarcodeReader QrReader { get; set; }
 
@@ -38,9 +38,9 @@ namespace Dataskop.Interaction {
 
 		private bool ShouldLookForQrCode { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void OnEnable() {
 			arCamManager.frameReceived += GetImageAsync;
@@ -138,7 +138,7 @@ namespace Dataskop.Interaction {
 			arCamManager.frameReceived -= GetImageAsync;
 		}
 
-#endregion
+  
 
 	}
 

@@ -10,13 +10,13 @@ namespace Dataskop.Interaction {
 
 	public class DataPointSelector : MonoBehaviour {
 
-#region Constants
+ 
 
 		private const int TargetLayerMask = 1 << 7;
 
-#endregion
+  
 
-#region Fields
+ 
 
 		[Header("References")]
 		[SerializeField] private Camera cam = null!;
@@ -31,9 +31,9 @@ namespace Dataskop.Interaction {
 		private DataPoint? selectedDataPoint;
 		private DataPoint? softSelectedDataPoint;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		/// <summary>
 		///     The DataPoint which got selected with a tap.
@@ -66,9 +66,9 @@ namespace Dataskop.Interaction {
 
 		private Ray ReticuleToWorldRay => cam.ViewportPointToRay(screenRayPosition);
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void Awake() {
 			inputHandler.WorldPointerUpped += OnWorldPointerUpReceived;
@@ -200,7 +200,7 @@ namespace Dataskop.Interaction {
 			onVisChangeWithSelection?.Invoke(false);
 		}
 
-#endregion
+  
 
 	}
 

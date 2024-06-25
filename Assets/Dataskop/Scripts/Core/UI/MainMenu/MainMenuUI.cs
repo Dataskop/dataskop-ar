@@ -17,7 +17,7 @@ namespace Dataskop.UI {
 
 	public class MainMenuUI : MonoBehaviour {
 
-#region Fields
+ 
 
 		[Header("References")]
 		[SerializeField] private UIDocument mainMenuUIDoc;
@@ -30,9 +30,9 @@ namespace Dataskop.UI {
 		private string token = string.Empty;
 		private string defaultToken = string.Empty;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private VisualElement Container { get; set; }
 
@@ -55,9 +55,9 @@ namespace Dataskop.UI {
 
 		private bool HasEnteredToken => TokenTextField?.value != string.Empty;
 
-#endregion
+  
 
-#region Methods
+ 
 
 		public void OnEnable() {
 
@@ -197,7 +197,7 @@ namespace Dataskop.UI {
 			SceneHandler.LoadScene("World");
 		}
 
-#endregion
+  
 
 	}
 

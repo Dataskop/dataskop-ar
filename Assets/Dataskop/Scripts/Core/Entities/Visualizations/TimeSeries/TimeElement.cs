@@ -9,7 +9,7 @@ namespace Dataskop.Entities.Visualizations {
 
 	public class TimeElement : MonoBehaviour {
 
-#region Fields
+ 
 
 		[Header("References")]
 		[SerializeField] private Image authorImageRenderer;
@@ -24,9 +24,9 @@ namespace Dataskop.Entities.Visualizations {
 
 		private MeasurementResult measurementResult;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		public TimeSeries Series { get; set; }
 
@@ -45,9 +45,9 @@ namespace Dataskop.Entities.Visualizations {
 
 		private Image AuthorSprite => authorImageRenderer;
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void SetAuthorSprite() {
 
@@ -86,7 +86,7 @@ namespace Dataskop.Entities.Visualizations {
 			dataDisplayGroup.alpha = 0;
 		}
 
-#endregion
+  
 
 	}
 

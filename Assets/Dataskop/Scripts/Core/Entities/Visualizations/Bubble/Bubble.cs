@@ -10,7 +10,7 @@ namespace Dataskop.Entities.Visualizations {
 
 	public class Bubble : Visualization {
 
-#region Fields
+ 
 
 		[Header("References")]
 		[SerializeField] private Image visImageRenderer;
@@ -42,9 +42,9 @@ namespace Dataskop.Entities.Visualizations {
 		private Vector3 prevScale;
 		private float bubbleSize;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private float BubbleSize {
 			get => bubbleSize;
@@ -71,9 +71,9 @@ namespace Dataskop.Entities.Visualizations {
 
 		private Vector3 DisplayOrigin { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		protected override void OnDataPointChanged() {
 			base.OnDataPointChanged();
@@ -272,7 +272,7 @@ namespace Dataskop.Entities.Visualizations {
 			IsSelected = false;
 		}
 
-#endregion
+  
 
 	}
 

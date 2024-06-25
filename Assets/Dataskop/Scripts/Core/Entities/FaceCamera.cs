@@ -7,13 +7,13 @@ namespace Dataskop.Entities {
 
 	public class FaceCamera : MonoBehaviour {
 
-#region Properties
+ 
 
 		private Transform? TargetTransform => targetCamera?.transform;
 
-#endregion
+  
 
-#region Fields
+ 
 
 		[SerializeField] [Tooltip("How close the camera has to be to the object for it to face it.")]
 		private float faceThreshold;
@@ -21,9 +21,9 @@ namespace Dataskop.Entities {
 		[SerializeField] private Camera? targetCamera;
 		[SerializeField] private bool isBackwards;
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void Awake() {
 			if (targetCamera == null) {
@@ -55,7 +55,7 @@ namespace Dataskop.Entities {
 			transform.forward = isBackwards ? -diff.normalized : diff.normalized;
 		}
 
-#endregion
+  
 
 	}
 

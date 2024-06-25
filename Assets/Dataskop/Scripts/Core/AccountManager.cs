@@ -5,19 +5,19 @@ namespace Dataskop {
 
 	public static class AccountManager {
 
-#region Constants
+ 
 
 		private const string APITokenKey = "API_TOKEN";
 
-#endregion
+  
 
-#region Properties
+ 
 
 		public static bool IsLoggedIn => TryGetLoginToken() != null;
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private static bool HasToken() {
 			return PlayerPrefs.HasKey(APITokenKey);
@@ -43,7 +43,7 @@ namespace Dataskop {
 			return !string.IsNullOrEmpty(token) ? token : null;
 		}
 
-#endregion
+  
 
 	}
 

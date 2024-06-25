@@ -9,14 +9,14 @@ namespace Dataskop.UI {
 
 	public class VisSelectorUI : MonoBehaviour {
 
-#region Constants
+ 
 
 		private const string GroundedClass = "grounded";
 		private const string ElevatedClass = "elevated";
 
-#endregion
+  
 
-#region Fields
+ 
 
 		[Header("Events")]
 		public UnityEvent<string> onAttributeSelected;
@@ -35,9 +35,9 @@ namespace Dataskop.UI {
 
 		private bool isStateLocked;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private VisualElement VisSelectorRoot { get; set; }
 
@@ -53,9 +53,9 @@ namespace Dataskop.UI {
 
 		private List<Button> VisOptionButtons { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void OnEnable() {
 			VisSelectorRoot = visSelectorUIDoc.rootVisualElement;
@@ -219,7 +219,7 @@ namespace Dataskop.UI {
 			dataAttributeManager.selectedAttributeChanged -= SelectExternalAttribute;
 		}
 
-#endregion
+  
 
 	}
 

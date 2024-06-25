@@ -9,22 +9,22 @@ namespace Dataskop {
 	/// </summary>
 	public static class ErrorHandler {
 
-#region Properties
+ 
 
 		/// <summary>
 		///     Collected Errors
 		/// </summary>
 		public static Queue<Error> ErrorQueue { get; } = new();
 
-#endregion
+  
 
-#region Fields
+ 
 
 		public static event EventHandler<ErrorReceivedEventArgs> OnErrorReceived;
 
-#endregion
+  
 
-#region Constants
+ 
 
 		private static readonly List<Error> ErrorList = new() {
 			new Error {
@@ -65,9 +65,9 @@ namespace Dataskop {
 			Type = ErrorType.Error
 		};
 
-#endregion
+  
 
-#region Methods
+ 
 
 		/// <summary>
 		///     Throws an error with the given error code.
@@ -119,9 +119,9 @@ namespace Dataskop {
 			return codeString.ToString();
 		}
 
-#endregion
+  
 
-#region Sub-Classes
+ 
 
 		public struct Error {
 
@@ -155,7 +155,7 @@ namespace Dataskop {
 
 		}
 
-#endregion
+  
 
 	}
 

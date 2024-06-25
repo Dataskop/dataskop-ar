@@ -5,13 +5,13 @@ namespace Dataskop.Entities.Visualizations {
 
 	public class BarTimeSeries : TimeSeries {
 
-#region Fields
+ 
 
 		[SerializeField] private Color timeElementColor;
 
-#endregion
+  
 
-#region Methods
+ 
 
 		private void Awake() {
 			TimeElementSpawned += OnTimeElementSpawned;
@@ -51,7 +51,7 @@ namespace Dataskop.Entities.Visualizations {
 			TimeElementMoved += OnTimeElementMoved;
 		}
 
-#endregion
+  
 
 	}
 

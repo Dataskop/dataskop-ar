@@ -4,7 +4,7 @@ namespace Dataskop.Entities {
 
 	public class RotationLock : MonoBehaviour {
 
-#region Methods
+ 
 
 		private void FixedUpdate() {
 
@@ -16,9 +16,9 @@ namespace Dataskop.Entities {
 
 		}
 
-#endregion
+  
 
-#region Fields
+ 
 
 		[SerializeField] private Transform targetTransform;
 
@@ -26,7 +26,7 @@ namespace Dataskop.Entities {
 		[SerializeField] private bool freezeY;
 		[SerializeField] private bool freezeZ;
 
-#endregion
+  
 
 	}
 

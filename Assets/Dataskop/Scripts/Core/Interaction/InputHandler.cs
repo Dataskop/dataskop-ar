@@ -9,7 +9,7 @@ namespace Dataskop.Interaction {
 
 	public class InputHandler : MonoBehaviour {
 
-#region Events
+ 
 
 		public event Action<PointerInteraction>? WorldPointerDowned;
 
@@ -19,9 +19,9 @@ namespace Dataskop.Interaction {
 
 		public event Action<PointerInteraction>? InfoCardPointerUpped;
 
-#endregion
+  
 
-#region Fields
+ 
 
 		[Header("References")]
 		[SerializeField] private Camera mainCamera = null!;
@@ -29,9 +29,9 @@ namespace Dataskop.Interaction {
 
 		private bool isInteracting;
 
-#endregion
+  
 
-#region Properties
+ 
 
 		private Vector2 TapPosition { get; set; }
 
@@ -39,9 +39,9 @@ namespace Dataskop.Interaction {
 
 		private Ray PointerRay { get; set; }
 
-#endregion
+  
 
-#region Methods
+ 
 
 		public void TapPositionInput(InputAction.CallbackContext ctx) {
 			TapPosition = ctx.ReadValue<Vector2>();
@@ -198,7 +198,7 @@ namespace Dataskop.Interaction {
 
 #endif
 
-#endregion
+  
 
 	}
 
