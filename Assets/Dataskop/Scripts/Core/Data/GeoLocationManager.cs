@@ -17,7 +17,7 @@ namespace Dataskop.Data {
 		private float BestAccuracy { get; set; } = 1000;
 
 		/// <summary>
-		///     Is true, if the initial geo location has been acquired already.
+		///     Is true, if the initial geolocation has been acquired already.
 		/// </summary>
 		private bool HasInitialLocationData { get; set; }
 
