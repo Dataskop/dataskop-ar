@@ -7,15 +7,6 @@ namespace Dataskop.Entities.Visualizations {
 
 	public abstract class Visualization : MonoBehaviour {
 
- 
-
-		public Action SwipedUp;
-		public Action SwipedDown;
-
-  
-
- 
-
 		[Header("Vis Values")]
 		[SerializeField] private Vector3 offset;
 		[SerializeField] private float scaleFactor;
@@ -25,10 +16,9 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] protected Color selectColor;
 
 		private DataPoint dataPoint;
+		public Action SwipedDown;
 
-  
-
- 
+		public Action SwipedUp;
 
 		public DataPoint DataPoint {
 			get => dataPoint;
@@ -70,10 +60,6 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public VisualizationType Type { get; protected set; }
-
-  
-
- 
 
 		public void Start() {
 			ARCamera = Camera.main;
@@ -139,8 +125,6 @@ namespace Dataskop.Entities.Visualizations {
 			}
 
 		}
-
-  
 
 	}
 

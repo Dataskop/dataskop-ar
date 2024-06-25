@@ -5,14 +5,9 @@ using UnityEngine;
 [CustomEditor(typeof(Bubble))]
 public class BubbleSizeClamper : Editor {
 
- 
-
-	private SerializedProperty minValue;
 	private SerializedProperty maxValue;
 
-  
-
- 
+	private SerializedProperty minValue;
 
 	private void OnEnable() {
 		maxValue = serializedObject.FindProperty("maxScale");
@@ -35,7 +30,5 @@ public class BubbleSizeClamper : Editor {
 
 		serializedObject.ApplyModifiedProperties();
 	}
-
-  
 
 }

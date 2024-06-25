@@ -4,7 +4,11 @@ namespace Dataskop.Data {
 
 	public class Position {
 
- 
+		public double Latitude { get; }
+
+		public double Longitude { get; }
+
+		public double Altitude { get; }
 
 		/// <summary>
 		///     Creates and returns a position object.
@@ -15,10 +19,6 @@ namespace Dataskop.Data {
 			Altitude = altitude;
 		}
 
-  
-
- 
-
 		/// <summary>
 		///     Returns a latitude and longitude string.
 		/// </summary>
@@ -26,18 +26,6 @@ namespace Dataskop.Data {
 			return
 				$"{Latitude.ToString(CultureInfo.InvariantCulture)}, {Longitude.ToString(CultureInfo.InvariantCulture)}";
 		}
-
-  
-
- 
-
-		public double Latitude { get; }
-
-		public double Longitude { get; }
-
-		public double Altitude { get; }
-
-  
 
 	}
 

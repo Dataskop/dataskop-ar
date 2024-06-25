@@ -6,13 +6,7 @@ namespace Dataskop.Data {
 
 	public sealed class ApiRequestHandler {
 
- 
-
 		public static ApiRequestHandler Instance { get; } = new();
-
-  
-
- 
 
 		/// <summary>
 		///     Performs a GET request to a given API endpoint.
@@ -88,8 +82,6 @@ namespace Dataskop.Data {
 			});
 
 		}
-
-  
 
 	}
 

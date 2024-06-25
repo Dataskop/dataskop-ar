@@ -7,17 +7,11 @@ namespace Dataskop.Data {
 
 	public class VisualizationRepository : MonoBehaviour {
 
- 
-
 		[SerializeField] private GameObject dotVis;
 		[SerializeField] private GameObject bubbleVis;
 		[SerializeField] private GameObject barVis;
-		private readonly Dictionary<VisualizationType, GameObject> visTypeDict = new();
 		private readonly List<string> availableVisTypes = new();
-
-  
-
- 
+		private readonly Dictionary<VisualizationType, GameObject> visTypeDict = new();
 
 		private void Start() {
 
@@ -47,8 +41,6 @@ namespace Dataskop.Data {
 			Enum.TryParse(visName, out VisualizationType visType);
 			return GetVisualization(visType);
 		}
-
-  
 
 	}
 

@@ -9,8 +9,6 @@ namespace Dataskop.UI {
 
 	public class HistoryUI : MonoBehaviour {
 
- 
-
 		[Header("Events")]
 		public UnityEvent<int, int> sliderChanged;
 		public UnityEvent<bool> historyViewToggled;
@@ -18,10 +16,6 @@ namespace Dataskop.UI {
 		[Header("References")]
 		[SerializeField] private UIDocument historyMenuDoc;
 		[SerializeField] private DataManager dataManager;
-
-  
-
- 
 
 		private VisualElement Root { get; set; }
 
@@ -39,9 +33,10 @@ namespace Dataskop.UI {
 
 		private DataPoint SelectedDataPoint { get; set; }
 
-  
-
- 
+		private void Start() {
+			SetVisibility(Root, false);
+			HistorySlider.highValue = dataManager.FetchAmount - 1;
+		}
 
 		private void OnEnable() {
 
@@ -57,9 +52,8 @@ namespace Dataskop.UI {
 
 		}
 
-		private void Start() {
-			SetVisibility(Root, false);
-			HistorySlider.highValue = dataManager.FetchAmount - 1;
+		private void OnDisable() {
+			HistorySliderContainer.UnregisterCallback<ChangeEvent<int>>(SliderValueChanged);
 		}
 
 		private void SliderValueChanged(ChangeEvent<int> e) {
@@ -158,10 +152,6 @@ namespace Dataskop.UI {
 
 		}
 
-		private void OnDisable() {
-			HistorySliderContainer.UnregisterCallback<ChangeEvent<int>>(SliderValueChanged);
-		}
-
 		private IEnumerator DelayToggle() {
 			yield return new WaitForSeconds(0.015f);
 			historyViewToggled?.Invoke(IsActive);
@@ -209,8 +199,6 @@ namespace Dataskop.UI {
 				tick.RemoveFromHierarchy();
 			}
 		}
-
-  
 
 	}
 

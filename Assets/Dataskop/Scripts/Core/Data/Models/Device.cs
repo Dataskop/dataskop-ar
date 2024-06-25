@@ -5,20 +5,6 @@ namespace Dataskop.Data {
 
 	public class Device {
 
- 
-
-		public Device(string id, string label, ICollection<MeasurementDefinition> measurementDefinitions) {
-
-			ID = id;
-			Label = label;
-			MeasurementDefinitions = measurementDefinitions;
-
-		}
-
-  
-
- 
-
 		public string ID { get; set; }
 
 		public string Label { get; set; }
@@ -30,9 +16,13 @@ namespace Dataskop.Data {
 		/// </summary>
 		public Position Position => GetPosition();
 
-  
+		public Device(string id, string label, ICollection<MeasurementDefinition> measurementDefinitions) {
 
- 
+			ID = id;
+			Label = label;
+			MeasurementDefinitions = measurementDefinitions;
+
+		}
 
 		public MeasurementDefinition GetMeasurementDefinitionByID(int id) {
 			return MeasurementDefinitions.First(item => item.ID == id);
@@ -70,8 +60,6 @@ namespace Dataskop.Data {
 			return null;
 
 		}
-
-  
 
 	}
 

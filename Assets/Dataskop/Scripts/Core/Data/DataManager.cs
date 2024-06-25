@@ -14,13 +14,39 @@ namespace Dataskop.Data {
 
 	public class DataManager : MonoBehaviour {
 
- 
-
 		public static readonly ApiRequestHandler RequestHandler = ApiRequestHandler.Instance;
 
-  
+		[Header("Events")]
+		public UnityEvent<int> fetchedAmountChanged;
+		public UnityEvent<IReadOnlyCollection<Company>> projectListLoaded;
+		public UnityEvent<Project> projectLoaded;
 
- 
+		[Header("References")]
+		[SerializeField] private LoadingIndicator loadingIndicator;
+
+		[Header("Values")]
+		[SerializeField] private int fetchAmount = 1;
+		[SerializeField] private int fetchInterval = 30000;
+
+		private IReadOnlyCollection<Company> Companies { get; set; }
+
+		public Project SelectedProject { get; private set; }
+
+		public int FetchAmount {
+			get => fetchAmount;
+			private set => fetchAmount = value;
+		}
+
+		private LoadingIndicator LoadingIndicator => loadingIndicator;
+
+		private Stopwatch FetchTimer { get; set; }
+
+		private bool ShouldRefetch { get; set; }
+
+		private void OnDisable() {
+			ShouldRefetch = false;
+			FetchTimer?.Stop();
+		}
 
 		/// <summary>
 		///     Invoked when companies and their projects are loaded, without additional info on single projects.
@@ -38,45 +64,6 @@ namespace Dataskop.Data {
 		///     Invoked when measurement results has been updated.
 		/// </summary>
 		public event Action HasUpdatedMeasurementResults;
-
-		[Header("Events")]
-		public UnityEvent<int> fetchedAmountChanged;
-		public UnityEvent<IReadOnlyCollection<Company>> projectListLoaded;
-		public UnityEvent<Project> projectLoaded;
-
-  
-
- 
-
-		[Header("References")]
-		[SerializeField] private LoadingIndicator loadingIndicator;
-
-		[Header("Values")]
-		[SerializeField] private int fetchAmount = 1;
-		[SerializeField] private int fetchInterval = 30000;
-
-  
-
- 
-
-		private IReadOnlyCollection<Company> Companies { get; set; }
-
-		public Project SelectedProject { get; private set; }
-
-		public int FetchAmount {
-			get => fetchAmount;
-			private set => fetchAmount = value;
-		}
-
-		private LoadingIndicator LoadingIndicator => loadingIndicator;
-
-		private Stopwatch FetchTimer { get; set; }
-
-		private bool ShouldRefetch { get; set; }
-
-  
-
- 
 
 		public void Initialize() {
 
@@ -360,13 +347,6 @@ namespace Dataskop.Data {
 		public void OnAmountInputChanged(int newValue) {
 			FetchAmount = Mathf.Clamp(newValue, 1, 999);
 		}
-
-		private void OnDisable() {
-			ShouldRefetch = false;
-			FetchTimer?.Stop();
-		}
-
-  
 
 	}
 

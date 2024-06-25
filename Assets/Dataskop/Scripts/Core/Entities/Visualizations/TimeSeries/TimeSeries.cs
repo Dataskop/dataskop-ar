@@ -9,23 +9,7 @@ namespace Dataskop.Entities.Visualizations {
 
 	public class TimeSeries : MonoBehaviour {
 
- 
-
-		public event Action TimeSeriesBeforeSpawn;
-
-		public event Action TimeSeriesSpawned;
-
-		public event Action<TimeElement> TimeElementSpawned;
-
-		public event Action TimeSeriesDespawned;
-
-		public event Action<TimeElement> TimeElementMoved;
-
-		public event Action TimeSeriesStartMoved;
-
-  
-
- 
+		private Coroutine spawnRoutine;
 
 		protected List<TimeElement> TimeElements { get; private set; }
 
@@ -43,15 +27,21 @@ namespace Dataskop.Entities.Visualizations {
 
 		public bool IsSpawned { get; private set; }
 
-		private Coroutine spawnRoutine;
-
-  
-
- 
-
 		public void Start() {
 			TimeElements = new List<TimeElement>();
 		}
+
+		public event Action TimeSeriesBeforeSpawn;
+
+		public event Action TimeSeriesSpawned;
+
+		public event Action<TimeElement> TimeElementSpawned;
+
+		public event Action TimeSeriesDespawned;
+
+		public event Action<TimeElement> TimeElementMoved;
+
+		public event Action TimeSeriesStartMoved;
 
 		public void Spawn(TimeSeriesConfig config, DataPoint dp, Transform container) {
 
@@ -241,8 +231,6 @@ namespace Dataskop.Entities.Visualizations {
 			TimeElementMoved?.Invoke(e);
 
 		}
-
-  
 
 	}
 

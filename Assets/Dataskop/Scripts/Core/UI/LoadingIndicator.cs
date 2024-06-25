@@ -5,14 +5,6 @@ namespace Dataskop.UI {
 
 	public class LoadingIndicator : MonoBehaviour {
 
- 
-
-		public bool IsLoading { get; set; }
-
-  
-
- 
-
 		[Header("References")]
 		[SerializeField] private UIDocument loadingIndicatorUiDocument;
 
@@ -22,9 +14,7 @@ namespace Dataskop.UI {
 		private VisualElement indicator;
 		private float rotation;
 
-  
-
- 
+		public bool IsLoading { get; set; }
 
 		private void Awake() {
 			indicator = loadingIndicatorUiDocument.rootVisualElement.Q<VisualElement>("spinner");
@@ -52,8 +42,6 @@ namespace Dataskop.UI {
 			IsLoading = false;
 			loadingIndicatorUiDocument.rootVisualElement.style.visibility = new StyleEnum<Visibility>(Visibility.Hidden);
 		}
-
-  
 
 	}
 

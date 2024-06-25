@@ -4,7 +4,11 @@ namespace Dataskop.Entities {
 
 	public class RotationLock : MonoBehaviour {
 
- 
+		[SerializeField] private Transform targetTransform;
+
+		[SerializeField] private bool freezeX;
+		[SerializeField] private bool freezeY;
+		[SerializeField] private bool freezeZ;
 
 		private void FixedUpdate() {
 
@@ -15,18 +19,6 @@ namespace Dataskop.Entities {
 			transform.rotation = Quaternion.Euler(xEuler, yEuler, zEuler);
 
 		}
-
-  
-
- 
-
-		[SerializeField] private Transform targetTransform;
-
-		[SerializeField] private bool freezeX;
-		[SerializeField] private bool freezeY;
-		[SerializeField] private bool freezeZ;
-
-  
 
 	}
 

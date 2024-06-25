@@ -5,14 +5,8 @@ namespace Dataskop.Entities.Visualizations {
 
 	public class BubbleTimeSeries : TimeSeries {
 
- 
-
 		[SerializeField] private float minScale;
 		[SerializeField] private float maxScale;
-
-  
-
- 
 
 		private void Awake() {
 			TimeElementSpawned += SetSize;
@@ -36,8 +30,6 @@ namespace Dataskop.Entities.Visualizations {
 			e.transform.localScale = new Vector3(bubbleSize, bubbleSize, bubbleSize);
 
 		}
-
-  
 
 	}
 

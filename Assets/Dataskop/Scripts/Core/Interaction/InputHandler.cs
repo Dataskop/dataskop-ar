@@ -9,7 +9,17 @@ namespace Dataskop.Interaction {
 
 	public class InputHandler : MonoBehaviour {
 
- 
+		[Header("References")]
+		[SerializeField] private Camera mainCamera = null!;
+		[SerializeField] private float minimumSwipeDistance = 100f;
+
+		private bool isInteracting;
+
+		private Vector2 TapPosition { get; set; }
+
+		private PointerInteraction CurrentPointerInteraction { get; set; }
+
+		private Ray PointerRay { get; set; }
 
 		public event Action<PointerInteraction>? WorldPointerDowned;
 
@@ -18,30 +28,6 @@ namespace Dataskop.Interaction {
 		public event Action<PointerInteraction>? InfoCardPointerDowned;
 
 		public event Action<PointerInteraction>? InfoCardPointerUpped;
-
-  
-
- 
-
-		[Header("References")]
-		[SerializeField] private Camera mainCamera = null!;
-		[SerializeField] private float minimumSwipeDistance = 100f;
-
-		private bool isInteracting;
-
-  
-
- 
-
-		private Vector2 TapPosition { get; set; }
-
-		private PointerInteraction CurrentPointerInteraction { get; set; }
-
-		private Ray PointerRay { get; set; }
-
-  
-
- 
 
 		public void TapPositionInput(InputAction.CallbackContext ctx) {
 			TapPosition = ctx.ReadValue<Vector2>();
@@ -197,8 +183,6 @@ namespace Dataskop.Interaction {
 		}
 
 #endif
-
-  
 
 	}
 

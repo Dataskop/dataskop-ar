@@ -11,16 +11,10 @@ namespace Dataskop.Data {
 
 	public class DataPointsManager : MonoBehaviour {
 
- 
-
 		[Header("Events")]
 		public UnityEvent<VisualizationOption> onVisualizationChanged;
 		public UnityEvent dataPointsResultsUpdated;
 		public UnityEvent<int> dataPointHistorySwiped;
-
-  
-
- 
 
 		[Header("References")]
 		[SerializeField] private DataManager dataManager;
@@ -33,10 +27,6 @@ namespace Dataskop.Data {
 		[SerializeField] private AuthorRepository authorRepository;
 
 		private GameObject dummyVisObject;
-
-  
-
- 
 
 		/// <summary>
 		///     List of currently placed markers in the AR world.
@@ -59,10 +49,6 @@ namespace Dataskop.Data {
 		private bool HasLoadedDataPoints { get; set; }
 
 		private DataManager DataManager => dataManager;
-
-  
-
- 
 
 		private void Awake() {
 			DataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
@@ -297,8 +283,6 @@ namespace Dataskop.Data {
 
 			DataPoints.Clear();
 		}
-
-  
 
 	}
 

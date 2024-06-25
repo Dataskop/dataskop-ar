@@ -7,16 +7,6 @@ namespace Dataskop.Data {
 
 	public class DataPoint : MonoBehaviour {
 
- 
-
-		public event Action<MeasurementResult> MeasurementResultChanged;
-
-		public event Action<VisualizationType> VisualizationTypeChanged;
-
-  
-
- 
-
 		[Header("References")]
 		[SerializeField] private SpriteRenderer mapIconBorder;
 		[SerializeField] private SpriteRenderer visIcon;
@@ -28,10 +18,6 @@ namespace Dataskop.Data {
 		[SerializeField] private Color mapDefaultColor;
 
 		private MeasurementResult mResult;
-
-  
-
- 
 
 		public MeasurementDefinition MeasurementDefinition { get; set; }
 
@@ -54,13 +40,13 @@ namespace Dataskop.Data {
 
 		public AuthorRepository AuthorRepository { get; set; }
 
-  
-
- 
-
 		private void Awake() {
 			VisualizationTypeChanged += OnVisChanged;
 		}
+
+		public event Action<MeasurementResult> MeasurementResultChanged;
+
+		public event Action<VisualizationType> VisualizationTypeChanged;
 
 		/// <summary>
 		///     Sets and replaces the current visualization form with another.
@@ -153,8 +139,6 @@ namespace Dataskop.Data {
 			};
 
 		}
-
-  
 
 	}
 

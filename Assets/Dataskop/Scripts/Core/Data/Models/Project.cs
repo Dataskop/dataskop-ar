@@ -10,7 +10,13 @@ namespace Dataskop.Data {
 	[UsedImplicitly]
 	public class Project {
 
- 
+		public int ID { get; set; }
+
+		public ProjectInformation Information { get; set; }
+
+		public AdditionalProperties Properties { get; set; }
+
+		public ICollection<Device> Devices { get; set; }
 
 		public Project(int id, ProjectInformation information, string additionalProperties) {
 
@@ -26,22 +32,6 @@ namespace Dataskop.Data {
 			}
 
 		}
-
-  
-
- 
-
-		public int ID { get; set; }
-
-		public ProjectInformation Information { get; set; }
-
-		public AdditionalProperties Properties { get; set; }
-
-		public ICollection<Device> Devices { get; set; }
-
-  
-
- 
 
 		public async Task UpdateDevices() {
 
@@ -139,11 +129,7 @@ namespace Dataskop.Data {
 			return devices;
 		}
 
-  
-
 	}
-
- 
 
 	[UsedImplicitly]
 	public class ProjectInformation {
@@ -161,7 +147,5 @@ namespace Dataskop.Data {
 		public bool IsDemo { get; set; }
 
 	}
-
-  
 
 }

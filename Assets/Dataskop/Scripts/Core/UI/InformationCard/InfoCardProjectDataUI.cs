@@ -7,22 +7,12 @@ namespace Dataskop.UI {
 
 	public class InfoCardProjectDataUI : InfoCardComponent {
 
- 
-
 		[Header("Events")]
 		public UnityEvent updateMeasurementsButtonPressed;
-
-  
-
- 
 
 		protected override VisualElement ComponentRoot { get; set; }
 
 		private VisualElement InfoCard { get; set; }
-
-  
-
- 
 
 		public override void Init(VisualElement infoCard) {
 			InfoCard = infoCard;
@@ -47,8 +37,6 @@ namespace Dataskop.UI {
 			ComponentRoot.Q<Label>("LastUpdated").visible = true;
 			ComponentRoot.Q<Button>("UpdateProject").visible = true;
 		}
-
-  
 
 	}
 

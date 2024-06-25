@@ -10,8 +10,6 @@ namespace Dataskop.Entities.Visualizations {
 
 	public class Bar : Visualization {
 
- 
-
 		[Header("References")]
 		[SerializeField] private MeshRenderer barFillMeshRenderer;
 		[SerializeField] private MeshRenderer barFrameMeshRenderer;
@@ -33,13 +31,9 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private TextMeshProUGUI maxValueTextMesh;
 		[SerializeField] private TextMeshProUGUI idMesh;
 		[SerializeField] private TextMeshProUGUI dateMesh;
-
-		private Vector3 origin;
 		private bool isRotated;
 
-  
-
- 
+		private Vector3 origin;
 
 		private Vector3 BarFillScale { get; set; }
 
@@ -63,10 +57,6 @@ namespace Dataskop.Entities.Visualizations {
 				OnVisualizationRotated(IsRotated);
 			}
 		}
-
-  
-
- 
 
 		private void Awake() {
 			TimeSeries.TimeSeriesBeforeSpawn += RotateVisualization;
@@ -251,8 +241,6 @@ namespace Dataskop.Entities.Visualizations {
 		private void HideAllUserDirectionCanvas() {
 			canvasGroup.alpha = 0;
 		}
-
-  
 
 	}
 

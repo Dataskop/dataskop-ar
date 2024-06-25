@@ -5,8 +5,6 @@ namespace Dataskop.UI {
 
 	public static class CalibratorTextRepository {
 
- 
-		
 		// @formatter:off
 
 		public static readonly Dictionary<CalibratorPhase, string> CalibratorGuideDict = new() {
@@ -40,8 +38,6 @@ namespace Dataskop.UI {
 		};
 		
 		// @formatter:on
-
-  
 
 	}
 

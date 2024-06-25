@@ -10,8 +10,6 @@ namespace Dataskop.Entities.Visualizations {
 
 	public class Dot : Visualization {
 
- 
-
 		[Header("References")]
 		[SerializeField] private Image visImageRenderer;
 		[SerializeField] private Transform visTransform;
@@ -45,10 +43,6 @@ namespace Dataskop.Entities.Visualizations {
 		private Vector3 animationTarget;
 		private Coroutine moveLineCoroutine;
 
-  
-
- 
-
 		private DotOptions Options { get; set; }
 
 		private DotTimeSeries TimeSeries => dotTimeSeries;
@@ -59,10 +53,6 @@ namespace Dataskop.Entities.Visualizations {
 			MeasurementType.Float,
 			MeasurementType.Bool
 		};
-
-  
-
- 
 
 		protected override void OnDataPointChanged() {
 
@@ -245,8 +235,6 @@ namespace Dataskop.Entities.Visualizations {
 				authorIconImageRenderer.enabled = false;
 			}
 		}
-
-  
 
 	}
 

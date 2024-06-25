@@ -7,13 +7,7 @@ namespace Dataskop {
 	[RequireComponent(typeof(AROcclusionManager))]
 	public class OcclusionHandler : MonoBehaviour {
 
- 
-
 		private AROcclusionManager arOcclusionManager;
-
-  
-
- 
 
 		private void Awake() {
 			arOcclusionManager = GetComponent<AROcclusionManager>();
@@ -33,8 +27,6 @@ namespace Dataskop {
 			};
 
 		}
-
-  
 
 	}
 

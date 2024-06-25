@@ -5,15 +5,9 @@ namespace Dataskop.UI {
 
 	public class InfoCardLocatorUI : InfoCardComponent {
 
- 
-
 		protected override VisualElement ComponentRoot { get; set; }
 
 		private VisualElement InfoCard { get; set; }
-
-  
-
- 
 
 		public override void Init(VisualElement infoCard) {
 			InfoCard = infoCard;
@@ -35,8 +29,6 @@ namespace Dataskop.UI {
 			area.text = locationArea.AreaName;
 
 		}
-
-  
 
 	}
 

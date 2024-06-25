@@ -9,19 +9,9 @@ namespace Dataskop {
 	/// </summary>
 	public class LogBook : MonoBehaviour {
 
- 
-
 		[SerializeField] private TMP_Text debugMesh;
 
-  
-
- 
-
 		public static LogBook Instance { get; private set; }
-
-  
-
- 
 
 		private void Awake() {
 
@@ -63,8 +53,6 @@ namespace Dataskop {
 		public void Clear() {
 			debugMesh.SetText("");
 		}
-
-  
 
 	}
 

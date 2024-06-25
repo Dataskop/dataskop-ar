@@ -5,7 +5,10 @@ namespace Dataskop.Data {
 
 	[CreateAssetMenu(fileName = "Location", menuName = "Locations/Add Location...", order = 1)]
 	public class LocationData : ScriptableObject {
-		
+
+		public string locationName;
+		public Area[] areas;
+
 		[Serializable]
 		public struct Area {
 
@@ -13,15 +16,6 @@ namespace Dataskop.Data {
 			[Tooltip("Format: lat, lon")] public string[] boundaryPoints;
 
 		}
-
-  
-
- 
-
-		public string locationName;
-		public Area[] areas;
-
-  
 
 	}
 

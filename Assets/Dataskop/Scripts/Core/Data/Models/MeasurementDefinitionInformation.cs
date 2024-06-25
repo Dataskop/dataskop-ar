@@ -2,22 +2,6 @@ namespace Dataskop.Data {
 
 	public class MeasurementDefinitionInformation {
 
- 
-
-		public MeasurementDefinitionInformation(string name, string uiShortName, string description, string info,
-			string createdDate, string updatedDate) {
-			Name = name;
-			UiShortName = uiShortName;
-			Description = description;
-			Info = info;
-			CreatedDate = createdDate;
-			UpdatedDate = updatedDate;
-		}
-
-  
-
- 
-
 		public string Name { get; set; }
 
 		public string UiShortName { get; set; }
@@ -30,7 +14,15 @@ namespace Dataskop.Data {
 
 		public string UpdatedDate { get; set; }
 
-  
+		public MeasurementDefinitionInformation(string name, string uiShortName, string description, string info,
+			string createdDate, string updatedDate) {
+			Name = name;
+			UiShortName = uiShortName;
+			Description = description;
+			Info = info;
+			CreatedDate = createdDate;
+			UpdatedDate = updatedDate;
+		}
 
 	}
 

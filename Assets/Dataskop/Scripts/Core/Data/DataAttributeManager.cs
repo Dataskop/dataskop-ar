@@ -8,14 +8,6 @@ namespace Dataskop.Data {
 
 	public class DataAttributeManager : MonoBehaviour {
 
- 
-
-		public event Action<DataAttribute> selectedAttributeChanged;
-
-  
-
- 
-
 		[Header("Events")]
 		public UnityEvent<Project> onAvailableAttributesUpdated;
 		public UnityEvent<DataAttribute> onSelectedAttributeChanged;
@@ -23,10 +15,6 @@ namespace Dataskop.Data {
 
 		[Header("References")]
 		[SerializeField] private DataManager dataManager;
-
-  
-
- 
 
 		/// <summary>
 		///     Currently selected Attribute
@@ -38,13 +26,15 @@ namespace Dataskop.Data {
 		/// </summary>
 		public ICollection<DataAttribute> ProjectAttributes { get; set; }
 
-  
-
- 
-
 		private void OnEnable() {
 			dataManager.HasLoadedProjectData += SetDataAttributes;
 		}
+
+		private void OnDisable() {
+			dataManager.HasLoadedProjectData -= SetDataAttributes;
+		}
+
+		public event Action<DataAttribute> selectedAttributeChanged;
 
 		public void SetDataAttributes(Project selectedProject) {
 
@@ -109,12 +99,6 @@ namespace Dataskop.Data {
 		public void ClearProjectAttributes() {
 			ProjectAttributes.Clear();
 		}
-
-		private void OnDisable() {
-			dataManager.HasLoadedProjectData -= SetDataAttributes;
-		}
-
-  
 
 	}
 
