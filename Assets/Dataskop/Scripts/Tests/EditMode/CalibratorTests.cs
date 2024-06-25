@@ -7,15 +7,9 @@ namespace Dataskop.EditMode.Tests {
 	[TestFixture] [Category("Dataskop")]
 	public class CalibratorTests {
 
-		[Test]
-		public void Calibrator_Phase_Is_Not_None_After_Initialization() {
-
-			Calibrator calibrator = CreateCalibrator();
-
-			calibrator.Initialize();
-
-			Assert.AreNotEqual(calibrator.CurrentPhase, CalibratorPhase.None);
-
+		// Test Fixtures
+		private static Calibrator CreateCalibrator() {
+			return Object.Instantiate(new GameObject()).AddComponent<Calibrator>();
 		}
 
 		[Test]
@@ -36,9 +30,15 @@ namespace Dataskop.EditMode.Tests {
 
 		}
 
-		// Test Fixtures
-		private static Calibrator CreateCalibrator() {
-			return Object.Instantiate(new GameObject()).AddComponent<Calibrator>();
+		[Test]
+		public void Calibrator_Phase_Is_Not_None_After_Initialization() {
+
+			Calibrator calibrator = CreateCalibrator();
+
+			calibrator.Initialize();
+
+			Assert.AreNotEqual(calibrator.CurrentPhase, CalibratorPhase.None);
+
 		}
 
 	}

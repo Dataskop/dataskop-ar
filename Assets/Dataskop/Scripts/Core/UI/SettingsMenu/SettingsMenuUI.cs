@@ -134,7 +134,7 @@ namespace Dataskop.UI {
 			VersionLabel.text = "DataskopAR - " + Version.ID;
 
 			TitleLabel = Root.Q<Label>("MenuTitle");
-			
+
 			AmountInput = SettingsMenuContainer.Q<TextField>("AmountInput");
 			AmountInput.RegisterCallback<ChangeEvent<string>>(OnFetchAmountInputChanged);
 
