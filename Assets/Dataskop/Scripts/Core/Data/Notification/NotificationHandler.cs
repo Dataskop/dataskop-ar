@@ -6,21 +6,11 @@ namespace Dataskop.Data {
 
 	public static class NotificationHandler {
 
- 
-
 		public static Action notificationAdded;
-
-  
-
- 
 
 		private static Queue<Notification> Notifications { get; } = new();
 
 		public static int QueueCount => Notifications.Count;
-
-  
-
- 
 
 		/// <summary>
 		///     Adds a notification to the queue.
@@ -56,8 +46,6 @@ namespace Dataskop.Data {
 		public static Notification Take() {
 			return Notifications.Dequeue();
 		}
-
-  
 
 	}
 

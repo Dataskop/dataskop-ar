@@ -12,14 +12,6 @@ namespace Dataskop.Data {
 	/// </summary>
 	public class LocationAreaManager : MonoBehaviour {
 
- 
-
-		private ISet<LocationArea> LocationAreas { get; set; }
-
-  
-
- 
-
 		[Header("References")]
 		[SerializeField] private LocationProviderFactory locationProviderFactory;
 
@@ -30,19 +22,21 @@ namespace Dataskop.Data {
 
 		private LocationArea lastLocatedArea;
 
-  
-
- 
-
-		private void OnEnable() {
-			locationProviderFactory.DefaultLocationProvider.OnLocationUpdated += CheckUserLocationInAreas;
-		}
+		private ISet<LocationArea> LocationAreas { get; set; }
 
 		private void Start() {
 
 			InitializeAreas(locationData);
 			userAreaLocated?.Invoke(lastLocatedArea);
 
+		}
+
+		private void OnEnable() {
+			locationProviderFactory.DefaultLocationProvider.OnLocationUpdated += CheckUserLocationInAreas;
+		}
+
+		private void OnDisable() {
+			locationProviderFactory.DefaultLocationProvider.OnLocationUpdated -= CheckUserLocationInAreas;
 		}
 
 		private void InitializeAreas(IEnumerable<LocationData> locations) {
@@ -85,12 +79,6 @@ namespace Dataskop.Data {
 			userAreaLocated?.Invoke(lastLocatedArea);
 
 		}
-
-		private void OnDisable() {
-			locationProviderFactory.DefaultLocationProvider.OnLocationUpdated -= CheckUserLocationInAreas;
-		}
-
-  
 
 	}
 

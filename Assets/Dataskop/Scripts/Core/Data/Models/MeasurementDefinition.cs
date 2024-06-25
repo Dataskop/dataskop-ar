@@ -59,8 +59,6 @@ namespace Dataskop.Data {
 
 		}
 
- 
-
 		/// <summary>
 		///     Fetches a list of measurement results belonging to the measurement definition.
 		/// </summary>
@@ -121,11 +119,7 @@ namespace Dataskop.Data {
 			return MeasurementResults?.FirstOrDefault();
 		}
 
-  
-
 	}
-
- 
 
 	public class AdditionalMeasurementDefinitionProperties {
 
@@ -152,7 +146,5 @@ namespace Dataskop.Data {
 		}
 
 	}
-
-  
 
 }

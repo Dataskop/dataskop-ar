@@ -8,18 +8,12 @@ namespace Dataskop.UI {
 
 	public class CalibratorUI : MonoBehaviour {
 
- 
-
 		[Header("References")]
 		[SerializeField] private UIDocument calibratorUiDoc;
 		[SerializeField] private Calibrator calibrator;
 
 		[Header("Values")]
 		[SerializeField] private int numberOfPhases;
-
-  
-
- 
 
 		private VisualElement CalibratorRoot { get; set; }
 
@@ -43,10 +37,6 @@ namespace Dataskop.UI {
 
 		private Calibrator Calibrator => calibrator;
 
-  
-
- 
-
 		private void OnEnable() {
 
 			CalibratorRoot = calibratorUiDoc.rootVisualElement.Q<VisualElement>("CalibratorContainer");
@@ -68,6 +58,12 @@ namespace Dataskop.UI {
 			RoomScanContainer = CalibratorRoot.Q<VisualElement>("RoomScanContainer");
 			RoomScanProgress = CalibratorRoot.Q<VisualElement>("RoomScanProgress");
 
+		}
+
+		private void OnDisable() {
+			CalibratorButton.UnregisterCallback<ClickEvent>(e => {
+				Calibrator.OnCalibratorContinued();
+			});
 		}
 
 		public void SetVisibility(bool isVisible) {
@@ -175,14 +171,6 @@ namespace Dataskop.UI {
 		public void OnNorthRotationSampleReceived(int currentSamples, int maxSamples) {
 			NorthAlignmentProgressBar.style.scale = new Scale(new Vector2(MathExtensions.Map01(currentSamples, 0, maxSamples), 1));
 		}
-
-		private void OnDisable() {
-			CalibratorButton.UnregisterCallback<ClickEvent>(e => {
-				Calibrator.OnCalibratorContinued();
-			});
-		}
-
-  
 
 	}
 

@@ -10,6 +10,18 @@ namespace Dataskop.Data {
 	[UsedImplicitly]
 	public class MeasurementResult {
 
+		public string Value { get; }
+
+		public int ValueType { get; }
+
+		public DateTime Timestamp { get; }
+
+		public Position Position { get; }
+
+		private MeasurementDefinition MeasurementDefinition { get; }
+
+		public string Author { get; }
+
 		/// <summary>
 		///     Creates and returns a MeasurementResult from a given DTO.
 		/// </summary>
@@ -38,28 +50,6 @@ namespace Dataskop.Data {
 			}
 
 		}
-
-		public class AdditionalMeasurementResultsProperties {
-
-			public string Author { get; }
-
-			public AdditionalMeasurementResultsProperties(string author) {
-				Author = author;
-			}
-
-		}
-
-		public string Value { get; }
-
-		public int ValueType { get; }
-
-		public DateTime Timestamp { get; }
-
-		public Position Position { get; }
-
-		private MeasurementDefinition MeasurementDefinition { get; }
-
-		public string Author { get; }
 
 		/// <summary>
 		///     Returns the measurement result's value as a double (if suitable).
@@ -184,6 +174,20 @@ namespace Dataskop.Data {
 			// Steps result (is also the fallback)
 			return leftItem.ReadAsFloat();
 		}
+
+#region Nested type: AdditionalMeasurementResultsProperties
+
+		public class AdditionalMeasurementResultsProperties {
+
+			public string Author { get; }
+
+			public AdditionalMeasurementResultsProperties(string author) {
+				Author = author;
+			}
+
+		}
+
+#endregion
 
 	}
 

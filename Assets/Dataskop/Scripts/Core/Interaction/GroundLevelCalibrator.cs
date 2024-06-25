@@ -10,36 +10,14 @@ namespace Dataskop.Interaction {
 	/// </summary>
 	public class GroundLevelCalibrator : MonoBehaviour, ICalibration {
 
- 
-
 		private const string PlaneTag = "ARPlane";
-
-  
-
- 
-
-		public event Action CalibrationCompleted;
-
-  
-
- 
 
 		[Header("References")]
 		[SerializeField] private ARPlaneManager arPlaneManager;
 		[SerializeField] private AbstractMap map;
 		[SerializeField] private InputHandler inputHandler;
 
-  
-
- 
-
 		public float GroundLevelYPosition { get; set; }
-
-		public bool IsEnabled { get; set; }
-
-  
-
- 
 
 		private void OnEnable() {
 			arPlaneManager.planesChanged += OnArPlanesChanged;
@@ -47,12 +25,30 @@ namespace Dataskop.Interaction {
 			inputHandler.WorldPointerUpped += OnPointerInteractionReceived;
 		}
 
+		private void OnDisable() {
+			map.OnUpdated -= OnMapUpdated;
+			arPlaneManager.planesChanged -= OnArPlanesChanged;
+			inputHandler.WorldPointerUpped -= OnPointerInteractionReceived;
+		}
+
+		public event Action CalibrationCompleted;
+
+		public bool IsEnabled { get; set; }
+
 		public ICalibration Enable() {
 
 			IsEnabled = true;
 			arPlaneManager.enabled = IsEnabled;
 			TogglePlanes(IsEnabled);
 			return this;
+
+		}
+
+		public void Disable() {
+
+			IsEnabled = false;
+			TogglePlanes(IsEnabled);
+			arPlaneManager.enabled = IsEnabled;
 
 		}
 
@@ -137,22 +133,6 @@ namespace Dataskop.Interaction {
 			return pointedObject.CompareTag(PlaneTag) ? pointedObject : null;
 
 		}
-
-		public void Disable() {
-
-			IsEnabled = false;
-			TogglePlanes(IsEnabled);
-			arPlaneManager.enabled = IsEnabled;
-
-		}
-
-		private void OnDisable() {
-			map.OnUpdated -= OnMapUpdated;
-			arPlaneManager.planesChanged -= OnArPlanesChanged;
-			inputHandler.WorldPointerUpped -= OnPointerInteractionReceived;
-		}
-
-  
 
 	}
 

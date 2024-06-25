@@ -10,17 +10,19 @@ namespace Dataskop.Data {
 	[UsedImplicitly]
 	public class Company {
 
- 
+		private int ID {
+			get;
+		}
+
+		public CompanyInformation Information { get; set; }
+
+		public ICollection<Project> Projects { get; private set; }
 
 		public Company(int id, CompanyInformation information, List<Project> companyProjects) {
 			ID = id;
 			Information = information;
 			Projects = companyProjects;
 		}
-
-  
-
- 
 
 		public async Task UpdateProjects() {
 
@@ -36,23 +38,7 @@ namespace Dataskop.Data {
 
 		}
 
-  
-
- 
-
-		private int ID {
-			get;
-		}
-
-		public CompanyInformation Information { get; set; }
-
-		public ICollection<Project> Projects { get; private set; }
-
-  
-
 	}
-
- 
 
 	[UsedImplicitly]
 	public class CompanyInformation {
@@ -60,7 +46,5 @@ namespace Dataskop.Data {
 		public string Name { get; set; }
 
 	}
-
-  
 
 }

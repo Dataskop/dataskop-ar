@@ -8,13 +8,7 @@ namespace Dataskop.UI {
 
 	public class NotificationHandlerUI : MonoBehaviour {
 
- 
-
 		private const string MenuOpenAnimation = "notification-animation";
-
-  
-
- 
 
 		[Header("References")]
 		[SerializeField] private UIDocument notificationUiDocument;
@@ -25,10 +19,6 @@ namespace Dataskop.UI {
 
 		private Coroutine notificationCoroutine;
 
-  
-
- 
-
 		private Dictionary<NotificationCategory, NotificationStyle> NotificationStyles { get; set; }
 
 		private VisualElement Root { get; set; }
@@ -38,18 +28,6 @@ namespace Dataskop.UI {
 		private VisualElement IconElement { get; set; }
 
 		private Label MessageTextElement { get; set; }
-
-  
-
- 
-
-		private void OnEnable() {
-			NotificationHandler.notificationAdded += OnNotificationAdded;
-			Root = notificationUiDocument.rootVisualElement;
-			NotificationEl = Root.Q<VisualElement>("notification-box");
-			IconElement = Root.Q<VisualElement>("icon");
-			MessageTextElement = Root.Q<Label>("text");
-		}
 
 		private void Start() {
 			NotificationStyles = new Dictionary<NotificationCategory, NotificationStyle> {
@@ -75,6 +53,18 @@ namespace Dataskop.UI {
 					}
 				}
 			};
+		}
+
+		private void OnEnable() {
+			NotificationHandler.notificationAdded += OnNotificationAdded;
+			Root = notificationUiDocument.rootVisualElement;
+			NotificationEl = Root.Q<VisualElement>("notification-box");
+			IconElement = Root.Q<VisualElement>("icon");
+			MessageTextElement = Root.Q<Label>("text");
+		}
+
+		private void OnDisable() {
+			NotificationHandler.notificationAdded -= OnNotificationAdded;
 		}
 
 		private void OnNotificationAdded() {
@@ -103,12 +93,6 @@ namespace Dataskop.UI {
 			IconElement.style.unityBackgroundImageTintColor = new StyleColor(NotificationStyles[notification.Category].Color);
 			MessageTextElement.text = notification.Text;
 		}
-
-		private void OnDisable() {
-			NotificationHandler.notificationAdded -= OnNotificationAdded;
-		}
-
-  
 
 	}
 

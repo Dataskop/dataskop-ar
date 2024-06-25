@@ -6,31 +6,21 @@ namespace Dataskop {
 
 	public class MinimapUI : MonoBehaviour {
 
- 
-
 		[Header("Events")]
 		public UnityEvent minimapTapped;
-
-  
-
- 
 
 		[Header("References")]
 		[SerializeField] private UIDocument minimapDocument;
 
-  
-
- 
-
 		private VisualElement MinimapRoot { get; set; }
-
-  
-
- 
 
 		private void Awake() {
 			MinimapRoot = minimapDocument.rootVisualElement;
 			MinimapRoot.RegisterCallback<ClickEvent>(_ => minimapTapped?.Invoke());
+		}
+
+		private void OnDisable() {
+			MinimapRoot.UnregisterCallback<ClickEvent>(_ => minimapTapped?.Invoke());
 		}
 
 		public void OnCalibrationFinished() {
@@ -44,12 +34,6 @@ namespace Dataskop {
 		public void ToggleMinimap() {
 			MinimapRoot.visible = !MinimapRoot.visible;
 		}
-
-		private void OnDisable() {
-			MinimapRoot.UnregisterCallback<ClickEvent>(_ => minimapTapped?.Invoke());
-		}
-
-  
 
 	}
 

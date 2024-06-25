@@ -10,17 +10,11 @@ namespace Dataskop.Interaction {
 
 	public class Calibrator : MonoBehaviour {
 
- 
-
 		[Header("UI Events")]
 		public UnityEvent calibrationInitialized;
 
 		public UnityEvent<CalibratorPhase> phaseChanged;
 		public UnityEvent calibrationFinished;
-
-  
-
- 
 
 		[Header("References")]
 		[SerializeField] private GroundLevelCalibrator groundLevelCalibrator;
@@ -29,10 +23,6 @@ namespace Dataskop.Interaction {
 		[SerializeField] private RoomCalibrator roomCalibrator;
 
 		private CalibratorPhase currentPhase;
-
-  
-
- 
 
 		[CanBeNull] public ICalibration ActiveCalibration { get; private set; }
 
@@ -50,9 +40,13 @@ namespace Dataskop.Interaction {
 
 		public bool IsCalibrating { get; private set; }
 
-  
+		private void Awake() {
+			FPSManager.SetApplicationTargetFrameRate(30);
+		}
 
- 
+		private void Start() {
+			Initialize();
+		}
 
 		private void OnEnable() {
 			northAlignmentCalibrator.CalibrationCompleted += OnCalibratorContinued;
@@ -61,12 +55,10 @@ namespace Dataskop.Interaction {
 
 		}
 
-		private void Awake() {
-			FPSManager.SetApplicationTargetFrameRate(30);
-		}
-
-		private void Start() {
-			Initialize();
+		private void OnDisable() {
+			northAlignmentCalibrator.CalibrationCompleted -= OnCalibratorContinued;
+			groundLevelCalibrator.CalibrationCompleted -= OnCalibratorContinued;
+			roomCalibrator.CalibrationCompleted -= OnCalibratorContinued;
 		}
 
 		public void Initialize() {
@@ -171,14 +163,6 @@ namespace Dataskop.Interaction {
 			}
 
 		}
-
-		private void OnDisable() {
-			northAlignmentCalibrator.CalibrationCompleted -= OnCalibratorContinued;
-			groundLevelCalibrator.CalibrationCompleted -= OnCalibratorContinued;
-			roomCalibrator.CalibrationCompleted -= OnCalibratorContinued;
-		}
-
-  
 
 	}
 

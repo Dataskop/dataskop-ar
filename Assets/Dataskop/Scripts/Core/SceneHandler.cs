@@ -8,8 +8,6 @@ namespace Dataskop {
 	/// </summary>
 	public static class SceneHandler {
 
- 
-
 		/// <summary>
 		///     Loads and switches to a scene.
 		/// </summary>
@@ -35,8 +33,6 @@ namespace Dataskop {
 		public static int GetCurrentScene() {
 			return SceneManager.GetActiveScene().buildIndex;
 		}
-
-  
 
 	}
 

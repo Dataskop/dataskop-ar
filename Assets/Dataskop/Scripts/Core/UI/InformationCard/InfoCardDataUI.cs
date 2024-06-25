@@ -7,13 +7,7 @@ namespace Dataskop.UI {
 
 	public class InfoCardDataUI : InfoCardComponent {
 
- 
-
 		[SerializeField] private AuthorRepository authorRepository;
-
-  
-
- 
 
 		protected override VisualElement ComponentRoot { get; set; }
 
@@ -31,10 +25,6 @@ namespace Dataskop.UI {
 		private Label TimeStampLabel { get; set; }
 
 		private VisualElement AuthorIcon { get; set; }
-
-  
-
- 
 
 		public override void Init(VisualElement infoCard) {
 			InfoCard = infoCard;
@@ -85,8 +75,6 @@ namespace Dataskop.UI {
 		private void UpdateDefinitionTextElements(MeasurementDefinition newDefinition) {
 			IdLabel.text = newDefinition.ID.ToString();
 		}
-
-  
 
 	}
 

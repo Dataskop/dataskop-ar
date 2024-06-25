@@ -9,8 +9,6 @@ namespace Dataskop.UI {
 
 	public class ProjectSelectorUI : MonoBehaviour {
 
- 
-
 		[Header("Events")]
 		public UnityEvent onProjectSelected;
 
@@ -26,10 +24,6 @@ namespace Dataskop.UI {
 
 		private bool isDescending;
 
-  
-
- 
-
 		private VisualElement MenuContainer { get; set; }
 
 		private ICollection<Button> ProjectButtons { get; set; }
@@ -43,10 +37,6 @@ namespace Dataskop.UI {
 		private StyleColor DeselectedColor { get; set; }
 
 		private IReadOnlyCollection<Company> Companies { get; set; }
-
-  
-
- 
 
 		private void Awake() {
 
@@ -164,8 +154,6 @@ namespace Dataskop.UI {
 			}
 
 		}
-
-  
 
 	}
 

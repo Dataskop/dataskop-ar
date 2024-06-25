@@ -6,17 +6,16 @@ namespace Dataskop.Entities.Visualizations {
 
 	public class DotTimeSeries : TimeSeries {
 
- 
-
 		private static readonly int Alpha = Shader.PropertyToID("_Alpha");
-
-  
-
- 
 
 		private void Awake() {
 			TimeElementSpawned += OnTimeElementSpawned;
 			TimeElementMoved += DrawDotTimeElement;
+		}
+
+		private void OnDisable() {
+			TimeElementSpawned -= OnTimeElementSpawned;
+			TimeElementMoved -= DrawDotTimeElement;
 		}
 
 		private void OnTimeElementSpawned(TimeElement e) {
@@ -34,13 +33,6 @@ namespace Dataskop.Entities.Visualizations {
 			}
 
 		}
-
-		private void OnDisable() {
-			TimeElementSpawned -= OnTimeElementSpawned;
-			TimeElementMoved -= DrawDotTimeElement;
-		}
-
-  
 
 	}
 

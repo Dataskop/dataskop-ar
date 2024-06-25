@@ -9,8 +9,6 @@ namespace Dataskop.UI {
 
 	public class InfoCardManager : MonoBehaviour {
 
- 
-
 		[Header("References")]
 		[SerializeField] private UIDocument informationCardUIDoc;
 		[SerializeField] private InfoCardStateManager infoCardStateManager;
@@ -24,10 +22,6 @@ namespace Dataskop.UI {
 
 		private Coroutine uiInteractionRoutine;
 
-  
-
- 
-
 		private VisualElement InfoCard { get; set; }
 
 		private VisualElement DetailsContainer { get; set; }
@@ -39,10 +33,6 @@ namespace Dataskop.UI {
 		private VisualElement MapTab { get; set; }
 
 		private Label CallToAction { get; set; }
-
-  
-
- 
 
 		private void Awake() {
 
@@ -181,8 +171,6 @@ namespace Dataskop.UI {
 			}
 
 		}
-
-  
 
 	}
 

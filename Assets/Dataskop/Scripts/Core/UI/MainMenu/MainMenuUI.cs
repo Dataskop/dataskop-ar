@@ -17,8 +17,6 @@ namespace Dataskop.UI {
 
 	public class MainMenuUI : MonoBehaviour {
 
- 
-
 		[Header("References")]
 		[SerializeField] private UIDocument mainMenuUIDoc;
 		[SerializeField] private ArQrReader qrReader;
@@ -26,13 +24,9 @@ namespace Dataskop.UI {
 
 		[Header("Events")]
 		public UnityEvent<string> loginButtonPressed;
-
-		private string token = string.Empty;
 		private string defaultToken = string.Empty;
 
-  
-
- 
+		private string token = string.Empty;
 
 		private VisualElement Container { get; set; }
 
@@ -55,9 +49,23 @@ namespace Dataskop.UI {
 
 		private bool HasEnteredToken => TokenTextField?.value != string.Empty;
 
-  
+		private IEnumerator Start() {
 
- 
+			FPSManager.SetApplicationTargetFrameRate(30);
+
+#if UNITY_IOS
+			yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
+#elif UNITY_ANDROID
+			Permission.RequestUserPermissions(new[] {
+				Permission.Camera,
+				Permission.FineLocation
+			});
+			yield return Permission.HasUserAuthorizedPermission(Permission.Camera);
+#else
+			yield break;
+#endif
+
+		}
 
 		public void OnEnable() {
 
@@ -100,24 +108,6 @@ namespace Dataskop.UI {
 			});
 
 			AppOptions.DemoMode = false;
-		}
-
-		private IEnumerator Start() {
-
-			FPSManager.SetApplicationTargetFrameRate(30);
-
-#if UNITY_IOS
-			yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
-#elif UNITY_ANDROID
-			Permission.RequestUserPermissions(new[] {
-				Permission.Camera,
-				Permission.FineLocation
-			});
-			yield return Permission.HasUserAuthorizedPermission(Permission.Camera);
-#else
-			yield break;
-#endif
-
 		}
 
 		private void ToggleElement(VisualElement element, bool status) {
@@ -196,8 +186,6 @@ namespace Dataskop.UI {
 			AccountManager.Login(Token);
 			SceneHandler.LoadScene("World");
 		}
-
-  
 
 	}
 

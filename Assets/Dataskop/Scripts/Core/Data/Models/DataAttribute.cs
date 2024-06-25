@@ -9,7 +9,19 @@ namespace Dataskop.Data {
 	[UsedImplicitly]
 	public class DataAttribute {
 
- 
+		public string ID { get; set; }
+
+		public string Label { get; set; }
+
+		public string Type { get; set; }
+
+		public string Unit { get; set; }
+
+		public float Minimum { get; set; }
+
+		public float Maximum { get; set; }
+
+		public ICollection<VisualizationOption> VisOptions { get; set; }
 
 		public DataAttribute(string id, string label, string unit, string attributeType, string min, string max,
 			ICollection<VisualizationOption> visualizationOptions) {
@@ -42,26 +54,6 @@ namespace Dataskop.Data {
 			VisOptions = visualizationOptions;
 
 		}
-
-  
-
- 
-
-		public string ID { get; set; }
-
-		public string Label { get; set; }
-
-		public string Type { get; set; }
-
-		public string Unit { get; set; }
-
-		public float Minimum { get; set; }
-
-		public float Maximum { get; set; }
-
-		public ICollection<VisualizationOption> VisOptions { get; set; }
-
-  
 
 	}
 

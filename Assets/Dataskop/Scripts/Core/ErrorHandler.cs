@@ -9,22 +9,17 @@ namespace Dataskop {
 	/// </summary>
 	public static class ErrorHandler {
 
- 
+#region ErrorType enum
 
-		/// <summary>
-		///     Collected Errors
-		/// </summary>
-		public static Queue<Error> ErrorQueue { get; } = new();
+		public enum ErrorType {
 
-  
+			Tip,
+			Warning,
+			Error
 
- 
+		}
 
-		public static event EventHandler<ErrorReceivedEventArgs> OnErrorReceived;
-
-  
-
- 
+#endregion
 
 		private static readonly List<Error> ErrorList = new() {
 			new Error {
@@ -65,9 +60,12 @@ namespace Dataskop {
 			Type = ErrorType.Error
 		};
 
-  
+		/// <summary>
+		///     Collected Errors
+		/// </summary>
+		public static Queue<Error> ErrorQueue { get; } = new();
 
- 
+		public static event EventHandler<ErrorReceivedEventArgs> OnErrorReceived;
 
 		/// <summary>
 		///     Throws an error with the given error code.
@@ -119,9 +117,7 @@ namespace Dataskop {
 			return codeString.ToString();
 		}
 
-  
-
- 
+#region Nested type: Error
 
 		public struct Error {
 
@@ -141,13 +137,9 @@ namespace Dataskop {
 
 		}
 
-		public enum ErrorType {
+#endregion
 
-			Tip,
-			Warning,
-			Error
-
-		}
+#region Nested type: ErrorReceivedEventArgs
 
 		public class ErrorReceivedEventArgs : EventArgs {
 
@@ -155,7 +147,7 @@ namespace Dataskop {
 
 		}
 
-  
+#endregion
 
 	}
 

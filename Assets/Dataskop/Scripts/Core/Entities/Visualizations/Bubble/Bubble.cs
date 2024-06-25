@@ -10,8 +10,6 @@ namespace Dataskop.Entities.Visualizations {
 
 	public class Bubble : Visualization {
 
- 
-
 		[Header("References")]
 		[SerializeField] private Image visImageRenderer;
 		[SerializeField] private Transform visTransform;
@@ -33,18 +31,14 @@ namespace Dataskop.Entities.Visualizations {
 		[HideInInspector] public float minScale;
 		[HideInInspector] public float maxScale;
 		[SerializeField] private AnimationCurve curve;
-
-		private Coroutine scaleRoutine;
+		private float bubbleSize;
 		private Coroutine groundLineRoutine;
-		private Coroutine labelRoutine;
 		private Coroutine labelLineRoutineLower;
 		private Coroutine labelLineRoutineUpper;
+		private Coroutine labelRoutine;
 		private Vector3 prevScale;
-		private float bubbleSize;
 
-  
-
- 
+		private Coroutine scaleRoutine;
 
 		private float BubbleSize {
 			get => bubbleSize;
@@ -70,10 +64,6 @@ namespace Dataskop.Entities.Visualizations {
 		public override Transform VisTransform => visTransform;
 
 		private Vector3 DisplayOrigin { get; set; }
-
-  
-
- 
 
 		protected override void OnDataPointChanged() {
 			base.OnDataPointChanged();
@@ -271,8 +261,6 @@ namespace Dataskop.Entities.Visualizations {
 			valueTextMesh.color = deselectColor;
 			IsSelected = false;
 		}
-
-  
 
 	}
 

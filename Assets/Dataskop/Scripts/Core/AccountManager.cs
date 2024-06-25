@@ -5,19 +5,9 @@ namespace Dataskop {
 
 	public static class AccountManager {
 
- 
-
 		private const string APITokenKey = "API_TOKEN";
 
-  
-
- 
-
 		public static bool IsLoggedIn => TryGetLoginToken() != null;
-
-  
-
- 
 
 		private static bool HasToken() {
 			return PlayerPrefs.HasKey(APITokenKey);
@@ -42,8 +32,6 @@ namespace Dataskop {
 
 			return !string.IsNullOrEmpty(token) ? token : null;
 		}
-
-  
 
 	}
 

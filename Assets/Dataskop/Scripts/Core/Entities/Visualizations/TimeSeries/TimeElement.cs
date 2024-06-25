@@ -9,8 +9,6 @@ namespace Dataskop.Entities.Visualizations {
 
 	public class TimeElement : MonoBehaviour {
 
- 
-
 		[Header("References")]
 		[SerializeField] private Image authorImageRenderer;
 		[SerializeField] private CanvasGroup dataDisplayGroup;
@@ -23,10 +21,6 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] [CanBeNull] private TextMeshProUGUI maxTextMesh = null!;
 
 		private MeasurementResult measurementResult;
-
-  
-
- 
 
 		public TimeSeries Series { get; set; }
 
@@ -44,10 +38,6 @@ namespace Dataskop.Entities.Visualizations {
 		public int DistanceToDataPoint { get; set; }
 
 		private Image AuthorSprite => authorImageRenderer;
-
-  
-
- 
 
 		private void SetAuthorSprite() {
 
@@ -85,8 +75,6 @@ namespace Dataskop.Entities.Visualizations {
 		public void HideData() {
 			dataDisplayGroup.alpha = 0;
 		}
-
-  
 
 	}
 

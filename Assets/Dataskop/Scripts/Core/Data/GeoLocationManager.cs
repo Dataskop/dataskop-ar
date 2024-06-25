@@ -6,16 +6,10 @@ namespace Dataskop.Data {
 
 	public class GeoLocationManager : MonoBehaviour {
 
- 
-
 		[Header("References")]
 		[SerializeField] private LocationProviderFactory locationProvider;
 
 		[SerializeField] private Camera arCam;
-
-  
-
- 
 
 		/// <summary>
 		///     Keeps track of the best GPS accuracy the device received.
@@ -29,14 +23,15 @@ namespace Dataskop.Data {
 
 		private bool HasUsedFixedPositioning { get; set; }
 
-  
-
- 
-
 		private void OnEnable() {
 			locationProvider.mapManager.OnInitialized += InitializeGeoLocation;
 			locationProvider.DefaultLocationProvider.OnLocationUpdated += UpdateLocation;
 			locationProvider.mapManager.OnUpdated += UpdateMapRoot;
+		}
+
+		private void OnDisable() {
+			locationProvider.DefaultLocationProvider.OnLocationUpdated -= UpdateLocation;
+			locationProvider.mapManager.OnUpdated -= UpdateMapRoot;
 		}
 
 		/// <summary>
@@ -126,13 +121,6 @@ namespace Dataskop.Data {
 			Vector3 arPos = arCam.transform.position;
 			locationProvider.mapManager.Root.position = new Vector3(arPos.x, locationProvider.mapManager.Root.position.y, arPos.z);
 		}
-
-		private void OnDisable() {
-			locationProvider.DefaultLocationProvider.OnLocationUpdated -= UpdateLocation;
-			locationProvider.mapManager.OnUpdated -= UpdateMapRoot;
-		}
-
-  
 
 	}
 

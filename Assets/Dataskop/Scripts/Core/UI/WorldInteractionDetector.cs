@@ -6,24 +6,14 @@ namespace Dataskop.UI {
 
 	public class WorldInteractionDetector : MonoBehaviour {
 
- 
-
 		[Header("Events")]
 		public UnityEvent<WorldPointerEventArgs> hasPointerDownedInWorld;
 		public UnityEvent<WorldPointerEventArgs> hasPointerUppedInWorld;
-
-  
-
- 
 
 		[Header("References")]
 		[SerializeField] private UIDocument detectorDocument;
 
 		private VisualElement detectorRoot;
-
-  
-
- 
 
 		private void Awake() {
 			detectorRoot = detectorDocument.rootVisualElement;
@@ -40,8 +30,6 @@ namespace Dataskop.UI {
 			Vector2 processedPos = new(e.position.x, Screen.height - e.position.y);
 			hasPointerUppedInWorld?.Invoke(new WorldPointerEventArgs(processedPos, e.pointerId));
 		}
-
-  
 
 	}
 

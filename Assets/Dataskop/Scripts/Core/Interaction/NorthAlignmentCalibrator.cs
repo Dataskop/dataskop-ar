@@ -13,23 +13,9 @@ namespace Dataskop.Interaction {
 	/// </summary>
 	public class NorthAlignmentCalibrator : MonoBehaviour, ICalibration {
 
- 
-
-		public bool IsEnabled { get; set; }
-
-  
-
- 
-
-		public event Action CalibrationCompleted;
-
 		[Header("Events")]
 		public UnityEvent<int, int> rotationSampleTaken;
 		public UnityEvent northRotationCompleted;
-
-  
-
- 
 
 		[Header("References")]
 		[SerializeField] private Transform mapTransform;
@@ -40,9 +26,9 @@ namespace Dataskop.Interaction {
 
 		private WaitForSeconds timeBetweenSteps;
 
-  
+		public bool IsEnabled { get; set; }
 
- 
+		public event Action CalibrationCompleted;
 
 		public ICalibration Enable() {
 
@@ -50,6 +36,10 @@ namespace Dataskop.Interaction {
 			IsEnabled = true;
 			return this;
 
+		}
+
+		public void Disable() {
+			IsEnabled = false;
 		}
 
 		private IEnumerator Rotate() {
@@ -83,12 +73,6 @@ namespace Dataskop.Interaction {
 			float calcAngle = 360f - (Input.compass.trueHeading + mapToCamAngle);
 			return calcAngle;
 		}
-
-		public void Disable() {
-			IsEnabled = false;
-		}
-
-  
 
 	}
 

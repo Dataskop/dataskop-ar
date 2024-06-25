@@ -7,8 +7,6 @@ namespace Dataskop.UI {
 
 	public class SettingsMenuUI : MonoBehaviour {
 
- 
-
 		private const string MenuOpenAnimation = "settings-menu-open";
 		private const string TogglerAnimation = "toggler-on";
 		private const string KnobAnimation = "knob-on";
@@ -16,10 +14,6 @@ namespace Dataskop.UI {
 		private const string DefaultCooldown = "30";
 		private const string ProjectSelectionTitle = "Projects";
 		private const string SettingsTitle = "Settings";
-
-  
-
- 
 
 		[Header("Events")]
 		public UnityEvent onToggleOcclusionButtonPressed;
@@ -37,14 +31,10 @@ namespace Dataskop.UI {
 		[Header("Values")]
 		[SerializeField] private Color selectedIconColor;
 		[SerializeField] private Color deselectedIconColor;
+		private bool isHistorySliderActive;
+		private bool isProjectSelectorActive;
 
 		private bool isSettingsMenuActive;
-		private bool isProjectSelectorActive;
-		private bool isHistorySliderActive;
-
-  
-
- 
 
 		private MenuView CurrentView { get; set; } = MenuView.Settings;
 
@@ -87,10 +77,6 @@ namespace Dataskop.UI {
 		private TextField AmountInput { get; set; }
 
 		private TextField CooldownInput { get; set; }
-
-  
-
- 
 
 		private void OnEnable() {
 			Root = menuDocument.rootVisualElement;
@@ -141,6 +127,12 @@ namespace Dataskop.UI {
 			CooldownInput = SettingsMenuContainer.Q<TextField>("CooldownInput");
 			CooldownInput.RegisterCallback<ChangeEvent<string>>(OnFetchIntervalInputChanged);
 
+		}
+
+		private void OnDisable() {
+			SettingsMenuButton.UnregisterCallback<ClickEvent>(_ => ToggleMenu(MenuView.Settings));
+			ProjectSelectorButton.UnregisterCallback<ClickEvent>(_ => ToggleMenu(MenuView.Projects));
+			ResetCalibrationButton.UnregisterCallback<ClickEvent>(_ => ResetCalibrationPressed());
 		}
 
 		private void ToggleMenu(MenuView requestedView) {
@@ -331,14 +323,6 @@ namespace Dataskop.UI {
 		public void OnProjectLoaded() {
 			HistoryButton.visible = true;
 		}
-
-		private void OnDisable() {
-			SettingsMenuButton.UnregisterCallback<ClickEvent>(_ => ToggleMenu(MenuView.Settings));
-			ProjectSelectorButton.UnregisterCallback<ClickEvent>(_ => ToggleMenu(MenuView.Projects));
-			ResetCalibrationButton.UnregisterCallback<ClickEvent>(_ => ResetCalibrationPressed());
-		}
-
-  
 
 	}
 

@@ -7,7 +7,9 @@ namespace Dataskop.Data {
 	[UsedImplicitly]
 	public class VisualizationOption {
 
- 
+		public string Type { get; set; }
+
+		public VisualizationStyle Style { get; set; }
 
 		public VisualizationOption(string type, VisualizationStyle style) {
 
@@ -26,16 +28,6 @@ namespace Dataskop.Data {
 			Style = style;
 
 		}
-
-  
-
- 
-
-		public string Type { get; set; }
-
-		public VisualizationStyle Style { get; set; }
-
-  
 
 	}
 
