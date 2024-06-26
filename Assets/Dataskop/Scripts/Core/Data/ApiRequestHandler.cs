@@ -10,37 +10,12 @@ namespace Dataskop.Data {
 
 	public class ApiRequestHandler {
 
-		/// <summary>
-		///     Performs a GET request to a given API endpoint.
-		/// </summary>
-		public async Task<string> Get(string url) {
-
-			if (Application.internetReachability == NetworkReachability.NotReachable) {
-				HandleClientOffline();
-				return "";
-			}
-
-			using UnityWebRequest request = UnityWebRequest.Get(url);
-			request.SetRequestHeader("Content-Type", "application/json");
-			request.SetRequestHeader("Authorization", UserData.Instance.Token!);
-			UnityWebRequestAsyncOperation operation = request.SendWebRequest();
-
-			while (!operation.isDone) {
-				await Task.Yield();
-			}
-
-			if (request.result != UnityWebRequest.Result.Success) {
-				HandleWebRequestErrors(request);
-				return "This did not work!";
-			}
-
-			return request.downloadHandler.text;
-		}
+		private const string BACKEND_URL = "https://backend.dataskop.at/api";
 
 		public async Task<IReadOnlyCollection<Company>> GetCompanies() {
 
-			const string url = "https://backend.dataskop.at/api/company/list";
-			string rawResponse = await Get(url);
+			string url = $"{BACKEND_URL}/company/list";
+			string rawResponse = await GetResponse(url);
 
 			try {
 				List<Company> companies = JsonConvert.DeserializeObject<List<Company>>(rawResponse);
@@ -55,8 +30,8 @@ namespace Dataskop.Data {
 
 		public async Task<IReadOnlyCollection<Project>> GetProjects(Company company) {
 
-			string url = $"https://backend.dataskop.at/api/company/projects/{company.ID}";
-			string rawResponse = await Get(url);
+			string url = $"{BACKEND_URL}/company/projects/{company.ID}";
+			string rawResponse = await GetResponse(url);
 
 			try {
 				List<Project> projects = JsonConvert.DeserializeObject<List<Project>>(rawResponse);
@@ -71,16 +46,37 @@ namespace Dataskop.Data {
 
 		public async Task<IReadOnlyCollection<Device>> GetDevices(Project project) {
 
-			string url = $"https://backend.dataskop.at/api/project/measurementdefinitions/{project.ID}";
-			string rawResponse = await Get(url);
+			string url = $"{BACKEND_URL}/project/measurementdefinitions/{project.ID}";
+			string rawResponse = await GetResponse(url);
 
 			try {
-
 				ICollection<MeasurementDefinition> projectMeasurementDefinitions =
 					JsonConvert.DeserializeObject<ICollection<MeasurementDefinition>>(rawResponse);
 
-				return BuildDevices(projectMeasurementDefinitions);
+				List<Device> devices = new();
 
+				foreach (MeasurementDefinition measurementDefinition in projectMeasurementDefinitions) {
+
+					Device foundDevice = devices.FirstOrDefault(
+						device => measurementDefinition.DeviceId != null && measurementDefinition.DeviceId == device.ID
+					);
+
+					if (foundDevice == null) {
+						devices.Add(new Device(
+							measurementDefinition.DeviceId,
+							measurementDefinition.DeviceId,
+							new List<MeasurementDefinition> {
+								measurementDefinition
+							}
+						));
+					}
+					else {
+						foundDevice.MeasurementDefinitions.Add(measurementDefinition);
+					}
+
+				}
+
+				return devices;
 			}
 			catch {
 
@@ -96,41 +92,16 @@ namespace Dataskop.Data {
 
 		}
 
-		private IReadOnlyCollection<Device> BuildDevices(IEnumerable<MeasurementDefinition> projectMeasurementDefinitions) {
-
-			List<Device> devices = new();
-
-			foreach (MeasurementDefinition measurementDefinition in projectMeasurementDefinitions) {
-
-				Device foundDevice = devices.FirstOrDefault(
-					device => device.ID == measurementDefinition.DeviceId && measurementDefinition.DeviceId != null
-				);
-
-				if (foundDevice == null)
-					devices.Add(new Device(
-						measurementDefinition.DeviceId,
-						measurementDefinition.DeviceId,
-						new List<MeasurementDefinition> {
-							measurementDefinition
-						}
-					));
-				else {
-					foundDevice.MeasurementDefinitions.Add(measurementDefinition);
-				}
-
-			}
-
-			return devices;
-		}
-
 		/// <summary>
 		///     Fetches a list of measurement results belonging to the measurement definition.
 		/// </summary>
 		public async Task<IReadOnlyCollection<MeasurementResult>> GetMeasurementResults(MeasurementDefinition measurementDefinition,
 			int amount) {
 
-			string countURL = $"https://backend.dataskop.at/api/measurementresult/query/{measurementDefinition.ID}/1/0";
-			string countResponse = await Get(countURL);
+			//TODO: Change to Advanced Query
+
+			string countURL = $"{BACKEND_URL}/measurementresult/query/{measurementDefinition.ID}/1/0";
+			string countResponse = await GetResponse(countURL);
 			int totalCount;
 
 			try {
@@ -159,9 +130,8 @@ namespace Dataskop.Data {
 
 			}
 
-			string url =
-				$"https://backend.dataskop.at/api/measurementresult/query/{measurementDefinition.ID}/{amount}/{totalCount - amount}";
-			string rawResponse = await Get(url);
+			string url = $"{BACKEND_URL}/measurementresult/query/{measurementDefinition.ID}/{amount}/{totalCount - amount}";
+			string rawResponse = await GetResponse(url);
 
 			try {
 				MeasurementResultsResponse response = JsonConvert.DeserializeObject<MeasurementResultsResponse>(rawResponse);
@@ -176,6 +146,34 @@ namespace Dataskop.Data {
 				});
 				return null;
 			}
+
+		}
+
+		/// <summary>
+		///     Performs a GET request to a given API endpoint.
+		/// </summary>
+		private async Task<string> GetResponse(string url) {
+
+			if (Application.internetReachability == NetworkReachability.NotReachable) {
+				HandleClientOffline();
+				return "";
+			}
+
+			using UnityWebRequest request = UnityWebRequest.Get(url);
+			request.SetRequestHeader("Content-Type", "application/json");
+			request.SetRequestHeader("Authorization", UserData.Instance.Token!);
+			UnityWebRequestAsyncOperation operation = request.SendWebRequest();
+
+			while (!operation.isDone) {
+				await Task.Yield();
+			}
+
+			if (request.result == UnityWebRequest.Result.Success) {
+				return request.downloadHandler.text;
+			}
+
+			HandleWebRequestErrors(request);
+			return "This did not work!";
 
 		}
 
