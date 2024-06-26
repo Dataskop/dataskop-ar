@@ -58,24 +58,8 @@ namespace Dataskop.Data {
 
 		}
 
-		/// <summary>
-		///     Returns the most recent measurement result.
-		/// </summary>
 		public MeasurementResult GetLatestMeasurementResult() {
 			return MeasurementResults?.FirstOrDefault();
-		}
-
-	}
-
-	public class MeasurementResultsResponse {
-
-		public int Count { get; set; }
-
-		public ICollection<MeasurementResult> MeasurementResults { get; }
-
-		public MeasurementResultsResponse(int count, ICollection<MeasurementResult> measurementResults) {
-			Count = count;
-			MeasurementResults = measurementResults;
 		}
 
 	}
