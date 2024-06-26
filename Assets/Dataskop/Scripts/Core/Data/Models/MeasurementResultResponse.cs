@@ -6,9 +6,9 @@ namespace Dataskop.Data {
 
 		public int Count { get; }
 
-		public ICollection<MeasurementResult> MeasurementResults { get; }
+		public IReadOnlyCollection<MeasurementResult> MeasurementResults { get; }
 
-		public MeasurementResultsResponse(int count, ICollection<MeasurementResult> measurementResults) {
+		public MeasurementResultsResponse(int count, IReadOnlyCollection<MeasurementResult> measurementResults) {
 			Count = count;
 			MeasurementResults = measurementResults;
 		}
