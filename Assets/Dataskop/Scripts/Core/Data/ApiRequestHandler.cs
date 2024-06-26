@@ -21,8 +21,13 @@ namespace Dataskop.Data {
 				List<Company> companies = JsonConvert.DeserializeObject<List<Company>>(rawResponse);
 				return companies;
 			}
-			catch (Exception e) {
-				Debug.LogError(e.Message);
+			catch {
+				NotificationHandler.Add(new Notification {
+					Category = NotificationCategory.Error,
+					Text = $"Could not fetch companies!",
+					DisplayDuration = NotificationDuration.Medium
+				});
+
 				return null;
 			}
 
@@ -37,8 +42,14 @@ namespace Dataskop.Data {
 				List<Project> projects = JsonConvert.DeserializeObject<List<Project>>(rawResponse);
 				return projects;
 			}
-			catch (Exception e) {
-				Debug.LogError(e.Message);
+			catch {
+
+				NotificationHandler.Add(new Notification {
+					Category = NotificationCategory.Error,
+					Text = $"Could not fetch measurement definitions of company: {company.ID}",
+					DisplayDuration = NotificationDuration.Medium
+				});
+
 				return null;
 			}
 
@@ -81,7 +92,7 @@ namespace Dataskop.Data {
 
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
-					Text = $"Could not fetch MeasurementDefinitions of Project {project.ID}",
+					Text = $"Could not fetch measurement definitions of project: {project.ID}",
 					DisplayDuration = NotificationDuration.Medium
 				});
 
@@ -91,9 +102,6 @@ namespace Dataskop.Data {
 
 		}
 
-		/// <summary>
-		///     Fetches a list of measurement results belonging to the measurement definition.
-		/// </summary>
 		public async Task<IReadOnlyCollection<MeasurementResult>> GetMeasurementResults(MeasurementDefinition measurementDefinition,
 			int amount) {
 
@@ -118,7 +126,7 @@ namespace Dataskop.Data {
 			catch {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
-					Text = $"Could not fetch Measurement Results for Definition {measurementDefinition.ID}!",
+					Text = $"Could not fetch measurement results for definition: {measurementDefinition.ID}!",
 					DisplayDuration = NotificationDuration.Medium
 				});
 				return null;
@@ -151,9 +159,6 @@ namespace Dataskop.Data {
 
 		}
 
-		/// <summary>
-		///     Handles the case when the client is offline.
-		/// </summary>
 		private void HandleClientOffline() {
 			NotificationHandler.Add(new Notification {
 				Category = NotificationCategory.Error,
@@ -162,9 +167,6 @@ namespace Dataskop.Data {
 			});
 		}
 
-		/// <summary>
-		///     Handles UnityWebRequest errors.
-		/// </summary>
 		private void HandleWebRequestErrors(UnityWebRequest request) {
 
 			if (request.result == UnityWebRequest.Result.ConnectionError) {
