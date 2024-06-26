@@ -148,9 +148,6 @@ namespace Dataskop.Data {
 
 		}
 
-		/// <summary>
-		///     Performs a GET request to a given API endpoint.
-		/// </summary>
 		private async Task<string> GetResponse(string url) {
 
 			if (Application.internetReachability == NetworkReachability.NotReachable) {
@@ -180,13 +177,11 @@ namespace Dataskop.Data {
 		///     Handles the case when the client is offline.
 		/// </summary>
 		private void HandleClientOffline() {
-
 			NotificationHandler.Add(new Notification {
 				Category = NotificationCategory.Error,
 				Text = "You are offline. Make sure you are connected to the internet and try again.",
 				DisplayDuration = NotificationDuration.Medium
 			});
-
 		}
 
 		/// <summary>
@@ -195,24 +190,20 @@ namespace Dataskop.Data {
 		private void HandleWebRequestErrors(UnityWebRequest request) {
 
 			if (request.result == UnityWebRequest.Result.ConnectionError) {
-
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
 					Text = "No connection to the server.",
 					DisplayDuration = NotificationDuration.Medium
 				});
-
 				return;
 			}
 
 			if (request.result == UnityWebRequest.Result.ProtocolError) {
-
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
 					Text = request.responseCode == 401 ? "Your access token is invalid." : "No data available.",
 					DisplayDuration = NotificationDuration.Medium
 				});
-
 				return;
 			}
 
