@@ -107,9 +107,9 @@ namespace Dataskop.Data {
 
 				if (amount > totalCount) {
 					NotificationHandler.Add(new Notification {
-						Category = NotificationCategory.Error,
+						Category = NotificationCategory.Warning,
 						Text = $"Tried to fetch {amount} for {measurementDefinition.ID}, but could only find {totalCount}!",
-						DisplayDuration = NotificationDuration.Medium
+						DisplayDuration = NotificationDuration.Short
 					});
 				}
 
