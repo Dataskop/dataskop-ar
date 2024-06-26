@@ -62,20 +62,19 @@ namespace Dataskop.Data {
 					);
 
 					if (foundDevice == null) {
-						devices.Add(new Device(
-							measurementDefinition.DeviceId,
-							measurementDefinition.DeviceId,
-							new List<MeasurementDefinition> {
-								measurementDefinition
-							}
-						));
+
+						int deviceId = devices.Count;
+						Device newDevice = new(deviceId.ToString(), $"Device_{deviceId:000}", new List<MeasurementDefinition> {
+							measurementDefinition
+						});
+
+						devices.Add(newDevice);
 					}
 					else {
 						foundDevice.MeasurementDefinitions.Add(measurementDefinition);
 					}
 
 				}
-
 				return devices;
 			}
 			catch {
