@@ -97,44 +97,22 @@ namespace Dataskop.Data {
 		public async Task<IReadOnlyCollection<MeasurementResult>> GetMeasurementResults(MeasurementDefinition measurementDefinition,
 			int amount) {
 
-			//TODO: Change to Advanced Query
-
-			string countURL = $"{BACKEND_URL}/measurementresult/query/{measurementDefinition.ID}/1/0";
-			string countResponse = await GetResponse(countURL);
-			int totalCount;
+			string url = $"{BACKEND_URL}/measurementresult/query/advanced/{measurementDefinition.ID}/{amount}/0?orderby=timestamp%20desc";
+			string response = await GetResponse(url);
 
 			try {
-				MeasurementResultsResponse response = JsonConvert.DeserializeObject<MeasurementResultsResponse>(countResponse);
-				totalCount = response.Count;
-			}
-			catch {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = $"Could not fetch Measurement Results for Definition {measurementDefinition.ID}!",
-					DisplayDuration = NotificationDuration.Medium
-				});
-				throw;
-			}
+				MeasurementResultsResponse resultsResponse = JsonConvert.DeserializeObject<MeasurementResultsResponse>(response);
+				int totalCount = resultsResponse.Count;
+				List<MeasurementResult> measurementResults = resultsResponse?.MeasurementResults.ToList();
 
-			if (amount > totalCount) {
+				if (amount > totalCount) {
+					NotificationHandler.Add(new Notification {
+						Category = NotificationCategory.Error,
+						Text = $"Tried to fetch {amount} for {measurementDefinition.ID}, but could only find {totalCount}!",
+						DisplayDuration = NotificationDuration.Medium
+					});
+				}
 
-				amount = totalCount;
-
-				NotificationHandler.AddUnique(new Notification {
-					Category = NotificationCategory.Warning,
-					Text = $"Amount fetched too high. Clamping to {totalCount}!",
-					DisplayDuration = NotificationDuration.Medium,
-					UniqueID = 2
-				});
-
-			}
-
-			string url = $"{BACKEND_URL}/measurementresult/query/{measurementDefinition.ID}/{amount}/{totalCount - amount}";
-			string rawResponse = await GetResponse(url);
-
-			try {
-				MeasurementResultsResponse response = JsonConvert.DeserializeObject<MeasurementResultsResponse>(rawResponse);
-				List<MeasurementResult> measurementResults = response?.MeasurementResults.OrderByDescending(x => x.Timestamp).ToList();
 				return measurementResults;
 			}
 			catch {
