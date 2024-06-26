@@ -21,10 +21,10 @@ namespace Dataskop.Data {
 
 		public float Maximum { get; set; }
 
-		public ICollection<VisualizationOption> VisOptions { get; set; }
+		public IReadOnlyCollection<VisualizationOption> VisOptions { get; set; }
 
 		public DataAttribute(string id, string label, string unit, string attributeType, string min, string max,
-			ICollection<VisualizationOption> visualizationOptions) {
+			IReadOnlyCollection<VisualizationOption> visualizationOptions) {
 
 			ID = id;
 			Label = label;
