@@ -5,16 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dataskop.UI;
 using JetBrains.Annotations;
-using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Events;
-using Debug = UnityEngine.Debug;
 
 namespace Dataskop.Data {
 
 	public class DataManager : MonoBehaviour {
-
-		public static readonly ApiRequestHandler RequestHandler = ApiRequestHandler.Instance;
 
 		[Header("Events")]
 		public UnityEvent<int> fetchedAmountChanged;
@@ -27,6 +23,8 @@ namespace Dataskop.Data {
 		[Header("Values")]
 		[SerializeField] private int fetchAmount = 1;
 		[SerializeField] private int fetchInterval = 30000;
+
+		public readonly ApiRequestHandler RequestHandler = new();
 
 		private IReadOnlyCollection<Company> Companies { get; set; }
 
@@ -99,11 +97,11 @@ namespace Dataskop.Data {
 		/// <summary>
 		///     Starts process of loading data for the application.
 		/// </summary>
-		async private void LoadAppData() {
+		private async void LoadAppData() {
 
 			LoadingIndicator.Show();
 
-			Companies = await UpdateCompanies();
+			Companies = await RequestHandler.GetCompanies();
 
 			if (Companies == null || Companies.Count == 0) {
 
@@ -118,28 +116,12 @@ namespace Dataskop.Data {
 
 			}
 
-			foreach (Company c in Companies) {
-				await c.UpdateProjects();
+			foreach (Company company in Companies) {
+				company.Projects = await RequestHandler.GetProjects(company);
 			}
 
 			projectListLoaded?.Invoke(Companies);
 			LoadingIndicator.Hide();
-
-		}
-
-		async private static Task<IReadOnlyCollection<Company>> UpdateCompanies() {
-
-			const string url = "https://backend.dataskop.at/api/company/list";
-			string rawResponse = await RequestHandler.Get(url);
-
-			try {
-				List<Company> companies = JsonConvert.DeserializeObject<List<Company>>(rawResponse);
-				return companies;
-			}
-			catch (Exception e) {
-				Debug.LogError(e.Message);
-				return null;
-			}
 
 		}
 
@@ -171,9 +153,20 @@ namespace Dataskop.Data {
 				return;
 			}
 
-			await SelectedProject.UpdateDevices();
-			await UpdateProjectMeasurements();
+			SelectedProject.Devices = await RequestHandler.GetDevices(SelectedProject);
 
+			if (SelectedProject.Devices?.Count == 0) {
+				NotificationHandler.Add(new Notification {
+					Category = NotificationCategory.Warning,
+					Text = $"No Devices found in Project {SelectedProject.ID}!",
+					DisplayDuration = NotificationDuration.Medium
+				});
+
+				OnProjectDataLoaded(SelectedProject);
+				return;
+			}
+
+			await UpdateProjectMeasurements();
 			OnProjectDataLoaded(SelectedProject);
 
 		}
@@ -236,7 +229,18 @@ namespace Dataskop.Data {
 					return;
 				}
 
-				await SelectedProject.UpdateDevices();
+				SelectedProject.Devices = await RequestHandler.GetDevices(SelectedProject);
+
+				if (SelectedProject.Devices?.Count == 0) {
+					NotificationHandler.Add(new Notification {
+						Category = NotificationCategory.Warning,
+						Text = $"No Devices found in Project {SelectedProject.ID}!",
+						DisplayDuration = NotificationDuration.Medium
+					});
+
+					OnProjectDataLoaded(SelectedProject);
+					return;
+				}
 				await UpdateProjectMeasurements();
 
 				OnProjectDataLoaded(SelectedProject);
@@ -297,7 +301,7 @@ namespace Dataskop.Data {
 
 		}
 
-		async private void RefetchDataTimer() {
+		private async void RefetchDataTimer() {
 
 			while (ShouldRefetch) {
 
@@ -316,7 +320,12 @@ namespace Dataskop.Data {
 
 			LoadingIndicator.Show();
 
-			await SelectedProject.UpdateDeviceMeasurements(FetchAmount);
+			foreach (Device d in SelectedProject.Devices) {
+				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
+					md.MeasurementResults = await RequestHandler.GetMeasurementResults(md, FetchAmount);
+				}
+			}
+
 			HasUpdatedMeasurementResults?.Invoke();
 
 			int fetchedResultsAmount = SelectedProject.Devices.First().MeasurementDefinitions.First().MeasurementResults.Count;
@@ -326,12 +335,11 @@ namespace Dataskop.Data {
 			}
 
 			fetchedAmountChanged?.Invoke(FetchAmount);
-
 			LoadingIndicator.Hide();
 
 		}
 
-		async private void OnRefetchTimerElapsed() {
+		private async void OnRefetchTimerElapsed() {
 			await UpdateProjectMeasurements();
 		}
 

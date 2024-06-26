@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
@@ -20,7 +19,7 @@ namespace Dataskop.Data {
 
 		public string AttributeId { get; }
 
-		public ICollection<MeasurementResult> MeasurementResults { get; private set; }
+		public IReadOnlyCollection<MeasurementResult> MeasurementResults { get; set; }
 
 		public MeasurementDefinition(int id, MeasurementDefinitionInformation information, string additionalProperties,
 			int measurementInterval, int valueType, int downstreamType) {
@@ -60,76 +59,10 @@ namespace Dataskop.Data {
 		}
 
 		/// <summary>
-		///     Fetches a list of measurement results belonging to the measurement definition.
-		/// </summary>
-		public async Task UpdateMeasurementResults(int count) {
-
-			string countURL = $"https://backend.dataskop.at/api/measurementresult/query/{ID}/1/0";
-			string countResponse = await ApiRequestHandler.Instance.Get(countURL);
-			int totalCount;
-
-			try {
-				MeasurementResultsResponse response = JsonConvert.DeserializeObject<MeasurementResultsResponse>(countResponse);
-				totalCount = response.Count;
-			}
-			catch {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = $"Could not fetch Measurement Results for Definition {ID}!",
-					DisplayDuration = NotificationDuration.Medium
-				});
-				throw;
-			}
-
-			if (count > totalCount) {
-
-				count = totalCount;
-
-				NotificationHandler.AddUnique(new Notification {
-					Category = NotificationCategory.Warning,
-					Text = $"Amount fetched too high. Clamping to {totalCount}!",
-					DisplayDuration = NotificationDuration.Medium,
-					UniqueID = 2
-				});
-
-			}
-
-			string url = $"https://backend.dataskop.at/api/measurementresult/query/{ID}/{count}/{totalCount - count}";
-			string rawResponse = await ApiRequestHandler.Instance.Get(url);
-
-			try {
-				MeasurementResultsResponse response = JsonConvert.DeserializeObject<MeasurementResultsResponse>(rawResponse);
-				MeasurementResults = response?.MeasurementResults.OrderByDescending(x => x.Timestamp).ToList();
-			}
-			catch {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = $"Could not fetch Measurement Results for Definition {ID}!",
-					DisplayDuration = NotificationDuration.Medium
-				});
-				throw;
-			}
-
-		}
-
-		/// <summary>
 		///     Returns the most recent measurement result.
 		/// </summary>
 		public MeasurementResult GetLatestMeasurementResult() {
 			return MeasurementResults?.FirstOrDefault();
-		}
-
-	}
-
-	public class AdditionalMeasurementDefinitionProperties {
-
-		public string DeviceId { get; }
-
-		public string AttributeId { get; }
-
-		public AdditionalMeasurementDefinitionProperties(string deviceId, string attributeId) {
-			DeviceId = deviceId;
-			AttributeId = attributeId;
 		}
 
 	}

@@ -16,15 +16,9 @@ namespace Dataskop.Data {
 		[Header("References")]
 		[SerializeField] private DataManager dataManager;
 
-		/// <summary>
-		///     Currently selected Attribute
-		/// </summary>
 		public DataAttribute SelectedAttribute { get; private set; }
 
-		/// <summary>
-		///     List of available Attributes in a project.
-		/// </summary>
-		public ICollection<DataAttribute> ProjectAttributes { get; set; }
+		private IReadOnlyCollection<DataAttribute> ProjectAttributes { get; set; }
 
 		private void OnEnable() {
 			dataManager.HasLoadedProjectData += SetDataAttributes;
@@ -34,9 +28,9 @@ namespace Dataskop.Data {
 			dataManager.HasLoadedProjectData -= SetDataAttributes;
 		}
 
-		public event Action<DataAttribute> selectedAttributeChanged;
+		public event Action<DataAttribute> SelectedAttributeChanged;
 
-		public void SetDataAttributes(Project selectedProject) {
+		private void SetDataAttributes(Project selectedProject) {
 
 			if (selectedProject.Properties == null) {
 
@@ -62,18 +56,15 @@ namespace Dataskop.Data {
 				return;
 			}
 
-			ClearProjectAttributes();
-
-			foreach (DataAttribute attribute in selectedProject.Properties.Attributes) {
-				AddDataAttribute(attribute);
-			}
+			List<DataAttribute> attributes = selectedProject.Properties.Attributes.ToList();
+			ProjectAttributes = attributes;
 
 			SetDefaultAttribute(selectedProject.Properties.Attributes.First().ID);
 			onAvailableAttributesUpdated?.Invoke(selectedProject);
 
 		}
 
-		public void SetDefaultAttribute(string attributeId) {
+		private void SetDefaultAttribute(string attributeId) {
 			SelectedAttribute = ProjectAttributes.SingleOrDefault(attribute => attribute.ID == attributeId);
 			onDefaultAttributeSet?.Invoke(SelectedAttribute);
 		}
@@ -85,19 +76,13 @@ namespace Dataskop.Data {
 
 			SelectedAttribute = ProjectAttributes.SingleOrDefault(attribute => attribute.ID == attributeId);
 
-			if (SelectedAttribute != null) {
-				onSelectedAttributeChanged?.Invoke(SelectedAttribute);
-				selectedAttributeChanged?.Invoke(SelectedAttribute);
+			if (SelectedAttribute == null) {
+				return;
 			}
 
-		}
+			onSelectedAttributeChanged?.Invoke(SelectedAttribute);
+			SelectedAttributeChanged?.Invoke(SelectedAttribute);
 
-		public void AddDataAttribute(DataAttribute newDataAttribute) {
-			ProjectAttributes.Add(newDataAttribute);
-		}
-
-		public void ClearProjectAttributes() {
-			ProjectAttributes.Clear();
 		}
 
 	}
