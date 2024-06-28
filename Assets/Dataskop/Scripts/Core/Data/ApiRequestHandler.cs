@@ -60,8 +60,6 @@ namespace Dataskop.Data {
 			string url = $"{BACKEND_URL}/project/measurementdefinitions/{project.ID}";
 			string rawResponse = await GetResponse(url);
 
-			Debug.Log(rawResponse);
-
 			try {
 				IReadOnlyCollection<MeasurementDefinition> projectMeasurementDefinitions =
 					JsonConvert.DeserializeObject<IReadOnlyCollection<MeasurementDefinition>>(rawResponse);
@@ -113,7 +111,7 @@ namespace Dataskop.Data {
 			if (from != null && to != null) {
 				url += $"&startTime={from}&endTime={to}";
 			}
-			
+
 			string response = await GetResponse(url);
 
 			try {
