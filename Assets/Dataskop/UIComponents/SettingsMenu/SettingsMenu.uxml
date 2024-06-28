@@ -9,12 +9,12 @@
         <ui:ScrollView name="ProjectSelectionContainer" class="project-selection-container" style="width: 100%; height: auto; max-height: 800px; position: relative; display: none;" />
         <ui:VisualElement name="SettingsMenuContainer" class="settings-menu-container" style="display: none; background-color: rgba(0, 0, 0, 0);">
             <ui:VisualElement name="AmountContainer" class="option-container" style="justify-content: space-between; flex-direction: row;">
-                <ui:Label text="Results/Sensor (max 999)" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" style="font-size: 22px;" />
-                <ui:TextField name="AmountInput" max-length="3" class="text-input" />
+                <ui:Label text="Results/Sensor" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" style="font-size: 22px;" />
+                <ui:TextField name="AmountInput" max-length="4" value="2000" class="text-input" />
             </ui:VisualElement>
             <ui:VisualElement name="CooldownContainer" class="option-container" style="justify-content: space-between; flex-direction: row;">
                 <ui:Label text="Auto-Refresh Time (seconds)" display-tooltip-when-elided="true" class="option-label" style="font-size: 22px;" />
-                <ui:TextField name="CooldownInput" class="text-input" />
+                <ui:TextField name="CooldownInput" value="10" class="text-input" />
             </ui:VisualElement>
             <ui:VisualElement name="Splitter" class="splitter" />
             <ui:VisualElement name="OptionContainer_Occlusion" class="option-container">
