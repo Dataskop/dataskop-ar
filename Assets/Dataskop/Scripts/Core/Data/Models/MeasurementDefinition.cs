@@ -19,13 +19,18 @@ namespace Dataskop.Data {
 
 		public string AttributeId { get; }
 
+		public int MeasuringInterval { get; }
+
 		public IReadOnlyCollection<MeasurementResult> MeasurementResults { get; set; }
+
+		public MeasurementResult FirstMeasurementResult { get; set; }
 
 		public MeasurementDefinition(int id, MeasurementDefinitionInformation information, string additionalProperties,
 			int measurementInterval, int valueType, int downstreamType) {
 
 			ID = id;
 			MeasurementDefinitionInformation = information;
+			MeasuringInterval = measurementInterval;
 
 			MeasurementType = valueType switch {
 				0 => MeasurementType.Float,

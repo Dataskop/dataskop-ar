@@ -60,9 +60,11 @@ namespace Dataskop.Data {
 			string url = $"{BACKEND_URL}/project/measurementdefinitions/{project.ID}";
 			string rawResponse = await GetResponse(url);
 
+			Debug.Log(rawResponse);
+
 			try {
-				ICollection<MeasurementDefinition> projectMeasurementDefinitions =
-					JsonConvert.DeserializeObject<ICollection<MeasurementDefinition>>(rawResponse);
+				IReadOnlyCollection<MeasurementDefinition> projectMeasurementDefinitions =
+					JsonConvert.DeserializeObject<IReadOnlyCollection<MeasurementDefinition>>(rawResponse);
 
 				List<Device> devices = new();
 
@@ -103,9 +105,15 @@ namespace Dataskop.Data {
 		}
 
 		public async Task<IReadOnlyCollection<MeasurementResult>> GetMeasurementResults(MeasurementDefinition measurementDefinition,
-			int amount) {
+			int amount, DateTime? from, DateTime? to) {
 
-			string url = $"{BACKEND_URL}/measurementresult/query/advanced/{measurementDefinition.ID}/{amount}/0?orderby=timestamp%20desc";
+			string url =
+				$"{BACKEND_URL}/measurementresult/query/advanced/{measurementDefinition.ID}/{amount}/0?orderby=timestamp%20desc";
+
+			if (from != null && to != null) {
+				url += $"&startTime={from}&endTime={to}";
+			}
+			
 			string response = await GetResponse(url);
 
 			try {
@@ -122,6 +130,27 @@ namespace Dataskop.Data {
 				}
 
 				return measurementResults;
+			}
+			catch {
+				NotificationHandler.Add(new Notification {
+					Category = NotificationCategory.Error,
+					Text = $"Could not fetch measurement results for definition: {measurementDefinition.ID}!",
+					DisplayDuration = NotificationDuration.Medium
+				});
+				return null;
+			}
+
+		}
+
+		public async Task<MeasurementResult> GetFirstMeasurementResult(MeasurementDefinition measurementDefinition) {
+
+			string url = $"{BACKEND_URL}/measurementresult/query/{measurementDefinition.ID}/1/0";
+			string response = await GetResponse(url);
+
+			try {
+				MeasurementResultsResponse resultsResponse = JsonConvert.DeserializeObject<MeasurementResultsResponse>(response);
+				MeasurementResult measurementResult = resultsResponse?.MeasurementResults.FirstOrDefault();
+				return measurementResult;
 			}
 			catch {
 				NotificationHandler.Add(new Notification {

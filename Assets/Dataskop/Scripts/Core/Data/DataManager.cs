@@ -21,8 +21,8 @@ namespace Dataskop.Data {
 		[SerializeField] private LoadingIndicator loadingIndicator;
 
 		[Header("Values")]
-		[SerializeField] private int fetchAmount = 1;
-		[SerializeField] private int fetchInterval = 30000;
+		[SerializeField] private int fetchAmount = 2000;
+		[SerializeField] private int fetchInterval = 10000; // 10 Seconds
 
 		public readonly ApiRequestHandler RequestHandler = new();
 
@@ -217,8 +217,7 @@ namespace Dataskop.Data {
 					}
 
 				}
-
-				if (SelectedProject == null) {
+				else {
 					NotificationHandler.Add(new Notification {
 						Category = NotificationCategory.Error,
 						Text = $"No Project with name '{projectName}' found!",
@@ -241,10 +240,9 @@ namespace Dataskop.Data {
 					OnProjectDataLoaded(SelectedProject);
 					return;
 				}
+
 				await UpdateProjectMeasurements();
-
 				OnProjectDataLoaded(SelectedProject);
-
 			}
 			else {
 				LoadingIndicator.Hide();
@@ -254,7 +252,6 @@ namespace Dataskop.Data {
 					DisplayDuration = NotificationDuration.Medium
 				});
 			}
-
 		}
 
 		/// <summary>
@@ -262,7 +259,7 @@ namespace Dataskop.Data {
 		/// </summary>
 		/// <param name="userCompanies">A collection of companies</param>
 		/// <returns>A collection of available projects for the given companies.</returns>
-		public static IEnumerable<Project> GetAvailableProjects(IEnumerable<Company> userCompanies) {
+		private static IEnumerable<Project> GetAvailableProjects(IEnumerable<Company> userCompanies) {
 
 			List<Project> availableProjects = new();
 
@@ -316,13 +313,14 @@ namespace Dataskop.Data {
 
 		}
 
-		public async Task UpdateProjectMeasurements() {
+		private async Task UpdateProjectMeasurements() {
 
 			LoadingIndicator.Show();
 
 			foreach (Device d in SelectedProject.Devices) {
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
-					md.MeasurementResults = await RequestHandler.GetMeasurementResults(md, FetchAmount);
+					md.FirstMeasurementResult = await RequestHandler.GetFirstMeasurementResult(md);
+					md.MeasurementResults = await RequestHandler.GetMeasurementResults(md, FetchAmount, null, null);
 				}
 			}
 
@@ -340,7 +338,7 @@ namespace Dataskop.Data {
 		}
 
 		private async void OnRefetchTimerElapsed() {
-			await UpdateProjectMeasurements();
+			// await UpdateProjectMeasurements();
 		}
 
 		public async void OnRefetchButtonPressed() {
@@ -349,11 +347,11 @@ namespace Dataskop.Data {
 
 		public void OnCooldownInputChanged(int newValue) {
 			int milliseconds = newValue * 1000;
-			fetchInterval = Mathf.Clamp(milliseconds, 2000, 360000);
+			fetchInterval = Mathf.Clamp(milliseconds, 2000, 900000);
 		}
 
 		public void OnAmountInputChanged(int newValue) {
-			FetchAmount = Mathf.Clamp(newValue, 1, 999);
+			FetchAmount = Mathf.Clamp(newValue, 1, 2000);
 		}
 
 	}
