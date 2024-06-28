@@ -158,7 +158,6 @@ namespace Dataskop.UI {
 		}
 
 		private void GenerateTicks(int dataPointsCount) {
-			Debug.Log("Generating ticks for " + dataPointsCount);
 			// Clear existing ticks
 			ClearTicks();
 
@@ -186,7 +185,6 @@ namespace Dataskop.UI {
 				// The position is calculated from the bottom (sliderTrackHeight - position - half height of tick)
 				// to correctly align with the vertical slider's orientation
 				tick.style.top = sliderTrackHeight - tickPosition - tick.resolvedStyle.height / 2;
-				Debug.Log(sliderTrackHeight + " " + tickPosition + " " + tick.style.height);
 				// Add the tick to the slider container
 				HistorySliderContainer.Add(tick);
 			}
