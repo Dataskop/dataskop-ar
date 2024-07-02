@@ -13,7 +13,6 @@ namespace Dataskop.Data {
 	public class DataManager : MonoBehaviour {
 
 		[Header("Events")]
-		public UnityEvent<int> fetchedAmountChanged;
 		public UnityEvent<IReadOnlyCollection<Company>> projectListLoaded;
 		public UnityEvent<Project> projectLoaded;
 
@@ -325,8 +324,6 @@ namespace Dataskop.Data {
 			}
 
 			HasUpdatedMeasurementResults?.Invoke();
-
-			fetchedAmountChanged?.Invoke(FetchAmount);
 			LoadingIndicator.Hide();
 
 		}
