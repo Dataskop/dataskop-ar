@@ -326,12 +326,6 @@ namespace Dataskop.Data {
 
 			HasUpdatedMeasurementResults?.Invoke();
 
-			int fetchedResultsAmount = SelectedProject.Devices.First().MeasurementDefinitions.First().MeasurementResults.Count;
-
-			if (fetchedResultsAmount != FetchAmount) {
-				FetchAmount = fetchedResultsAmount;
-			}
-
 			fetchedAmountChanged?.Invoke(FetchAmount);
 			LoadingIndicator.Hide();
 
