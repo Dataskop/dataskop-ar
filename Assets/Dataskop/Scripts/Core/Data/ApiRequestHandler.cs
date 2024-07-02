@@ -123,7 +123,7 @@ namespace Dataskop.Data {
 					NotificationHandler.Add(new Notification {
 						Category = NotificationCategory.Warning,
 						Text = $"Tried to fetch {amount} for {measurementDefinition.ID}, but could only find {totalCount}!",
-						DisplayDuration = NotificationDuration.Short
+						DisplayDuration = NotificationDuration.Flash
 					});
 				}
 
