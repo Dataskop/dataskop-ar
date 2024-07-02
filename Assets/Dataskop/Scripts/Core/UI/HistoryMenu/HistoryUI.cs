@@ -65,10 +65,6 @@ namespace Dataskop.UI {
 			CurrentTimeLabel.style.top = Dragger.localBound.yMax;
 		}
 
-		public void OnFetchedAmountChanged(int newValue) {
-			HistorySlider.highValue = newValue - 1;
-		}
-
 		public void OnDataPointSelectionChanged(DataPoint selectedDataPoint) {
 
 			if (SelectedDataPoint != null) {
@@ -87,6 +83,9 @@ namespace Dataskop.UI {
 			UpdateTimeLabel(SelectedDataPoint.CurrentMeasurementResult);
 
 			if (IsActive) {
+				int resultsCount = selectedDataPoint.MeasurementDefinition.MeasurementResults.Count;
+				HistorySlider.highValue = resultsCount - 1;
+				GenerateTicks(resultsCount);
 				SetVisibility(HistorySliderContainer, true);
 				CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
 			}
@@ -137,8 +136,6 @@ namespace Dataskop.UI {
 				SetVisibility(HistorySliderContainer, IsActive);
 				SetVisibility(CurrentTimeLabel, IsActive);
 			}
-
-			GenerateTicks(dataManager.FetchAmount);
 
 			HistorySlider.value = 0;
 			CurrentTimeLabel.style.top = Dragger.localBound.yMax;
