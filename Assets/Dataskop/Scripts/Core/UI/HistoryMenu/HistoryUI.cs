@@ -79,6 +79,7 @@ namespace Dataskop.UI {
 
 			if (SelectedDataPoint == null) {
 				CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Hidden);
+				SetVisibility(HistorySliderContainer, false);
 				return;
 			}
 
@@ -86,6 +87,7 @@ namespace Dataskop.UI {
 			UpdateTimeLabel(SelectedDataPoint.CurrentMeasurementResult);
 
 			if (IsActive) {
+				SetVisibility(HistorySliderContainer, true);
 				CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
 			}
 
@@ -130,9 +132,9 @@ namespace Dataskop.UI {
 		public void ToggleHistoryView() {
 
 			IsActive = !IsActive;
-			SetVisibility(HistorySliderContainer, IsActive);
 
 			if (SelectedDataPoint) {
+				SetVisibility(HistorySliderContainer, IsActive);
 				SetVisibility(CurrentTimeLabel, IsActive);
 			}
 
