@@ -74,8 +74,8 @@ namespace Dataskop.Data {
 
 					if (foundDevice == null) {
 
-						int deviceId = devices.Count;
-						Device newDevice = new(deviceId.ToString(), $"Device_{deviceId:000}", new List<MeasurementDefinition> {
+						string deviceId = measurementDefinition.DeviceId;
+						Device newDevice = new(deviceId, $"Device_{deviceId}", new List<MeasurementDefinition> {
 							measurementDefinition
 						});
 
