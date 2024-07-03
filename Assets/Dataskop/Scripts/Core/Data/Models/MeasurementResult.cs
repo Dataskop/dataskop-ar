@@ -35,8 +35,6 @@ namespace Dataskop.Data {
 
 			try {
 
-				//string fixedProperties = additionalProperties.Substring(1, additionalProperties.Length - 2);
-
 				AdditionalMeasurementResultsProperties properties =
 					JsonConvert.DeserializeObject<AdditionalMeasurementResultsProperties>(additionalProperties);
 
@@ -175,8 +173,6 @@ namespace Dataskop.Data {
 			return leftItem.ReadAsFloat();
 		}
 
-#region Nested type: AdditionalMeasurementResultsProperties
-
 		public class AdditionalMeasurementResultsProperties {
 
 			public string Author { get; }
@@ -186,8 +182,6 @@ namespace Dataskop.Data {
 			}
 
 		}
-
-#endregion
 
 	}
 

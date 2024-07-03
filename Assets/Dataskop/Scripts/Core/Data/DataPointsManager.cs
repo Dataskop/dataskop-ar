@@ -122,10 +122,17 @@ namespace Dataskop.Data {
 
 		private void OnSwiped(PointerInteraction pointerInteraction) {
 
-			if (!pointerInteraction.isSwipe) return;
-
-			if (!HasLoadedDataPoints)
+			if (!pointerInteraction.isSwipe) {
 				return;
+			}
+
+			if (!HasLoadedDataPoints) {
+				return;
+			}
+
+			if (DataPoints.Count < 1) {
+				return;
+			}
 
 			foreach (DataPoint dp in DataPoints) {
 				dp.Vis.Swiped(pointerInteraction);
