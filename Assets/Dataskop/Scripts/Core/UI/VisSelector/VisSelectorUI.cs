@@ -35,9 +35,9 @@ namespace Dataskop.UI {
 
 		private VisualElement AttributeSelector { get; set; }
 
-		private ICollection<DataAttribute> AvailableAttributes { get; set; }
+		private IReadOnlyCollection<DataAttribute> AvailableAttributes { get; set; }
 
-		private ICollection<VisualizationOption> AvailableVisOptions { get; set; }
+		private IReadOnlyCollection<VisualizationOption> AvailableVisOptions { get; set; }
 
 		private List<Button> AttributeButtons { get; set; }
 
@@ -51,11 +51,11 @@ namespace Dataskop.UI {
 			VisSelectorRoot = visSelectorUIDoc.rootVisualElement;
 			VisOptionSelector = VisSelectorRoot.Q<VisualElement>("vis-selector");
 			AttributeSelector = VisSelectorRoot.Q<VisualElement>("attribute-selector");
-			dataAttributeManager.selectedAttributeChanged += SelectExternalAttribute;
+			dataAttributeManager.SelectedAttributeChanged += SelectExternalAttribute;
 		}
 
 		private void OnDisable() {
-			dataAttributeManager.selectedAttributeChanged -= SelectExternalAttribute;
+			dataAttributeManager.SelectedAttributeChanged -= SelectExternalAttribute;
 		}
 
 		private void SelectExternalAttribute(DataAttribute selectedAttribute) {

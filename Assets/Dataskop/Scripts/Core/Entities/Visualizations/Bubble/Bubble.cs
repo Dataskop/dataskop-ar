@@ -112,7 +112,7 @@ namespace Dataskop.Entities.Visualizations {
 
 				case MeasurementType.Float: {
 					float receivedValue = mr.ReadAsFloat();
-					valueTextMesh.text = receivedValue.ToString(CultureInfo.InvariantCulture) + $" {DataPoint.Attribute?.Unit}";
+					valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) + $" {DataPoint.Attribute?.Unit}";
 					dateTextMesh.text = mr.GetTime();
 					BubbleSize = BubbleUtils.CalculateRadius(receivedValue, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum,
 						MinScale, MaxScale);

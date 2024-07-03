@@ -5,19 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dataskop.UI;
 using JetBrains.Annotations;
-using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Events;
-using Debug = UnityEngine.Debug;
 
 namespace Dataskop.Data {
 
 	public class DataManager : MonoBehaviour {
 
-		public static readonly ApiRequestHandler RequestHandler = ApiRequestHandler.Instance;
-
 		[Header("Events")]
-		public UnityEvent<int> fetchedAmountChanged;
 		public UnityEvent<IReadOnlyCollection<Company>> projectListLoaded;
 		public UnityEvent<Project> projectLoaded;
 
@@ -25,8 +20,10 @@ namespace Dataskop.Data {
 		[SerializeField] private LoadingIndicator loadingIndicator;
 
 		[Header("Values")]
-		[SerializeField] private int fetchAmount = 1;
-		[SerializeField] private int fetchInterval = 30000;
+		[SerializeField] private int fetchAmount = 2000;
+		[SerializeField] private int fetchInterval = 10000; // 10 Seconds
+
+		public readonly ApiRequestHandler RequestHandler = new();
 
 		private IReadOnlyCollection<Company> Companies { get; set; }
 
@@ -99,11 +96,11 @@ namespace Dataskop.Data {
 		/// <summary>
 		///     Starts process of loading data for the application.
 		/// </summary>
-		async private void LoadAppData() {
+		private async void LoadAppData() {
 
 			LoadingIndicator.Show();
 
-			Companies = await UpdateCompanies();
+			Companies = await RequestHandler.GetCompanies();
 
 			if (Companies == null || Companies.Count == 0) {
 
@@ -118,28 +115,12 @@ namespace Dataskop.Data {
 
 			}
 
-			foreach (Company c in Companies) {
-				await c.UpdateProjects();
+			foreach (Company company in Companies) {
+				company.Projects = await RequestHandler.GetProjects(company);
 			}
 
 			projectListLoaded?.Invoke(Companies);
 			LoadingIndicator.Hide();
-
-		}
-
-		async private static Task<IReadOnlyCollection<Company>> UpdateCompanies() {
-
-			const string url = "https://backend.dataskop.at/api/company/list";
-			string rawResponse = await RequestHandler.Get(url);
-
-			try {
-				List<Company> companies = JsonConvert.DeserializeObject<List<Company>>(rawResponse);
-				return companies;
-			}
-			catch (Exception e) {
-				Debug.LogError(e.Message);
-				return null;
-			}
 
 		}
 
@@ -171,9 +152,20 @@ namespace Dataskop.Data {
 				return;
 			}
 
-			await SelectedProject.UpdateDevices();
-			await UpdateProjectMeasurements();
+			SelectedProject.Devices = await RequestHandler.GetDevices(SelectedProject);
 
+			if (SelectedProject.Devices?.Count == 0) {
+				NotificationHandler.Add(new Notification {
+					Category = NotificationCategory.Warning,
+					Text = $"No Devices found in Project {SelectedProject.ID}!",
+					DisplayDuration = NotificationDuration.Medium
+				});
+
+				OnProjectDataLoaded(SelectedProject);
+				return;
+			}
+
+			await UpdateProjectMeasurements();
 			OnProjectDataLoaded(SelectedProject);
 
 		}
@@ -224,8 +216,7 @@ namespace Dataskop.Data {
 					}
 
 				}
-
-				if (SelectedProject == null) {
+				else {
 					NotificationHandler.Add(new Notification {
 						Category = NotificationCategory.Error,
 						Text = $"No Project with name '{projectName}' found!",
@@ -236,11 +227,21 @@ namespace Dataskop.Data {
 					return;
 				}
 
-				await SelectedProject.UpdateDevices();
+				SelectedProject.Devices = await RequestHandler.GetDevices(SelectedProject);
+
+				if (SelectedProject.Devices?.Count == 0) {
+					NotificationHandler.Add(new Notification {
+						Category = NotificationCategory.Warning,
+						Text = $"No Devices found in Project {SelectedProject.ID}!",
+						DisplayDuration = NotificationDuration.Medium
+					});
+
+					OnProjectDataLoaded(SelectedProject);
+					return;
+				}
+
 				await UpdateProjectMeasurements();
-
 				OnProjectDataLoaded(SelectedProject);
-
 			}
 			else {
 				LoadingIndicator.Hide();
@@ -250,7 +251,6 @@ namespace Dataskop.Data {
 					DisplayDuration = NotificationDuration.Medium
 				});
 			}
-
 		}
 
 		/// <summary>
@@ -258,7 +258,7 @@ namespace Dataskop.Data {
 		/// </summary>
 		/// <param name="userCompanies">A collection of companies</param>
 		/// <returns>A collection of available projects for the given companies.</returns>
-		public static IEnumerable<Project> GetAvailableProjects(IEnumerable<Company> userCompanies) {
+		private static IEnumerable<Project> GetAvailableProjects(IEnumerable<Company> userCompanies) {
 
 			List<Project> availableProjects = new();
 
@@ -297,7 +297,7 @@ namespace Dataskop.Data {
 
 		}
 
-		async private void RefetchDataTimer() {
+		private async void RefetchDataTimer() {
 
 			while (ShouldRefetch) {
 
@@ -312,27 +312,24 @@ namespace Dataskop.Data {
 
 		}
 
-		public async Task UpdateProjectMeasurements() {
+		private async Task UpdateProjectMeasurements() {
 
 			LoadingIndicator.Show();
 
-			await SelectedProject.UpdateDeviceMeasurements(FetchAmount);
-			HasUpdatedMeasurementResults?.Invoke();
-
-			int fetchedResultsAmount = SelectedProject.Devices.First().MeasurementDefinitions.First().MeasurementResults.Count;
-
-			if (fetchedResultsAmount != FetchAmount) {
-				FetchAmount = fetchedResultsAmount;
+			foreach (Device d in SelectedProject.Devices) {
+				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
+					md.FirstMeasurementResult = await RequestHandler.GetFirstMeasurementResult(md);
+					md.MeasurementResults = await RequestHandler.GetMeasurementResults(md, FetchAmount, null, null);
+				}
 			}
 
-			fetchedAmountChanged?.Invoke(FetchAmount);
-
+			HasUpdatedMeasurementResults?.Invoke();
 			LoadingIndicator.Hide();
 
 		}
 
-		async private void OnRefetchTimerElapsed() {
-			await UpdateProjectMeasurements();
+		private async void OnRefetchTimerElapsed() {
+			// await UpdateProjectMeasurements();
 		}
 
 		public async void OnRefetchButtonPressed() {
@@ -341,11 +338,11 @@ namespace Dataskop.Data {
 
 		public void OnCooldownInputChanged(int newValue) {
 			int milliseconds = newValue * 1000;
-			fetchInterval = Mathf.Clamp(milliseconds, 2000, 360000);
+			fetchInterval = Mathf.Clamp(milliseconds, 2000, 900000);
 		}
 
 		public void OnAmountInputChanged(int newValue) {
-			FetchAmount = Mathf.Clamp(newValue, 1, 999);
+			FetchAmount = Mathf.Clamp(newValue, 1, 2000);
 		}
 
 	}
