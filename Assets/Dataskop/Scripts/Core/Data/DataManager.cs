@@ -165,7 +165,7 @@ namespace Dataskop.Data {
 				return;
 			}
 
-			await UpdateProjectMeasurements();
+			await GetInitialProjectMeasurements();
 			OnProjectDataLoaded(SelectedProject);
 
 		}
@@ -240,7 +240,7 @@ namespace Dataskop.Data {
 					return;
 				}
 
-				await UpdateProjectMeasurements();
+				await GetInitialProjectMeasurements();
 				OnProjectDataLoaded(SelectedProject);
 			}
 			else {
@@ -312,7 +312,7 @@ namespace Dataskop.Data {
 
 		}
 
-		private async Task UpdateProjectMeasurements() {
+		private async Task GetInitialProjectMeasurements() {
 
 			LoadingIndicator.Show();
 
@@ -333,7 +333,7 @@ namespace Dataskop.Data {
 		}
 
 		public async void OnRefetchButtonPressed() {
-			await UpdateProjectMeasurements();
+			await GetInitialProjectMeasurements();
 		}
 
 		public void OnCooldownInputChanged(int newValue) {
