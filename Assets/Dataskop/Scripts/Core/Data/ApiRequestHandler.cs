@@ -116,9 +116,9 @@ namespace Dataskop.Data {
 
 			try {
 				MeasurementResultsResponse resultsResponse = JsonConvert.DeserializeObject<MeasurementResultsResponse>(response);
-				int totalCount = resultsResponse.Count;
+				//int totalCount = resultsResponse.Count;
 				List<MeasurementResult> measurementResults = resultsResponse?.MeasurementResults.ToList();
-
+				/*
 				if (amount > totalCount) {
 					NotificationHandler.Add(new Notification {
 						Category = NotificationCategory.Warning,
@@ -126,6 +126,7 @@ namespace Dataskop.Data {
 						DisplayDuration = NotificationDuration.Flash
 					});
 				}
+				*/
 
 				return measurementResults;
 			}

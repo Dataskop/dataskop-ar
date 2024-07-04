@@ -744,7 +744,7 @@ MonoBehaviour:
   dateTextMesh: {fileID: 5346339075067413030}
   boolIcon: {fileID: 2024824218311410335}
   boolIcons:
-  - {fileID: 21300000, guid: 4a30c3071e8d73845a8a3894b5052fc0, type: 3}
+  - {fileID: 21300000, guid: 1e3a3d74c345b314b90953396b5048aa, type: 3}
   - {fileID: 21300000, guid: db91e26dc24535e4196888618949a0de, type: 3}
   boolTrueColor:
     serializedVersion: 2
