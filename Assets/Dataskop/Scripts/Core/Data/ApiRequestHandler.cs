@@ -109,7 +109,7 @@ namespace Dataskop.Data {
 				$"{BACKEND_URL}/measurementresult/query/advanced/{measurementDefinition.ID}/{amount}/0?orderby=timestamp%20desc";
 
 			if (from != null && to != null) {
-				url += $"&startTime={from}&endTime={to}";
+				url += $"&startTime={from.Value:s}&endTime={to.Value:s}";
 			}
 
 			string response = await GetResponse(url);

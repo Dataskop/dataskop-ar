@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Dataskop.UI;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
+using Debug = UnityEngine.Debug;
 
 namespace Dataskop.Data {
 
@@ -328,12 +330,47 @@ namespace Dataskop.Data {
 
 		}
 
+		private async Task UpdateProjectMeasurements() {
+
+			LoadingIndicator.Show();
+
+			foreach (Device d in SelectedProject.Devices) {
+				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
+
+					MeasurementResult latestResult = md.GetLatestMeasurementResult();
+
+					if (DateTime.TryParse(latestResult.GetDate(), out DateTime latestDate)) {
+						IReadOnlyCollection<MeasurementResult> newResults =
+							await RequestHandler.GetMeasurementResults(md, FetchAmount, latestDate, DateTime.Now);
+						IEnumerable<MeasurementResult> trimmedResults = newResults.Skip(1);
+
+						if (!trimmedResults.Any()) {
+							LoadingIndicator.Hide();
+							Debug.Log($"No New Results for {md.ID}");
+							continue;
+						}
+
+						md.MeasurementResults =
+							new ReadOnlyCollection<MeasurementResult>(md.MeasurementResults.Concat(newResults.Skip(1)).ToList());
+					}
+					else {
+						Debug.Log("Invalid Date Format");
+					}
+
+				}
+			}
+
+			HasUpdatedMeasurementResults?.Invoke();
+			LoadingIndicator.Hide();
+
+		}
+
 		private async void OnRefetchTimerElapsed() {
 			// await UpdateProjectMeasurements();
 		}
 
 		public async void OnRefetchButtonPressed() {
-			await GetInitialProjectMeasurements();
+			await UpdateProjectMeasurements();
 		}
 
 		public void OnCooldownInputChanged(int newValue) {

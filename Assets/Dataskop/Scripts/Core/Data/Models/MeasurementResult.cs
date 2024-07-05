@@ -107,7 +107,7 @@ namespace Dataskop.Data {
 		}
 
 		public string GetDate() {
-			return $"{Timestamp.ToString(new CultureInfo("de-DE"))}";
+			return $"{Timestamp:s}";
 		}
 
 		public string GetClockTime() {
