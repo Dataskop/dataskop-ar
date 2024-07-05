@@ -74,6 +74,10 @@ namespace Dataskop.UI {
 
 		private Label TitleLabel { get; set; }
 
+		private TextField DateFromInput { get; set; }
+
+		private TextField DateToInput { get; set; }
+
 		private TextField AmountInput { get; set; }
 
 		private TextField CooldownInput { get; set; }
@@ -120,6 +124,10 @@ namespace Dataskop.UI {
 			VersionLabel.text = "DataskopAR - " + Version.ID;
 
 			TitleLabel = Root.Q<Label>("MenuTitle");
+
+			DateFromInput = SettingsMenuContainer.Q<TextField>("DateFromInput");
+			//TODO: Add Event and functioning Date Inputs
+			DateToInput = SettingsMenuContainer.Q<TextField>("DateToInput");
 
 			AmountInput = SettingsMenuContainer.Q<TextField>("AmountInput");
 			AmountInput.RegisterCallback<ChangeEvent<string>>(OnFetchAmountInputChanged);
