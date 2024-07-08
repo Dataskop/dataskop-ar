@@ -321,6 +321,8 @@ namespace Dataskop.Data {
 			foreach (Device d in SelectedProject.Devices) {
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 					md.FirstMeasurementResult = await RequestHandler.GetFirstMeasurementResult(md);
+					int? count = await RequestHandler.GetCount(md);
+					md.TotalMeasurements = count ?? -1;
 					md.MeasurementResults = await RequestHandler.GetMeasurementResults(md, FetchAmount, null, null);
 				}
 			}

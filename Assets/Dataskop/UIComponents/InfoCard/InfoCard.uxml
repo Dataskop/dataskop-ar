@@ -41,10 +41,6 @@
                     <ui:Label text="-" display-tooltip-when-elided="true" name="TimeStampValue" class="data-text data-value" />
                 </ui:VisualElement>
                 <ui:VisualElement class="data-row">
-                    <ui:Label text="Author:" display-tooltip-when-elided="true" name="Author" class="data-text data-title" />
-                    <ui:VisualElement name="AuthorIcon" picking-mode="Ignore" style="width: 35px; height: 35px; background-image: none;" />
-                </ui:VisualElement>
-                <ui:VisualElement class="data-row">
                     <ui:Label text="Definition: " display-tooltip-when-elided="true" name="MeasurementDefinition" class="data-text data-title" />
                     <ui:Label text="-" display-tooltip-when-elided="true" name="MeasurementDefinitionValue" class="data-text data-value" />
                 </ui:VisualElement>
@@ -63,6 +59,14 @@
                 <ui:VisualElement class="data-row">
                     <ui:Label text="First Measurement: " display-tooltip-when-elided="true" name="FirstMeasurement" class="data-text data-title" />
                     <ui:Label text="-" display-tooltip-when-elided="true" name="FirstMeasurementValue" class="data-text data-value" />
+                </ui:VisualElement>
+                <ui:VisualElement class="data-row">
+                    <ui:Label text="Measurement Interval: " display-tooltip-when-elided="true" name="MeasurementInterval" class="data-text data-title" />
+                    <ui:Label text="-" display-tooltip-when-elided="true" name="MeasurementIntervalValue" class="data-text data-value" />
+                </ui:VisualElement>
+                <ui:VisualElement class="data-row">
+                    <ui:Label text="Author:" display-tooltip-when-elided="true" name="Author" class="data-text data-title" />
+                    <ui:VisualElement name="AuthorIcon" picking-mode="Ignore" style="width: 35px; height: 35px; background-image: none;" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>

@@ -1,3 +1,4 @@
+using System.Globalization;
 using Dataskop.Data;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -32,6 +33,8 @@ namespace Dataskop.UI {
 
 		private Label FirstMeasurementLabel { get; set; }
 
+		private Label MeasurementIntervalLabel { get; set; }
+
 		private VisualElement AuthorIcon { get; set; }
 
 		public override void Init(VisualElement infoCard) {
@@ -46,6 +49,7 @@ namespace Dataskop.UI {
 			DeviceLabel = ComponentRoot.Q<Label>("DeviceValue");
 			TotalMeasurementsLabel = ComponentRoot.Q<Label>("TotalMeasurementsValue");
 			FirstMeasurementLabel = ComponentRoot.Q<Label>("FirstMeasurementValue");
+			MeasurementIntervalLabel = ComponentRoot.Q<Label>("MeasurementIntervalValue");
 			AuthorIcon = ComponentRoot.Q<VisualElement>("AuthorIcon");
 
 		}
@@ -63,29 +67,36 @@ namespace Dataskop.UI {
 				MeasurementLabel.text = "-";
 				LocationLabel.text = "-";
 				TimeStampLabel.text = "-";
+				MeasurementDefinitionLabel.text = "-";
+				DeviceLabel.text = "-";
+				TotalMeasurementsLabel.text = "-";
+				FirstMeasurementLabel.text = "-";
+				MeasurementIntervalLabel.text = "-";
 				AuthorIcon.style.backgroundImage = new StyleBackground();
 			}
 			else {
 				SelectedDataPoint.MeasurementResultChanged += UpdateResultTextElements;
-				UpdateDefinitionTextElements(SelectedDataPoint.MeasurementDefinition);
 				UpdateResultTextElements(SelectedDataPoint.CurrentMeasurementResult);
 			}
 
 		}
 
 		private void UpdateResultTextElements(MeasurementResult newResult) {
-			MeasurementLabel.text = newResult.Value;
+			IdLabel.text = newResult.MeasurementDefinition.ID.ToString();
+			MeasurementLabel.text =
+				$"{newResult.ReadAsFloat().ToString("00.00", CultureInfo.InvariantCulture)} {SelectedDataPoint!.Attribute.Unit}";
 			LocationLabel.text = newResult.Position.GetLatLong();
 			TimeStampLabel.text = newResult.GetTime();
+			MeasurementDefinitionLabel.text = newResult.MeasurementDefinition.MeasurementDefinitionInformation.Name;
+			DeviceLabel.text = newResult.MeasurementDefinition.DeviceId;
+			TotalMeasurementsLabel.text = newResult.MeasurementDefinition.TotalMeasurements.ToString();
+			FirstMeasurementLabel.text = newResult.MeasurementDefinition.FirstMeasurementResult.GetTime();
+			MeasurementIntervalLabel.text = $"{newResult.MeasurementDefinition.MeasuringInterval / 10}s";
 
 			AuthorIcon.style.backgroundImage = !string.IsNullOrEmpty(newResult.Author)
 				? new StyleBackground(authorRepository.AuthorSprites[newResult.Author])
 				: new StyleBackground();
 
-		}
-
-		private void UpdateDefinitionTextElements(MeasurementDefinition newDefinition) {
-			IdLabel.text = newDefinition.ID.ToString();
 		}
 
 	}
