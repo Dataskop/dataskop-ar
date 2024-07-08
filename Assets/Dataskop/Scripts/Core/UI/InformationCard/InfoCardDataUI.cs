@@ -24,6 +24,14 @@ namespace Dataskop.UI {
 
 		private Label TimeStampLabel { get; set; }
 
+		private Label MeasurementDefinitionLabel { get; set; }
+
+		private Label DeviceLabel { get; set; }
+
+		private Label TotalMeasurementsLabel { get; set; }
+
+		private Label FirstMeasurementLabel { get; set; }
+
 		private VisualElement AuthorIcon { get; set; }
 
 		public override void Init(VisualElement infoCard) {
@@ -34,6 +42,10 @@ namespace Dataskop.UI {
 			MeasurementLabel = ComponentRoot.Q<Label>("MeasurementResultValue");
 			LocationLabel = ComponentRoot.Q<Label>("LatLonValue");
 			TimeStampLabel = ComponentRoot.Q<Label>("TimeStampValue");
+			MeasurementDefinitionLabel = ComponentRoot.Q<Label>("MeasurementDefinitionValue");
+			DeviceLabel = ComponentRoot.Q<Label>("DeviceValue");
+			TotalMeasurementsLabel = ComponentRoot.Q<Label>("TotalMeasurementsValue");
+			FirstMeasurementLabel = ComponentRoot.Q<Label>("FirstMeasurementValue");
 			AuthorIcon = ComponentRoot.Q<VisualElement>("AuthorIcon");
 
 		}
