@@ -346,7 +346,7 @@ namespace Dataskop.Data {
 
 						if (!trimmedResults.Any()) {
 							LoadingIndicator.Hide();
-							Debug.Log($"No New Results for {md.ID}");
+							Debug.Log($"No new results for {md.ID}");
 							continue;
 						}
 
@@ -366,7 +366,7 @@ namespace Dataskop.Data {
 		}
 
 		private async void OnRefetchTimerElapsed() {
-			// await UpdateProjectMeasurements();
+			await UpdateProjectMeasurements();
 		}
 
 		public async void OnRefetchButtonPressed() {
