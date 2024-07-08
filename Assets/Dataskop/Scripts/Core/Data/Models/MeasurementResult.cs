@@ -18,7 +18,7 @@ namespace Dataskop.Data {
 
 		public Position Position { get; }
 
-		private MeasurementDefinition MeasurementDefinition { get; }
+		public MeasurementDefinition MeasurementDefinition { get; set; }
 
 		public string Author { get; }
 

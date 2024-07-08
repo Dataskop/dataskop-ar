@@ -116,19 +116,14 @@ namespace Dataskop.Data {
 
 			try {
 				MeasurementResultsResponse resultsResponse = JsonConvert.DeserializeObject<MeasurementResultsResponse>(response);
-				//int totalCount = resultsResponse.Count;
 				List<MeasurementResult> measurementResults = resultsResponse?.MeasurementResults.ToList();
-				/*
-				if (amount > totalCount) {
-					NotificationHandler.Add(new Notification {
-						Category = NotificationCategory.Warning,
-						Text = $"Tried to fetch {amount} for {measurementDefinition.ID}, but could only find {totalCount}!",
-						DisplayDuration = NotificationDuration.Flash
-					});
+
+				foreach (MeasurementResult mr in measurementResults!) {
+					mr.MeasurementDefinition = measurementDefinition;
 				}
-				*/
 
 				return measurementResults;
+
 			}
 			catch {
 				NotificationHandler.Add(new Notification {
@@ -150,6 +145,26 @@ namespace Dataskop.Data {
 				MeasurementResultsResponse resultsResponse = JsonConvert.DeserializeObject<MeasurementResultsResponse>(response);
 				MeasurementResult measurementResult = resultsResponse?.MeasurementResults.FirstOrDefault();
 				return measurementResult;
+			}
+			catch {
+				NotificationHandler.Add(new Notification {
+					Category = NotificationCategory.Error,
+					Text = $"Could not fetch measurement results for definition: {measurementDefinition.ID}!",
+					DisplayDuration = NotificationDuration.Medium
+				});
+				return null;
+			}
+
+		}
+
+		public async Task<int?> GetCount(MeasurementDefinition measurementDefinition) {
+
+			string url = $"{BACKEND_URL}/measurementresult/query/{measurementDefinition.ID}/1/0";
+			string response = await GetResponse(url);
+
+			try {
+				MeasurementResultsResponse resultsResponse = JsonConvert.DeserializeObject<MeasurementResultsResponse>(response);
+				return resultsResponse.Count;
 			}
 			catch {
 				NotificationHandler.Add(new Notification {
