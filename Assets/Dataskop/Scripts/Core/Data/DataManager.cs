@@ -350,14 +350,15 @@ namespace Dataskop.Data {
 							continue;
 						}
 
-						md.MeasurementResults =
-							new ReadOnlyCollection<MeasurementResult>(md.MeasurementResults.Concat(newResults.Skip(1)).ToList());
+						IEnumerable<MeasurementResult> allResults = newResults.SkipLast(1).Concat(md.MeasurementResults);
+						md.MeasurementResults = allResults.ToArray();
 					}
 					else {
 						Debug.Log("Invalid Date Format");
 					}
 
 				}
+
 			}
 
 			HasUpdatedMeasurementResults?.Invoke();
