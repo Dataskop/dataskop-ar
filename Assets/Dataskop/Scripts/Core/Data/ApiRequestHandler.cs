@@ -109,16 +109,16 @@ namespace Dataskop.Data {
 				$"{BACKEND_URL}/measurementresult/query/advanced/{measurementDefinition.ID}/{amount}/0?orderby=timestamp%20desc";
 
 			if (from != null && to != null) {
-				url += $"&startTime={from}&endTime={to}";
+				url += $"&startTime={from.Value:s}&endTime={to.Value:s}";
 			}
 
 			string response = await GetResponse(url);
 
 			try {
 				MeasurementResultsResponse resultsResponse = JsonConvert.DeserializeObject<MeasurementResultsResponse>(response);
-				int totalCount = resultsResponse.Count;
+				//int totalCount = resultsResponse.Count;
 				List<MeasurementResult> measurementResults = resultsResponse?.MeasurementResults.ToList();
-
+				/*
 				if (amount > totalCount) {
 					NotificationHandler.Add(new Notification {
 						Category = NotificationCategory.Warning,
@@ -126,6 +126,7 @@ namespace Dataskop.Data {
 						DisplayDuration = NotificationDuration.Flash
 					});
 				}
+				*/
 
 				return measurementResults;
 			}
