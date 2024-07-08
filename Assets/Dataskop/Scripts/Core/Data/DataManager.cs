@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Dataskop.UI;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
+using Debug = UnityEngine.Debug;
 
 namespace Dataskop.Data {
 
@@ -165,7 +167,7 @@ namespace Dataskop.Data {
 				return;
 			}
 
-			await UpdateProjectMeasurements();
+			await GetInitialProjectMeasurements();
 			OnProjectDataLoaded(SelectedProject);
 
 		}
@@ -240,7 +242,7 @@ namespace Dataskop.Data {
 					return;
 				}
 
-				await UpdateProjectMeasurements();
+				await GetInitialProjectMeasurements();
 				OnProjectDataLoaded(SelectedProject);
 			}
 			else {
@@ -312,7 +314,7 @@ namespace Dataskop.Data {
 
 		}
 
-		private async Task UpdateProjectMeasurements() {
+		private async Task GetInitialProjectMeasurements() {
 
 			LoadingIndicator.Show();
 
@@ -328,8 +330,44 @@ namespace Dataskop.Data {
 
 		}
 
+		private async Task UpdateProjectMeasurements() {
+
+			LoadingIndicator.Show();
+
+			foreach (Device d in SelectedProject.Devices) {
+				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
+
+					MeasurementResult latestResult = md.GetLatestMeasurementResult();
+
+					if (DateTime.TryParse(latestResult.GetDate(), out DateTime latestDate)) {
+						IReadOnlyCollection<MeasurementResult> newResults =
+							await RequestHandler.GetMeasurementResults(md, FetchAmount, latestDate, DateTime.Now);
+						IEnumerable<MeasurementResult> trimmedResults = newResults.Skip(1);
+
+						if (!trimmedResults.Any()) {
+							LoadingIndicator.Hide();
+							Debug.Log($"No new results for {md.ID}");
+							continue;
+						}
+
+						IEnumerable<MeasurementResult> allResults = newResults.SkipLast(1).Concat(md.MeasurementResults);
+						md.MeasurementResults = allResults.ToArray();
+					}
+					else {
+						Debug.Log("Invalid Date Format");
+					}
+
+				}
+
+			}
+
+			HasUpdatedMeasurementResults?.Invoke();
+			LoadingIndicator.Hide();
+
+		}
+
 		private async void OnRefetchTimerElapsed() {
-			// await UpdateProjectMeasurements();
+			await UpdateProjectMeasurements();
 		}
 
 		public async void OnRefetchButtonPressed() {
