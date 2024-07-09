@@ -21,6 +21,8 @@ namespace Dataskop.Data {
 
 		public int MeasuringInterval { get; }
 
+		public int TotalMeasurements { get; set; }
+
 		public IReadOnlyCollection<MeasurementResult> MeasurementResults { get; set; }
 
 		public MeasurementResult FirstMeasurementResult { get; set; }
