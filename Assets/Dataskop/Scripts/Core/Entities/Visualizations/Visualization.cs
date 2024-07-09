@@ -43,6 +43,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public abstract MeasurementType[] AllowedMeasurementTypes { get; set; }
 
+		public IVisObject[] VisObjects { get; set; }
+
 		/// <summary>
 		///     The offset of the visualization to the ground.
 		/// </summary>

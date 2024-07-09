@@ -1,5 +1,5 @@
 ﻿using System;
-using Dataskop.Data;
+using Dataskop.Entities;
 
 namespace Dataskop.Interaction {
 

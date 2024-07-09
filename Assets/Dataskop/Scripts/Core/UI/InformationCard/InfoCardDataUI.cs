@@ -1,5 +1,6 @@
 using System.Globalization;
 using Dataskop.Data;
+using Dataskop.Entities;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UIElements;

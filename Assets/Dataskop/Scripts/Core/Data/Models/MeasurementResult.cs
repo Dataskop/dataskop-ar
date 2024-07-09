@@ -173,6 +173,8 @@ namespace Dataskop.Data {
 			return leftItem.ReadAsFloat();
 		}
 
+#region Nested type: AdditionalMeasurementResultsProperties
+
 		public class AdditionalMeasurementResultsProperties {
 
 			public string Author { get; }
@@ -182,6 +184,8 @@ namespace Dataskop.Data {
 			}
 
 		}
+
+#endregion
 
 	}
 

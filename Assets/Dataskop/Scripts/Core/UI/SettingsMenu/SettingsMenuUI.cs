@@ -250,13 +250,7 @@ namespace Dataskop.UI {
 
 		}
 
-		public void OnDataPointsResultsUpdated() {
-
-			if (isHistorySliderActive) {
-				ToggleHistoryView();
-			}
-
-		}
+		public void OnDataPointsResultsUpdated() { }
 
 		public void HideSettings() {
 

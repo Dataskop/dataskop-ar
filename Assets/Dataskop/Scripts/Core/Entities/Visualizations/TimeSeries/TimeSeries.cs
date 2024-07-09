@@ -13,7 +13,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		protected List<TimeElement> TimeElements { get; private set; }
 
-		protected TimeSeriesConfig Configuration { get; private set; }
+		public TimeSeriesConfig Configuration { get; private set; }
 
 		public DataPoint DataPoint { get; protected set; }
 
@@ -229,6 +229,16 @@ namespace Dataskop.Entities.Visualizations {
 			e.transform.position = targetPosition;
 			e.gameObject.SetActive(ShouldDrawTimeElement(Configuration.visibleHistoryCount, e));
 			TimeElementMoved?.Invoke(e);
+
+		}
+
+		public void OnMeasurementResultsUpdated(MeasurementResult[] results) {
+
+			MeasurementResults = results.ToList();
+
+			for (int i = 0; i <= TimeElements.Count - 1; i++) {
+				TimeElements[i].MeasurementResult = results[i];
+			}
 
 		}
 

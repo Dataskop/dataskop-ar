@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Dataskop.Entities;
 using Dataskop.Interaction;
 using Mapbox.Unity.Map;
 using Mapbox.Unity.Utilities;

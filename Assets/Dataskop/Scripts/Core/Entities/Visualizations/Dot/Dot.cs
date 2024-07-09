@@ -1,8 +1,6 @@
 using System.Collections;
-using System.Globalization;
 using System.Linq;
 using Dataskop.Data;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,20 +9,11 @@ namespace Dataskop.Entities.Visualizations {
 	public class Dot : Visualization {
 
 		[Header("References")]
-		[SerializeField] private Image visImageRenderer;
-		[SerializeField] private Transform visTransform;
+		[SerializeField] private GameObject visPrefab;
 		[SerializeField] private DotOptions options;
 		[SerializeField] private DotTimeSeries dotTimeSeries;
 		[SerializeField] private Transform dropShadow;
 		[SerializeField] private LineRenderer groundLine;
-		[SerializeField] private Image authorIconImageRenderer;
-		[SerializeField] private Transform timeElementsContainer;
-
-		[Header("Display References")]
-		[SerializeField] private Transform dataDisplay;
-		[SerializeField] private TextMeshProUGUI idTextMesh;
-		[SerializeField] private TextMeshProUGUI valueTextMesh;
-		[SerializeField] private TextMeshProUGUI dateTextMesh;
 
 		[Header("Icon Values")]
 		[SerializeField] private Image boolIcon;
@@ -47,12 +36,14 @@ namespace Dataskop.Entities.Visualizations {
 
 		private DotTimeSeries TimeSeries => dotTimeSeries;
 
-		public override Transform VisTransform => visTransform;
+		public override Transform VisTransform => transform;
 
 		public override MeasurementType[] AllowedMeasurementTypes { get; set; } = {
 			MeasurementType.Float,
 			MeasurementType.Bool
 		};
+
+		private int CurrentFocusIndex { get; set; } = 0;
 
 		protected override void OnDataPointChanged() {
 
@@ -60,16 +51,16 @@ namespace Dataskop.Entities.Visualizations {
 			Type = VisualizationType.Dot;
 			Options = Instantiate(options);
 
-			Transform displayTransform = dataDisplay.transform;
+			VisObjects = new IVisObject[TimeSeries.Configuration.visibleHistoryCount];
+			GameObject visObject = Instantiate(visPrefab, transform);
+			VisObjects[0] = visObject.GetComponent<IVisObject>();
 
 			VisTransform.localScale *= Scale;
 			dropShadow.transform.localScale *= Scale;
-			displayTransform.localScale *= Scale;
-			authorIconImageRenderer.transform.localScale *= Scale;
-
 			VisTransform.root.localPosition = Offset;
 			dropShadow.transform.localPosition -= Offset;
 
+			/*
 			SetLinePosition(groundLine,
 				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - visImageRenderer.sprite.bounds.size.y * 0.75f,
 					VisTransform.localPosition.z),
@@ -77,15 +68,15 @@ namespace Dataskop.Entities.Visualizations {
 
 			groundLine.startWidth = 0.0075f;
 			groundLine.endWidth = 0.0075f;
+			*/
 
-			idTextMesh.text = DataPoint.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper();
 			OnMeasurementResultChanged(DataPoint.CurrentMeasurementResult);
 
 		}
 
 		public override void OnMeasurementResultChanged(MeasurementResult mr) {
 
-			if (!AllowedMeasurementTypes.Contains(DataPoint.MeasurementDefinition.MeasurementType)) {
+			if (!AllowedMeasurementTypes.Contains(mr.MeasurementDefinition.MeasurementType)) {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
 					Text = "Value Type not supported by this visualization.",
@@ -94,28 +85,12 @@ namespace Dataskop.Entities.Visualizations {
 				return;
 			}
 
-			switch (DataPoint.MeasurementDefinition.MeasurementType) {
-				case MeasurementType.Float: {
-					float receivedValue = mr.ReadAsFloat();
-					boolIcon.enabled = false;
-					valueTextMesh.alpha = 1;
-					valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) + $" {DataPoint.Attribute?.Unit}";
-					dateTextMesh.text = mr.GetTime();
-					break;
-				}
-				case MeasurementType.Bool: {
-					valueTextMesh.alpha = 1;
-					boolIcon.enabled = false;
-					valueTextMesh.text = mr.ReadAsBool().ToString();
-					int boolValue = mr.ReadAsBool() ? 1 : 0;
-					boolIcon.color = mr.ReadAsBool() ? boolTrueColor : boolFalseColor;
-					boolIcon.sprite = boolIcons[boolValue];
-					dateTextMesh.text = mr.GetTime();
-					break;
-				}
-			}
-
-			SetAuthorImage();
+			VisObjects[0].SetDisplayData(new VisualizationResultDisplayData {
+				Result = mr,
+				Type = mr.MeasurementDefinition.MeasurementType,
+				Attribute = DataPoint.Attribute,
+				AuthorSprite = DataPoint.AuthorRepository.AuthorSprites[mr.Author]
+			});
 
 		}
 
@@ -126,13 +101,18 @@ namespace Dataskop.Entities.Visualizations {
 
 		public override void OnMeasurementResultsUpdated() {
 			OnMeasurementResultChanged(DataPoint.MeasurementDefinition.GetLatestMeasurementResult());
+
+			if (TimeSeries.IsSpawned) {
+				TimeSeries.OnMeasurementResultsUpdated(DataPoint.MeasurementDefinition.MeasurementResults.ToArray());
+			}
+
 		}
 
 		public override void OnTimeSeriesToggled(bool isActive) {
 
 			if (isActive) {
 				groundLine.enabled = false;
-				TimeSeries.Spawn(timeSeriesConfiguration, DataPoint, timeElementsContainer);
+				TimeSeries.Spawn(timeSeriesConfiguration, DataPoint, transform);
 			}
 			else {
 				groundLine.enabled = true;
@@ -142,8 +122,8 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public override void Hover() {
-			visImageRenderer.material = Options.styles[0].hoverMaterial;
-			valueTextMesh.color = hoverColor;
+			//visImageRenderer.material = Options.styles[0].hoverMaterial;
+			//valueTextMesh.color = hoverColor;
 		}
 
 		public override void Select() {
@@ -152,8 +132,9 @@ namespace Dataskop.Entities.Visualizations {
 				CancelAnimation();
 			}
 
-			animationTarget = visTransform.localScale * selectionScale;
+			//animationTarget = visTransform.localScale * selectionScale;
 
+			/*
 			animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
 				visTransform,
 				TransformValue.Scale,
@@ -165,7 +146,8 @@ namespace Dataskop.Entities.Visualizations {
 			));
 
 			visImageRenderer.material = Options.styles[0].selectionMaterial;
-			valueTextMesh.color = selectColor;
+			//valueTextMesh.color = selectColor;
+			*/
 			IsSelected = true;
 
 		}
@@ -176,22 +158,24 @@ namespace Dataskop.Entities.Visualizations {
 				if (animationCoroutine != null) {
 					CancelAnimation();
 				}
-
-				animationTarget = visTransform.localScale / selectionScale;
-
-				animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
-					visTransform,
-					TransformValue.Scale,
-					VisTransform.localScale,
-					animationTarget,
-					animationTimeOnDeselect,
-					animationCurveDeselect,
-					OnScaleChanged
-				));
 			}
+			//animationTarget = visTransform.localScale / selectionScale;
 
-			visImageRenderer.material = Options.styles[0].defaultMaterial;
-			valueTextMesh.color = deselectColor;
+			/*
+			animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
+				visTransform,
+				TransformValue.Scale,
+				VisTransform.localScale,
+				animationTarget,
+				animationTimeOnDeselect,
+				animationCurveDeselect,
+				OnScaleChanged
+			));
+		}
+
+		visImageRenderer.material = Options.styles[0].defaultMaterial;
+		*/
+			//valueTextMesh.color = deselectColor;
 			IsSelected = false;
 
 		}
@@ -207,10 +191,12 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		private void OnScaleChanged() {
+			/*
 			moveLineCoroutine = StartCoroutine(MoveLinePointTo(0,
 				new Vector3(VisTransform.localPosition.x, VisTransform.localPosition.y - visImageRenderer.sprite.bounds.size.y * 0.75f,
 					VisTransform.localPosition.z),
 				0.1f));
+				*/
 		}
 
 		private IEnumerator MoveLinePointTo(int index, Vector3 target, float duration) {
@@ -223,16 +209,6 @@ namespace Dataskop.Entities.Visualizations {
 				groundLine.SetPosition(index, Vector3.LerpUnclamped(groundLine.GetPosition(index), target, currentPercentage));
 
 				yield return null;
-			}
-		}
-
-		private void SetAuthorImage() {
-			if (DataPoint.CurrentMeasurementResult.Author != string.Empty) {
-				authorIconImageRenderer.sprite = DataPoint.AuthorRepository.AuthorSprites[DataPoint.CurrentMeasurementResult.Author];
-				authorIconImageRenderer.enabled = true;
-			}
-			else {
-				authorIconImageRenderer.enabled = false;
 			}
 		}
 
