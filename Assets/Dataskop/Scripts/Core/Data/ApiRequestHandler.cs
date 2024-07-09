@@ -24,7 +24,7 @@ namespace Dataskop.Data {
 			catch {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
-					Text = $"Could not fetch companies!",
+					Text = "Could not fetch companies!",
 					DisplayDuration = NotificationDuration.Medium
 				});
 

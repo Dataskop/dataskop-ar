@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Dataskop.Data;
+using Dataskop.Entities;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
@@ -143,13 +144,7 @@ namespace Dataskop.UI {
 
 		}
 
-		public void OnDataPointsResultsUpdated() {
-
-			if (IsActive) {
-				ToggleHistoryView();
-			}
-
-		}
+		public void OnDataPointsResultsUpdated() { }
 
 		private IEnumerator DelayToggle() {
 			yield return new WaitForSeconds(0.015f);
