@@ -347,8 +347,6 @@ namespace Dataskop.Data {
 						IEnumerable<MeasurementResult> trimmedResults = newResults.Skip(1);
 
 						if (!trimmedResults.Any()) {
-							LoadingIndicator.Hide();
-							Debug.Log($"No new results for {md.ID}");
 							continue;
 						}
 
