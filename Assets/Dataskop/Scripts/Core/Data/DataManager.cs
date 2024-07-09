@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -139,6 +138,7 @@ namespace Dataskop.Data {
 
 			if (!LoadingIndicator.IsLoading) {
 				LoadingIndicator.Show();
+				ShouldRefetch = false;
 			}
 
 			SelectedProject = GetAvailableProjects(Companies).FirstOrDefault(project => project.ID == projectId);
@@ -197,6 +197,7 @@ namespace Dataskop.Data {
 
 				if (!LoadingIndicator.IsLoading) {
 					LoadingIndicator.Show();
+					ShouldRefetch = false;
 				}
 
 				SelectedProject = GetAvailableProjects(Companies)
@@ -299,21 +300,6 @@ namespace Dataskop.Data {
 
 		}
 
-		private async void RefetchDataTimer() {
-
-			while (ShouldRefetch) {
-
-				if (FetchTimer?.ElapsedMilliseconds > fetchInterval) {
-					OnRefetchTimerElapsed();
-					FetchTimer?.Restart();
-				}
-
-				await Task.Yield();
-
-			}
-
-		}
-
 		private async Task GetInitialProjectMeasurements() {
 
 			LoadingIndicator.Show();
@@ -364,6 +350,16 @@ namespace Dataskop.Data {
 			HasUpdatedMeasurementResults?.Invoke();
 			LoadingIndicator.Hide();
 
+		}
+
+		private async void RefetchDataTimer() {
+			while (ShouldRefetch) {
+				if (FetchTimer?.ElapsedMilliseconds > fetchInterval) {
+					OnRefetchTimerElapsed();
+					FetchTimer?.Restart();
+				}
+				await Task.Yield();
+			}
 		}
 
 		private async void OnRefetchTimerElapsed() {
