@@ -548,11 +548,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3677864854962279710}
   - component: {fileID: 7554759454830613818}
-  - component: {fileID: 875744270379177066}
   - component: {fileID: 1832769547974538608}
   - component: {fileID: 4611731596849338038}
   m_Layer: 7
-  m_Name: DotVis
+  m_Name: DotVisObject
   m_TagString: Vis
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -603,29 +602,6 @@ Canvas:
   m_SortingLayerID: -1606924549
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!114 &875744270379177066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7048796313808956549}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
-  m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
-  m_PhysicalUnit: 3
-  m_FallbackScreenDPI: 96
-  m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
 --- !u!114 &1832769547974538608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -659,6 +635,7 @@ MonoBehaviour:
   idTextMesh: {fileID: 7204749128249772023}
   valueTextMesh: {fileID: 5842273825604079392}
   dateTextMesh: {fileID: 3124324117125504831}
+  visRenderer: {fileID: 8793019401636461414}
   boolIconRenderer: {fileID: 9038805597743734662}
   authorIconImageRenderer: {fileID: 8897171562421912128}
   boolTrueColor:
@@ -667,6 +644,21 @@ MonoBehaviour:
   boolFalseColor:
     serializedVersion: 2
     rgba: 4285295724
+  animationCurveSelect:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  animationCurveDeselect:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  animationTimeOnSelect: 0
+  animationTimeOnDeselect: 0
+  selectionScale: 0
 --- !u!1 &8126223390876158078
 GameObject:
   m_ObjectHideFlags: 0

@@ -29,7 +29,9 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void HideDisplay();
 
-		public void SetInteractionColor();
+		public void SetMaterial(Material newMaterial);
+
+		public void Delete();
 
 	}
 

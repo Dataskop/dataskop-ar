@@ -9,6 +9,7 @@ namespace Dataskop {
 		public Material defaultMaterial;
 		public Material hoverMaterial;
 		public Material selectionMaterial;
+		public Material timeMaterial;
 
 	}
 

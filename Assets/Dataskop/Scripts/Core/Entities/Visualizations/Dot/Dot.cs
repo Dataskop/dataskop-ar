@@ -1,8 +1,8 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Dataskop.Data;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Dataskop.Entities.Visualizations {
 
@@ -10,27 +10,14 @@ namespace Dataskop.Entities.Visualizations {
 
 		[Header("References")]
 		[SerializeField] private GameObject visPrefab;
+		[SerializeField] private Transform visObjectsContainer;
 		[SerializeField] private DotOptions options;
 		[SerializeField] private DotTimeSeries dotTimeSeries;
 		[SerializeField] private Transform dropShadow;
 		[SerializeField] private LineRenderer groundLine;
-
-		[Header("Icon Values")]
-		[SerializeField] private Image boolIcon;
 		[SerializeField] private Sprite[] boolIcons;
-		[SerializeField] private Color32 boolTrueColor;
-		[SerializeField] private Color32 boolFalseColor;
 
-		[Header("Animation Values")]
-		[SerializeField] private AnimationCurve animationCurveSelect;
-		[SerializeField] private AnimationCurve animationCurveDeselect;
-		[SerializeField] private float animationTimeOnSelect;
-		[SerializeField] private float animationTimeOnDeselect;
-		[SerializeField] private float selectionScale;
-
-		private Coroutine animationCoroutine;
-		private Vector3 animationTarget;
-		private Coroutine moveLineCoroutine;
+		private bool hasHistoryEnabled = false;
 
 		private DotOptions Options { get; set; }
 
@@ -48,16 +35,18 @@ namespace Dataskop.Entities.Visualizations {
 		protected override void OnDataPointChanged() {
 
 			base.OnDataPointChanged();
+
 			Type = VisualizationType.Dot;
 			Options = Instantiate(options);
 
-			VisObjects = new IVisObject[TimeSeries.Configuration.visibleHistoryCount];
-			GameObject visObject = Instantiate(visPrefab, transform);
-			VisObjects[0] = visObject.GetComponent<IVisObject>();
+			VisObjects = new IVisObject[timeSeriesConfiguration.visibleHistoryCount];
+			GameObject visObject = Instantiate(visPrefab, transform.position, Quaternion.identity, visObjectsContainer);
+			VisObjects[CurrentFocusIndex] = visObject.GetComponent<IVisObject>();
 
 			VisTransform.localScale *= Scale;
-			dropShadow.transform.localScale *= Scale;
 			VisTransform.root.localPosition = Offset;
+
+			dropShadow.transform.localScale *= Scale;
 			dropShadow.transform.localPosition -= Offset;
 
 			/*
@@ -85,11 +74,11 @@ namespace Dataskop.Entities.Visualizations {
 				return;
 			}
 
-			VisObjects[0].SetDisplayData(new VisualizationResultDisplayData {
+			VisObjects[CurrentFocusIndex].SetDisplayData(new VisualizationResultDisplayData {
 				Result = mr,
 				Type = mr.MeasurementDefinition.MeasurementType,
 				Attribute = DataPoint.Attribute,
-				AuthorSprite = DataPoint.AuthorRepository.AuthorSprites[mr.Author]
+				AuthorSprite = mr.Author != string.Empty ? DataPoint.AuthorRepository.AuthorSprites[mr.Author] : null
 			});
 
 		}
@@ -100,6 +89,7 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public override void OnMeasurementResultsUpdated() {
+
 			OnMeasurementResultChanged(DataPoint.MeasurementDefinition.GetLatestMeasurementResult());
 
 			if (TimeSeries.IsSpawned) {
@@ -112,22 +102,70 @@ namespace Dataskop.Entities.Visualizations {
 
 			if (isActive) {
 				groundLine.enabled = false;
-				TimeSeries.Spawn(timeSeriesConfiguration, DataPoint, transform);
+				IReadOnlyList<MeasurementResult> currentResults = DataPoint.MeasurementDefinition.MeasurementResults.ToList();
+				float distance = timeSeriesConfiguration.elementDistance;
+
+				// VisObjects above current result
+				for (int i = CurrentFocusIndex + 1; i < VisObjects.Length; i++) {
+					Vector3 spawnPos = new(VisTransform.position.x, VisTransform.position.y + distance * i, VisTransform.position.z);
+					VisObjects[i] = SpawnVisObject(spawnPos, currentResults[i]);
+					VisObjects[i].SetMaterial(Options.styles[0].timeMaterial);
+				}
+
+				// VisObjects below current result
+				for (int i = CurrentFocusIndex - 1; i > 0; i--) {
+					Vector3 spawnPos = new(VisTransform.position.x, VisTransform.position.y - distance * i, VisTransform.position.z);
+					VisObjects[i] = SpawnVisObject(spawnPos, currentResults[i]);
+					VisObjects[i].SetMaterial(Options.styles[0].timeMaterial);
+				}
+
 			}
 			else {
+				ClearVisObjects();
 				groundLine.enabled = true;
-				TimeSeries.DespawnSeries();
+			}
+
+		}
+
+		private IVisObject SpawnVisObject(Vector3 pos, MeasurementResult result) {
+
+			GameObject newVis = Instantiate(visPrefab, pos, visObjectsContainer.localRotation, visObjectsContainer);
+			IVisObject visObject = newVis.GetComponent<IVisObject>();
+			visObject.SetDisplayData(new VisualizationResultDisplayData {
+				Result = result,
+				Type = result.MeasurementDefinition.MeasurementType,
+				Attribute = DataPoint.Attribute,
+				AuthorSprite = result.Author != string.Empty
+					? DataPoint.AuthorRepository.AuthorSprites[result.Author] : null
+			});
+
+			return visObject;
+
+		}
+
+		private void ClearVisObjects() {
+
+			for (int i = 0; i < VisObjects.Length; i++) {
+				if (i == CurrentFocusIndex) {
+					continue;
+				}
+
+				VisObjects[i].Delete();
+				VisObjects[i] = null;
+
 			}
 
 		}
 
 		public override void Hover() {
+			VisObjects[CurrentFocusIndex].SetMaterial(Options.styles[0].hoverMaterial);
 			//visImageRenderer.material = Options.styles[0].hoverMaterial;
 			//valueTextMesh.color = hoverColor;
 		}
 
 		public override void Select() {
 
+			/*
 			if (animationCoroutine != null) {
 				CancelAnimation();
 			}
@@ -148,12 +186,14 @@ namespace Dataskop.Entities.Visualizations {
 			visImageRenderer.material = Options.styles[0].selectionMaterial;
 			//valueTextMesh.color = selectColor;
 			*/
+
+			VisObjects[CurrentFocusIndex].SetMaterial(Options.styles[0].selectionMaterial);
 			IsSelected = true;
 
 		}
 
 		public override void Deselect() {
-
+/*
 			if (IsSelected) {
 				if (animationCoroutine != null) {
 					CancelAnimation();
@@ -176,13 +216,16 @@ namespace Dataskop.Entities.Visualizations {
 		visImageRenderer.material = Options.styles[0].defaultMaterial;
 		*/
 			//valueTextMesh.color = deselectColor;
+			VisObjects[CurrentFocusIndex].SetMaterial(Options.styles[0].defaultMaterial);
 			IsSelected = false;
 
 		}
 
 		private void CancelAnimation() {
+			/*
 			StopCoroutine(animationCoroutine);
 			VisTransform.localScale = animationTarget;
+			*/
 		}
 
 		private void SetLinePosition(LineRenderer lr, Vector3 startPoint, Vector3 endPoint) {

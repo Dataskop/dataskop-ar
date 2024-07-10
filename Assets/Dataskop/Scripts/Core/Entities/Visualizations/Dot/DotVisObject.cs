@@ -1,4 +1,3 @@
-using System;
 using System.Globalization;
 using Dataskop.Data;
 using TMPro;
@@ -9,14 +8,27 @@ namespace Dataskop.Entities.Visualizations {
 
 	public class DotVisObject : MonoBehaviour, IVisObject {
 
+		[Header("References")]
 		[SerializeField] private CanvasGroup dataDisplay;
 		[SerializeField] private TextMeshProUGUI idTextMesh;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI dateTextMesh;
+		[SerializeField] private Image visRenderer;
 		[SerializeField] private Image boolIconRenderer;
 		[SerializeField] private Image authorIconImageRenderer;
+
+		[Header("Values")]
 		[SerializeField] private Color32 boolTrueColor;
 		[SerializeField] private Color32 boolFalseColor;
+		[SerializeField] private AnimationCurve animationCurveSelect;
+		[SerializeField] private AnimationCurve animationCurveDeselect;
+		[SerializeField] private float animationTimeOnSelect;
+		[SerializeField] private float animationTimeOnDeselect;
+		[SerializeField] private float selectionScale;
+
+		private Coroutine animationCoroutine;
+		private Vector3 animationTarget;
+		private Coroutine moveLineCoroutine;
 
 		public bool IsFocused { get; set; }
 
@@ -62,7 +74,7 @@ namespace Dataskop.Entities.Visualizations {
 				}
 			}
 
-			if (displayData.Result.Author != string.Empty) {
+			if (displayData.Result.Author != null) {
 				authorIconImageRenderer.sprite = displayData.AuthorSprite;
 				authorIconImageRenderer.enabled = true;
 			}
@@ -79,8 +91,13 @@ namespace Dataskop.Entities.Visualizations {
 			dataDisplay.alpha = 0;
 		}
 
-		public void SetInteractionColor() {
-			throw new NotImplementedException();
+		public void SetMaterial(Material newMaterial) {
+			visRenderer.material = newMaterial;
+			valueTextMesh.color = newMaterial.color;
+		}
+
+		public void Delete() {
+			Destroy(gameObject);
 		}
 
 	}

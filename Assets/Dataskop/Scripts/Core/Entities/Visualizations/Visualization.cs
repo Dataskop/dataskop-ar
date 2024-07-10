@@ -14,6 +14,7 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] protected Color deselectColor;
 		[SerializeField] protected Color hoverColor;
 		[SerializeField] protected Color selectColor;
+		[SerializeField] protected Color historyColor;
 
 		private DataPoint dataPoint;
 		public Action SwipedDown;
@@ -43,7 +44,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public abstract MeasurementType[] AllowedMeasurementTypes { get; set; }
 
-		public IVisObject[] VisObjects { get; set; }
+		protected IVisObject[] VisObjects { get; set; }
 
 		/// <summary>
 		///     The offset of the visualization to the ground.
