@@ -18,7 +18,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		private DataPoint dataPoint;
 		public Action SwipedDown;
-
 		public Action SwipedUp;
 
 		public DataPoint DataPoint {
@@ -73,6 +72,7 @@ namespace Dataskop.Entities.Visualizations {
 		/// </summary>
 		protected virtual void OnDataPointChanged() {
 			DataPoint.MeasurementResultChanged += OnMeasurementResultChanged;
+
 		}
 
 		/// <summary>

@@ -21,8 +21,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		private DotOptions Options { get; set; }
 
-		private DotTimeSeries TimeSeries => dotTimeSeries;
-
 		public override Transform VisTransform => transform;
 
 		public override MeasurementType[] AllowedMeasurementTypes { get; set; } = {
@@ -81,6 +79,30 @@ namespace Dataskop.Entities.Visualizations {
 				AuthorSprite = mr.Author != string.Empty ? DataPoint.AuthorRepository.AuthorSprites[mr.Author] : null
 			});
 
+			VisObjects[CurrentFocusIndex].ShowDisplay();
+			VisObjects[CurrentFocusIndex].Index = CurrentFocusIndex;
+			VisObjects[CurrentFocusIndex].IsFocused = true;
+
+		}
+
+		private IEnumerator MoveHistory(Vector3 direction) {
+
+			Vector3 startPosition = visObjectsContainer.transform.position;
+			Vector3 targetPosition = visObjectsContainer.transform.position + timeSeriesConfiguration.elementDistance * direction;
+			float moveDuration = timeSeriesConfiguration.animationDuration;
+
+			float t = 0;
+			while (t < moveDuration) {
+
+				visObjectsContainer.transform.position = Vector3.Lerp(startPosition, targetPosition, t / moveDuration);
+
+				t += Time.deltaTime;
+				yield return null;
+
+			}
+
+			visObjectsContainer.transform.position = targetPosition;
+
 		}
 
 		public override void ApplyStyle(VisualizationStyle style) {
@@ -91,10 +113,11 @@ namespace Dataskop.Entities.Visualizations {
 		public override void OnMeasurementResultsUpdated() {
 
 			OnMeasurementResultChanged(DataPoint.MeasurementDefinition.GetLatestMeasurementResult());
-
+/*
 			if (TimeSeries.IsSpawned) {
 				TimeSeries.OnMeasurementResultsUpdated(DataPoint.MeasurementDefinition.MeasurementResults.ToArray());
 			}
+			*/
 
 		}
 
@@ -109,14 +132,20 @@ namespace Dataskop.Entities.Visualizations {
 				for (int i = CurrentFocusIndex + 1; i < VisObjects.Length; i++) {
 					Vector3 spawnPos = new(VisTransform.position.x, VisTransform.position.y + distance * i, VisTransform.position.z);
 					VisObjects[i] = SpawnVisObject(spawnPos, currentResults[i]);
+					VisObjects[i].Index = i;
+					VisObjects[i].IsFocused = false;
 					VisObjects[i].SetMaterial(Options.styles[0].timeMaterial);
+					VisObjects[i].HideDisplay();
 				}
 
 				// VisObjects below current result
 				for (int i = CurrentFocusIndex - 1; i > 0; i--) {
 					Vector3 spawnPos = new(VisTransform.position.x, VisTransform.position.y - distance * i, VisTransform.position.z);
 					VisObjects[i] = SpawnVisObject(spawnPos, currentResults[i]);
+					VisObjects[i].Index = i;
+					VisObjects[i].IsFocused = false;
 					VisObjects[i].SetMaterial(Options.styles[0].timeMaterial);
+					VisObjects[i].HideDisplay();
 				}
 
 			}

@@ -30,6 +30,8 @@ namespace Dataskop.Entities.Visualizations {
 		private Vector3 animationTarget;
 		private Coroutine moveLineCoroutine;
 
+		public int Index { get; set; }
+
 		public bool IsFocused { get; set; }
 
 		public MeasurementType[] AllowedMeasurementTypes { get; } = {
@@ -81,6 +83,18 @@ namespace Dataskop.Entities.Visualizations {
 			else {
 				authorIconImageRenderer.enabled = false;
 			}
+		}
+
+		public void OnHover() {
+			throw new System.NotImplementedException();
+		}
+
+		public void OnSelect() {
+			throw new System.NotImplementedException();
+		}
+
+		public void OnDeselect() {
+			throw new System.NotImplementedException();
 		}
 
 		public void ShowDisplay() {
