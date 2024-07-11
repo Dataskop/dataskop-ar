@@ -7,6 +7,8 @@ namespace Dataskop.Entities.Visualizations {
 
 	public interface IVisObject {
 
+		public int Index { get; set; }
+
 		public bool IsFocused { get; set; }
 
 		public MeasurementType[] AllowedMeasurementTypes { get; }
@@ -24,6 +26,12 @@ namespace Dataskop.Entities.Visualizations {
 		public Image AuthorIconRenderer { get; }
 
 		public void SetDisplayData(VisualizationResultDisplayData displayData);
+
+		public void OnHover();
+
+		public void OnSelect();
+
+		public void OnDeselect();
 
 		public void ShowDisplay();
 

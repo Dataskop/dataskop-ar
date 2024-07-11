@@ -87,6 +87,7 @@ namespace Dataskop.Data {
 				GameObject vis = VisualizationRepository.GetVisualization(visOpt.Type.FirstCharToUpper());
 
 				ToggleTimeSeries(dp, false);
+				dp.RemoveVis();
 				dp.SetVis(vis);
 				dp.Vis.VisOption = visOpt;
 				dp.Vis.ApplyStyle(dp.Vis.VisOption.Style);

@@ -54,7 +54,6 @@ namespace Dataskop.Entities {
 		/// </summary>
 		/// <param name="visPrefab">The visualization to be used for this data point.</param>
 		public void SetVis(GameObject visPrefab) {
-			RemoveVis();
 			Vis = Instantiate(visPrefab, transform).GetComponent<Visualization>();
 			Vis.DataPoint = this;
 			Vis.SwipedUp += NextMeasurementResult;
