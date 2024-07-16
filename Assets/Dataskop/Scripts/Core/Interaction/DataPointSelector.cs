@@ -109,6 +109,7 @@ namespace Dataskop.Interaction {
 					}
 
 					DataPoint hoveredDataPoint = hitGameObject.GetComponentInParent<Visualization>().DataPoint;
+					IVisObject hoveredVisObject = hitGameObject.GetComponent<IVisObject>();
 
 					if (!hoveredDataPoint.Vis.IsSpawned) return;
 
