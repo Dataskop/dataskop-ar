@@ -7,6 +7,8 @@ namespace Dataskop.Entities.Visualizations {
 
 	public interface IVisObject {
 
+		public Visualization ParentVis { get; set; }
+
 		public int Index { get; set; }
 
 		public bool IsFocused { get; set; }
@@ -27,11 +29,11 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void SetDisplayData(VisualizationResultDisplayData displayData);
 
-		public void OnHover();
+		public int OnHover();
 
-		public void OnSelect();
+		public int OnSelect();
 
-		public void OnDeselect();
+		public int OnDeselect();
 
 		public void ShowDisplay();
 

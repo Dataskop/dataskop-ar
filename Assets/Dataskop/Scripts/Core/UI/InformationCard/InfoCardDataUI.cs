@@ -77,7 +77,7 @@ namespace Dataskop.UI {
 			}
 			else {
 				SelectedDataPoint.MeasurementResultChanged += UpdateResultTextElements;
-				UpdateResultTextElements(SelectedDataPoint.CurrentMeasurementResult);
+				UpdateResultTextElements(SelectedDataPoint.FocusedMeasurement);
 			}
 
 		}

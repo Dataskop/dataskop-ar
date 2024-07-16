@@ -65,7 +65,7 @@ namespace Dataskop.Entities.Visualizations {
 
 			TimeSeriesBeforeSpawn?.Invoke();
 			IsSpawned = true;
-			DataPoint.CurrentMeasurementResult = DataPoint.MeasurementDefinition.GetLatestMeasurementResult();
+			//DataPoint.FocusedMeasurement = DataPoint.MeasurementDefinition.GetLatestMeasurementResult();
 			MeasurementResults = DataPoint.MeasurementDefinition.MeasurementResults.ToList();
 			SwipeCount = 0;
 
@@ -121,7 +121,7 @@ namespace Dataskop.Entities.Visualizations {
 			TimeElements.Clear();
 			DataPoint.Vis.SwipedUp -= OnSwipedUp;
 			DataPoint.Vis.SwipedDown -= OnSwipedDown;
-			DataPoint.CurrentMeasurementResult = DataPoint.MeasurementDefinition.GetLatestMeasurementResult();
+			//DataPoint.FocusedMeasurement = DataPoint.MeasurementDefinition.GetLatestMeasurementResult();
 			TimeSeriesDespawned?.Invoke();
 			IsSpawned = false;
 
@@ -157,7 +157,7 @@ namespace Dataskop.Entities.Visualizations {
 
 			if (DataPoint.MeasurementDefinition.MeasurementResults == null) return false;
 
-			MeasurementResult currentMr = DataPoint.CurrentMeasurementResult;
+			MeasurementResult currentMr = DataPoint.FocusedMeasurement;
 
 			int indexOfCurrent = MeasurementResults.IndexOf(currentMr);
 			int indexOfElement = MeasurementResults.IndexOf(timeElement.MeasurementResult);
@@ -187,12 +187,12 @@ namespace Dataskop.Entities.Visualizations {
 				switch (direction.y) {
 					case < 0:
 						e.MeasurementResult =
-							MeasurementResults[MeasurementResults.IndexOf(DataPoint.CurrentMeasurementResult) - 1];
+							MeasurementResults[MeasurementResults.IndexOf(DataPoint.FocusedMeasurement) - 1];
 						e.DistanceToDataPoint -= 2;
 						break;
 					case > 0:
 						e.MeasurementResult =
-							MeasurementResults[MeasurementResults.IndexOf(DataPoint.CurrentMeasurementResult) + 1];
+							MeasurementResults[MeasurementResults.IndexOf(DataPoint.FocusedMeasurement) + 1];
 						e.DistanceToDataPoint += 2;
 						break;
 				}

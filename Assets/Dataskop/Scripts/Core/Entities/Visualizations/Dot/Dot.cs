@@ -19,8 +19,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		private bool hasHistoryEnabled = false;
 
-		private DotOptions Options { get; set; }
-
 		public override Transform VisTransform => transform;
 
 		public override MeasurementType[] AllowedMeasurementTypes { get; set; } = {
@@ -28,7 +26,9 @@ namespace Dataskop.Entities.Visualizations {
 			MeasurementType.Bool
 		};
 
-		private int CurrentFocusIndex { get; set; } = 0;
+		private DotOptions Options { get; set; }
+
+		private int CurrentFocusIndex => DataPoint.FocusedMeasurementIndex;
 
 		protected override void OnDataPointChanged() {
 
@@ -40,6 +40,7 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjects = new IVisObject[timeSeriesConfiguration.visibleHistoryCount];
 			GameObject visObject = Instantiate(visPrefab, transform.position, Quaternion.identity, visObjectsContainer);
 			VisObjects[CurrentFocusIndex] = visObject.GetComponent<IVisObject>();
+			VisObjects[CurrentFocusIndex].ParentVis = this;
 
 			VisTransform.localScale *= Scale;
 			VisTransform.root.localPosition = Offset;
@@ -57,7 +58,7 @@ namespace Dataskop.Entities.Visualizations {
 			groundLine.endWidth = 0.0075f;
 			*/
 
-			OnMeasurementResultChanged(DataPoint.CurrentMeasurementResult);
+			OnMeasurementResultChanged(DataPoint.FocusedMeasurement);
 
 		}
 

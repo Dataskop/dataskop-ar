@@ -30,6 +30,11 @@ namespace Dataskop.Entities.Visualizations {
 		private Vector3 animationTarget;
 		private Coroutine moveLineCoroutine;
 
+		public Visualization ParentVis {
+			get;
+			set;
+		}
+
 		public int Index { get; set; }
 
 		public bool IsFocused { get; set; }
@@ -85,15 +90,15 @@ namespace Dataskop.Entities.Visualizations {
 			}
 		}
 
-		public void OnHover() {
+		public int OnHover() {
 			throw new System.NotImplementedException();
 		}
 
-		public void OnSelect() {
+		public int OnSelect() {
 			throw new System.NotImplementedException();
 		}
 
-		public void OnDeselect() {
+		public int OnDeselect() {
 			throw new System.NotImplementedException();
 		}
 

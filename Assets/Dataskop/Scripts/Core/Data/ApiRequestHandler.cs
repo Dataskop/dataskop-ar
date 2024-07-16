@@ -102,7 +102,7 @@ namespace Dataskop.Data {
 
 		}
 
-		public async Task<IReadOnlyCollection<MeasurementResult>> GetMeasurementResults(MeasurementDefinition measurementDefinition,
+		public async Task<IReadOnlyList<MeasurementResult>> GetMeasurementResults(MeasurementDefinition measurementDefinition,
 			int amount, DateTime? from, DateTime? to) {
 
 			string url =

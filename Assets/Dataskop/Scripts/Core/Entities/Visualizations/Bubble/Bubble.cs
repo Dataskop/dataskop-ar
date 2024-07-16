@@ -78,7 +78,7 @@ namespace Dataskop.Entities.Visualizations {
 			DisplayOrigin = displayTransform.localPosition;
 
 			idTextMesh.text = DataPoint.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper();
-			OnMeasurementResultChanged(DataPoint.CurrentMeasurementResult);
+			OnMeasurementResultChanged(DataPoint.FocusedMeasurement);
 
 			groundLine.startWidth = 0.0075f;
 			groundLine.endWidth = 0.0075f;
@@ -220,8 +220,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		private void SetAuthorImage() {
 
-			if (DataPoint.CurrentMeasurementResult.Author != string.Empty) {
-				authorIconImageRenderer.sprite = DataPoint.AuthorRepository.AuthorSprites[DataPoint.CurrentMeasurementResult.Author];
+			if (DataPoint.FocusedMeasurement.Author != string.Empty) {
+				authorIconImageRenderer.sprite = DataPoint.AuthorRepository.AuthorSprites[DataPoint.FocusedMeasurement.Author];
 				authorIconImageRenderer.enabled = true;
 			}
 			else {
