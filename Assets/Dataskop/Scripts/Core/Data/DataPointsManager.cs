@@ -140,7 +140,7 @@ namespace Dataskop.Data {
 				dp.Vis.Swiped(pointerInteraction);
 			}
 
-			dataPointHistorySwiped?.Invoke(DataPoints[0].CurrentMeasurementResultIndex);
+			//dataPointHistorySwiped?.Invoke(DataPoints[0].CurrentMeasurementResultIndex);
 
 		}
 
@@ -229,7 +229,7 @@ namespace Dataskop.Data {
 					dataPointInstance.MeasurementDefinition = definition;
 					dataPointInstance.Device = projectDevices[i];
 					dataPointInstance.AuthorRepository = AuthorRepository;
-					dataPointInstance.SetMeasurementResult(dataPointInstance.MeasurementDefinition.GetLatestMeasurementResult());
+					dataPointInstance.FocusedMeasurementIndex = 0;
 
 					SetDataPointVisualization(dataPointInstance, DataAttributeManager.SelectedAttribute.VisOptions.First());
 
@@ -274,7 +274,8 @@ namespace Dataskop.Data {
 
 			foreach (DataPoint dp in DataPoints) {
 				dp.Vis.OnMeasurementResultsUpdated();
-				dp.FocusedMeasurement = dp.MeasurementDefinition.GetLatestMeasurementResult();
+				dp.FocusedMeasurementIndex = 0;
+				//dp.FocusedMeasurement = dp.MeasurementDefinition.GetLatestMeasurementResult();
 			}
 
 			dataPointsResultsUpdated?.Invoke();

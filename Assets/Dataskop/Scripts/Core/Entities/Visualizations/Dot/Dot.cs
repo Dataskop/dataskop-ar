@@ -40,7 +40,9 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjects = new IVisObject[timeSeriesConfiguration.visibleHistoryCount];
 			GameObject visObject = Instantiate(visPrefab, transform.position, Quaternion.identity, visObjectsContainer);
 			VisObjects[CurrentFocusIndex] = visObject.GetComponent<IVisObject>();
-			VisObjects[CurrentFocusIndex].ParentVis = this;
+			VisObjects[CurrentFocusIndex].HasHovered += OnVisObjectHovered;
+			VisObjects[CurrentFocusIndex].HasSelected += OnVisObjectSelected;
+			VisObjects[CurrentFocusIndex].HasDeselected += OnVisObjectDeselected;
 
 			VisTransform.localScale *= Scale;
 			VisTransform.root.localPosition = Offset;
@@ -137,6 +139,10 @@ namespace Dataskop.Entities.Visualizations {
 					VisObjects[i].IsFocused = false;
 					VisObjects[i].SetMaterial(Options.styles[0].timeMaterial);
 					VisObjects[i].HideDisplay();
+					VisObjects[i].HasHovered += OnVisObjectHovered;
+					VisObjects[i].HasSelected += OnVisObjectSelected;
+					VisObjects[i].HasDeselected += OnVisObjectDeselected;
+
 				}
 
 				// VisObjects below current result
@@ -147,6 +153,9 @@ namespace Dataskop.Entities.Visualizations {
 					VisObjects[i].IsFocused = false;
 					VisObjects[i].SetMaterial(Options.styles[0].timeMaterial);
 					VisObjects[i].HideDisplay();
+					VisObjects[i].HasHovered += OnVisObjectHovered;
+					VisObjects[i].HasSelected += OnVisObjectSelected;
+					VisObjects[i].HasDeselected += OnVisObjectDeselected;
 				}
 
 			}
@@ -180,6 +189,9 @@ namespace Dataskop.Entities.Visualizations {
 					continue;
 				}
 
+				VisObjects[i].HasHovered -= OnVisObjectHovered;
+				VisObjects[i].HasSelected -= OnVisObjectSelected;
+				VisObjects[i].HasDeselected -= OnVisObjectDeselected;
 				VisObjects[i].Delete();
 				VisObjects[i] = null;
 
@@ -187,13 +199,20 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-		public override void OnVisObjectHovered() {
-			VisObjects[CurrentFocusIndex].SetMaterial(Options.styles[0].hoverMaterial);
+		public override void OnVisObjectHovered(int index) {
+
+			if (index == CurrentFocusIndex) {
+				VisObjects[index].SetMaterial(Options.styles[0].hoverMaterial);
+			}
+			else {
+				VisObjects[index].ShowDisplay();
+			}
+
 			//visImageRenderer.material = Options.styles[0].hoverMaterial;
 			//valueTextMesh.color = hoverColor;
 		}
 
-		public override void OnVisObjectSelected() {
+		public override void OnVisObjectSelected(int index) {
 
 			/*
 			if (animationCoroutine != null) {
@@ -217,12 +236,19 @@ namespace Dataskop.Entities.Visualizations {
 			//valueTextMesh.color = selectColor;
 			*/
 
-			VisObjects[CurrentFocusIndex].SetMaterial(Options.styles[0].selectionMaterial);
+			if (index == CurrentFocusIndex) {
+				VisObjects[index].SetMaterial(Options.styles[0].selectionMaterial);
+			}
+			else {
+				//TODO: Setting new Focus Index to the tapped VisObject and do animation work
+				//VisObjects[index].ShowDisplay();
+			}
+
 			IsSelected = true;
 
 		}
 
-		public override void OnVisObjectDeselected() {
+		public override void OnVisObjectDeselected(int index) {
 /*
 			if (IsSelected) {
 				if (animationCoroutine != null) {
@@ -245,8 +271,13 @@ namespace Dataskop.Entities.Visualizations {
 
 		visImageRenderer.material = Options.styles[0].defaultMaterial;
 		*/
-			//valueTextMesh.color = deselectColor;
-			VisObjects[CurrentFocusIndex].SetMaterial(Options.styles[0].defaultMaterial);
+			if (index == CurrentFocusIndex) {
+				VisObjects[index].SetMaterial(Options.styles[0].defaultMaterial);
+			}
+			else {
+				VisObjects[index].HideDisplay();
+			}
+
 			IsSelected = false;
 
 		}
