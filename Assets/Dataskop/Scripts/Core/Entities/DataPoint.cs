@@ -74,18 +74,18 @@ namespace Dataskop.Entities {
 		public void SetSelectionStatus(bool isSelected, bool isHovered) {
 
 			if (isHovered) {
-				Vis.Hover();
+				Vis.OnVisObjectHovered();
 				SetMapIconColor(mapHoverColor);
 				return;
 			}
 
 			if (isSelected) {
-				Vis.Select();
+				Vis.OnVisObjectSelected();
 				SetMapIconColor(mapSelectionColor);
 				return;
 			}
 
-			Vis.Deselect();
+			Vis.OnVisObjectDeselected();
 			SetMapIconColor(mapDefaultColor);
 
 		}

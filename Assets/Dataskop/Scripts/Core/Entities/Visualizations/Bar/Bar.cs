@@ -155,20 +155,20 @@ namespace Dataskop.Entities.Visualizations {
 
 		public override void ApplyStyle(VisualizationStyle style) { }
 		
-		public override void Hover() {
+		public override void OnVisObjectHovered() {
 			barFrameMeshRenderer.material = Options.styles[0].hoverMaterial;
 			valueTextMesh.color = hoverColor;
 			ShowUserDirectionCanvas();
 		}
 
-		public override void Select() {
+		public override void OnVisObjectSelected() {
 			barFrameMeshRenderer.material = Options.styles[0].selectionMaterial;
 			valueTextMesh.color = selectColor;
 			ShowUserDirectionCanvas();
 			IsSelected = true;
 		}
 
-		public override void Deselect() {
+		public override void OnVisObjectDeselected() {
 			barFrameMeshRenderer.material = Options.styles[0].defaultMaterial;
 			valueTextMesh.color = deselectColor;
 			HideAllUserDirectionCanvas();

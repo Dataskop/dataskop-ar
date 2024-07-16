@@ -1,3 +1,4 @@
+using System;
 using Dataskop.Data;
 using TMPro;
 using UnityEngine;
@@ -6,6 +7,12 @@ using UnityEngine.UI;
 namespace Dataskop.Entities.Visualizations {
 
 	public interface IVisObject {
+
+		public event Action<int> HasHovered;
+
+		public event Action<int> HasSelected;
+
+		public event Action<int> HasDeselected;
 
 		public Visualization ParentVis { get; set; }
 
@@ -29,11 +36,11 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void SetDisplayData(VisualizationResultDisplayData displayData);
 
-		public int OnHover();
+		public void OnHover();
 
-		public int OnSelect();
+		public void OnSelect();
 
-		public int OnDeselect();
+		public void OnDeselect();
 
 		public void ShowDisplay();
 

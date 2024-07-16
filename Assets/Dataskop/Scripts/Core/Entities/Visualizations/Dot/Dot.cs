@@ -187,13 +187,13 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-		public override void Hover() {
+		public override void OnVisObjectHovered() {
 			VisObjects[CurrentFocusIndex].SetMaterial(Options.styles[0].hoverMaterial);
 			//visImageRenderer.material = Options.styles[0].hoverMaterial;
 			//valueTextMesh.color = hoverColor;
 		}
 
-		public override void Select() {
+		public override void OnVisObjectSelected() {
 
 			/*
 			if (animationCoroutine != null) {
@@ -222,7 +222,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-		public override void Deselect() {
+		public override void OnVisObjectDeselected() {
 /*
 			if (IsSelected) {
 				if (animationCoroutine != null) {

@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using Dataskop.Data;
 using TMPro;
@@ -29,6 +30,12 @@ namespace Dataskop.Entities.Visualizations {
 		private Coroutine animationCoroutine;
 		private Vector3 animationTarget;
 		private Coroutine moveLineCoroutine;
+
+		public event Action<int> HasHovered;
+
+		public event Action<int> HasSelected;
+
+		public event Action<int> HasDeselected;
 
 		public Visualization ParentVis {
 			get;
@@ -90,16 +97,16 @@ namespace Dataskop.Entities.Visualizations {
 			}
 		}
 
-		public int OnHover() {
-			throw new System.NotImplementedException();
+		public void OnHover() {
+			HasHovered?.Invoke(Index);
 		}
 
-		public int OnSelect() {
-			throw new System.NotImplementedException();
+		public void OnSelect() {
+			HasSelected?.Invoke(Index);
 		}
 
-		public int OnDeselect() {
-			throw new System.NotImplementedException();
+		public void OnDeselect() {
+			HasDeselected?.Invoke(Index);
 		}
 
 		public void ShowDisplay() {

@@ -78,17 +78,17 @@ namespace Dataskop.Entities.Visualizations {
 		/// <summary>
 		///     Gets called when the user points the reticule over the visible visualization.
 		/// </summary>
-		public abstract void Hover();
+		public abstract void OnVisObjectHovered();
 
 		/// <summary>
 		///     Gets called when the visualization gets selected.
 		/// </summary>
-		public abstract void Select();
+		public abstract void OnVisObjectSelected();
 
 		/// <summary>
 		///     Gets called when the visualization gets deselected.
 		/// </summary>
-		public abstract void Deselect();
+		public abstract void OnVisObjectDeselected();
 
 		/// <summary>
 		///     Gets called before the visualization is removed.
