@@ -83,13 +83,15 @@ namespace Dataskop.UI {
 			SelectedDataPoint.MeasurementResultChanged += UpdateTimeLabel;
 			UpdateTimeLabel(SelectedDataPoint.FocusedMeasurement);
 
-			if (IsActive) {
-				int resultsCount = selectedDataPoint.MeasurementDefinition.MeasurementResults.Count;
-				HistorySlider.highValue = resultsCount - 1;
-				GenerateTicks(resultsCount);
-				SetVisibility(HistorySliderContainer, true);
-				CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
+			if (!IsActive) {
+				return;
 			}
+
+			int resultsCount = selectedDataPoint.MeasurementDefinition.MeasurementResults.Count;
+			HistorySlider.highValue = resultsCount - 1;
+			GenerateTicks(resultsCount);
+			SetVisibility(HistorySliderContainer, true);
+			CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
 
 		}
 

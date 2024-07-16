@@ -549,8 +549,8 @@ GameObject:
   - component: {fileID: 3677864854962279710}
   - component: {fileID: 7554759454830613818}
   - component: {fileID: 1832769547974538608}
-  - component: {fileID: 4611731596849338038}
   - component: {fileID: 7172866873166071859}
+  - component: {fileID: 4611731596849338038}
   m_Layer: 7
   m_Name: DotVisObject
   m_TagString: VisObject
@@ -620,6 +620,27 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!135 &7172866873166071859
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7048796313808956549}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4611731596849338038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -660,27 +681,6 @@ MonoBehaviour:
   animationTimeOnSelect: 0
   animationTimeOnDeselect: 0
   selectionScale: 0
---- !u!135 &7172866873166071859
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7048796313808956549}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8126223390876158078
 GameObject:
   m_ObjectHideFlags: 0
