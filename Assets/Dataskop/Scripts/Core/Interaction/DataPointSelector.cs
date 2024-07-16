@@ -101,7 +101,7 @@ namespace Dataskop.Interaction {
 
 				}
 
-				if (hitGameObject.CompareTag("Vis")) {
+				if (hitGameObject.CompareTag("VisObject")) {
 
 					if (HoveredTimeElement != null) {
 						HoveredTimeElement.HideData();
@@ -143,7 +143,7 @@ namespace Dataskop.Interaction {
 
 		private void SetSelectedDataPoint(GameObject? pointedGameObject) {
 
-			if (pointedGameObject != null && !pointedGameObject.CompareTag("Vis"))
+			if (pointedGameObject != null && !pointedGameObject.CompareTag("VisObject"))
 				return;
 
 			DataPoint? tappedDataPoint = pointedGameObject?.GetComponentInParent<Visualization>().DataPoint;

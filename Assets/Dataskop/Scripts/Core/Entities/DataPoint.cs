@@ -19,8 +19,6 @@ namespace Dataskop.Entities {
 		[SerializeField] private Color mapHoverColor;
 		[SerializeField] private Color mapDefaultColor;
 
-		private MeasurementResult m;
-
 		public event Action<MeasurementResult> MeasurementResultChanged;
 
 		public event Action<VisualizationType> VisualizationTypeChanged;
@@ -74,26 +72,20 @@ namespace Dataskop.Entities {
 		public void SetSelectionStatus(bool isSelected, bool isHovered) {
 
 			if (isHovered) {
-				Vis.OnVisObjectHovered();
+				//Vis.OnVisObjectHovered();
 				SetMapIconColor(mapHoverColor);
 				return;
 			}
 
 			if (isSelected) {
-				Vis.OnVisObjectSelected();
+				//Vis.OnVisObjectSelected();
 				SetMapIconColor(mapSelectionColor);
 				return;
 			}
 
-			Vis.OnVisObjectDeselected();
+			//Vis.OnVisObjectDeselected();
 			SetMapIconColor(mapDefaultColor);
 
-		}
-
-		public void OnSwipe(Vector2 direction) {
-			
-			
-			
 		}
 
 		private void IncreaseMeasurementIndex() {

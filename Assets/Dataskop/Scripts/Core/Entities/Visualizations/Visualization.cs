@@ -72,23 +72,22 @@ namespace Dataskop.Entities.Visualizations {
 		/// </summary>
 		protected virtual void OnDataPointChanged() {
 			DataPoint.MeasurementResultChanged += OnMeasurementResultChanged;
-
 		}
 
 		/// <summary>
 		///     Gets called when the user points the reticule over the visible visualization.
 		/// </summary>
-		public abstract void OnVisObjectHovered();
+		public abstract void OnVisObjectHovered(int index);
 
 		/// <summary>
 		///     Gets called when the visualization gets selected.
 		/// </summary>
-		public abstract void OnVisObjectSelected();
+		public abstract void OnVisObjectSelected(int index);
 
 		/// <summary>
 		///     Gets called when the visualization gets deselected.
 		/// </summary>
-		public abstract void OnVisObjectDeselected();
+		public abstract void OnVisObjectDeselected(int index);
 
 		/// <summary>
 		///     Gets called before the visualization is removed.
@@ -116,7 +115,7 @@ namespace Dataskop.Entities.Visualizations {
 			if (pointerInteraction.startingGameObject == null)
 				return;
 
-			if (!pointerInteraction.startingGameObject.CompareTag("Vis")) return;
+			if (!pointerInteraction.startingGameObject.CompareTag("VisObject")) return;
 
 			switch (pointerInteraction.Direction.y) {
 				case > 0.20f:

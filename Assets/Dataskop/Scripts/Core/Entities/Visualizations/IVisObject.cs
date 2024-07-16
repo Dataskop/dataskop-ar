@@ -14,8 +14,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		public event Action<int> HasDeselected;
 
-		public Visualization ParentVis { get; set; }
-
 		public int Index { get; set; }
 
 		public bool IsFocused { get; set; }

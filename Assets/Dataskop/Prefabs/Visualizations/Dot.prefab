@@ -313,7 +313,7 @@ GameObject:
   - component: {fileID: 717664646791049476}
   m_Layer: 7
   m_Name: VisObjects
-  m_TagString: Untagged
+  m_TagString: VisObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
