@@ -550,6 +550,7 @@ GameObject:
   - component: {fileID: 7554759454830613818}
   - component: {fileID: 1832769547974538608}
   - component: {fileID: 4611731596849338038}
+  - component: {fileID: 7172866873166071859}
   m_Layer: 7
   m_Name: DotVisObject
   m_TagString: VisObject
@@ -659,6 +660,27 @@ MonoBehaviour:
   animationTimeOnSelect: 0
   animationTimeOnDeselect: 0
   selectionScale: 0
+--- !u!135 &7172866873166071859
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7048796313808956549}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8126223390876158078
 GameObject:
   m_ObjectHideFlags: 0
@@ -745,10 +767,9 @@ GameObject:
   - component: {fileID: 6770485708538385694}
   - component: {fileID: 2606129828387007443}
   - component: {fileID: 8793019401636461414}
-  - component: {fileID: 6386250108541921996}
   m_Layer: 7
   m_Name: Vis
-  m_TagString: Vis
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -810,24 +831,3 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 1
   m_PixelsPerUnitMultiplier: 1
---- !u!135 &6386250108541921996
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8857747783539505336}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}

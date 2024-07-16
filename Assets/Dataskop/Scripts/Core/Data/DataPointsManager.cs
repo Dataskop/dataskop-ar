@@ -231,8 +231,6 @@ namespace Dataskop.Data {
 					dataPointInstance.AuthorRepository = AuthorRepository;
 					dataPointInstance.FocusedMeasurementIndex = 0;
 
-					SetDataPointVisualization(dataPointInstance, DataAttributeManager.SelectedAttribute.VisOptions.First());
-
 					//Move the DataPoint to its location
 					if (AppOptions.DemoMode) {
 
@@ -252,6 +250,7 @@ namespace Dataskop.Data {
 					}
 
 					DataPoints.Add(dataPointInstance);
+					SetDataPointVisualization(dataPointInstance, DataAttributeManager.SelectedAttribute.VisOptions.First());
 				}
 
 			}
@@ -275,7 +274,6 @@ namespace Dataskop.Data {
 			foreach (DataPoint dp in DataPoints) {
 				dp.Vis.OnMeasurementResultsUpdated();
 				dp.FocusedMeasurementIndex = 0;
-				//dp.FocusedMeasurement = dp.MeasurementDefinition.GetLatestMeasurementResult();
 			}
 
 			dataPointsResultsUpdated?.Invoke();

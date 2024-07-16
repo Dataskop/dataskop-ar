@@ -158,8 +158,15 @@ namespace Dataskop.Entities.Visualizations {
 					VisObjects[i].HasDeselected += OnVisObjectDeselected;
 				}
 
+				hasHistoryEnabled = true;
+
 			}
 			else {
+
+				if (!hasHistoryEnabled) {
+					return;
+				}
+
 				ClearVisObjects();
 				groundLine.enabled = true;
 			}
