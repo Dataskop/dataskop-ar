@@ -492,7 +492,7 @@ GameObject:
   - component: {fileID: 5733406144296415238}
   m_Layer: 7
   m_Name: Bubble
-  m_TagString: DataPoint
+  m_TagString: Vis
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -537,6 +537,7 @@ MonoBehaviour:
   deselectColor: {r: 0.14618193, g: 0.3496184, b: 0.6886792, a: 1}
   hoverColor: {r: 0.8584906, g: 0.31990921, b: 0.66226315, a: 1}
   selectColor: {r: 0.8584906, g: 0.41105816, b: 0.044544328, a: 1}
+  historyColor: {r: 0, g: 0, b: 0, a: 0}
   visImageRenderer: {fileID: 6127902192051079091}
   visTransform: {fileID: 7302675423790594360}
   options: {fileID: 11400000, guid: bb8ab6863403a234d9035346e104de5a, type: 2}

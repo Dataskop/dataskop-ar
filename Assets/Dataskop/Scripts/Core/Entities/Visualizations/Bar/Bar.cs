@@ -73,7 +73,7 @@ namespace Dataskop.Entities.Visualizations {
 
 			idMesh.text = DataPoint.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper();
 
-			OnMeasurementResultChanged(DataPoint.CurrentMeasurementResult);
+			OnMeasurementResultChanged(DataPoint.FocusedMeasurement);
 			barCollider.enabled = true;
 		}
 
@@ -225,8 +225,8 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		private void SetAuthorImage() {
-			if (DataPoint.CurrentMeasurementResult.Author != string.Empty) {
-				authorIconImageRenderer.sprite = DataPoint.AuthorRepository.AuthorSprites[DataPoint.CurrentMeasurementResult.Author];
+			if (DataPoint.FocusedMeasurement.Author != string.Empty) {
+				authorIconImageRenderer.sprite = DataPoint.AuthorRepository.AuthorSprites[DataPoint.FocusedMeasurement.Author];
 				authorIconImageRenderer.enabled = true;
 			}
 			else {

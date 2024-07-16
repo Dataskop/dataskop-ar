@@ -81,7 +81,7 @@ namespace Dataskop.UI {
 			}
 
 			SelectedDataPoint.MeasurementResultChanged += UpdateTimeLabel;
-			UpdateTimeLabel(SelectedDataPoint.CurrentMeasurementResult);
+			UpdateTimeLabel(SelectedDataPoint.FocusedMeasurement);
 
 			if (IsActive) {
 				int resultsCount = selectedDataPoint.MeasurementDefinition.MeasurementResults.Count;

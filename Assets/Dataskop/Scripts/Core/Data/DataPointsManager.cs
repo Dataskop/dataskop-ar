@@ -274,7 +274,7 @@ namespace Dataskop.Data {
 
 			foreach (DataPoint dp in DataPoints) {
 				dp.Vis.OnMeasurementResultsUpdated();
-				dp.CurrentMeasurementResult = dp.MeasurementDefinition.GetLatestMeasurementResult();
+				dp.FocusedMeasurement = dp.MeasurementDefinition.GetLatestMeasurementResult();
 			}
 
 			dataPointsResultsUpdated?.Invoke();

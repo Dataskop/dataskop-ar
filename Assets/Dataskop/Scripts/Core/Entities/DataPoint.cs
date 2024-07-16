@@ -2,6 +2,7 @@
 using System.Linq;
 using Dataskop.Data;
 using Dataskop.Entities.Visualizations;
+using Dataskop.Interaction;
 using UnityEngine;
 
 namespace Dataskop.Entities {
@@ -18,20 +19,17 @@ namespace Dataskop.Entities {
 		[SerializeField] private Color mapHoverColor;
 		[SerializeField] private Color mapDefaultColor;
 
-		private MeasurementResult mResult;
+		private MeasurementResult m;
+
+		public event Action<MeasurementResult> MeasurementResultChanged;
+
+		public event Action<VisualizationType> VisualizationTypeChanged;
 
 		public MeasurementDefinition MeasurementDefinition { get; set; }
 
-		public MeasurementResult CurrentMeasurementResult {
-			get => mResult;
+		public int FocusedMeasurementIndex { get; set; }
 
-			set {
-				mResult = value;
-				MeasurementResultChanged?.Invoke(CurrentMeasurementResult);
-			}
-		}
-
-		public int CurrentMeasurementResultIndex => MeasurementDefinition.MeasurementResults.ToList().IndexOf(CurrentMeasurementResult);
+		public MeasurementResult FocusedMeasurement => MeasurementDefinition.GetMeasurementResult(FocusedMeasurementIndex);
 
 		public DataAttribute Attribute { get; set; }
 
@@ -45,10 +43,6 @@ namespace Dataskop.Entities {
 			VisualizationTypeChanged += OnVisChanged;
 		}
 
-		public event Action<MeasurementResult> MeasurementResultChanged;
-
-		public event Action<VisualizationType> VisualizationTypeChanged;
-
 		/// <summary>
 		///     Sets and replaces the current visualization form with another.
 		/// </summary>
@@ -56,8 +50,8 @@ namespace Dataskop.Entities {
 		public void SetVis(GameObject visPrefab) {
 			Vis = Instantiate(visPrefab, transform).GetComponent<Visualization>();
 			Vis.DataPoint = this;
-			Vis.SwipedUp += NextMeasurementResult;
-			Vis.SwipedDown += PreviousMeasurementResult;
+			Vis.SwipedUp += DecreaseMeasurementIndex;
+			Vis.SwipedDown += IncreaseMeasurementIndex;
 			VisualizationTypeChanged?.Invoke(Vis.Type);
 		}
 
@@ -65,8 +59,8 @@ namespace Dataskop.Entities {
 
 			if (Vis == null) return;
 
-			Vis.SwipedUp -= NextMeasurementResult;
-			Vis.SwipedDown -= PreviousMeasurementResult;
+			Vis.SwipedUp -= DecreaseMeasurementIndex;
+			Vis.SwipedDown -= IncreaseMeasurementIndex;
 			Vis.OnTimeSeriesToggled(false);
 			Vis.Despawn();
 
@@ -96,33 +90,39 @@ namespace Dataskop.Entities {
 
 		}
 
-		public void SetMeasurementResult(MeasurementResult mRes) {
-			CurrentMeasurementResult = mRes;
+		public void OnSwipe(Vector2 direction) {
+			
+			
+			
 		}
 
-		private void NextMeasurementResult() {
+		private void IncreaseMeasurementIndex() {
 
-			if (MeasurementDefinition.MeasurementResults != null) {
-				int i = CurrentMeasurementResultIndex;
-
-				if (i == 0)
-					return;
-
-				SetMeasurementResult(MeasurementDefinition.MeasurementResults.ToList()[i - 1]);
+			if (MeasurementDefinition.MeasurementResults == null) {
+				return;
 			}
+
+			if (FocusedMeasurementIndex == MeasurementDefinition.MeasurementResults.Count - 1) {
+				return;
+			}
+
+			FocusedMeasurementIndex++;
+			MeasurementResultChanged?.Invoke(MeasurementDefinition.GetMeasurementResult(FocusedMeasurementIndex));
+
 		}
 
-		private void PreviousMeasurementResult() {
+		private void DecreaseMeasurementIndex() {
 
-			if (MeasurementDefinition.MeasurementResults != null) {
-				int i = CurrentMeasurementResultIndex;
-
-				if (i == MeasurementDefinition.MeasurementResults.Count - 1)
-					return;
-
-				SetMeasurementResult(MeasurementDefinition.MeasurementResults.ToList()[i + 1]);
+			if (MeasurementDefinition.MeasurementResults == null) {
+				return;
 			}
 
+			if (FocusedMeasurementIndex == 0) {
+				return;
+			}
+
+			FocusedMeasurementIndex--;
+			MeasurementResultChanged?.Invoke(MeasurementDefinition.GetMeasurementResult(FocusedMeasurementIndex));
 		}
 
 		private void SetMapIconColor(Color color) {
