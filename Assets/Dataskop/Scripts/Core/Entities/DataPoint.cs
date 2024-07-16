@@ -27,6 +27,7 @@ namespace Dataskop.Entities {
 
 		public int FocusedMeasurementIndex { get; set; }
 
+		//TODO: Check for Usages of this if necessary to refactor to event subscription
 		public MeasurementResult FocusedMeasurement => MeasurementDefinition.GetMeasurementResult(FocusedMeasurementIndex);
 
 		public DataAttribute Attribute { get; set; }

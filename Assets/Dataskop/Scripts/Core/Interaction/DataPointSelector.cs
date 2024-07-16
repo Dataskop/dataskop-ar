@@ -23,7 +23,7 @@ namespace Dataskop.Interaction {
 		public UnityEvent<bool>? onVisChangeWithSelection;
 
 		private DataPoint? selectedDataPoint;
-		private DataPoint? softSelectedDataPoint;
+		private DataPoint? hoveredDataPoint;
 
 		/// <summary>
 		///     The DataPoint which got selected with a tap.
@@ -41,18 +41,20 @@ namespace Dataskop.Interaction {
 		/// <summary>
 		///     The DataPoint which got selected with the reticule.
 		/// </summary>
-		private DataPoint? SoftSelectedDataPoint {
-			get => softSelectedDataPoint;
+		private DataPoint? HoveredDataPoint {
+			get => hoveredDataPoint;
 			set {
-				softSelectedDataPoint = value;
+				hoveredDataPoint = value;
 
 				if (SelectedDataPoint == null) {
-					onDataPointSoftSelected?.Invoke(SoftSelectedDataPoint);
+					onDataPointSoftSelected?.Invoke(HoveredDataPoint);
 				}
 			}
 		}
 
-		private TimeElement? HoveredTimeElement { get; set; }
+		private IVisObject? HoveredVisObject { get; set; }
+
+		private IVisObject? SelectedVisObject { get; set; }
 
 		private Ray ReticuleToWorldRay => cam.ViewportPointToRay(screenRayPosition);
 
@@ -78,65 +80,38 @@ namespace Dataskop.Interaction {
 
 				GameObject hitGameObject = hit.collider.gameObject;
 
-				if (hitGameObject.CompareTag("TimeElement")) {
-
-					if (SoftSelectedDataPoint != null) {
-						SoftSelectedDataPoint.SetSelectionStatus(false, false);
-						SoftSelectedDataPoint = null;
-					}
-
-					TimeElement hoveredTimeElement = hitGameObject.GetComponent<TimeElement>();
-
-					if (!hoveredTimeElement.Series.IsSpawned) return;
-
-					if (HoveredTimeElement == hoveredTimeElement) return;
-
-					if (HoveredTimeElement != null) {
-						HoveredTimeElement.HideData();
-					}
-
-					HoveredTimeElement = hoveredTimeElement;
-					HoveredTimeElement.DisplayData();
+				if (!hitGameObject.CompareTag("VisObject")) {
 					return;
-
 				}
 
-				if (hitGameObject.CompareTag("VisObject")) {
+				DataPoint hoveredDataPoint = hitGameObject.GetComponentInParent<Visualization>().DataPoint;
+				IVisObject hoveredVisObject = hitGameObject.GetComponent<IVisObject>();
 
-					if (HoveredTimeElement != null) {
-						HoveredTimeElement.HideData();
-						HoveredTimeElement = null;
-					}
-
-					DataPoint hoveredDataPoint = hitGameObject.GetComponentInParent<Visualization>().DataPoint;
-					IVisObject hoveredVisObject = hitGameObject.GetComponent<IVisObject>();
-
-					if (!hoveredDataPoint.Vis.IsSpawned) return;
-
-					if (SelectedDataPoint == hoveredDataPoint) return;
-
-					if (SoftSelectedDataPoint == hoveredDataPoint) return;
-
-					if (SoftSelectedDataPoint != null)
-						SoftSelectedDataPoint.SetSelectionStatus(false, false);
-
-					SoftSelectedDataPoint = hoveredDataPoint;
-					SoftSelectedDataPoint.SetSelectionStatus(true, true);
-
+				if (hoveredVisObject != HoveredVisObject) {
+					HoveredVisObject = hoveredVisObject;
+					HoveredVisObject?.OnHover();
 				}
+
+				if (SelectedDataPoint == hoveredDataPoint) return;
+
+				if (HoveredDataPoint == hoveredDataPoint) return;
+
+				if (HoveredDataPoint != null) {
+					HoveredDataPoint.SetSelectionStatus(false, false);
+				}
+
+				HoveredDataPoint = hoveredDataPoint;
+				HoveredDataPoint.SetSelectionStatus(true, true);
 
 			}
 			else {
 
-				if (SoftSelectedDataPoint != null) {
-					SoftSelectedDataPoint.SetSelectionStatus(false, false);
-					SoftSelectedDataPoint = null;
+				if (HoveredDataPoint != null) {
+					HoveredDataPoint.SetSelectionStatus(false, false);
+					HoveredDataPoint = null;
 				}
 
-				if (HoveredTimeElement != null) {
-					HoveredTimeElement.HideData();
-					HoveredTimeElement = null;
-				}
+				HoveredVisObject?.OnDeselect();
 
 			}
 
@@ -144,40 +119,57 @@ namespace Dataskop.Interaction {
 
 		private void SetSelectedDataPoint(GameObject? pointedGameObject) {
 
-			if (pointedGameObject != null && !pointedGameObject.CompareTag("VisObject"))
-				return;
-
-			DataPoint? tappedDataPoint = pointedGameObject?.GetComponentInParent<Visualization>().DataPoint;
-
-			if (tappedDataPoint == SelectedDataPoint) {
-				RemoveSelection();
+			if (pointedGameObject != null && !pointedGameObject.CompareTag("VisObject")) {
 				return;
 			}
 
-			if (SelectedDataPoint != null)
-				RemoveSelection();
+			if (pointedGameObject == null) {
+				SelectedVisObject?.OnDeselect();
+				SelectedVisObject = null;
+				SelectedDataPoint = null;
+				return;
+			}
 
-			SelectedDataPoint = tappedDataPoint;
+			DataPoint? tappedDataPoint = pointedGameObject?.GetComponentInParent<Visualization>().DataPoint;
+			IVisObject? tappedVisObject = pointedGameObject?.GetComponent<IVisObject>();
 
-			if (SoftSelectedDataPoint == SelectedDataPoint)
-				SoftSelectedDataPoint = null;
+			if (tappedVisObject == SelectedVisObject && tappedDataPoint == SelectedDataPoint) {
+				SelectedVisObject?.OnDeselect();
+				SelectedVisObject = null;
+				SelectedDataPoint?.SetSelectionStatus(false, false);
+				SelectedDataPoint = null;
+				return;
+			}
 
-			SelectedDataPoint?.SetSelectionStatus(true, false);
+			if (tappedVisObject != SelectedVisObject) {
 
+				SelectedVisObject = tappedVisObject;
+				SelectedVisObject?.OnSelect();
+
+				if (tappedDataPoint != SelectedDataPoint) {
+					SelectedDataPoint?.SetSelectionStatus(false, false);
+					SelectedDataPoint = tappedDataPoint;
+					SelectedDataPoint?.SetSelectionStatus(true, false);
+
+					if (HoveredDataPoint == SelectedDataPoint) {
+						HoveredDataPoint = null;
+					}
+					
+				}
+
+			}
+			
 		}
 
 		public void SelectDataPointOnVisualizationChange() {
 			PreviouslySelectedDataPoint = SelectedDataPoint;
 
-			if (PreviouslySelectedDataPoint != null) {
-				onVisChangeWithSelection?.Invoke(true);
-				StartCoroutine(SelectPreviouslySelectedDataPoint());
+			if (PreviouslySelectedDataPoint == null) {
+				return;
 			}
-		}
 
-		private void RemoveSelection() {
-			SelectedDataPoint?.SetSelectionStatus(false, false);
-			SelectedDataPoint = null;
+			onVisChangeWithSelection?.Invoke(true);
+			StartCoroutine(SelectPreviouslySelectedDataPoint());
 		}
 
 		private IEnumerator SelectPreviouslySelectedDataPoint() {
