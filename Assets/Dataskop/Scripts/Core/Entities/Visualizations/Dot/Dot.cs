@@ -84,7 +84,6 @@ namespace Dataskop.Entities.Visualizations {
 
 			VisObjects[CurrentFocusIndex].ShowDisplay();
 			VisObjects[CurrentFocusIndex].Index = CurrentFocusIndex;
-			VisObjects[CurrentFocusIndex].IsFocused = true;
 
 		}
 
@@ -134,28 +133,13 @@ namespace Dataskop.Entities.Visualizations {
 				// VisObjects above current result
 				for (int i = CurrentFocusIndex + 1; i < VisObjects.Length; i++) {
 					Vector3 spawnPos = new(VisTransform.position.x, VisTransform.position.y + distance * i, VisTransform.position.z);
-					VisObjects[i] = SpawnVisObject(spawnPos, currentResults[i]);
-					VisObjects[i].Index = i;
-					VisObjects[i].IsFocused = false;
-					VisObjects[i].SetMaterial(Options.styles[0].timeMaterial);
-					VisObjects[i].HideDisplay();
-					VisObjects[i].HasHovered += OnVisObjectHovered;
-					VisObjects[i].HasSelected += OnVisObjectSelected;
-					VisObjects[i].HasDeselected += OnVisObjectDeselected;
-
+					VisObjects[i] = SpawnVisObject(i, spawnPos, currentResults[i]);
 				}
 
 				// VisObjects below current result
 				for (int i = CurrentFocusIndex - 1; i > 0; i--) {
 					Vector3 spawnPos = new(VisTransform.position.x, VisTransform.position.y - distance * i, VisTransform.position.z);
-					VisObjects[i] = SpawnVisObject(spawnPos, currentResults[i]);
-					VisObjects[i].Index = i;
-					VisObjects[i].IsFocused = false;
-					VisObjects[i].SetMaterial(Options.styles[0].timeMaterial);
-					VisObjects[i].HideDisplay();
-					VisObjects[i].HasHovered += OnVisObjectHovered;
-					VisObjects[i].HasSelected += OnVisObjectSelected;
-					VisObjects[i].HasDeselected += OnVisObjectDeselected;
+					VisObjects[i] = SpawnVisObject(i, spawnPos, currentResults[i]);
 				}
 
 				hasHistoryEnabled = true;
@@ -173,7 +157,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-		private IVisObject SpawnVisObject(Vector3 pos, MeasurementResult result) {
+		private IVisObject SpawnVisObject(int index, Vector3 pos, MeasurementResult result) {
 
 			GameObject newVis = Instantiate(visPrefab, pos, visObjectsContainer.localRotation, visObjectsContainer);
 			IVisObject visObject = newVis.GetComponent<IVisObject>();
@@ -184,6 +168,14 @@ namespace Dataskop.Entities.Visualizations {
 				AuthorSprite = result.Author != string.Empty
 					? DataPoint.AuthorRepository.AuthorSprites[result.Author] : null
 			});
+
+			visObject.Index = index;
+			visObject.IsFocused = false;
+			visObject.SetMaterial(Options.styles[0].timeMaterial);
+			visObject.HideDisplay();
+			visObject.HasHovered += OnVisObjectHovered;
+			visObject.HasSelected += OnVisObjectSelected;
+			visObject.HasDeselected += OnVisObjectDeselected;
 
 			return visObject;
 
