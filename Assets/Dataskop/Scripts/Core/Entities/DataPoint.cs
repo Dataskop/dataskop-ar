@@ -68,24 +68,22 @@ namespace Dataskop.Entities {
 		/// <summary>
 		///     Sets the selection status of the data point.
 		/// </summary>
-		/// <param name="isSelected"></param>
-		/// <param name="isHovered"></param>
-		public void SetSelectionStatus(bool isSelected, bool isHovered) {
+		public void SetSelectionStatus(SelectionState state) {
 
-			if (isHovered) {
-				//Vis.OnVisObjectHovered();
-				SetMapIconColor(mapHoverColor);
-				return;
+			switch (state) {
+
+				case SelectionState.Deselected:
+					SetMapIconColor(mapDefaultColor);
+					break;
+				case SelectionState.Hovered:
+					SetMapIconColor(mapHoverColor);
+					break;
+				case SelectionState.Selected:
+					SetMapIconColor(mapSelectionColor);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(state), state, null);
 			}
-
-			if (isSelected) {
-				//Vis.OnVisObjectSelected();
-				SetMapIconColor(mapSelectionColor);
-				return;
-			}
-
-			//Vis.OnVisObjectDeselected();
-			SetMapIconColor(mapDefaultColor);
 
 		}
 
