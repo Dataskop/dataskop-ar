@@ -55,7 +55,9 @@ namespace Dataskop.Entities {
 
 		public void RemoveVis() {
 
-			if (Vis == null) return;
+			if (Vis == null) {
+				return;
+			}
 
 			Vis.SwipedUp -= DecreaseMeasurementIndex;
 			Vis.SwipedDown -= IncreaseMeasurementIndex;
