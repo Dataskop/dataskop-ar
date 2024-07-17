@@ -7,20 +7,10 @@ namespace Dataskop.Entities.Visualizations {
 
 	public interface IVisualization {
 
-		public event Action SwipedDown;
-
-		public event Action SwipedUp;
-
-		public event Action<int> VisObjectHovered;
-
-		public event Action<int> VisObjectSelected;
-
-		public event Action<int> VisObjectDeselected;
-
 		public IVisObject[] VisObjects { get; set; }
 
 		/// <summary>
-		/// The DataPoint this visualization belongs to.
+		///     The DataPoint this visualization belongs to.
 		/// </summary>
 		public DataPoint DataPoint { get; set; }
 
@@ -35,7 +25,7 @@ namespace Dataskop.Entities.Visualizations {
 		public bool HasHistoryEnabled { get; set; }
 
 		/// <summary>
-		/// The Transform of the whole Visualization.
+		///     The Transform of the whole Visualization.
 		/// </summary>
 		public Transform VisOrigin { get; set; }
 
@@ -47,8 +37,18 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisualizationType Type { get; set; }
 
+		public event Action SwipedDown;
+
+		public event Action SwipedUp;
+
+		public event Action<int> VisObjectHovered;
+
+		public event Action<int> VisObjectSelected;
+
+		public event Action<int> VisObjectDeselected;
+
 		/// <summary>
-		/// Creates a Visualization for a given Data Point.
+		///     Creates a Visualization for a given Data Point.
 		/// </summary>
 		public void OnDataPointChanged();
 
@@ -69,7 +69,7 @@ namespace Dataskop.Entities.Visualizations {
 		public void Swiped(PointerInteraction pointerInteraction);
 
 		/// <summary>
-		/// Destroys and cleans up this Visualization.
+		///     Destroys and cleans up this Visualization.
 		/// </summary>
 		public void Despawn();
 

@@ -8,12 +8,6 @@ namespace Dataskop.Entities.Visualizations {
 
 	public interface IVisObject {
 
-		public event Action<int> HasHovered;
-
-		public event Action<int> HasSelected;
-
-		public event Action<int> HasDeselected;
-
 		public int Index { get; set; }
 
 		public bool IsFocused { get; set; }
@@ -31,6 +25,12 @@ namespace Dataskop.Entities.Visualizations {
 		public Image BoolIconRenderer { get; }
 
 		public Image AuthorIconRenderer { get; }
+
+		public event Action<int> HasHovered;
+
+		public event Action<int> HasSelected;
+
+		public event Action<int> HasDeselected;
 
 		public void SetDisplayData(VisualizationResultDisplayData displayData);
 

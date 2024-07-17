@@ -154,7 +154,7 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public override void ApplyStyle(VisualizationStyle style) { }
-		
+
 		public override void OnVisObjectHovered(int index) {
 			barFrameMeshRenderer.material = Options.styles[0].hoverMaterial;
 			valueTextMesh.color = hoverColor;
