@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Dataskop.Data;
 using Dataskop.Entities.Visualizations;
 using Dataskop.Interaction;

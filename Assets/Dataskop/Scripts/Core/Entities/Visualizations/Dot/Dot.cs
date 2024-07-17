@@ -207,33 +207,9 @@ namespace Dataskop.Entities.Visualizations {
 				VisObjects[index].ShowDisplay();
 			}
 
-			//visImageRenderer.material = Options.styles[0].hoverMaterial;
-			//valueTextMesh.color = hoverColor;
 		}
 
 		public override void OnVisObjectSelected(int index) {
-
-			/*
-			if (animationCoroutine != null) {
-				CancelAnimation();
-			}
-
-			//animationTarget = visTransform.localScale * selectionScale;
-
-			/*
-			animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
-				visTransform,
-				TransformValue.Scale,
-				VisTransform.localScale,
-				animationTarget,
-				animationTimeOnSelect,
-				animationCurveSelect,
-				OnScaleChanged
-			));
-
-			visImageRenderer.material = Options.styles[0].selectionMaterial;
-			//valueTextMesh.color = selectColor;
-			*/
 
 			if (index == CurrentFocusIndex) {
 				VisObjects[index].SetMaterial(Options.styles[0].selectionMaterial);
