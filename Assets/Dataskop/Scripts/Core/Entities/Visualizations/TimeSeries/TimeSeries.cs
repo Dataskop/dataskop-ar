@@ -69,7 +69,7 @@ namespace Dataskop.Entities.Visualizations {
 			MeasurementResults = DataPoint.MeasurementDefinition.MeasurementResults.ToList();
 			SwipeCount = 0;
 
-			Transform visTransform = dp.Vis.VisTransform;
+			Transform visTransform = dp.Vis.VisOrigin;
 			Vector3 visPosition = visTransform.position;
 			VisOrigin = visPosition;
 

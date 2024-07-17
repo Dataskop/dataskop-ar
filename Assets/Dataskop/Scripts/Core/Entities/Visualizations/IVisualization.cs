@@ -26,9 +26,13 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisualizationOption VisOption { get; set; }
 
-		public bool IsSelected { get; protected set; }
+		public TimeSeriesConfig TimeSeriesConfig { get; set; }
+
+		public bool IsSelected { get; set; }
 
 		public bool IsInitialized { get; set; }
+
+		public bool HasHistoryEnabled { get; set; }
 
 		/// <summary>
 		/// The Transform of the whole Visualization.
@@ -41,7 +45,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public float Scale { get; set; }
 
-		public VisualizationType Type { get; protected set; }
+		public VisualizationType Type { get; set; }
 
 		/// <summary>
 		/// Creates a Visualization for a given Data Point.
