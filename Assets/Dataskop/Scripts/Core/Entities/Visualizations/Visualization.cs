@@ -7,6 +7,16 @@ namespace Dataskop.Entities.Visualizations {
 
 	public abstract class Visualization : MonoBehaviour {
 
+		public event Action SwipedDown;
+
+		public event Action SwipedUp;
+
+		public event Action<int> VisObjectHovered;
+
+		public event Action<int> VisObjectSelected;
+
+		public event Action<int> VisObjectDeselected;
+
 		[Header("Vis Values")]
 		[SerializeField] private Vector3 offset;
 		[SerializeField] private float scaleFactor;
@@ -17,8 +27,6 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] protected Color historyColor;
 
 		private DataPoint dataPoint;
-		public Action SwipedDown;
-		public Action SwipedUp;
 
 		public DataPoint DataPoint {
 			get => dataPoint;
@@ -32,8 +40,6 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public VisualizationOption VisOption { get; set; }
-
-		public Camera ARCamera { get; set; }
 
 		public bool IsSelected { get; set; }
 
@@ -62,10 +68,6 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public VisualizationType Type { get; protected set; }
-
-		public void Start() {
-			ARCamera = Camera.main;
-		}
 
 		/// <summary>
 		///     Creates a visualization for a given Data Point.
@@ -111,11 +113,6 @@ namespace Dataskop.Entities.Visualizations {
 		public abstract void ApplyStyle(VisualizationStyle style);
 
 		public void Swiped(PointerInteraction pointerInteraction) {
-
-			if (pointerInteraction.startingGameObject == null)
-				return;
-
-			if (!pointerInteraction.startingGameObject.CompareTag("VisObject")) return;
 
 			switch (pointerInteraction.Direction.y) {
 				case > 0.20f:
