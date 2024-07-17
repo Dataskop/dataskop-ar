@@ -19,6 +19,9 @@ namespace Dataskop.Entities.Visualizations {
 
 		public IVisObject[] VisObjects { get; set; }
 
+		/// <summary>
+		/// The DataPoint this visualization belongs to.
+		/// </summary>
 		public DataPoint DataPoint { get; set; }
 
 		public VisualizationOption VisOption { get; set; }
@@ -27,6 +30,9 @@ namespace Dataskop.Entities.Visualizations {
 
 		public bool IsInitialized { get; set; }
 
+		/// <summary>
+		/// The Transform of the whole Visualization.
+		/// </summary>
 		public Transform VisOrigin { get; set; }
 
 		public MeasurementType[] AllowedMeasurementTypes { get; set; }
@@ -36,7 +42,10 @@ namespace Dataskop.Entities.Visualizations {
 		public float Scale { get; set; }
 
 		public VisualizationType Type { get; protected set; }
-		
+
+		/// <summary>
+		/// Creates a Visualization for a given Data Point.
+		/// </summary>
 		public void OnDataPointChanged();
 
 		public void OnVisObjectHovered(int index);
@@ -44,8 +53,6 @@ namespace Dataskop.Entities.Visualizations {
 		public void OnVisObjectSelected(int index);
 
 		public void OnVisObjectDeselected(int index);
-
-		public void Despawn();
 
 		public void OnTimeSeriesToggled(bool isActive);
 
@@ -55,11 +62,12 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void ApplyStyle(VisualizationStyle style);
 
-		/// <summary>
-		/// Gets called when a swipe 
-		/// </summary>
-		/// <param name="pointerInteraction"></param>
 		public void Swiped(PointerInteraction pointerInteraction);
+
+		/// <summary>
+		/// Destroys and cleans up this Visualization.
+		/// </summary>
+		public void Despawn();
 
 	}
 
