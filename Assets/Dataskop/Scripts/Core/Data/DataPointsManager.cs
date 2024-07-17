@@ -128,11 +128,19 @@ namespace Dataskop.Data {
 				return;
 			}
 
+			if (pointerInteraction.startingGameObject == null) {
+				return;
+			}
+
 			if (!HasLoadedDataPoints) {
 				return;
 			}
 
 			if (DataPoints.Count < 1) {
+				return;
+			}
+
+			if (!pointerInteraction.startingGameObject.CompareTag("VisObject")) {
 				return;
 			}
 
