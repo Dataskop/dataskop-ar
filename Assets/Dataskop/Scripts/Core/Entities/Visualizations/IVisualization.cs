@@ -64,9 +64,9 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void OnMeasurementResultChanged(MeasurementResult mr);
 
-		public void ApplyStyle(VisualizationStyle style);
+		public void OnSwipeInteraction(PointerInteraction pointerInteraction);
 
-		public void Swiped(PointerInteraction pointerInteraction);
+		public void ApplyStyle(VisualizationStyle style);
 
 		/// <summary>
 		///     Destroys and cleans up this Visualization.

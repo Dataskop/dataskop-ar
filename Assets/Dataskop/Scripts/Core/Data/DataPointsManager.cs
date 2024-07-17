@@ -145,7 +145,7 @@ namespace Dataskop.Data {
 			}
 
 			foreach (DataPoint dp in DataPoints) {
-				dp.Vis.Swiped(pointerInteraction);
+				dp.Vis.OnSwipeInteraction(pointerInteraction);
 			}
 
 			//dataPointHistorySwiped?.Invoke(DataPoints[0].CurrentMeasurementResultIndex);
@@ -172,7 +172,7 @@ namespace Dataskop.Data {
 			}
 
 			foreach (DataPoint dp in DataPoints) {
-				dp.Vis.Swiped(historyPointerInteraction);
+				dp.Vis.OnSwipeInteraction(historyPointerInteraction);
 			}
 
 		}

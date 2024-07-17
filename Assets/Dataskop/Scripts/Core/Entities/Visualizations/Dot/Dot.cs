@@ -145,7 +145,7 @@ namespace Dataskop.Entities.Visualizations {
 			groundLine.gameObject.SetActive(style.HasGroundLine);
 		}
 
-		public void Swiped(PointerInteraction pointerInteraction) {
+		public void OnSwipeInteraction(PointerInteraction pointerInteraction) {
 
 			switch (pointerInteraction.Direction.y) {
 				case > 0.20f:
