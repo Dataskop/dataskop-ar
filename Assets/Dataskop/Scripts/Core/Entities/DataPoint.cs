@@ -18,10 +18,6 @@ namespace Dataskop.Entities {
 		[SerializeField] private Color mapHoverColor;
 		[SerializeField] private Color mapDefaultColor;
 
-		public event Action<MeasurementResult> MeasurementResultChanged;
-
-		public event Action<VisualizationType> VisualizationTypeChanged;
-
 		public MeasurementDefinition MeasurementDefinition { get; set; }
 
 		public int FocusedMeasurementIndex { get; set; }
@@ -40,6 +36,10 @@ namespace Dataskop.Entities {
 		private void Awake() {
 			VisualizationTypeChanged += OnVisChanged;
 		}
+
+		public event Action<MeasurementResult> MeasurementResultChanged;
+
+		public event Action<VisualizationType> VisualizationTypeChanged;
 
 		/// <summary>
 		///     Sets and replaces the current visualization form with another.

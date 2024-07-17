@@ -21,9 +21,9 @@ namespace Dataskop.Interaction {
 		public UnityEvent<DataPoint?>? onDataPointSelected;
 		public UnityEvent<DataPoint?>? onDataPointSoftSelected;
 		public UnityEvent<bool>? onVisChangeWithSelection;
+		private DataPoint? hoveredDataPoint;
 
 		private DataPoint? selectedDataPoint;
-		private DataPoint? hoveredDataPoint;
 
 		/// <summary>
 		///     The DataPoint which got selected with a tap.

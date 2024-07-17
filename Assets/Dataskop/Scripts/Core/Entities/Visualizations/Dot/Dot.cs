@@ -28,6 +28,10 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private Color historyColor;
 		private DataPoint dataPoint;
 
+		private DotOptions Options { get; set; }
+
+		private int CurrentFocusIndex => DataPoint.FocusedMeasurementIndex;
+
 		public event Action SwipedDown;
 
 		public event Action SwipedUp;
@@ -72,10 +76,6 @@ namespace Dataskop.Entities.Visualizations {
 		public float Scale { get; set; }
 
 		public VisualizationType Type { get; set; }
-
-		private DotOptions Options { get; set; }
-
-		private int CurrentFocusIndex => DataPoint.FocusedMeasurementIndex;
 
 		public void OnDataPointChanged() {
 
@@ -137,26 +137,6 @@ namespace Dataskop.Entities.Visualizations {
 
 			VisObjects[CurrentFocusIndex].ShowDisplay();
 			VisObjects[CurrentFocusIndex].Index = CurrentFocusIndex;
-
-		}
-
-		private IEnumerator MoveHistory(Vector3 direction) {
-
-			Vector3 startPosition = visObjectsContainer.transform.position;
-			Vector3 targetPosition = visObjectsContainer.transform.position + timeSeriesConfiguration.elementDistance * direction;
-			float moveDuration = timeSeriesConfiguration.animationDuration;
-
-			float t = 0;
-			while (t < moveDuration) {
-
-				visObjectsContainer.transform.position = Vector3.Lerp(startPosition, targetPosition, t / moveDuration);
-
-				t += Time.deltaTime;
-				yield return null;
-
-			}
-
-			visObjectsContainer.transform.position = targetPosition;
 
 		}
 
@@ -229,6 +209,86 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
+		public void OnVisObjectHovered(int index) {
+
+			if (index == CurrentFocusIndex) {
+				VisObjects[index].SetMaterial(Options.styles[0].hoverMaterial);
+			}
+			else {
+				VisObjects[index].ShowDisplay();
+			}
+
+			VisObjectHovered?.Invoke(index);
+
+		}
+
+		public void OnVisObjectSelected(int index) {
+
+			if (index == CurrentFocusIndex) {
+				VisObjects[index].SetMaterial(Options.styles[0].selectionMaterial);
+			}
+
+			//TODO: Setting new Focus Index to the tapped VisObject and do animation work
+			IsSelected = true;
+			VisObjectSelected?.Invoke(index);
+
+		}
+
+		public void OnVisObjectDeselected(int index) {
+/*
+			if (IsSelected) {
+				if (animationCoroutine != null) {
+					CancelAnimation();
+				}
+			}
+			//animationTarget = visTransform.localScale / selectionScale;
+
+			/*
+			animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
+				visTransform,
+				TransformValue.Scale,
+				VisTransform.localScale,
+				animationTarget,
+				animationTimeOnDeselect,
+				animationCurveDeselect,
+				OnScaleChanged
+			));
+		}
+
+		visImageRenderer.material = Options.styles[0].defaultMaterial;
+		*/
+			if (index == CurrentFocusIndex) {
+				VisObjects[index].SetMaterial(Options.styles[0].defaultMaterial);
+			}
+			else {
+				VisObjects[index].HideDisplay();
+			}
+
+			IsSelected = false;
+			VisObjectDeselected?.Invoke(index);
+
+		}
+
+		private IEnumerator MoveHistory(Vector3 direction) {
+
+			Vector3 startPosition = visObjectsContainer.transform.position;
+			Vector3 targetPosition = visObjectsContainer.transform.position + timeSeriesConfiguration.elementDistance * direction;
+			float moveDuration = timeSeriesConfiguration.animationDuration;
+
+			float t = 0;
+			while (t < moveDuration) {
+
+				visObjectsContainer.transform.position = Vector3.Lerp(startPosition, targetPosition, t / moveDuration);
+
+				t += Time.deltaTime;
+				yield return null;
+
+			}
+
+			visObjectsContainer.transform.position = targetPosition;
+
+		}
+
 		private IVisObject SpawnVisObject(int index, Vector3 pos, MeasurementResult result) {
 
 			GameObject newVis = Instantiate(visPrefab, pos, visObjectsContainer.localRotation, visObjectsContainer);
@@ -268,68 +328,6 @@ namespace Dataskop.Entities.Visualizations {
 				VisObjects[i] = null;
 
 			}
-
-		}
-
-		public void OnVisObjectHovered(int index) {
-
-			if (index == CurrentFocusIndex) {
-				VisObjects[index].SetMaterial(Options.styles[0].hoverMaterial);
-			}
-			else {
-				VisObjects[index].ShowDisplay();
-			}
-
-			VisObjectHovered?.Invoke(index);
-
-		}
-
-		public void OnVisObjectSelected(int index) {
-
-			if (index == CurrentFocusIndex) {
-				VisObjects[index].SetMaterial(Options.styles[0].selectionMaterial);
-			}
-			else {
-				//TODO: Setting new Focus Index to the tapped VisObject and do animation work
-			}
-
-			IsSelected = true;
-			VisObjectSelected?.Invoke(index);
-
-		}
-
-		public void OnVisObjectDeselected(int index) {
-/*
-			if (IsSelected) {
-				if (animationCoroutine != null) {
-					CancelAnimation();
-				}
-			}
-			//animationTarget = visTransform.localScale / selectionScale;
-
-			/*
-			animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
-				visTransform,
-				TransformValue.Scale,
-				VisTransform.localScale,
-				animationTarget,
-				animationTimeOnDeselect,
-				animationCurveDeselect,
-				OnScaleChanged
-			));
-		}
-
-		visImageRenderer.material = Options.styles[0].defaultMaterial;
-		*/
-			if (index == CurrentFocusIndex) {
-				VisObjects[index].SetMaterial(Options.styles[0].defaultMaterial);
-			}
-			else {
-				VisObjects[index].HideDisplay();
-			}
-
-			IsSelected = false;
-			VisObjectDeselected?.Invoke(index);
 
 		}
 
