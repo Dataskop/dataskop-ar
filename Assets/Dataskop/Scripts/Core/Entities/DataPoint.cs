@@ -31,7 +31,7 @@ namespace Dataskop.Entities {
 
 		public DataAttribute Attribute { get; set; }
 
-		public Visualization Vis { get; private set; }
+		public IVisualization Vis { get; private set; }
 
 		public Device Device { get; set; }
 
@@ -46,7 +46,7 @@ namespace Dataskop.Entities {
 		/// </summary>
 		/// <param name="visPrefab">The visualization to be used for this data point.</param>
 		public void SetVis(GameObject visPrefab) {
-			Vis = Instantiate(visPrefab, transform).GetComponent<Visualization>();
+			Vis = Instantiate(visPrefab, transform).GetComponent<IVisualization>();
 			Vis.DataPoint = this;
 			Vis.SwipedUp += DecreaseMeasurementIndex;
 			Vis.SwipedDown += IncreaseMeasurementIndex;

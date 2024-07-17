@@ -1,38 +1,90 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Dataskop.Data;
+using Dataskop.Interaction;
 using UnityEngine;
 
 namespace Dataskop.Entities.Visualizations {
 
-	public class Dot : Visualization {
+	public class Dot : MonoBehaviour, IVisualization {
 
 		[Header("References")]
 		[SerializeField] private GameObject visPrefab;
 		[SerializeField] private Transform visObjectsContainer;
 		[SerializeField] private DotOptions options;
-		[SerializeField] private DotTimeSeries dotTimeSeries;
 		[SerializeField] private Transform dropShadow;
 		[SerializeField] private LineRenderer groundLine;
 		[SerializeField] private Sprite[] boolIcons;
 
-		private bool hasHistoryEnabled = false;
+		[Header("Vis Values")]
+		[SerializeField] private Vector3 offset;
+		[SerializeField] private float scaleFactor;
+		[SerializeField] private TimeSeriesConfig timeSeriesConfiguration;
+		[SerializeField] private Color deselectColor;
+		[SerializeField] private Color hoverColor;
+		[SerializeField] private Color selectColor;
+		[SerializeField] private Color historyColor;
+		private DataPoint dataPoint;
 
-		public override Transform VisTransform => transform;
+		public event Action SwipedDown;
 
-		public override MeasurementType[] AllowedMeasurementTypes { get; set; } = {
+		public event Action SwipedUp;
+
+		public event Action<int> VisObjectHovered;
+
+		public event Action<int> VisObjectSelected;
+
+		public event Action<int> VisObjectDeselected;
+
+		public IVisObject[] VisObjects { get; set; }
+
+		public DataPoint DataPoint {
+			get => dataPoint;
+			set {
+				dataPoint = value;
+				if (value != null) {
+					OnDataPointChanged();
+				}
+			}
+		}
+
+		public VisualizationOption VisOption { get; set; }
+
+		public TimeSeriesConfig TimeSeriesConfig { get; set; }
+
+		public bool IsSelected { get; set; }
+
+		public bool IsInitialized { get; set; }
+
+		public bool HasHistoryEnabled { get; set; }
+
+		public Transform VisOrigin { get; set; }
+
+		public MeasurementType[] AllowedMeasurementTypes { get; set; } = {
 			MeasurementType.Float,
 			MeasurementType.Bool
 		};
+
+		public Vector3 Offset { get; set; }
+
+		public float Scale { get; set; }
+
+		public VisualizationType Type { get; set; }
 
 		private DotOptions Options { get; set; }
 
 		private int CurrentFocusIndex => DataPoint.FocusedMeasurementIndex;
 
-		protected override void OnDataPointChanged() {
+		public void OnDataPointChanged() {
 
-			base.OnDataPointChanged();
+			VisOrigin = transform;
+			Scale = scaleFactor;
+			Offset = offset;
+			TimeSeriesConfig = timeSeriesConfiguration;
+
+			DataPoint.MeasurementResultChanged += OnMeasurementResultChanged;
 
 			Type = VisualizationType.Dot;
 			Options = Instantiate(options);
@@ -44,8 +96,8 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjects[CurrentFocusIndex].HasSelected += OnVisObjectSelected;
 			VisObjects[CurrentFocusIndex].HasDeselected += OnVisObjectDeselected;
 
-			VisTransform.localScale *= Scale;
-			VisTransform.root.localPosition = Offset;
+			VisOrigin.localScale *= Scale;
+			VisOrigin.root.localPosition = Offset;
 
 			dropShadow.transform.localScale *= Scale;
 			dropShadow.transform.localPosition -= Offset;
@@ -61,10 +113,11 @@ namespace Dataskop.Entities.Visualizations {
 			*/
 
 			OnMeasurementResultChanged(DataPoint.FocusedMeasurement);
+			IsInitialized = true;
 
 		}
 
-		public override void OnMeasurementResultChanged(MeasurementResult mr) {
+		public void OnMeasurementResultChanged(MeasurementResult mr) {
 
 			if (!AllowedMeasurementTypes.Contains(mr.MeasurementDefinition.MeasurementType)) {
 				NotificationHandler.Add(new Notification {
@@ -107,15 +160,34 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-		public override void ApplyStyle(VisualizationStyle style) {
+		public void ApplyStyle(VisualizationStyle style) {
 			dropShadow.gameObject.SetActive(style.HasDropShadow);
 			groundLine.gameObject.SetActive(style.HasGroundLine);
 		}
 
-		public override void OnMeasurementResultsUpdated() {
+		public void Swiped(PointerInteraction pointerInteraction) {
+
+			switch (pointerInteraction.Direction.y) {
+				case > 0.20f:
+					SwipedUp?.Invoke();
+					break;
+				case < -0.20f:
+					SwipedDown?.Invoke();
+					break;
+			}
+
+		}
+
+		public void Despawn() {
+			DataPoint.MeasurementResultChanged -= OnMeasurementResultChanged;
+			DataPoint = null;
+			Destroy(gameObject);
+		}
+
+		public void OnMeasurementResultsUpdated() {
 
 			OnMeasurementResultChanged(DataPoint.MeasurementDefinition.GetLatestMeasurementResult());
-/*
+			/*
 			if (TimeSeries.IsSpawned) {
 				TimeSeries.OnMeasurementResultsUpdated(DataPoint.MeasurementDefinition.MeasurementResults.ToArray());
 			}
@@ -123,7 +195,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-		public override void OnTimeSeriesToggled(bool isActive) {
+		public void OnTimeSeriesToggled(bool isActive) {
 
 			if (isActive) {
 				groundLine.enabled = false;
@@ -132,22 +204,22 @@ namespace Dataskop.Entities.Visualizations {
 
 				// VisObjects above current result
 				for (int i = CurrentFocusIndex + 1; i < VisObjects.Length; i++) {
-					Vector3 spawnPos = new(VisTransform.position.x, VisTransform.position.y + distance * i, VisTransform.position.z);
+					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y + distance * i, VisOrigin.position.z);
 					VisObjects[i] = SpawnVisObject(i, spawnPos, currentResults[i]);
 				}
 
 				// VisObjects below current result
 				for (int i = CurrentFocusIndex - 1; i > 0; i--) {
-					Vector3 spawnPos = new(VisTransform.position.x, VisTransform.position.y - distance * i, VisTransform.position.z);
+					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y - distance * i, VisOrigin.position.z);
 					VisObjects[i] = SpawnVisObject(i, spawnPos, currentResults[i]);
 				}
 
-				hasHistoryEnabled = true;
+				HasHistoryEnabled = true;
 
 			}
 			else {
 
-				if (!hasHistoryEnabled) {
+				if (!HasHistoryEnabled) {
 					return;
 				}
 
@@ -161,6 +233,7 @@ namespace Dataskop.Entities.Visualizations {
 
 			GameObject newVis = Instantiate(visPrefab, pos, visObjectsContainer.localRotation, visObjectsContainer);
 			IVisObject visObject = newVis.GetComponent<IVisObject>();
+
 			visObject.SetDisplayData(new VisualizationResultDisplayData {
 				Result = result,
 				Type = result.MeasurementDefinition.MeasurementType,
@@ -198,7 +271,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-		public override void OnVisObjectHovered(int index) {
+		public void OnVisObjectHovered(int index) {
 
 			if (index == CurrentFocusIndex) {
 				VisObjects[index].SetMaterial(Options.styles[0].hoverMaterial);
@@ -207,23 +280,25 @@ namespace Dataskop.Entities.Visualizations {
 				VisObjects[index].ShowDisplay();
 			}
 
+			VisObjectHovered?.Invoke(index);
+
 		}
 
-		public override void OnVisObjectSelected(int index) {
+		public void OnVisObjectSelected(int index) {
 
 			if (index == CurrentFocusIndex) {
 				VisObjects[index].SetMaterial(Options.styles[0].selectionMaterial);
 			}
 			else {
 				//TODO: Setting new Focus Index to the tapped VisObject and do animation work
-				//VisObjects[index].ShowDisplay();
 			}
 
 			IsSelected = true;
+			VisObjectSelected?.Invoke(index);
 
 		}
 
-		public override void OnVisObjectDeselected(int index) {
+		public void OnVisObjectDeselected(int index) {
 /*
 			if (IsSelected) {
 				if (animationCoroutine != null) {
@@ -254,6 +329,7 @@ namespace Dataskop.Entities.Visualizations {
 			}
 
 			IsSelected = false;
+			VisObjectDeselected?.Invoke(index);
 
 		}
 

@@ -146,7 +146,6 @@ GameObject:
   m_Component:
   - component: {fileID: 77686069274916870}
   - component: {fileID: 7036097098548000483}
-  - component: {fileID: -8508717279963492584}
   m_Layer: 7
   m_Name: Dot
   m_TagString: Vis
@@ -184,6 +183,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 591a7683c5a0e3d4bb187df3f26b8690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  visPrefab: {fileID: 7048796313808956549, guid: 71f2dd73e86e0134c9bae1ccb64e3615, type: 3}
+  visObjectsContainer: {fileID: 724874089874444892}
+  options: {fileID: 11400000, guid: 5d031eafaf15a8244a7369eb55394f0b, type: 2}
+  dotTimeSeries: {fileID: 0}
+  dropShadow: {fileID: 3959282354504990483}
+  groundLine: {fileID: 6640198457753545217}
+  boolIcons:
+  - {fileID: 21300000, guid: 1e3a3d74c345b314b90953396b5048aa, type: 3}
+  - {fileID: 21300000, guid: db91e26dc24535e4196888618949a0de, type: 3}
   offset: {x: 0, y: 1, z: 0}
   scaleFactor: 0.25
   timeSeriesConfiguration:
@@ -196,27 +204,6 @@ MonoBehaviour:
   hoverColor: {r: 0.8584906, g: 0.31990921, b: 0.66226315, a: 1}
   selectColor: {r: 0.8584906, g: 0.41105816, b: 0.044544328, a: 1}
   historyColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
-  visPrefab: {fileID: 7048796313808956549, guid: 71f2dd73e86e0134c9bae1ccb64e3615, type: 3}
-  visObjectsContainer: {fileID: 724874089874444892}
-  options: {fileID: 11400000, guid: 5d031eafaf15a8244a7369eb55394f0b, type: 2}
-  dotTimeSeries: {fileID: -8508717279963492584}
-  dropShadow: {fileID: 3959282354504990483}
-  groundLine: {fileID: 6640198457753545217}
-  boolIcons:
-  - {fileID: 21300000, guid: 1e3a3d74c345b314b90953396b5048aa, type: 3}
-  - {fileID: 21300000, guid: db91e26dc24535e4196888618949a0de, type: 3}
---- !u!114 &-8508717279963492584
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4044058376309783487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e0f6a743f8e5ac4da11ef777169e666, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4703005888043822835
 GameObject:
   m_ObjectHideFlags: 0
