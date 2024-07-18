@@ -290,7 +290,6 @@ namespace Dataskop.Data {
 
 			foreach (DataPoint dp in DataPoints) {
 				dp.Vis.OnMeasurementResultsUpdated();
-				dp.FocusedMeasurementIndex = 0;
 			}
 
 			dataPointsResultsUpdated?.Invoke();
