@@ -26,6 +26,7 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private Color hoverColor;
 		[SerializeField] private Color selectColor;
 		[SerializeField] private Color historyColor;
+
 		private DataPoint dataPoint;
 
 		private DotOptions Options { get; set; }
@@ -77,6 +78,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisualizationType Type { get; set; }
 
+		public int PreviousIndex { get; set; } = 0;
+
 		public void OnDataPointChanged() {
 
 			VisOrigin = transform;
@@ -87,6 +90,7 @@ namespace Dataskop.Entities.Visualizations {
 			Type = VisualizationType.Dot;
 			Options = Instantiate(options);
 
+			//TODO: Handle MeasurementResults being less than configured time series configuration visible history count.
 			VisObjects = new IVisObject[timeSeriesConfiguration.visibleHistoryCount];
 			GameObject visObject = Instantiate(visPrefab, transform.position, Quaternion.identity, visObjectsContainer);
 			VisObjects[CurrentFocusIndex] = visObject.GetComponent<IVisObject>();
@@ -126,15 +130,25 @@ namespace Dataskop.Entities.Visualizations {
 				return;
 			}
 
-			VisObjects[CurrentFocusIndex].SetDisplayData(new VisualizationResultDisplayData {
-				Result = mr,
-				Type = mr.MeasurementDefinition.MeasurementType,
-				Attribute = DataPoint.Attribute,
-				AuthorSprite = mr.Author != string.Empty ? DataPoint.AuthorRepository.AuthorSprites[mr.Author] : null
-			});
+			if (!HasHistoryEnabled) {
 
-			VisObjects[CurrentFocusIndex].ShowDisplay();
-			VisObjects[CurrentFocusIndex].Index = CurrentFocusIndex;
+				if (CurrentFocusIndex != PreviousIndex) {
+					VisObjects[CurrentFocusIndex] = VisObjects[PreviousIndex];
+					VisObjects[PreviousIndex] = null;
+					PreviousIndex = CurrentFocusIndex;
+				}
+
+				VisObjects[CurrentFocusIndex].SetDisplayData(new VisualizationResultDisplayData {
+					Result = mr,
+					Type = mr.MeasurementDefinition.MeasurementType,
+					Attribute = DataPoint.Attribute,
+					AuthorSprite = mr.Author != string.Empty ? DataPoint.AuthorRepository.AuthorSprites[mr.Author] : null
+				});
+
+				VisObjects[CurrentFocusIndex].Index = CurrentFocusIndex;
+				VisObjects[CurrentFocusIndex].IsFocused = true;
+
+			}
 
 		}
 
@@ -157,33 +171,28 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public void OnMeasurementResultsUpdated() {
-
 			OnMeasurementResultChanged(DataPoint.MeasurementDefinition.GetLatestMeasurementResult());
-			/*
-			if (TimeSeries.IsSpawned) {
-				TimeSeries.OnMeasurementResultsUpdated(DataPoint.MeasurementDefinition.MeasurementResults.ToArray());
-			}
-			*/
-
 		}
 
 		public void OnTimeSeriesToggled(bool isActive) {
 
 			if (isActive) {
-				groundLine.enabled = false;
+				//groundLine.enabled = false;
 				IReadOnlyList<MeasurementResult> currentResults = DataPoint.MeasurementDefinition.MeasurementResults.ToList();
 				float distance = timeSeriesConfiguration.elementDistance;
 
 				// VisObjects above current result
-				for (int i = CurrentFocusIndex + 1; i < VisObjects.Length; i++) {
-					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y + distance * i, VisOrigin.position.z);
-					VisObjects[i] = SpawnVisObject(i, spawnPos, currentResults[i]);
+				for (int i = 1; i < VisObjects.Length - CurrentFocusIndex; i++) {
+					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y + distance * (i), VisOrigin.position.z);
+					VisObjects[CurrentFocusIndex + i] =
+						SpawnVisObject(CurrentFocusIndex + i, spawnPos, currentResults[CurrentFocusIndex + i]);
 				}
 
 				// VisObjects below current result
-				for (int i = CurrentFocusIndex - 1; i > 0; i--) {
-					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y - distance * i, VisOrigin.position.z);
-					VisObjects[i] = SpawnVisObject(i, spawnPos, currentResults[i]);
+				for (int i = 1; i <= CurrentFocusIndex; i++) {
+					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y - distance * (i), VisOrigin.position.z);
+					VisObjects[CurrentFocusIndex - i] =
+						SpawnVisObject(CurrentFocusIndex - i, spawnPos, currentResults[CurrentFocusIndex - i]);
 				}
 
 				HasHistoryEnabled = true;
@@ -196,7 +205,8 @@ namespace Dataskop.Entities.Visualizations {
 				}
 
 				ClearHistoryVisObjects();
-				groundLine.enabled = true;
+				HasHistoryEnabled = false;
+				//groundLine.enabled = true;
 			}
 
 		}

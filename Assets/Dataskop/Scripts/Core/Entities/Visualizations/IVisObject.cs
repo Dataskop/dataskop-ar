@@ -10,6 +10,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public int Index { get; set; }
 
+		public bool IsFocused { get; set; }
+
 		public MeasurementType[] AllowedMeasurementTypes { get; }
 
 		public CanvasGroup DataDisplay { get; }
