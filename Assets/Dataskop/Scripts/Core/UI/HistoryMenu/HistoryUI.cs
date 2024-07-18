@@ -149,8 +149,6 @@ namespace Dataskop.UI {
 
 		}
 
-		public void OnDataPointsResultsUpdated() { }
-
 		private IEnumerator DelayToggle() {
 			yield return new WaitForSeconds(0.015f);
 			historyViewToggled?.Invoke(IsActive);

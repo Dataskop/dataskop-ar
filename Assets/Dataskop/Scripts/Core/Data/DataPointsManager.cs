@@ -14,7 +14,6 @@ namespace Dataskop.Data {
 
 		[Header("Events")]
 		public UnityEvent<VisualizationOption> onVisualizationChanged;
-		public UnityEvent dataPointsResultsUpdated;
 		public UnityEvent<int> dataPointHistorySwiped;
 
 		[Header("References")]
@@ -289,10 +288,8 @@ namespace Dataskop.Data {
 			}
 
 			foreach (DataPoint dp in DataPoints) {
-				dp.Vis.OnMeasurementResultsUpdated();
+				dp.OnMeasurementResultsUpdated();
 			}
-
-			dataPointsResultsUpdated?.Invoke();
 
 		}
 

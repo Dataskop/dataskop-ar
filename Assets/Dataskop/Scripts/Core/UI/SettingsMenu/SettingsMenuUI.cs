@@ -250,8 +250,6 @@ namespace Dataskop.UI {
 
 		}
 
-		public void OnDataPointsResultsUpdated() { }
-
 		public void HideSettings() {
 
 			if (IsOpen) {
