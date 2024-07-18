@@ -73,7 +73,7 @@ namespace Dataskop.Entities.Visualizations {
 
 			idMesh.text = DataPoint.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper();
 
-			OnMeasurementResultChanged(DataPoint.FocusedMeasurement);
+			OnFocusedMeasurementIndexChanged(DataPoint.FocusedMeasurement);
 			barCollider.enabled = true;
 		}
 
@@ -187,10 +187,10 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public override void OnMeasurementResultsUpdated() {
-			OnMeasurementResultChanged(DataPoint.MeasurementDefinition.GetLatestMeasurementResult());
+			OnFocusedMeasurementIndexChanged(DataPoint.MeasurementDefinition.GetLatestMeasurementResult());
 		}
 
-		public override void OnMeasurementResultChanged(MeasurementResult mr) {
+		public override void OnFocusedMeasurementIndexChanged(MeasurementResult mr) {
 			if (!AllowedMeasurementTypes.Contains(DataPoint.MeasurementDefinition.MeasurementType)) {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,

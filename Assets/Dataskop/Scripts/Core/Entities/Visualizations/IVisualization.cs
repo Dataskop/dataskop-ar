@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Dataskop.Data;
 using Dataskop.Interaction;
 using UnityEngine;
@@ -64,7 +65,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void OnMeasurementResultsUpdated();
 
-		public void OnMeasurementResultChanged(MeasurementResult mr);
+		public void OnFocusedMeasurementIndexChanged(MeasurementDefinition def, int index);
 
 		public void OnSwipeInteraction(PointerInteraction pointerInteraction);
 
