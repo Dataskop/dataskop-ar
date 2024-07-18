@@ -28,6 +28,7 @@ namespace Dataskop.Data {
 		[SerializeField] private AuthorRepository authorRepository;
 
 		private GameObject dummyVisObject;
+		private bool hasHistoryEnabled;
 
 		/// <summary>
 		///     List of currently placed markers in the AR world.
@@ -60,7 +61,7 @@ namespace Dataskop.Data {
 			inputHandler.WorldPointerUpped += OnSwiped;
 
 			dummyVisObject = new GameObject {
-				tag = "Vis"
+				tag = "VisObject"
 			};
 
 			LastKnownDevicePositions = new Dictionary<Device, Vector3>();
@@ -148,7 +149,7 @@ namespace Dataskop.Data {
 				dp.Vis.OnSwipeInteraction(pointerInteraction);
 			}
 
-			//dataPointHistorySwiped?.Invoke(DataPoints[0].CurrentMeasurementResultIndex);
+			dataPointHistorySwiped?.Invoke(DataPoints[0].FocusedMeasurementIndex);
 
 		}
 
@@ -189,6 +190,13 @@ namespace Dataskop.Data {
 
 			DataPointsLocations = new Vector2d[projectData.Devices.Count];
 			SpawnDataPoints();
+
+			if (hasHistoryEnabled) {
+				foreach (DataPoint dp in DataPoints) {
+					ToggleTimeSeries(dp, true);
+				}
+			}
+
 			HasLoadedDataPoints = true;
 
 		}

@@ -84,8 +84,6 @@ namespace Dataskop.Entities.Visualizations {
 			Offset = offset;
 			TimeSeriesConfig = timeSeriesConfiguration;
 
-			DataPoint.MeasurementResultChanged += OnMeasurementResultChanged;
-
 			Type = VisualizationType.Dot;
 			Options = Instantiate(options);
 
@@ -158,12 +156,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-		public void Despawn() {
-			DataPoint.MeasurementResultChanged -= OnMeasurementResultChanged;
-			DataPoint = null;
-			Destroy(gameObject);
-		}
-
 		public void OnMeasurementResultsUpdated() {
 
 			OnMeasurementResultChanged(DataPoint.MeasurementDefinition.GetLatestMeasurementResult());
@@ -203,7 +195,7 @@ namespace Dataskop.Entities.Visualizations {
 					return;
 				}
 
-				ClearVisObjects();
+				ClearHistoryVisObjects();
 				groundLine.enabled = true;
 			}
 
@@ -255,7 +247,6 @@ namespace Dataskop.Entities.Visualizations {
 			));
 		}
 
-		visImageRenderer.material = Options.styles[0].defaultMaterial;
 		*/
 			if (index == CurrentFocusIndex) {
 				VisObjects[index].SetMaterial(Options.styles[0].defaultMaterial);
@@ -267,6 +258,12 @@ namespace Dataskop.Entities.Visualizations {
 			IsSelected = false;
 			VisObjectDeselected?.Invoke(index);
 
+		}
+
+		public void Despawn() {
+			ClearVisObjects();
+			DataPoint = null;
+			Destroy(gameObject);
 		}
 
 		private IEnumerator MoveHistory(Vector3 direction) {
@@ -303,7 +300,6 @@ namespace Dataskop.Entities.Visualizations {
 			});
 
 			visObject.Index = index;
-			visObject.IsFocused = false;
 			visObject.SetMaterial(Options.styles[0].timeMaterial);
 			visObject.HideDisplay();
 			visObject.HasHovered += OnVisObjectHovered;
@@ -314,10 +310,37 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
+		private void ClearHistoryVisObjects() {
+
+			if (!HasHistoryEnabled) {
+				return;
+			}
+
+			for (int i = 0; i < VisObjects.Length - 1; i++) {
+
+				if (i == CurrentFocusIndex) {
+					continue;
+				}
+
+				if (VisObjects[i] == null) {
+					continue;
+				}
+
+				VisObjects[i].HasHovered -= OnVisObjectHovered;
+				VisObjects[i].HasSelected -= OnVisObjectSelected;
+				VisObjects[i].HasDeselected -= OnVisObjectDeselected;
+				VisObjects[i].Delete();
+				VisObjects[i] = null;
+
+			}
+
+		}
+
 		private void ClearVisObjects() {
 
-			for (int i = 0; i < VisObjects.Length; i++) {
-				if (i == CurrentFocusIndex) {
+			for (int i = 0; i < VisObjects.Length - 1; i++) {
+
+				if (VisObjects[i] == null) {
 					continue;
 				}
 
