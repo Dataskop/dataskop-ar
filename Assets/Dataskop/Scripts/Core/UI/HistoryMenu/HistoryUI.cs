@@ -69,7 +69,7 @@ namespace Dataskop.UI {
 		public void OnDataPointSelectionChanged(DataPoint selectedDataPoint) {
 
 			if (SelectedDataPoint != null) {
-				SelectedDataPoint.MeasurementResultChanged -= UpdateTimeLabel;
+				SelectedDataPoint.FocusedMeasurementIndexChanged -= UpdateTimeLabel;
 			}
 
 			SelectedDataPoint = selectedDataPoint;
@@ -80,8 +80,8 @@ namespace Dataskop.UI {
 				return;
 			}
 
-			SelectedDataPoint.MeasurementResultChanged += UpdateTimeLabel;
-			UpdateTimeLabel(SelectedDataPoint.FocusedMeasurement);
+			SelectedDataPoint.FocusedMeasurementIndexChanged += UpdateTimeLabel;
+			UpdateTimeLabel(selectedDataPoint.MeasurementDefinition, selectedDataPoint.FocusedMeasurementIndex);
 
 			if (!IsActive) {
 				return;
@@ -95,9 +95,12 @@ namespace Dataskop.UI {
 
 		}
 
-		private void UpdateTimeLabel(MeasurementResult currentDataPointMeasurementResult) {
+		private void UpdateTimeLabel(MeasurementDefinition def, int index) {
+
+			MeasurementResult focusedResult = def.MeasurementResults[index];
+
 			CurrentTimeLabel.text =
-				$"{currentDataPointMeasurementResult.GetDate()}<br>{currentDataPointMeasurementResult.GetClockTime()}";
+				$"{focusedResult.GetDate()}<br>{focusedResult.GetClockTime()}";
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {

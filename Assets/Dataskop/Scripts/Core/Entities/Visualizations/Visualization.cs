@@ -73,7 +73,7 @@ namespace Dataskop.Entities.Visualizations {
 		///     Creates a visualization for a given Data Point.
 		/// </summary>
 		protected virtual void OnDataPointChanged() {
-			DataPoint.MeasurementResultChanged += OnMeasurementResultChanged;
+			//DataPoint.FocusedMeasurementIndexChanged += OnFocusedMeasurementIndexChanged;
 		}
 
 		/// <summary>
@@ -95,7 +95,7 @@ namespace Dataskop.Entities.Visualizations {
 		///     Gets called before the visualization is removed.
 		/// </summary>
 		public virtual void Despawn() {
-			DataPoint.MeasurementResultChanged -= OnMeasurementResultChanged;
+			//DataPoint.FocusedMeasurementIndexChanged -= OnFocusedMeasurementIndexChanged;
 			DataPoint = null;
 			Destroy(gameObject);
 		}
@@ -108,7 +108,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public abstract void OnMeasurementResultsUpdated();
 
-		public abstract void OnMeasurementResultChanged(MeasurementResult mr);
+		public abstract void OnFocusedMeasurementIndexChanged(MeasurementResult mr);
 
 		public abstract void ApplyStyle(VisualizationStyle style);
 

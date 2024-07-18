@@ -58,7 +58,7 @@ namespace Dataskop.UI {
 		public void UpdateDataPointData(DataPoint dp) {
 
 			if (SelectedDataPoint != null) {
-				SelectedDataPoint.MeasurementResultChanged -= UpdateResultTextElements;
+				SelectedDataPoint.FocusedMeasurementIndexChanged -= UpdateIndexTextElements;
 			}
 
 			SelectedDataPoint = dp;
@@ -76,26 +76,29 @@ namespace Dataskop.UI {
 				AuthorIcon.style.backgroundImage = new StyleBackground();
 			}
 			else {
-				SelectedDataPoint.MeasurementResultChanged += UpdateResultTextElements;
-				UpdateResultTextElements(SelectedDataPoint.FocusedMeasurement);
+				SelectedDataPoint.FocusedMeasurementIndexChanged += UpdateIndexTextElements;
+				UpdateIndexTextElements(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.FocusedMeasurementIndex);
 			}
 
 		}
 
-		private void UpdateResultTextElements(MeasurementResult newResult) {
-			IdLabel.text = newResult.MeasurementDefinition.ID.ToString();
-			MeasurementLabel.text =
-				$"{newResult.ReadAsFloat().ToString("00.00", CultureInfo.InvariantCulture)} {SelectedDataPoint!.Attribute.Unit}";
-			LocationLabel.text = newResult.Position.GetLatLong();
-			TimeStampLabel.text = newResult.GetTime();
-			MeasurementDefinitionLabel.text = newResult.MeasurementDefinition.MeasurementDefinitionInformation.Name;
-			DeviceLabel.text = newResult.MeasurementDefinition.DeviceId;
-			TotalMeasurementsLabel.text = newResult.MeasurementDefinition.TotalMeasurements.ToString();
-			FirstMeasurementLabel.text = newResult.MeasurementDefinition.FirstMeasurementResult.GetTime();
-			MeasurementIntervalLabel.text = $"{newResult.MeasurementDefinition.MeasuringInterval / 10}s";
+		private void UpdateIndexTextElements(MeasurementDefinition def, int index) {
 
-			AuthorIcon.style.backgroundImage = !string.IsNullOrEmpty(newResult.Author)
-				? new StyleBackground(authorRepository.AuthorSprites[newResult.Author])
+			MeasurementResult focusedResult = def.MeasurementResults[index];
+
+			IdLabel.text = focusedResult.MeasurementDefinition.ID.ToString();
+			MeasurementLabel.text =
+				$"{focusedResult.ReadAsFloat().ToString("00.00", CultureInfo.InvariantCulture)} {SelectedDataPoint!.Attribute.Unit}";
+			LocationLabel.text = focusedResult.Position.GetLatLong();
+			TimeStampLabel.text = focusedResult.GetTime();
+			MeasurementDefinitionLabel.text = focusedResult.MeasurementDefinition.MeasurementDefinitionInformation.Name;
+			DeviceLabel.text = focusedResult.MeasurementDefinition.DeviceId;
+			TotalMeasurementsLabel.text = focusedResult.MeasurementDefinition.TotalMeasurements.ToString();
+			FirstMeasurementLabel.text = focusedResult.MeasurementDefinition.FirstMeasurementResult.GetTime();
+			MeasurementIntervalLabel.text = $"{focusedResult.MeasurementDefinition.MeasuringInterval / 10}s";
+
+			AuthorIcon.style.backgroundImage = !string.IsNullOrEmpty(focusedResult.Author)
+				? new StyleBackground(authorRepository.AuthorSprites[focusedResult.Author])
 				: new StyleBackground();
 
 		}

@@ -114,14 +114,14 @@ namespace Dataskop.Entities.Visualizations {
 			groundLine.endWidth = 0.0075f;
 			*/
 
-			OnMeasurementResultChanged(DataPoint.FocusedMeasurement);
+			OnFocusedMeasurementIndexChanged(DataPoint.MeasurementDefinition, CurrentFocusIndex);
 			IsInitialized = true;
 
 		}
 
-		public void OnMeasurementResultChanged(MeasurementResult mr) {
+		public void OnFocusedMeasurementIndexChanged(MeasurementDefinition def, int index) {
 
-			if (!AllowedMeasurementTypes.Contains(mr.MeasurementDefinition.MeasurementType)) {
+			if (!AllowedMeasurementTypes.Contains(def.MeasurementResults[index].MeasurementDefinition.MeasurementType)) {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
 					Text = "Value Type not supported by this visualization.",
@@ -132,6 +132,8 @@ namespace Dataskop.Entities.Visualizations {
 
 			if (!HasHistoryEnabled) {
 
+				MeasurementResult focusedResult = def.MeasurementResults[index];
+
 				if (CurrentFocusIndex != PreviousIndex) {
 					VisObjects[CurrentFocusIndex] = VisObjects[PreviousIndex];
 					VisObjects[PreviousIndex] = null;
@@ -139,10 +141,11 @@ namespace Dataskop.Entities.Visualizations {
 				}
 
 				VisObjects[CurrentFocusIndex].SetDisplayData(new VisualizationResultDisplayData {
-					Result = mr,
-					Type = mr.MeasurementDefinition.MeasurementType,
+					Result = focusedResult,
+					Type = focusedResult.MeasurementDefinition.MeasurementType,
 					Attribute = DataPoint.Attribute,
-					AuthorSprite = mr.Author != string.Empty ? DataPoint.AuthorRepository.AuthorSprites[mr.Author] : null
+					AuthorSprite = focusedResult.Author != string.Empty ? DataPoint.AuthorRepository.AuthorSprites[focusedResult.Author]
+						: null
 				});
 
 				VisObjects[CurrentFocusIndex].Index = CurrentFocusIndex;
@@ -150,7 +153,68 @@ namespace Dataskop.Entities.Visualizations {
 
 			}
 			else {
-				Debug.Log(CurrentFocusIndex);
+
+				StartCoroutine(MoveHistory(PreviousIndex < CurrentFocusIndex ? Vector3.down : Vector3.up));
+				PreviousIndex = CurrentFocusIndex;
+
+				// VisObjects above current result
+				for (int i = 1; i < VisObjects.Length - CurrentFocusIndex; i++) {
+
+					int targetIndex = CurrentFocusIndex + i;
+					MeasurementResult newResultToAssign = def.MeasurementResults[targetIndex];
+					IVisObject targetObject = VisObjects[targetIndex];
+
+					targetObject.SetDisplayData(new VisualizationResultDisplayData {
+						Result = newResultToAssign,
+						Type = newResultToAssign.MeasurementDefinition.MeasurementType,
+						Attribute = DataPoint.Attribute,
+						AuthorSprite = newResultToAssign.Author != string.Empty
+							? DataPoint.AuthorRepository.AuthorSprites[newResultToAssign.Author]
+							: null
+					});
+
+					targetObject.Index = targetIndex;
+					targetObject.SetMaterial(Options.styles[0].timeMaterial);
+					targetObject.HideDisplay();
+
+				}
+
+				// VisObjects below current result
+				for (int i = 1; i <= CurrentFocusIndex; i++) {
+
+					int targetIndex = CurrentFocusIndex - i;
+					MeasurementResult newResultToAssign = def.MeasurementResults[targetIndex];
+					IVisObject targetObject = VisObjects[targetIndex];
+
+					targetObject.SetDisplayData(new VisualizationResultDisplayData {
+						Result = newResultToAssign,
+						Type = newResultToAssign.MeasurementDefinition.MeasurementType,
+						Attribute = DataPoint.Attribute,
+						AuthorSprite = newResultToAssign.Author != string.Empty
+							? DataPoint.AuthorRepository.AuthorSprites[newResultToAssign.Author]
+							: null
+					});
+
+					targetObject.Index = targetIndex;
+					targetObject.SetMaterial(Options.styles[0].timeMaterial);
+					targetObject.HideDisplay();
+
+				}
+
+				MeasurementResult focusedResult = def.MeasurementResults[CurrentFocusIndex];
+				VisObjects[CurrentFocusIndex].SetDisplayData(new VisualizationResultDisplayData {
+					Result = focusedResult,
+					Type = focusedResult.MeasurementDefinition.MeasurementType,
+					Attribute = DataPoint.Attribute,
+					AuthorSprite = focusedResult.Author != string.Empty
+						? DataPoint.AuthorRepository.AuthorSprites[focusedResult.Author]
+						: null
+				});
+
+				VisObjects[CurrentFocusIndex].Index = CurrentFocusIndex;
+				VisObjects[CurrentFocusIndex].SetMaterial(Options.styles[0].defaultMaterial);
+				VisObjects[CurrentFocusIndex].ShowDisplay();
+
 			}
 
 		}
@@ -174,7 +238,7 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public void OnMeasurementResultsUpdated() {
-			OnMeasurementResultChanged(DataPoint.MeasurementDefinition.GetLatestMeasurementResult());
+			OnFocusedMeasurementIndexChanged(DataPoint.MeasurementDefinition, CurrentFocusIndex);
 		}
 
 		public void OnTimeSeriesToggled(bool isActive) {
