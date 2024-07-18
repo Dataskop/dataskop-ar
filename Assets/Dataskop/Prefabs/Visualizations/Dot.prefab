@@ -186,7 +186,6 @@ MonoBehaviour:
   visPrefab: {fileID: 7048796313808956549, guid: 71f2dd73e86e0134c9bae1ccb64e3615, type: 3}
   visObjectsContainer: {fileID: 724874089874444892}
   options: {fileID: 11400000, guid: 5d031eafaf15a8244a7369eb55394f0b, type: 2}
-  dotTimeSeries: {fileID: 0}
   dropShadow: {fileID: 3959282354504990483}
   groundLine: {fileID: 6640198457753545217}
   boolIcons:
@@ -196,7 +195,7 @@ MonoBehaviour:
   scaleFactor: 0.25
   timeSeriesConfiguration:
     elementVis: {fileID: 1958504234192534124, guid: dfe66c67caab47e4ca181cd65cdd7251, type: 3}
-    visibleHistoryCount: 50
+    visibleHistoryCount: 10
     elementDistance: 0.32
     animationDuration: 0.125
     isFading: 0

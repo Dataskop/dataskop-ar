@@ -149,7 +149,7 @@ namespace Dataskop.Data {
 				dp.Vis.OnSwipeInteraction(pointerInteraction);
 			}
 
-			dataPointHistorySwiped?.Invoke(DataPoints[0].FocusedMeasurementIndex);
+			//dataPointHistorySwiped?.Invoke(DataPoints[0].FocusedMeasurementIndex);
 
 		}
 
