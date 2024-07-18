@@ -149,6 +149,9 @@ namespace Dataskop.Entities.Visualizations {
 				VisObjects[CurrentFocusIndex].IsFocused = true;
 
 			}
+			else {
+				Debug.Log(CurrentFocusIndex);
+			}
 
 		}
 
@@ -270,32 +273,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-		public void Despawn() {
-			ClearVisObjects();
-			DataPoint = null;
-			Destroy(gameObject);
-		}
-
-		private IEnumerator MoveHistory(Vector3 direction) {
-
-			Vector3 startPosition = visObjectsContainer.transform.position;
-			Vector3 targetPosition = visObjectsContainer.transform.position + timeSeriesConfiguration.elementDistance * direction;
-			float moveDuration = timeSeriesConfiguration.animationDuration;
-
-			float t = 0;
-			while (t < moveDuration) {
-
-				visObjectsContainer.transform.position = Vector3.Lerp(startPosition, targetPosition, t / moveDuration);
-
-				t += Time.deltaTime;
-				yield return null;
-
-			}
-
-			visObjectsContainer.transform.position = targetPosition;
-
-		}
-
 		private IVisObject SpawnVisObject(int index, Vector3 pos, MeasurementResult result) {
 
 			GameObject newVis = Instantiate(visPrefab, pos, visObjectsContainer.localRotation, visObjectsContainer);
@@ -326,7 +303,7 @@ namespace Dataskop.Entities.Visualizations {
 				return;
 			}
 
-			for (int i = 0; i < VisObjects.Length - 1; i++) {
+			for (int i = 0; i < VisObjects.Length; i++) {
 
 				if (i == CurrentFocusIndex) {
 					continue;
@@ -361,6 +338,32 @@ namespace Dataskop.Entities.Visualizations {
 				VisObjects[i] = null;
 
 			}
+
+		}
+
+		public void Despawn() {
+			ClearVisObjects();
+			DataPoint = null;
+			Destroy(gameObject);
+		}
+
+		private IEnumerator MoveHistory(Vector3 direction) {
+
+			Vector3 startPosition = visObjectsContainer.transform.position;
+			Vector3 targetPosition = visObjectsContainer.transform.position + timeSeriesConfiguration.elementDistance * direction;
+			float moveDuration = timeSeriesConfiguration.animationDuration;
+
+			float t = 0;
+			while (t < moveDuration) {
+
+				visObjectsContainer.transform.position = Vector3.Lerp(startPosition, targetPosition, t / moveDuration);
+
+				t += Time.deltaTime;
+				yield return null;
+
+			}
+
+			visObjectsContainer.transform.position = targetPosition;
 
 		}
 
