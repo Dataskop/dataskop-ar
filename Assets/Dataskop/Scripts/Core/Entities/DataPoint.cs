@@ -48,6 +48,7 @@ namespace Dataskop.Entities {
 		public void SetVis(GameObject visPrefab) {
 			Vis = Instantiate(visPrefab, transform).GetComponent<IVisualization>();
 			Vis.DataPoint = this;
+			MeasurementResultChanged += Vis.OnMeasurementResultChanged;
 			Vis.SwipedUp += DecreaseMeasurementIndex;
 			Vis.SwipedDown += IncreaseMeasurementIndex;
 			VisualizationTypeChanged?.Invoke(Vis.Type);
@@ -59,9 +60,9 @@ namespace Dataskop.Entities {
 				return;
 			}
 
+			MeasurementResultChanged -= Vis.OnMeasurementResultChanged;
 			Vis.SwipedUp -= DecreaseMeasurementIndex;
 			Vis.SwipedDown -= IncreaseMeasurementIndex;
-			Vis.OnTimeSeriesToggled(false);
 			Vis.Despawn();
 
 		}
@@ -115,6 +116,17 @@ namespace Dataskop.Entities {
 
 			FocusedMeasurementIndex--;
 			MeasurementResultChanged?.Invoke(MeasurementDefinition.GetMeasurementResult(FocusedMeasurementIndex));
+		}
+
+		private void OnVisObjectSelected(int index) {
+
+			if (index == FocusedMeasurementIndex) {
+				return;
+			}
+
+			FocusedMeasurementIndex = index;
+			MeasurementResultChanged?.Invoke(MeasurementDefinition.GetMeasurementResult(FocusedMeasurementIndex));
+
 		}
 
 		private void SetMapIconColor(Color color) {
