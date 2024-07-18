@@ -86,8 +86,6 @@ namespace Dataskop.Data {
 			if (VisualizationRepository.IsAvailable(visOpt.Type.FirstCharToUpper())) {
 
 				GameObject vis = VisualizationRepository.GetVisualization(visOpt.Type.FirstCharToUpper());
-
-				ToggleTimeSeries(dp, false);
 				dp.RemoveVis();
 				dp.SetVis(vis);
 				dp.Vis.VisOption = visOpt;
@@ -104,21 +102,23 @@ namespace Dataskop.Data {
 
 		}
 
-		public void OnHistoryViewChanged(bool isActive) {
+		public void OnHistoryViewChanged(bool enable) {
+
+			hasHistoryEnabled = enable;
 
 			foreach (DataPoint dp in DataPoints) {
-				ToggleTimeSeries(dp, isActive);
+				ToggleTimeSeries(dp, enable);
 			}
 
 		}
 
-		private static void ToggleTimeSeries(DataPoint dp, bool isActive) {
+		private static void ToggleTimeSeries(DataPoint dp, bool enable) {
 
 			if (dp.Vis == null)
 				return;
 
 			if (dp.Vis.VisOption.Style.IsTimeSeries) {
-				dp.Vis.OnTimeSeriesToggled(isActive);
+				dp.Vis.OnTimeSeriesToggled(enable);
 			}
 
 		}
@@ -191,12 +191,6 @@ namespace Dataskop.Data {
 			DataPointsLocations = new Vector2d[projectData.Devices.Count];
 			SpawnDataPoints();
 
-			if (hasHistoryEnabled) {
-				foreach (DataPoint dp in DataPoints) {
-					ToggleTimeSeries(dp, true);
-				}
-			}
-
 			HasLoadedDataPoints = true;
 
 		}
@@ -211,13 +205,20 @@ namespace Dataskop.Data {
 
 		}
 
-		public void UpdateDataPoints(DataAttribute attribute) {
+		public void OnAttributeChanged(DataAttribute attribute) {
 
 			if (HasLoadedDataPoints) {
 				ClearDataPoints();
 			}
 
 			SpawnDataPoints();
+
+			if (hasHistoryEnabled) {
+				foreach (DataPoint dp in DataPoints) {
+					ToggleTimeSeries(dp, true);
+				}
+			}
+
 			HasLoadedDataPoints = true;
 
 		}
