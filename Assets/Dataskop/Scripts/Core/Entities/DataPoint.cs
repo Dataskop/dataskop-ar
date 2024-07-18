@@ -69,26 +69,10 @@ namespace Dataskop.Entities {
 
 		}
 
-		/// <summary>
-		///     Sets the selection status of the data point.
-		/// </summary>
-		public void SetSelectionStatus(SelectionState state) {
-
-			switch (state) {
-
-				case SelectionState.Deselected:
-					SetMapIconColor(mapDefaultColor);
-					break;
-				case SelectionState.Hovered:
-					SetMapIconColor(mapHoverColor);
-					break;
-				case SelectionState.Selected:
-					SetMapIconColor(mapSelectionColor);
-					break;
-				default:
-					throw new ArgumentOutOfRangeException(nameof(state), state, null);
-			}
-
+		public void OnMeasurementResultsUpdated() {
+			
+			//TODO: What happens when Measurement Results get updated (either through request or auto refetch)...
+			
 		}
 
 		private void IncreaseMeasurementIndex() {
@@ -130,6 +114,28 @@ namespace Dataskop.Entities {
 
 			FocusedMeasurementIndex = index;
 			FocusedMeasurementIndexChanged?.Invoke(MeasurementDefinition, FocusedMeasurementIndex);
+
+		}
+
+		/// <summary>
+		///     Sets the selection status of the data point.
+		/// </summary>
+		public void SetSelectionStatus(SelectionState state) {
+
+			switch (state) {
+
+				case SelectionState.Deselected:
+					SetMapIconColor(mapDefaultColor);
+					break;
+				case SelectionState.Hovered:
+					SetMapIconColor(mapHoverColor);
+					break;
+				case SelectionState.Selected:
+					SetMapIconColor(mapSelectionColor);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(state), state, null);
+			}
 
 		}
 
