@@ -10,7 +10,7 @@ namespace Dataskop.Entities.Visualizations {
 		[Header("Vis Values")]
 		[SerializeField] private Vector3 offset;
 		[SerializeField] private float scaleFactor;
-		[SerializeField] protected TimeSeriesConfig timeSeriesConfiguration;
+		[SerializeField] protected VisHistoryConfiguration timeSeriesConfiguration;
 		[SerializeField] protected Color deselectColor;
 		[SerializeField] protected Color hoverColor;
 		[SerializeField] protected Color selectColor;

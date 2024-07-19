@@ -13,7 +13,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		protected List<TimeElement> TimeElements { get; private set; }
 
-		public TimeSeriesConfig Configuration { get; private set; }
+		public VisHistoryConfiguration Configuration { get; private set; }
 
 		public DataPoint DataPoint { get; protected set; }
 
@@ -43,7 +43,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public event Action TimeSeriesStartMoved;
 
-		public void Spawn(TimeSeriesConfig config, DataPoint dp, Transform container) {
+		public void Spawn(VisHistoryConfiguration config, DataPoint dp, Transform container) {
 
 			if (spawnRoutine != null) {
 				StopCoroutine(spawnRoutine);
@@ -55,7 +55,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-		private IEnumerator SpawnSeries(TimeSeriesConfig config, DataPoint dp, Transform container) {
+		private IEnumerator SpawnSeries(VisHistoryConfiguration config, DataPoint dp, Transform container) {
 
 			DataPoint = dp;
 			Configuration = config;

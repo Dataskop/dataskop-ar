@@ -27,8 +27,8 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private float animationTimeOnDeselect;
 		[SerializeField] private float selectionScale;
 
-		private Coroutine animationCoroutine;
 		private Vector3 animationTarget;
+		private Coroutine animationCoroutine;
 		private Coroutine moveLineCoroutine;
 
 		public event Action<int> HasHovered;
@@ -53,6 +53,8 @@ namespace Dataskop.Entities.Visualizations {
 		public TextMeshProUGUI ValueTextMesh => valueTextMesh;
 
 		public TextMeshProUGUI DateTextMesh => dateTextMesh;
+
+		public Image VisRenderer => visRenderer;
 
 		public Image BoolIconRenderer => boolIconRenderer;
 
@@ -97,10 +99,47 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public void OnSelect() {
+
+			animationTarget = transform.localScale * selectionScale;
+
+			if (animationCoroutine != null) {
+				StopCoroutine(animationCoroutine);
+				transform.localScale = animationTarget;
+			}
+
+			animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
+				transform,
+				TransformValue.Scale,
+				transform.localScale,
+				animationTarget,
+				animationTimeOnSelect,
+				animationCurveSelect,
+				OnAnimationFinished
+			));
+
 			HasSelected?.Invoke(Index);
+
 		}
 
 		public void OnDeselect() {
+
+			animationTarget = transform.localScale / selectionScale;
+
+			if (animationCoroutine != null) {
+				StopCoroutine(animationCoroutine);
+				transform.localScale = animationTarget;
+			}
+
+			animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
+				transform,
+				TransformValue.Scale,
+				transform.localScale,
+				animationTarget,
+				animationTimeOnDeselect,
+				animationCurveDeselect,
+				OnAnimationFinished
+			));
+
 			HasDeselected?.Invoke(Index);
 		}
 
@@ -119,6 +158,10 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void Delete() {
 			Destroy(gameObject);
+		}
+
+		private void OnAnimationFinished() {
+			animationCoroutine = null;
 		}
 
 	}

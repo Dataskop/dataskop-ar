@@ -69,7 +69,7 @@ namespace Dataskop.UI {
 		public void OnDataPointSelectionChanged(DataPoint selectedDataPoint) {
 
 			if (SelectedDataPoint != null) {
-				SelectedDataPoint.FocusedMeasurementIndexChanged -= UpdateTimeLabel;
+				SelectedDataPoint.FocusedIndexChanged -= UpdateTimeLabel;
 			}
 
 			SelectedDataPoint = selectedDataPoint;
@@ -80,8 +80,8 @@ namespace Dataskop.UI {
 				return;
 			}
 
-			SelectedDataPoint.FocusedMeasurementIndexChanged += UpdateTimeLabel;
-			UpdateTimeLabel(selectedDataPoint.MeasurementDefinition, selectedDataPoint.FocusedMeasurementIndex);
+			SelectedDataPoint.FocusedIndexChanged += UpdateTimeLabel;
+			UpdateTimeLabel(selectedDataPoint.MeasurementDefinition, selectedDataPoint.FocusedIndex);
 
 			if (!IsActive) {
 				return;

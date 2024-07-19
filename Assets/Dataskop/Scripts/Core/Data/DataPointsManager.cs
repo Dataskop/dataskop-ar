@@ -245,7 +245,8 @@ namespace Dataskop.Data {
 					dataPointInstance.MeasurementDefinition = definition;
 					dataPointInstance.Device = projectDevices[i];
 					dataPointInstance.AuthorRepository = AuthorRepository;
-					dataPointInstance.FocusedMeasurementIndex = 0;
+					dataPointInstance.FocusedIndex = 0;
+					dataPointInstance.FocusedIndexChangedByTap += OnIndexChangeRequested;
 
 					//Move the DataPoint to its location
 					if (AppOptions.DemoMode) {
@@ -281,6 +282,18 @@ namespace Dataskop.Data {
 			dataPointTransform.localPosition = newPosition;
 		}
 
+		private void OnIndexChangeRequested(int index) {
+
+			if (!HasLoadedDataPoints) {
+				return;
+			}
+
+			foreach (DataPoint dp in DataPoints) {
+				dp.SetIndex(index);
+			}
+
+		}
+
 		private void OnMeasurementResultsUpdated() {
 
 			if (!HasLoadedDataPoints) {
@@ -298,6 +311,7 @@ namespace Dataskop.Data {
 			HasLoadedDataPoints = false;
 
 			foreach (DataPoint dp in DataPoints) {
+				dp.FocusedIndexChangedByTap -= OnIndexChangeRequested;
 				dp.RemoveVis();
 				Destroy(dp.gameObject);
 			}

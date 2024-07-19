@@ -138,7 +138,7 @@ namespace Dataskop.Interaction {
 				return;
 			}
 
-			DataPoint? tappedDataPoint = pointedGameObject?.GetComponentInParent<IVisualization>().DataPoint;
+			DataPoint? tappedDataPoint = pointedGameObject?.GetComponentInParent<DataPoint>();
 			IVisObject? tappedVisObject = pointedGameObject?.GetComponent<IVisObject>();
 
 			if (tappedVisObject == SelectedVisObject && tappedDataPoint == SelectedDataPoint) {

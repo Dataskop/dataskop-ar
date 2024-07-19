@@ -58,7 +58,7 @@ namespace Dataskop.UI {
 		public void UpdateDataPointData(DataPoint dp) {
 
 			if (SelectedDataPoint != null) {
-				SelectedDataPoint.FocusedMeasurementIndexChanged -= UpdateIndexTextElements;
+				SelectedDataPoint.FocusedIndexChanged -= UpdateIndexTextElements;
 			}
 
 			SelectedDataPoint = dp;
@@ -76,8 +76,8 @@ namespace Dataskop.UI {
 				AuthorIcon.style.backgroundImage = new StyleBackground();
 			}
 			else {
-				SelectedDataPoint.FocusedMeasurementIndexChanged += UpdateIndexTextElements;
-				UpdateIndexTextElements(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.FocusedMeasurementIndex);
+				SelectedDataPoint.FocusedIndexChanged += UpdateIndexTextElements;
+				UpdateIndexTextElements(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.FocusedIndex);
 			}
 
 		}

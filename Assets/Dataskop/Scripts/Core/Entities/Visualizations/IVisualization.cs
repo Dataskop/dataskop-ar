@@ -17,7 +17,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisualizationOption VisOption { get; set; }
 
-		public TimeSeriesConfig TimeSeriesConfig { get; set; }
+		public VisHistoryConfiguration VisHistoryConfiguration { get; set; }
 
 		public bool IsSelected { get; set; }
 
@@ -63,9 +63,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void OnTimeSeriesToggled(bool isActive);
 
-		public void OnMeasurementResultsUpdated();
-
-		public void OnFocusedMeasurementIndexChanged(MeasurementDefinition def, int index);
+		public void OnFocusedIndexChanged(MeasurementDefinition def, int index);
 
 		public void OnSwipeInteraction(PointerInteraction pointerInteraction);
 

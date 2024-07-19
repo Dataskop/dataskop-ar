@@ -22,6 +22,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public TextMeshProUGUI DateTextMesh { get; }
 
+		public Image VisRenderer { get; }
+
 		public Image BoolIconRenderer { get; }
 
 		public Image AuthorIconRenderer { get; }
