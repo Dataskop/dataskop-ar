@@ -53,7 +53,7 @@ namespace Dataskop.Entities.Visualizations {
 		/// <summary>
 		///     Creates a Visualization for a given Data Point.
 		/// </summary>
-		public void OnDataPointChanged();
+		public void Initialize(DataPoint dp);
 
 		public void OnVisObjectHovered(int index);
 

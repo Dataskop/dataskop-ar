@@ -20,13 +20,11 @@ namespace Dataskop.Entities.Visualizations {
 		[Header("Vis Values")]
 		[SerializeField] private Vector3 offset;
 		[SerializeField] private float scaleFactor;
-		[SerializeField] private VisHistoryConfiguration timeSeriesConfiguration;
+		[SerializeField] private VisHistoryConfiguration visHistoryConfig;
 		[SerializeField] private Color deselectColor;
 		[SerializeField] private Color hoverColor;
 		[SerializeField] private Color selectColor;
 		[SerializeField] private Color historyColor;
-
-		private DataPoint dataPoint;
 
 		private DotOptions Options { get; set; }
 
@@ -44,15 +42,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public IVisObject[] VisObjects { get; set; }
 
-		public DataPoint DataPoint {
-			get => dataPoint;
-			set {
-				dataPoint = value;
-				if (value != null) {
-					OnDataPointChanged();
-				}
-			}
-		}
+		public DataPoint DataPoint { get; set; }
 
 		public VisualizationOption VisOption { get; set; }
 
@@ -79,18 +69,24 @@ namespace Dataskop.Entities.Visualizations {
 
 		public int PreviousIndex { get; set; } = 0;
 
-		public void OnDataPointChanged() {
+		public void Initialize(DataPoint dp) {
 
+			DataPoint = dp;
 			VisOrigin = transform;
 			Scale = scaleFactor;
 			Offset = offset;
-			VisHistoryConfiguration = timeSeriesConfiguration;
+			VisHistoryConfiguration = visHistoryConfig;
 
 			Type = VisualizationType.Dot;
 			Options = Instantiate(options);
 
 			//TODO: Handle MeasurementResults being less than configured time series configuration visible history count.
-			VisObjects = new IVisObject[timeSeriesConfiguration.visibleHistoryCount];
+
+			if (DataPoint.MeasurementDefinition.MeasurementResults.Count < VisHistoryConfiguration.visibleHistoryCount) {
+				VisObjects = new IVisObject[dp.MeasurementDefinition.MeasurementResults.Count];
+			}
+
+			VisObjects = new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
 			GameObject visObject = Instantiate(visPrefab, transform.position, Quaternion.identity, visObjectsContainer);
 			VisObjects[FocusIndex] = visObject.GetComponent<IVisObject>();
 			VisObjects[FocusIndex].HasHovered += OnVisObjectHovered;
@@ -175,9 +171,9 @@ namespace Dataskop.Entities.Visualizations {
 		public void OnTimeSeriesToggled(bool isActive) {
 
 			if (isActive) {
-				
+
 				IReadOnlyList<MeasurementResult> currentResults = DataPoint.MeasurementDefinition.MeasurementResults.ToList();
-				float distance = timeSeriesConfiguration.elementDistance;
+				float distance = visHistoryConfig.elementDistance;
 
 				// VisObjects above current result
 				for (int i = 1; i < VisObjects.Length - FocusIndex; i++) {
@@ -359,8 +355,8 @@ namespace Dataskop.Entities.Visualizations {
 
 			Vector3 startPosition = visObjectsContainer.transform.position;
 			Vector3 targetPosition = visObjectsContainer.transform.position +
-			                         direction * (timeSeriesConfiguration.elementDistance * multiplier);
-			float moveDuration = timeSeriesConfiguration.animationDuration;
+			                         direction * (visHistoryConfig.elementDistance * multiplier);
+			float moveDuration = visHistoryConfig.animationDuration;
 
 			float t = 0;
 			while (t < moveDuration) {
