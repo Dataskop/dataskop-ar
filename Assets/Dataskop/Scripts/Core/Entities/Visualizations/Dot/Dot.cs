@@ -16,7 +16,6 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private DotOptions options;
 		[SerializeField] private Transform dropShadow;
 		[SerializeField] private LineRenderer groundLine;
-		[SerializeField] private Sprite[] boolIcons;
 
 		[Header("Vis Values")]
 		[SerializeField] private Vector3 offset;

@@ -17,6 +17,7 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private Image visRenderer;
 		[SerializeField] private Image boolIconRenderer;
 		[SerializeField] private Image authorIconImageRenderer;
+		[SerializeField] private Sprite[] boolIcons;
 
 		[Header("Values")]
 		[SerializeField] private Color32 boolTrueColor;
@@ -79,7 +80,7 @@ namespace Dataskop.Entities.Visualizations {
 					valueTextMesh.text = displayData.Result.ReadAsBool().ToString();
 					int boolValue = displayData.Result.ReadAsBool() ? 1 : 0;
 					boolIconRenderer.color = displayData.Result.ReadAsBool() ? boolTrueColor : boolFalseColor;
-					boolIconRenderer.sprite = null;
+					boolIconRenderer.sprite = boolValue == 0 ? boolIcons[0] : boolIcons[1];
 					dateTextMesh.text = displayData.Result.GetTime();
 					break;
 				}
