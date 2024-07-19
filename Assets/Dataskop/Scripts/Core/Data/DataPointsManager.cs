@@ -148,7 +148,7 @@ namespace Dataskop.Data {
 				dp.Vis.OnSwipeInteraction(pointerInteraction);
 			}
 
-			//dataPointHistorySwiped?.Invoke(DataPoints[0].FocusedMeasurementIndex);
+			dataPointHistorySwiped?.Invoke(DataPoints[0].FocusedIndex);
 
 		}
 
@@ -157,22 +157,8 @@ namespace Dataskop.Data {
 			if (!HasLoadedDataPoints)
 				return;
 
-			PointerInteraction historyPointerInteraction = new();
-			historyPointerInteraction.startingGameObject = dummyVisObject;
-			historyPointerInteraction.endingGameObject = dummyVisObject;
-			historyPointerInteraction.isSwipe = true;
-
-			if (newCount > prevCount) {
-				historyPointerInteraction.startPosition = Vector2.zero;
-				historyPointerInteraction.endPosition = Vector2.down * 100f;
-			}
-			else {
-				historyPointerInteraction.startPosition = Vector2.zero;
-				historyPointerInteraction.endPosition = Vector2.up * 100f;
-			}
-
 			foreach (DataPoint dp in DataPoints) {
-				dp.Vis.OnSwipeInteraction(historyPointerInteraction);
+				dp.SetIndex(newCount);
 			}
 
 		}
@@ -291,6 +277,8 @@ namespace Dataskop.Data {
 			foreach (DataPoint dp in DataPoints) {
 				dp.SetIndex(index);
 			}
+			
+			dataPointHistorySwiped?.Invoke(index);
 
 		}
 

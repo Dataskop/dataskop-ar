@@ -36,7 +36,8 @@ namespace Dataskop.UI {
 
 		private void Start() {
 			SetVisibility(Root, false);
-			HistorySlider.highValue = dataManager.FetchAmount - 1;
+			HistorySlider.highValue = 1;
+			HistorySlider.lowValue = 0;
 		}
 
 		private void OnEnable() {
@@ -80,31 +81,36 @@ namespace Dataskop.UI {
 				return;
 			}
 
+			UpdateTimeLabel(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.FocusedIndex);
+			AdjustTimeLabelPosition();
 			SelectedDataPoint.FocusedIndexChanged += UpdateTimeLabel;
-			UpdateTimeLabel(selectedDataPoint.MeasurementDefinition, selectedDataPoint.FocusedIndex);
 
 			if (!IsActive) {
 				return;
 			}
 
-			int resultsCount = selectedDataPoint.MeasurementDefinition.MeasurementResults.Count;
-			HistorySlider.highValue = resultsCount - 1;
-			GenerateTicks(resultsCount);
+			int newResultsCount = SelectedDataPoint.MeasurementDefinition.MeasurementResults.Count <
+			                      SelectedDataPoint.Vis.VisHistoryConfiguration.visibleHistoryCount
+				? SelectedDataPoint.MeasurementDefinition.MeasurementResults.Count
+				: SelectedDataPoint.Vis.VisHistoryConfiguration.visibleHistoryCount;
+
+			HistorySlider.highValue = newResultsCount - 1;
+			HistorySlider.SetValueWithoutNotify(SelectedDataPoint.FocusedIndex);
+
+			GenerateTicks(newResultsCount);
 			SetVisibility(HistorySliderContainer, true);
 			CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
 
 		}
 
 		private void UpdateTimeLabel(MeasurementDefinition def, int index) {
-
 			MeasurementResult focusedResult = def.MeasurementResults[index];
-
-			CurrentTimeLabel.text =
-				$"{focusedResult.GetDate()}<br>{focusedResult.GetClockTime()}";
+			CurrentTimeLabel.text = $"{focusedResult.GetDate()}";
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
 			HistorySlider.SetValueWithoutNotify(newCount);
+			AdjustTimeLabelPosition();
 		}
 
 		public void OnVisualizationOptionChanged(VisualizationOption currentVisOption) {
@@ -143,10 +149,7 @@ namespace Dataskop.UI {
 				SetVisibility(CurrentTimeLabel, IsActive);
 			}
 
-			HistorySlider.value = 0;
-			CurrentTimeLabel.style.top = Dragger.localBound.yMax;
 			historyViewToggled?.Invoke(IsActive);
-
 		}
 
 		private IEnumerator DelayToggle() {
