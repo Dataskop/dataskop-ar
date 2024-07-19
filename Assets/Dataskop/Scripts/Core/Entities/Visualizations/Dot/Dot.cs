@@ -67,7 +67,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisualizationType Type { get; set; }
 
-		public int PreviousIndex { get; set; } = 0;
+		public int PreviousIndex { get; set; }
 
 		public void Initialize(DataPoint dp) {
 
@@ -177,14 +177,14 @@ namespace Dataskop.Entities.Visualizations {
 
 				// VisObjects above current result
 				for (int i = 1; i < VisObjects.Length - FocusIndex; i++) {
-					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y + distance * (i), VisOrigin.position.z);
+					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y + distance * i, VisOrigin.position.z);
 					VisObjects[FocusIndex + i] =
 						SpawnVisObject(FocusIndex + i, spawnPos, currentResults[FocusIndex + i]);
 				}
 
 				// VisObjects below current result
 				for (int i = 1; i <= FocusIndex; i++) {
-					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y - distance * (i), VisOrigin.position.z);
+					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y - distance * i, VisOrigin.position.z);
 					VisObjects[FocusIndex - i] =
 						SpawnVisObject(FocusIndex - i, spawnPos, currentResults[FocusIndex - i]);
 				}
@@ -244,6 +244,30 @@ namespace Dataskop.Entities.Visualizations {
 			IsSelected = false;
 			VisObjectDeselected?.Invoke(index);
 
+		}
+
+		public void ApplyStyle(VisualizationStyle style) {
+			dropShadow.gameObject.SetActive(style.HasDropShadow);
+			groundLine.gameObject.SetActive(style.HasGroundLine);
+		}
+
+		public void OnSwipeInteraction(PointerInteraction pointerInteraction) {
+
+			switch (pointerInteraction.Direction.y) {
+				case > 0.20f:
+					SwipedUp?.Invoke();
+					break;
+				case < -0.20f:
+					SwipedDown?.Invoke();
+					break;
+			}
+
+		}
+
+		public void Despawn() {
+			ClearVisObjects();
+			DataPoint = null;
+			Destroy(gameObject);
 		}
 
 		private IVisObject SpawnVisObject(int index, Vector3 pos, MeasurementResult result) {
@@ -333,24 +357,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-		public void ApplyStyle(VisualizationStyle style) {
-			dropShadow.gameObject.SetActive(style.HasDropShadow);
-			groundLine.gameObject.SetActive(style.HasGroundLine);
-		}
-
-		public void OnSwipeInteraction(PointerInteraction pointerInteraction) {
-
-			switch (pointerInteraction.Direction.y) {
-				case > 0.20f:
-					SwipedUp?.Invoke();
-					break;
-				case < -0.20f:
-					SwipedDown?.Invoke();
-					break;
-			}
-
-		}
-
 		private IEnumerator MoveHistory(Vector3 direction, int multiplier = 1) {
 
 			Vector3 startPosition = visObjectsContainer.transform.position;
@@ -388,12 +394,6 @@ namespace Dataskop.Entities.Visualizations {
 
 				yield return null;
 			}
-		}
-
-		public void Despawn() {
-			ClearVisObjects();
-			DataPoint = null;
-			Destroy(gameObject);
 		}
 
 	}

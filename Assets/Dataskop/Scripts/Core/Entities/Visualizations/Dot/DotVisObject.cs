@@ -27,11 +27,11 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private float animationTimeOnSelect;
 		[SerializeField] private float animationTimeOnDeselect;
 		[SerializeField] private float selectionScale;
+		private Coroutine animationCoroutine;
 
 		private Vector3 animationTarget;
-		private Coroutine animationCoroutine;
-		private Coroutine moveLineCoroutine;
 		private bool isSelected;
+		private Coroutine moveLineCoroutine;
 
 		public event Action<int> HasHovered;
 
@@ -101,52 +101,16 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public void OnSelect() {
-
-			if (animationCoroutine != null) {
-				StopCoroutine(animationCoroutine);
-				visRenderer.transform.localScale = animationTarget;
-			}
-
-			animationTarget = visRenderer.transform.localScale * selectionScale;
-
-			animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
-				visRenderer.transform,
-				TransformValue.Scale,
-				visRenderer.transform.localScale,
-				animationTarget,
-				animationTimeOnSelect,
-				animationCurveSelect,
-				OnAnimationFinished
-			));
-
+			PlaySelectionAnimation();
 			isSelected = true;
 			HasSelected?.Invoke(Index);
-
 		}
 
 		public void OnDeselect() {
-
 			if (isSelected) {
-				if (animationCoroutine != null) {
-					StopCoroutine(animationCoroutine);
-					visRenderer.transform.localScale = animationTarget;
-				}
-
-				animationTarget = visRenderer.transform.localScale / selectionScale;
-
-				animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
-					visRenderer.transform,
-					TransformValue.Scale,
-					visRenderer.transform.localScale,
-					animationTarget,
-					animationTimeOnDeselect,
-					animationCurveDeselect,
-					OnAnimationFinished
-				));
-
+				PlayDeselectionAnimation();
 				isSelected = false;
 			}
-
 			HasDeselected?.Invoke(Index);
 		}
 
@@ -169,6 +133,47 @@ namespace Dataskop.Entities.Visualizations {
 
 		private void OnAnimationFinished() {
 			animationCoroutine = null;
+		}
+
+		private void PlaySelectionAnimation() {
+			if (animationCoroutine != null) {
+				StopCoroutine(animationCoroutine);
+				visRenderer.transform.localScale = animationTarget;
+			}
+
+			animationTarget = visRenderer.transform.localScale * selectionScale;
+
+			animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
+				visRenderer.transform,
+				TransformValue.Scale,
+				visRenderer.transform.localScale,
+				animationTarget,
+				animationTimeOnSelect,
+				animationCurveSelect,
+				OnAnimationFinished
+			));
+
+		}
+
+		private void PlayDeselectionAnimation() {
+
+			if (animationCoroutine != null) {
+				StopCoroutine(animationCoroutine);
+				visRenderer.transform.localScale = animationTarget;
+			}
+
+			animationTarget = visRenderer.transform.localScale / selectionScale;
+
+			animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
+				visRenderer.transform,
+				TransformValue.Scale,
+				visRenderer.transform.localScale,
+				animationTarget,
+				animationTimeOnDeselect,
+				animationCurveDeselect,
+				OnAnimationFinished
+			));
+
 		}
 
 	}
