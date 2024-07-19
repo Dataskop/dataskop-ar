@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Dataskop.Entities.Visualizations {
 
 	[Serializable]
-	public struct TimeSeriesConfig {
+	public struct VisHistoryConfiguration {
 
 		public GameObject elementVis;
 		public int visibleHistoryCount;
@@ -12,7 +12,7 @@ namespace Dataskop.Entities.Visualizations {
 		public float animationDuration;
 		public bool isFading;
 
-		public TimeSeriesConfig(GameObject elementVis, int visibleHistoryCount, float elementDistance,
+		public VisHistoryConfiguration(GameObject elementVis, int visibleHistoryCount, float elementDistance,
 			float animationDuration, bool isFading) {
 			this.elementVis = elementVis;
 			this.visibleHistoryCount = visibleHistoryCount;

@@ -195,7 +195,7 @@ MonoBehaviour:
   scaleFactor: 0.25
   timeSeriesConfiguration:
     elementVis: {fileID: 1958504234192534124, guid: dfe66c67caab47e4ca181cd65cdd7251, type: 3}
-    visibleHistoryCount: 6
+    visibleHistoryCount: 50
     elementDistance: 0.32
     animationDuration: 0.125
     isFading: 0

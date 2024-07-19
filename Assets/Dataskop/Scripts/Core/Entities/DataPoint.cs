@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Dataskop.Data;
 using Dataskop.Entities.Visualizations;
 using Dataskop.Interaction;
@@ -22,10 +20,10 @@ namespace Dataskop.Entities {
 
 		public MeasurementDefinition MeasurementDefinition { get; set; }
 
-		public int FocusedMeasurementIndex { get; set; }
+		public int FocusedIndex { get; set; }
 
 		//TODO: Check for Usages of this if necessary to refactor to event subscription
-		public MeasurementResult FocusedMeasurement => MeasurementDefinition.GetMeasurementResult(FocusedMeasurementIndex);
+		public MeasurementResult FocusedMeasurement => MeasurementDefinition.GetMeasurementResult(FocusedIndex);
 
 		public DataAttribute Attribute { get; set; }
 
@@ -39,7 +37,9 @@ namespace Dataskop.Entities {
 			VisualizationTypeChanged += OnVisChanged;
 		}
 
-		public event Action<MeasurementDefinition, int> FocusedMeasurementIndexChanged;
+		public event Action<MeasurementDefinition, int> FocusedIndexChanged;
+
+		public event Action<int> FocusedIndexChangedByTap;
 
 		public event Action<VisualizationType> VisualizationTypeChanged;
 
@@ -50,9 +50,10 @@ namespace Dataskop.Entities {
 		public void SetVis(GameObject visPrefab) {
 			Vis = Instantiate(visPrefab, transform).GetComponent<IVisualization>();
 			Vis.DataPoint = this;
-			FocusedMeasurementIndexChanged += Vis.OnFocusedMeasurementIndexChanged;
+			FocusedIndexChanged += Vis.OnFocusedIndexChanged;
 			Vis.SwipedUp += DecreaseMeasurementIndex;
 			Vis.SwipedDown += IncreaseMeasurementIndex;
+			Vis.VisObjectSelected += OnVisObjectSelected;
 			VisualizationTypeChanged?.Invoke(Vis.Type);
 		}
 
@@ -62,7 +63,7 @@ namespace Dataskop.Entities {
 				return;
 			}
 
-			FocusedMeasurementIndexChanged -= Vis.OnFocusedMeasurementIndexChanged;
+			FocusedIndexChanged -= Vis.OnFocusedIndexChanged;
 			Vis.SwipedUp -= DecreaseMeasurementIndex;
 			Vis.SwipedDown -= IncreaseMeasurementIndex;
 			Vis.Despawn();
@@ -70,9 +71,9 @@ namespace Dataskop.Entities {
 		}
 
 		public void OnMeasurementResultsUpdated() {
-			
+
 			//TODO: What happens when Measurement Results get updated (either through request or auto refetch)...
-			
+
 		}
 
 		private void IncreaseMeasurementIndex() {
@@ -82,13 +83,13 @@ namespace Dataskop.Entities {
 			}
 
 			//TODO: Temporary second condition because no loading of additional data is happening right now.
-			if (FocusedMeasurementIndex == MeasurementDefinition.MeasurementResults.Count - 1 ||
-			    FocusedMeasurementIndex == Vis.TimeSeriesConfig.visibleHistoryCount - 1) {
+			if (FocusedIndex == MeasurementDefinition.MeasurementResults.Count - 1 ||
+			    FocusedIndex == Vis.VisHistoryConfiguration.visibleHistoryCount - 1) {
 				return;
 			}
 
-			FocusedMeasurementIndex++;
-			FocusedMeasurementIndexChanged?.Invoke(MeasurementDefinition, FocusedMeasurementIndex);
+			FocusedIndex++;
+			FocusedIndexChanged?.Invoke(MeasurementDefinition, FocusedIndex);
 
 		}
 
@@ -98,23 +99,33 @@ namespace Dataskop.Entities {
 				return;
 			}
 
-			if (FocusedMeasurementIndex == 0) {
+			if (FocusedIndex == 0) {
 				return;
 			}
 
-			FocusedMeasurementIndex--;
-			FocusedMeasurementIndexChanged?.Invoke(MeasurementDefinition, FocusedMeasurementIndex);
+			FocusedIndex--;
+			FocusedIndexChanged?.Invoke(MeasurementDefinition, FocusedIndex);
 		}
 
 		private void OnVisObjectSelected(int index) {
 
-			if (index == FocusedMeasurementIndex) {
+			if (index == FocusedIndex) {
 				return;
 			}
 
-			FocusedMeasurementIndex = index;
-			FocusedMeasurementIndexChanged?.Invoke(MeasurementDefinition, FocusedMeasurementIndex);
+			FocusedIndexChangedByTap?.Invoke(index);
 
+		}
+
+		public void SetIndex(int index) {
+
+			if (index == FocusedIndex) {
+				return;
+			}
+			
+			FocusedIndex = index;
+			FocusedIndexChanged?.Invoke(MeasurementDefinition, FocusedIndex);
+			
 		}
 
 		/// <summary>
