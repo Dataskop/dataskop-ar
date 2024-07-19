@@ -26,6 +26,9 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private Color selectColor;
 		[SerializeField] private Color historyColor;
 
+		private Coroutine historyMove = null;
+		private Vector3 moveTarget = Vector3.zero;
+
 		private DotOptions Options { get; set; }
 
 		private int FocusIndex => DataPoint.FocusedIndex;
@@ -82,11 +85,10 @@ namespace Dataskop.Entities.Visualizations {
 
 			//TODO: Handle MeasurementResults being less than configured time series configuration visible history count.
 
-			if (DataPoint.MeasurementDefinition.MeasurementResults.Count < VisHistoryConfiguration.visibleHistoryCount) {
-				VisObjects = new IVisObject[dp.MeasurementDefinition.MeasurementResults.Count];
-			}
+			VisObjects = DataPoint.MeasurementDefinition.MeasurementResults.Count < VisHistoryConfiguration.visibleHistoryCount
+				? new IVisObject[dp.MeasurementDefinition.MeasurementResults.Count]
+				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
 
-			VisObjects = new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
 			GameObject visObject = Instantiate(visPrefab, transform.position, Quaternion.identity, visObjectsContainer);
 			VisObjects[FocusIndex] = visObject.GetComponent<IVisObject>();
 			VisObjects[FocusIndex].HasHovered += OnVisObjectHovered;
@@ -141,7 +143,13 @@ namespace Dataskop.Entities.Visualizations {
 			else {
 
 				int objectCountDistance = Mathf.Abs(PreviousIndex - FocusIndex);
-				StartCoroutine(MoveHistory(PreviousIndex < FocusIndex ? Vector3.down : Vector3.up, objectCountDistance));
+
+				if (historyMove != null) {
+					StopCoroutine(historyMove);
+					visObjectsContainer.transform.position = moveTarget;
+				}
+
+				historyMove = StartCoroutine(MoveHistory(PreviousIndex < FocusIndex ? Vector3.down : Vector3.up, objectCountDistance));
 
 				// VisObjects above current result
 				for (int i = 1; i < VisObjects.Length - FocusIndex; i++) {
@@ -177,6 +185,11 @@ namespace Dataskop.Entities.Visualizations {
 
 				// VisObjects above current result
 				for (int i = 1; i < VisObjects.Length - FocusIndex; i++) {
+
+					if (currentResults[FocusIndex + i] == null) {
+						continue;
+					}
+
 					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y + distance * i, VisOrigin.position.z);
 					VisObjects[FocusIndex + i] =
 						SpawnVisObject(FocusIndex + i, spawnPos, currentResults[FocusIndex + i]);
@@ -184,6 +197,11 @@ namespace Dataskop.Entities.Visualizations {
 
 				// VisObjects below current result
 				for (int i = 1; i <= FocusIndex; i++) {
+
+					if (currentResults[FocusIndex - i] == null) {
+						continue;
+					}
+
 					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y - distance * i, VisOrigin.position.z);
 					VisObjects[FocusIndex - i] =
 						SpawnVisObject(FocusIndex - i, spawnPos, currentResults[FocusIndex - i]);
@@ -360,21 +378,22 @@ namespace Dataskop.Entities.Visualizations {
 		private IEnumerator MoveHistory(Vector3 direction, int multiplier = 1) {
 
 			Vector3 startPosition = visObjectsContainer.transform.position;
-			Vector3 targetPosition = visObjectsContainer.transform.position +
-			                         direction * (visHistoryConfig.elementDistance * multiplier);
+			moveTarget = visObjectsContainer.transform.position +
+			             direction * (visHistoryConfig.elementDistance * multiplier);
 			float moveDuration = visHistoryConfig.animationDuration;
 
 			float t = 0;
 			while (t < moveDuration) {
 
-				visObjectsContainer.transform.position = Vector3.Lerp(startPosition, targetPosition, t / moveDuration);
+				visObjectsContainer.transform.position = Vector3.Lerp(startPosition, moveTarget, t / moveDuration);
 
 				t += Time.deltaTime;
 				yield return null;
 
 			}
 
-			visObjectsContainer.transform.position = targetPosition;
+			visObjectsContainer.transform.position = moveTarget;
+			historyMove = null;
 
 		}
 
