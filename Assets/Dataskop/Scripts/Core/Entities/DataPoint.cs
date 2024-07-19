@@ -49,7 +49,7 @@ namespace Dataskop.Entities {
 		/// <param name="visPrefab">The visualization to be used for this data point.</param>
 		public void SetVis(GameObject visPrefab) {
 			Vis = Instantiate(visPrefab, transform).GetComponent<IVisualization>();
-			Vis.DataPoint = this;
+			Vis.Initialize(this);
 			FocusedIndexChanged += Vis.OnFocusedIndexChanged;
 			Vis.SwipedUp += DecreaseMeasurementIndex;
 			Vis.SwipedDown += IncreaseMeasurementIndex;
@@ -122,10 +122,10 @@ namespace Dataskop.Entities {
 			if (index == FocusedIndex) {
 				return;
 			}
-			
+
 			FocusedIndex = index;
 			FocusedIndexChanged?.Invoke(MeasurementDefinition, FocusedIndex);
-			
+
 		}
 
 		/// <summary>

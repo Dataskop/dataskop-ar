@@ -31,6 +31,7 @@ namespace Dataskop.Entities.Visualizations {
 		private Vector3 animationTarget;
 		private Coroutine animationCoroutine;
 		private Coroutine moveLineCoroutine;
+		private bool isSelected;
 
 		public event Action<int> HasHovered;
 
@@ -101,45 +102,50 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void OnSelect() {
 
-			animationTarget = transform.localScale * selectionScale;
-
 			if (animationCoroutine != null) {
 				StopCoroutine(animationCoroutine);
-				transform.localScale = animationTarget;
+				visRenderer.transform.localScale = animationTarget;
 			}
 
+			animationTarget = visRenderer.transform.localScale * selectionScale;
+
 			animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
-				transform,
+				visRenderer.transform,
 				TransformValue.Scale,
-				transform.localScale,
+				visRenderer.transform.localScale,
 				animationTarget,
 				animationTimeOnSelect,
 				animationCurveSelect,
 				OnAnimationFinished
 			));
 
+			isSelected = true;
 			HasSelected?.Invoke(Index);
 
 		}
 
 		public void OnDeselect() {
 
-			animationTarget = transform.localScale / selectionScale;
+			if (isSelected) {
+				if (animationCoroutine != null) {
+					StopCoroutine(animationCoroutine);
+					visRenderer.transform.localScale = animationTarget;
+				}
 
-			if (animationCoroutine != null) {
-				StopCoroutine(animationCoroutine);
-				transform.localScale = animationTarget;
+				animationTarget = visRenderer.transform.localScale / selectionScale;
+
+				animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
+					visRenderer.transform,
+					TransformValue.Scale,
+					visRenderer.transform.localScale,
+					animationTarget,
+					animationTimeOnDeselect,
+					animationCurveDeselect,
+					OnAnimationFinished
+				));
+
+				isSelected = false;
 			}
-
-			animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
-				transform,
-				TransformValue.Scale,
-				transform.localScale,
-				animationTarget,
-				animationTimeOnDeselect,
-				animationCurveDeselect,
-				OnAnimationFinished
-			));
 
 			HasDeselected?.Invoke(Index);
 		}

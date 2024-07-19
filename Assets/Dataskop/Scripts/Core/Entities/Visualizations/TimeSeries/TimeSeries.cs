@@ -76,7 +76,8 @@ namespace Dataskop.Entities.Visualizations {
 			for (int i = 0; i < ResultsCount - 1; i++) {
 
 				Vector3 elementPos = new(visPosition.x, visPosition.y + config.elementDistance * (i + 1), visPosition.z);
-				GameObject newElement = Instantiate(Configuration.elementVis, elementPos, visTransform.rotation);
+				//GameObject newElement = Instantiate(Configuration.elementVis, elementPos, visTransform.rotation);
+				GameObject newElement = null;
 				newElement.transform.SetParent(container);
 
 				TimeElement timeElement = newElement.GetComponent<TimeElement>();
