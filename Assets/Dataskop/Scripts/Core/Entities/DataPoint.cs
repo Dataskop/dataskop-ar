@@ -66,14 +66,13 @@ namespace Dataskop.Entities {
 			FocusedIndexChanged -= Vis.OnFocusedIndexChanged;
 			Vis.SwipedUp -= DecreaseMeasurementIndex;
 			Vis.SwipedDown -= IncreaseMeasurementIndex;
+			Vis.VisObjectSelected -= OnVisObjectSelected;
 			Vis.Despawn();
 
 		}
 
 		public void OnMeasurementResultsUpdated() {
-
 			//TODO: What happens when Measurement Results get updated (either through request or auto refetch)...
-
 		}
 
 		private void IncreaseMeasurementIndex() {
@@ -88,8 +87,7 @@ namespace Dataskop.Entities {
 				return;
 			}
 
-			FocusedIndex++;
-			FocusedIndexChanged?.Invoke(MeasurementDefinition, FocusedIndex);
+			SetIndex(FocusedIndex + 1);
 
 		}
 
@@ -103,8 +101,7 @@ namespace Dataskop.Entities {
 				return;
 			}
 
-			FocusedIndex--;
-			FocusedIndexChanged?.Invoke(MeasurementDefinition, FocusedIndex);
+			SetIndex(FocusedIndex - 1);
 		}
 
 		private void OnVisObjectSelected(int index) {

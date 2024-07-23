@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Dataskop.Entities.Visualizations {
 
-	public class DotVisObject : MonoBehaviour, IVisObject {
+	public class BubbleVisObject : MonoBehaviour, IVisObject {
 
 		[Header("References")]
 		[SerializeField] private CanvasGroup dataDisplay;
@@ -18,20 +18,20 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private Image boolIconRenderer;
 		[SerializeField] private Image authorIconImageRenderer;
 		[SerializeField] private Sprite[] boolIcons;
+		[SerializeField] private SphereCollider visCollider;
 
 		[Header("Values")]
 		[SerializeField] private Color32 boolTrueColor;
 		[SerializeField] private Color32 boolFalseColor;
-		[SerializeField] private AnimationCurve animationCurveSelect;
-		[SerializeField] private AnimationCurve animationCurveDeselect;
-		[SerializeField] private float animationTimeOnSelect;
-		[SerializeField] private float animationTimeOnDeselect;
-		[SerializeField] private float selectionScale;
-		private Coroutine animationCoroutine;
+		[SerializeField] private AnimationCurve scaleCurve;
+		[SerializeField] public float minScale;
+		[SerializeField] public float maxScale;
 
+		private Coroutine scaleRoutine;
+		private Coroutine animationCoroutine;
+		private Coroutine moveLineCoroutine;
 		private Vector3 animationTarget;
 		private bool isSelected;
-		private Coroutine moveLineCoroutine;
 
 		public event Action<int> HasHovered;
 
@@ -42,11 +42,6 @@ namespace Dataskop.Entities.Visualizations {
 		public int Index { get; set; }
 
 		public bool IsFocused { get; set; }
-
-		public MeasurementType[] AllowedMeasurementTypes { get; } = {
-			MeasurementType.Float,
-			MeasurementType.Bool
-		};
 
 		public CanvasGroup DataDisplay => dataDisplay;
 
@@ -67,24 +62,28 @@ namespace Dataskop.Entities.Visualizations {
 			idTextMesh.text = displayData.Result.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper();
 
 			switch (displayData.Type) {
+
 				case MeasurementType.Float: {
 					float receivedValue = displayData.Result.ReadAsFloat();
 					boolIconRenderer.enabled = false;
 					valueTextMesh.alpha = 1;
 					valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) + $" {displayData.Attribute.Unit}";
 					dateTextMesh.text = displayData.Result.GetTime();
+					OnMeasurementResultUpdated(receivedValue, displayData.Attribute.Minimum, displayData.Attribute.Maximum);
 					break;
 				}
 				case MeasurementType.Bool: {
+					float receivedValue = displayData.Result.ReadAsBool() ? 1 : 0;
 					valueTextMesh.alpha = 1;
 					boolIconRenderer.enabled = false;
 					valueTextMesh.text = displayData.Result.ReadAsBool().ToString();
-					int boolValue = displayData.Result.ReadAsBool() ? 1 : 0;
 					boolIconRenderer.color = displayData.Result.ReadAsBool() ? boolTrueColor : boolFalseColor;
-					boolIconRenderer.sprite = boolValue == 0 ? boolIcons[0] : boolIcons[1];
+					boolIconRenderer.sprite = receivedValue == 0 ? boolIcons[0] : boolIcons[1];
 					dateTextMesh.text = displayData.Result.GetTime();
+					OnMeasurementResultUpdated(receivedValue, displayData.Attribute.Minimum, displayData.Attribute.Maximum);
 					break;
 				}
+
 			}
 
 			if (displayData.Result.Author != string.Empty) {
@@ -94,6 +93,7 @@ namespace Dataskop.Entities.Visualizations {
 			else {
 				authorIconImageRenderer.enabled = false;
 			}
+
 		}
 
 		public void OnHover() {
@@ -101,16 +101,16 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public void OnSelect() {
-			PlaySelectionAnimation();
 			isSelected = true;
 			HasSelected?.Invoke(Index);
 		}
 
 		public void OnDeselect() {
+
 			if (isSelected) {
-				PlayDeselectionAnimation();
 				isSelected = false;
 			}
+
 			HasDeselected?.Invoke(Index);
 		}
 
@@ -131,49 +131,20 @@ namespace Dataskop.Entities.Visualizations {
 			Destroy(gameObject);
 		}
 
-		private void OnAnimationFinished() {
-			animationCoroutine = null;
-		}
+		private void OnMeasurementResultUpdated(float value, float minAttributeValue, float maxAttributeValue) {
 
-		private void PlaySelectionAnimation() {
+			float newSize = BubbleUtils.CalculateRadius(value, minAttributeValue, maxAttributeValue, minScale, maxScale);
+			Vector3 newBubbleScale = new(newSize, newSize, newSize);
 
-			if (animationCoroutine != null) {
-				StopCoroutine(animationCoroutine);
-				visRenderer.transform.localScale = animationTarget;
+			Transform visTransform = visRenderer.transform;
+
+			if (scaleRoutine != null) {
+				StopCoroutine(scaleRoutine);
 			}
 
-			animationTarget = visRenderer.transform.localScale * selectionScale;
-
-			animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
-				visRenderer.transform,
-				TransformValue.Scale,
-				visRenderer.transform.localScale,
-				animationTarget,
-				animationTimeOnSelect,
-				animationCurveSelect,
-				OnAnimationFinished
-			));
-
-		}
-
-		private void PlayDeselectionAnimation() {
-
-			if (animationCoroutine != null) {
-				StopCoroutine(animationCoroutine);
-				visRenderer.transform.localScale = animationTarget;
-			}
-
-			animationTarget = visRenderer.transform.localScale / selectionScale;
-
-			animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
-				visRenderer.transform,
-				TransformValue.Scale,
-				visRenderer.transform.localScale,
-				animationTarget,
-				animationTimeOnDeselect,
-				animationCurveDeselect,
-				OnAnimationFinished
-			));
+			scaleRoutine = StartCoroutine(Lerper.TransformLerpOnCurve(visTransform, TransformValue.Scale, visTransform.localScale,
+				newBubbleScale, 0.12f, scaleCurve, null));
+			visCollider.radius = newSize / 2f;
 
 		}
 
