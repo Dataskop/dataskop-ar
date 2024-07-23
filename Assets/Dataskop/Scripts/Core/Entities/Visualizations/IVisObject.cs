@@ -12,8 +12,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		public bool IsFocused { get; set; }
 
-		public MeasurementType[] AllowedMeasurementTypes { get; }
-
 		public CanvasGroup DataDisplay { get; }
 
 		public TextMeshProUGUI IDTextMesh { get; }

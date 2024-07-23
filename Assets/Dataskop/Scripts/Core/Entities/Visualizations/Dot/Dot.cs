@@ -11,7 +11,7 @@ namespace Dataskop.Entities.Visualizations {
 	public class Dot : MonoBehaviour, IVisualization {
 
 		[Header("References")]
-		[SerializeField] private GameObject visPrefab;
+		[SerializeField] private GameObject visObjectPrefab;
 		[SerializeField] private Transform visObjectsContainer;
 		[SerializeField] private DotOptions options;
 		[SerializeField] private Transform dropShadow;
@@ -26,12 +26,8 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private Color selectColor;
 		[SerializeField] private Color historyColor;
 
-		private Coroutine historyMove = null;
+		private Coroutine historyMove;
 		private Vector3 moveTarget = Vector3.zero;
-
-		private DotOptions Options { get; set; }
-
-		private int FocusIndex => DataPoint.FocusedIndex;
 
 		public event Action SwipedDown;
 
@@ -43,9 +39,9 @@ namespace Dataskop.Entities.Visualizations {
 
 		public event Action<int> VisObjectDeselected;
 
-		public IVisObject[] VisObjects { get; set; }
-
 		public DataPoint DataPoint { get; set; }
+
+		public IVisObject[] VisObjects { get; set; }
 
 		public VisualizationOption VisOption { get; set; }
 
@@ -72,6 +68,10 @@ namespace Dataskop.Entities.Visualizations {
 
 		public int PreviousIndex { get; set; }
 
+		private DotOptions Options { get; set; }
+
+		private int FocusIndex => DataPoint.FocusedIndex;
+
 		public void Initialize(DataPoint dp) {
 
 			DataPoint = dp;
@@ -89,7 +89,7 @@ namespace Dataskop.Entities.Visualizations {
 				? new IVisObject[dp.MeasurementDefinition.MeasurementResults.Count]
 				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
 
-			GameObject visObject = Instantiate(visPrefab, transform.position, Quaternion.identity, visObjectsContainer);
+			GameObject visObject = Instantiate(visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer);
 			VisObjects[FocusIndex] = visObject.GetComponent<IVisObject>();
 			VisObjects[FocusIndex].HasHovered += OnVisObjectHovered;
 			VisObjects[FocusIndex].HasSelected += OnVisObjectSelected;
@@ -120,7 +120,7 @@ namespace Dataskop.Entities.Visualizations {
 			if (!AllowedMeasurementTypes.Contains(def.MeasurementResults[index].MeasurementDefinition.MeasurementType)) {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
-					Text = "Value Type not supported by this visualization.",
+					Text = $"Value Type not supported by {Type} visualization.",
 					DisplayDuration = 5f
 				});
 				return;
@@ -264,11 +264,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-		public void ApplyStyle(VisualizationStyle style) {
-			dropShadow.gameObject.SetActive(style.HasDropShadow);
-			groundLine.gameObject.SetActive(style.HasGroundLine);
-		}
-
 		public void OnSwipeInteraction(PointerInteraction pointerInteraction) {
 
 			switch (pointerInteraction.Direction.y) {
@@ -282,6 +277,11 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
+		public void ApplyStyle(VisualizationStyle style) {
+			dropShadow.gameObject.SetActive(style.HasDropShadow);
+			groundLine.gameObject.SetActive(style.HasGroundLine);
+		}
+
 		public void Despawn() {
 			ClearVisObjects();
 			DataPoint = null;
@@ -290,7 +290,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		private IVisObject SpawnVisObject(int index, Vector3 pos, MeasurementResult result) {
 
-			GameObject newVis = Instantiate(visPrefab, pos, visObjectsContainer.localRotation, visObjectsContainer);
+			GameObject newVis = Instantiate(visObjectPrefab, pos, visObjectsContainer.localRotation, visObjectsContainer);
 			IVisObject visObject = newVis.GetComponent<IVisObject>();
 
 			UpdateVisObject(visObject, index, result, Options.styles[0].timeMaterial);
@@ -375,6 +375,11 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
+		private void SetLinePosition(LineRenderer lr, Vector3 startPoint, Vector3 endPoint) {
+			lr.SetPosition(0, startPoint);
+			lr.SetPosition(1, endPoint);
+		}
+
 		private IEnumerator MoveHistory(Vector3 direction, int multiplier = 1) {
 
 			Vector3 startPosition = visObjectsContainer.transform.position;
@@ -395,11 +400,6 @@ namespace Dataskop.Entities.Visualizations {
 			visObjectsContainer.transform.position = moveTarget;
 			historyMove = null;
 
-		}
-
-		private void SetLinePosition(LineRenderer lr, Vector3 startPoint, Vector3 endPoint) {
-			lr.SetPosition(0, startPoint);
-			lr.SetPosition(1, endPoint);
 		}
 
 		private IEnumerator MoveLinePointTo(int index, Vector3 target, float duration) {
