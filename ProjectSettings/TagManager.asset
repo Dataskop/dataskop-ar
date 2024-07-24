@@ -13,6 +13,7 @@ TagManager:
   - Vis
   - Debug
   - ARPlane
+  - VisObject
   layers:
   - Default
   - TransparentFX

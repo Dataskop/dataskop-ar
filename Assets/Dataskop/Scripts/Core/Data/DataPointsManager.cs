@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Dataskop.Entities;
 using Dataskop.Interaction;
 using Mapbox.Unity.Map;
 using Mapbox.Unity.Utilities;
@@ -13,7 +14,6 @@ namespace Dataskop.Data {
 
 		[Header("Events")]
 		public UnityEvent<VisualizationOption> onVisualizationChanged;
-		public UnityEvent dataPointsResultsUpdated;
 		public UnityEvent<int> dataPointHistorySwiped;
 
 		[Header("References")]
@@ -27,6 +27,7 @@ namespace Dataskop.Data {
 		[SerializeField] private AuthorRepository authorRepository;
 
 		private GameObject dummyVisObject;
+		private bool hasHistoryEnabled;
 
 		/// <summary>
 		///     List of currently placed markers in the AR world.
@@ -59,7 +60,7 @@ namespace Dataskop.Data {
 			inputHandler.WorldPointerUpped += OnSwiped;
 
 			dummyVisObject = new GameObject {
-				tag = "Vis"
+				tag = "VisObject"
 			};
 
 			LastKnownDevicePositions = new Dictionary<Device, Vector3>();
@@ -84,8 +85,7 @@ namespace Dataskop.Data {
 			if (VisualizationRepository.IsAvailable(visOpt.Type.FirstCharToUpper())) {
 
 				GameObject vis = VisualizationRepository.GetVisualization(visOpt.Type.FirstCharToUpper());
-
-				ToggleTimeSeries(dp, false);
+				dp.RemoveVis();
 				dp.SetVis(vis);
 				dp.Vis.VisOption = visOpt;
 				dp.Vis.ApplyStyle(dp.Vis.VisOption.Style);
@@ -101,21 +101,23 @@ namespace Dataskop.Data {
 
 		}
 
-		public void OnHistoryViewChanged(bool isActive) {
+		public void OnHistoryViewChanged(bool enable) {
+
+			hasHistoryEnabled = enable;
 
 			foreach (DataPoint dp in DataPoints) {
-				ToggleTimeSeries(dp, isActive);
+				ToggleTimeSeries(dp, enable);
 			}
 
 		}
 
-		private static void ToggleTimeSeries(DataPoint dp, bool isActive) {
+		private static void ToggleTimeSeries(DataPoint dp, bool enable) {
 
 			if (dp.Vis == null)
 				return;
 
 			if (dp.Vis.VisOption.Style.IsTimeSeries) {
-				dp.Vis.OnTimeSeriesToggled(isActive);
+				dp.Vis.OnTimeSeriesToggled(enable);
 			}
 
 		}
@@ -123,6 +125,10 @@ namespace Dataskop.Data {
 		private void OnSwiped(PointerInteraction pointerInteraction) {
 
 			if (!pointerInteraction.isSwipe) {
+				return;
+			}
+
+			if (pointerInteraction.startingGameObject == null) {
 				return;
 			}
 
@@ -134,11 +140,15 @@ namespace Dataskop.Data {
 				return;
 			}
 
-			foreach (DataPoint dp in DataPoints) {
-				dp.Vis.Swiped(pointerInteraction);
+			if (!pointerInteraction.startingGameObject.CompareTag("VisObject")) {
+				return;
 			}
 
-			dataPointHistorySwiped?.Invoke(DataPoints[0].CurrentMeasurementResultIndex);
+			foreach (DataPoint dp in DataPoints) {
+				dp.Vis.OnSwipeInteraction(pointerInteraction);
+			}
+
+			dataPointHistorySwiped?.Invoke(DataPoints[0].FocusedIndex);
 
 		}
 
@@ -147,22 +157,8 @@ namespace Dataskop.Data {
 			if (!HasLoadedDataPoints)
 				return;
 
-			PointerInteraction historyPointerInteraction = new();
-			historyPointerInteraction.startingGameObject = dummyVisObject;
-			historyPointerInteraction.endingGameObject = dummyVisObject;
-			historyPointerInteraction.isSwipe = true;
-
-			if (newCount > prevCount) {
-				historyPointerInteraction.startPosition = Vector2.zero;
-				historyPointerInteraction.endPosition = Vector2.down * 100f;
-			}
-			else {
-				historyPointerInteraction.startPosition = Vector2.zero;
-				historyPointerInteraction.endPosition = Vector2.up * 100f;
-			}
-
 			foreach (DataPoint dp in DataPoints) {
-				dp.Vis.Swiped(historyPointerInteraction);
+				dp.SetIndex(newCount);
 			}
 
 		}
@@ -179,6 +175,7 @@ namespace Dataskop.Data {
 
 			DataPointsLocations = new Vector2d[projectData.Devices.Count];
 			SpawnDataPoints();
+
 			HasLoadedDataPoints = true;
 
 		}
@@ -193,13 +190,20 @@ namespace Dataskop.Data {
 
 		}
 
-		public void UpdateDataPoints(DataAttribute attribute) {
+		public void OnAttributeChanged(DataAttribute attribute) {
 
 			if (HasLoadedDataPoints) {
 				ClearDataPoints();
 			}
 
 			SpawnDataPoints();
+
+			if (hasHistoryEnabled) {
+				foreach (DataPoint dp in DataPoints) {
+					ToggleTimeSeries(dp, true);
+				}
+			}
+
 			HasLoadedDataPoints = true;
 
 		}
@@ -227,9 +231,8 @@ namespace Dataskop.Data {
 					dataPointInstance.MeasurementDefinition = definition;
 					dataPointInstance.Device = projectDevices[i];
 					dataPointInstance.AuthorRepository = AuthorRepository;
-					dataPointInstance.SetMeasurementResult(dataPointInstance.MeasurementDefinition.GetLatestMeasurementResult());
-
-					SetDataPointVisualization(dataPointInstance, DataAttributeManager.SelectedAttribute.VisOptions.First());
+					dataPointInstance.FocusedIndex = 0;
+					dataPointInstance.FocusedIndexChangedByTap += OnIndexChangeRequested;
 
 					//Move the DataPoint to its location
 					if (AppOptions.DemoMode) {
@@ -250,6 +253,7 @@ namespace Dataskop.Data {
 					}
 
 					DataPoints.Add(dataPointInstance);
+					SetDataPointVisualization(dataPointInstance, DataAttributeManager.SelectedAttribute.VisOptions.First());
 				}
 
 			}
@@ -264,6 +268,20 @@ namespace Dataskop.Data {
 			dataPointTransform.localPosition = newPosition;
 		}
 
+		private void OnIndexChangeRequested(int index) {
+
+			if (!HasLoadedDataPoints) {
+				return;
+			}
+
+			foreach (DataPoint dp in DataPoints) {
+				dp.SetIndex(index);
+			}
+			
+			dataPointHistorySwiped?.Invoke(index);
+
+		}
+
 		private void OnMeasurementResultsUpdated() {
 
 			if (!HasLoadedDataPoints) {
@@ -271,11 +289,8 @@ namespace Dataskop.Data {
 			}
 
 			foreach (DataPoint dp in DataPoints) {
-				dp.Vis.OnMeasurementResultsUpdated();
-				dp.CurrentMeasurementResult = dp.MeasurementDefinition.GetLatestMeasurementResult();
+				dp.OnMeasurementResultsUpdated();
 			}
-
-			dataPointsResultsUpdated?.Invoke();
 
 		}
 
@@ -284,6 +299,7 @@ namespace Dataskop.Data {
 			HasLoadedDataPoints = false;
 
 			foreach (DataPoint dp in DataPoints) {
+				dp.FocusedIndexChangedByTap -= OnIndexChangeRequested;
 				dp.RemoveVis();
 				Destroy(dp.gameObject);
 			}

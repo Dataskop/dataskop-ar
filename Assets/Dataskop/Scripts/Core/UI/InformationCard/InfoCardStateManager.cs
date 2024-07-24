@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Dataskop.Data;
+using Dataskop.Entities;
 using Dataskop.Interaction;
 using UnityEngine;
 using UnityEngine.Events;

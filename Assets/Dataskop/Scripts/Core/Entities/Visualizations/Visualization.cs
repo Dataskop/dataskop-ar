@@ -10,15 +10,13 @@ namespace Dataskop.Entities.Visualizations {
 		[Header("Vis Values")]
 		[SerializeField] private Vector3 offset;
 		[SerializeField] private float scaleFactor;
-		[SerializeField] protected TimeSeriesConfig timeSeriesConfiguration;
+		[SerializeField] protected VisHistoryConfiguration timeSeriesConfiguration;
 		[SerializeField] protected Color deselectColor;
 		[SerializeField] protected Color hoverColor;
 		[SerializeField] protected Color selectColor;
+		[SerializeField] protected Color historyColor;
 
 		private DataPoint dataPoint;
-		public Action SwipedDown;
-
-		public Action SwipedUp;
 
 		public DataPoint DataPoint {
 			get => dataPoint;
@@ -33,8 +31,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisualizationOption VisOption { get; set; }
 
-		public Camera ARCamera { get; set; }
-
 		public bool IsSelected { get; set; }
 
 		public bool IsSpawned => DataPoint != null;
@@ -42,6 +38,8 @@ namespace Dataskop.Entities.Visualizations {
 		public abstract Transform VisTransform { get; }
 
 		public abstract MeasurementType[] AllowedMeasurementTypes { get; set; }
+
+		protected IVisObject[] VisObjects { get; set; }
 
 		/// <summary>
 		///     The offset of the visualization to the ground.
@@ -61,37 +59,43 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisualizationType Type { get; protected set; }
 
-		public void Start() {
-			ARCamera = Camera.main;
-		}
+		public event Action SwipedDown;
+
+		public event Action SwipedUp;
+
+		public event Action<int> VisObjectHovered;
+
+		public event Action<int> VisObjectSelected;
+
+		public event Action<int> VisObjectDeselected;
 
 		/// <summary>
 		///     Creates a visualization for a given Data Point.
 		/// </summary>
 		protected virtual void OnDataPointChanged() {
-			DataPoint.MeasurementResultChanged += OnMeasurementResultChanged;
+			//DataPoint.FocusedMeasurementIndexChanged += OnFocusedMeasurementIndexChanged;
 		}
 
 		/// <summary>
 		///     Gets called when the user points the reticule over the visible visualization.
 		/// </summary>
-		public abstract void Hover();
+		public abstract void OnVisObjectHovered(int index);
 
 		/// <summary>
 		///     Gets called when the visualization gets selected.
 		/// </summary>
-		public abstract void Select();
+		public abstract void OnVisObjectSelected(int index);
 
 		/// <summary>
 		///     Gets called when the visualization gets deselected.
 		/// </summary>
-		public abstract void Deselect();
+		public abstract void OnVisObjectDeselected(int index);
 
 		/// <summary>
 		///     Gets called before the visualization is removed.
 		/// </summary>
 		public virtual void Despawn() {
-			DataPoint.MeasurementResultChanged -= OnMeasurementResultChanged;
+			//DataPoint.FocusedMeasurementIndexChanged -= OnFocusedMeasurementIndexChanged;
 			DataPoint = null;
 			Destroy(gameObject);
 		}
@@ -104,16 +108,11 @@ namespace Dataskop.Entities.Visualizations {
 
 		public abstract void OnMeasurementResultsUpdated();
 
-		public abstract void OnMeasurementResultChanged(MeasurementResult mr);
+		public abstract void OnFocusedMeasurementIndexChanged(MeasurementResult mr);
 
 		public abstract void ApplyStyle(VisualizationStyle style);
 
 		public void Swiped(PointerInteraction pointerInteraction) {
-
-			if (pointerInteraction.startingGameObject == null)
-				return;
-
-			if (!pointerInteraction.startingGameObject.CompareTag("Vis")) return;
 
 			switch (pointerInteraction.Direction.y) {
 				case > 0.20f:
