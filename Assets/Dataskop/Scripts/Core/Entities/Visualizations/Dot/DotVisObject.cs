@@ -27,8 +27,8 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private float animationTimeOnSelect;
 		[SerializeField] private float animationTimeOnDeselect;
 		[SerializeField] private float selectionScale;
-		private Coroutine animationCoroutine;
 
+		private Coroutine animationCoroutine;
 		private Vector3 animationTarget;
 		private bool isSelected;
 		private Coroutine moveLineCoroutine;
@@ -43,11 +43,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		public bool IsFocused { get; set; }
 
-		public MeasurementType[] AllowedMeasurementTypes { get; } = {
-			MeasurementType.Float,
-			MeasurementType.Bool
-		};
-
 		public CanvasGroup DataDisplay => dataDisplay;
 
 		public TextMeshProUGUI IDTextMesh => idTextMesh;
@@ -55,8 +50,6 @@ namespace Dataskop.Entities.Visualizations {
 		public TextMeshProUGUI ValueTextMesh => valueTextMesh;
 
 		public TextMeshProUGUI DateTextMesh => dateTextMesh;
-
-		public Image VisRenderer => visRenderer;
 
 		public Image BoolIconRenderer => boolIconRenderer;
 

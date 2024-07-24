@@ -12,6 +12,8 @@ namespace Dataskop.Data {
 
 		public DataAttribute Attribute { get; set; }
 
+		public bool ActiveHistory { get; set; }
+
 	}
 
 }

@@ -191,8 +191,8 @@ MonoBehaviour:
   offset: {x: 0, y: 1, z: 0}
   scaleFactor: 0.25
   visHistoryConfig:
-    visibleHistoryCount: 100
-    elementDistance: 0.35
+    visibleHistoryCount: 50
+    elementDistance: 0.32
     animationDuration: 0.125
     isFading: 0
   deselectColor: {r: 0.14618193, g: 0.3496184, b: 0.6886792, a: 1}

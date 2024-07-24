@@ -17,3 +17,4 @@ MonoBehaviour:
   - defaultMaterial: {fileID: 2100000, guid: c08e23e36613f10459993236cf71c45a, type: 2}
     hoverMaterial: {fileID: 2100000, guid: 054dcdee08aaff44cb7c26670c8a5447, type: 2}
     selectionMaterial: {fileID: 2100000, guid: 0abc940067761cd45897e1356b680b74, type: 2}
+    timeMaterial: {fileID: 2100000, guid: 8333b4cdbe9303f48958bf7255342675, type: 2}
