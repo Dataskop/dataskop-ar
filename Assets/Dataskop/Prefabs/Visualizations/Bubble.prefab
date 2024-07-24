@@ -186,7 +186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visObjectPrefab: {fileID: 7048796313808956549, guid: 5ab36474366a38942bbba19a728fd2a6, type: 3}
   visObjectsContainer: {fileID: 4172259643403448320}
-  options: {fileID: 11400000, guid: bb8ab6863403a234d9035346e104de5a, type: 2}
+  visObjectStyle: {fileID: 11400000, guid: bb8ab6863403a234d9035346e104de5a, type: 2}
   dropShadow: {fileID: 7669548959106058827}
   groundLine: {fileID: 4226972398150195897}
   labelLine: {fileID: 1095265369420110130}

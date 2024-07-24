@@ -120,9 +120,9 @@ namespace Dataskop.Entities.Visualizations {
 			dataDisplay.alpha = 0;
 		}
 
-		public void SetMaterial(Material newMaterial) {
-			visRenderer.material = newMaterial;
-			valueTextMesh.color = newMaterial.color;
+		public void SetMaterials(params Material[] materials) {
+			visRenderer.material = materials[0];
+			valueTextMesh.color = materials[0].color;
 		}
 
 		public void Delete() {

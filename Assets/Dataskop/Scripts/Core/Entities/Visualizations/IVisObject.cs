@@ -42,7 +42,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void HideDisplay();
 
-		public void SetMaterial(Material newMaterial);
+		public void SetMaterials(params Material[] materials);
 
 		public void Delete();
 
