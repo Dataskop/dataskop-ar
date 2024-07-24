@@ -100,12 +100,13 @@ namespace Dataskop.Entities.Visualizations {
 
 			dropShadow.transform.localScale *= Scale;
 			dropShadow.transform.localPosition -= Offset;
-
+/*
 			SetLinePosition(groundLine,
 				new Vector3(VisOrigin.localPosition.x,
 					VisOrigin.localPosition.y - VisObjects[FocusIndex].VisRenderer.sprite.bounds.size.y * 0.75f,
 					VisOrigin.localPosition.z),
 				dropShadow.localPosition);
+				*/
 
 			groundLine.startWidth = 0.0075f;
 			groundLine.endWidth = 0.0075f;

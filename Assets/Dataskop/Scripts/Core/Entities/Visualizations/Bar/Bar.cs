@@ -1,39 +1,74 @@
-using System.Globalization;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Dataskop.Data;
-using Dataskop.Utils;
-using TMPro;
+using Dataskop.Interaction;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Dataskop.Entities.Visualizations {
 
-	public class Bar : Visualization {
+	public class Bar : MonoBehaviour, IVisualization {
 
 		[Header("References")]
-		[SerializeField] private MeshRenderer barFillMeshRenderer;
-		[SerializeField] private MeshRenderer barFrameMeshRenderer;
-		[SerializeField] private Transform barFill;
-		[SerializeField] private Transform barFrame;
+		[SerializeField] private GameObject visObjectPrefab;
+		[SerializeField] private Transform visObjectsContainer;
 		[SerializeField] private BarOptions options;
-		[SerializeField] private BarTimeSeries barTimeSeries;
-		[SerializeField] private BoxCollider barCollider;
-		[SerializeField] private Transform visTransform;
-		[SerializeField] private Transform timeElementsContainer;
 
-		[Header("Display References")]
-		[SerializeField] private Transform dataDisplay;
-		[SerializeField] private Transform authorDisplay;
-		[SerializeField] private CanvasGroup canvasGroup;
-		[SerializeField] private Image authorIconImageRenderer;
-		[SerializeField] private TextMeshProUGUI valueTextMesh;
-		[SerializeField] private TextMeshProUGUI minValueTextMesh;
-		[SerializeField] private TextMeshProUGUI maxValueTextMesh;
-		[SerializeField] private TextMeshProUGUI idMesh;
-		[SerializeField] private TextMeshProUGUI dateMesh;
+		[Header("Vis Values")]
+		[SerializeField] private Vector3 offset;
+		[SerializeField] private float scaleFactor;
+		[SerializeField] private VisHistoryConfiguration visHistoryConfig;
+		[SerializeField] private Color deselectColor;
+		[SerializeField] private Color hoverColor;
+		[SerializeField] private Color selectColor;
+		[SerializeField] private Color historyColor;
+
+		private Coroutine historyMove;
+		private Vector3 moveTarget = Vector3.zero;
 		private bool isRotated;
-
 		private Vector3 origin;
+
+		public event Action SwipedDown;
+
+		public event Action SwipedUp;
+
+		public event Action<int> VisObjectHovered;
+
+		public event Action<int> VisObjectSelected;
+
+		public event Action<int> VisObjectDeselected;
+
+		public IVisObject[] VisObjects { get; set; }
+
+		public DataPoint DataPoint { get; set; }
+
+		public VisualizationOption VisOption { get; set; }
+
+		public VisHistoryConfiguration VisHistoryConfiguration { get; set; }
+
+		public bool IsSelected { get; set; }
+
+		public bool IsInitialized { get; set; }
+
+		public bool HasHistoryEnabled { get; set; }
+
+		public Transform VisOrigin { get; set; }
+
+		public MeasurementType[] AllowedMeasurementTypes { get; set; } = {
+			MeasurementType.Float,
+			MeasurementType.Bool
+		};
+
+		public Vector3 Offset { get; set; }
+
+		public float Scale { get; set; }
+
+		public VisualizationType Type { get; set; }
+
+		public int PreviousIndex { get; set; }
+
+		private int FocusIndex => DataPoint.FocusedIndex;
 
 		private Vector3 BarFillScale { get; set; }
 
@@ -41,156 +76,37 @@ namespace Dataskop.Entities.Visualizations {
 
 		private BarOptions Options { get; set; }
 
-		private BarTimeSeries TimeSeries => barTimeSeries;
+		public void Initialize(DataPoint dp) {
 
-		public override Transform VisTransform => visTransform;
+			DataPoint = dp;
+			VisOrigin = transform;
+			Scale = scaleFactor;
+			Offset = offset;
+			VisHistoryConfiguration = visHistoryConfig;
 
-		public override MeasurementType[] AllowedMeasurementTypes { get; set; } = {
-			MeasurementType.Float,
-			MeasurementType.Bool
-		};
-
-		private bool IsRotated {
-			get => isRotated;
-			set {
-				isRotated = value;
-				OnVisualizationRotated(IsRotated);
-			}
-		}
-
-		private void Awake() {
-			TimeSeries.TimeSeriesBeforeSpawn += RotateVisualization;
-			TimeSeries.TimeSeriesDespawned += ResetRotation;
-		}
-
-		protected override void OnDataPointChanged() {
-			base.OnDataPointChanged();
 			Type = VisualizationType.Bar;
 			Options = Instantiate(options);
 
-			VisTransform.root.localPosition = Offset;
-			VisTransform.localScale *= Scale;
+			//TODO: Handle MeasurementResults being less than configured time series configuration visible history count.
+			VisObjects = DataPoint.MeasurementDefinition.MeasurementResults.Count < VisHistoryConfiguration.visibleHistoryCount
+				? new IVisObject[dp.MeasurementDefinition.MeasurementResults.Count]
+				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
 
-			idMesh.text = DataPoint.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper();
+			GameObject visObject = Instantiate(visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer);
+			VisObjects[FocusIndex] = visObject.GetComponent<IVisObject>();
+			VisObjects[FocusIndex].HasHovered += OnVisObjectHovered;
+			VisObjects[FocusIndex].HasSelected += OnVisObjectSelected;
+			VisObjects[FocusIndex].HasDeselected += OnVisObjectDeselected;
 
-			OnFocusedMeasurementIndexChanged(DataPoint.FocusedMeasurement);
-			barCollider.enabled = true;
+			VisOrigin.localScale *= Scale;
+			VisOrigin.root.localPosition = Offset;
+
+			OnFocusedIndexChanged(DataPoint.MeasurementDefinition, FocusIndex);
+			IsInitialized = true;
 		}
 
-		private void SetPillarHeight(float heightValue, float minValue, float maxValue, float minBarHeight, float maxBarHeight) {
-			heightValue = Mathf.Clamp(heightValue, minValue, maxValue);
-			BarHeight = MathExtensions.Map(heightValue, minValue, maxValue, minBarHeight, maxBarHeight);
-			Vector3 localScale = barFill.localScale;
-			BarFillScale = new Vector3(localScale.x, BarHeight, localScale.z);
-			localScale = BarFillScale;
-			barFill.localScale = localScale;
-		}
+		public void OnFocusedIndexChanged(MeasurementDefinition def, int index) {
 
-		private void SetDisplayValue(float value) {
-			valueTextMesh.text = value.ToString("00.00", CultureInfo.InvariantCulture) + $" {DataPoint.Attribute?.Unit}";
-		}
-
-		private void SetDisplayValue(bool value) {
-			valueTextMesh.text = value.ToString();
-		}
-
-		private void SetMinMaxDisplayValues(float min, float max) {
-			minValueTextMesh.text = min.ToString("00.00", CultureInfo.InvariantCulture) + $" {DataPoint.Attribute?.Unit}";
-			maxValueTextMesh.text = max.ToString("00.00", CultureInfo.InvariantCulture) + $" {DataPoint.Attribute?.Unit}";
-		}
-
-		private void RotateVisualization() {
-			VisTransform.localRotation = Quaternion.Euler(0, 0, -90);
-			VisTransform.localPosition = new Vector3(0, 0, 0);
-			dataDisplay.localRotation = Quaternion.Euler(0, 0, 90);
-			authorDisplay.localRotation = Quaternion.Euler(0, 0, 90);
-			IsRotated = true;
-		}
-
-		private void ResetRotation() {
-			dataDisplay.localRotation = Quaternion.Euler(0, 0, 0);
-			authorDisplay.localRotation = Quaternion.Euler(0, 0, 0);
-			VisTransform.localPosition = new Vector3(0, 0, 0);
-			VisTransform.localRotation = Quaternion.Euler(0, 0, 0);
-			IsRotated = false;
-		}
-
-		private void OnVisualizationRotated(bool isRotated) {
-
-			dataDisplay.GetComponent<RectTransform>().sizeDelta = new Vector2(
-				isRotated ? barFrame.localScale.y * 100 : barFrame.localScale.x * 100,
-				isRotated ? barFrame.localScale.x * 100 : barFrame.localScale.y * 100
-			);
-
-			authorDisplay.GetComponent<RectTransform>().sizeDelta = new Vector2(
-				isRotated ? barFrame.localScale.y * 100 : barFrame.localScale.x * 100,
-				isRotated ? barFrame.localScale.x * 100 : barFrame.localScale.y * 100
-			);
-
-			RectTransform maxValueTransform = maxValueTextMesh.GetComponent<RectTransform>();
-			maxValueTransform.anchorMin = isRotated ? new Vector2(1, 0) : new Vector2(0, 1);
-			maxValueTransform.pivot = isRotated ? new Vector2(1, 0.5f) : new Vector2(0.5f, 1);
-
-			maxValueTransform.sizeDelta = isRotated
-				? new Vector2(80, maxValueTransform.sizeDelta.y)
-				: new Vector2(maxValueTransform.sizeDelta.x, 10);
-
-			RectTransform minValueTransform = minValueTextMesh.GetComponent<RectTransform>();
-			minValueTransform.anchorMax = isRotated ? new Vector2(0, 1) : new Vector2(1, 0);
-			minValueTransform.pivot = isRotated ? new Vector2(0, 0.5f) : new Vector2(0.5f, 0);
-
-			minValueTransform.sizeDelta = isRotated
-				? new Vector2(80, minValueTransform.sizeDelta.y)
-				: new Vector2(minValueTransform.sizeDelta.x, 10);
-
-			RectTransform authorIconTransform = authorIconImageRenderer.GetComponent<RectTransform>();
-			authorIconTransform.anchorMax = isRotated ? new Vector2(0, 0.5f) : new Vector2(0.5f, 1);
-			authorIconTransform.anchorMin = isRotated ? new Vector2(0, 0.5f) : new Vector2(0.5f, 1);
-			authorIconTransform.pivot = isRotated ? new Vector2(0, 0.5f) : new Vector2(0.5f, 1);
-			authorIconTransform.anchoredPosition = isRotated ? new Vector2(40, 0) : new Vector2(0, -40);
-
-			maxValueTextMesh.alignment = isRotated ? TextAlignmentOptions.Right : TextAlignmentOptions.Center;
-			minValueTextMesh.alignment = isRotated ? TextAlignmentOptions.Left : TextAlignmentOptions.Center;
-		}
-
-		public override void ApplyStyle(VisualizationStyle style) { }
-
-		public override void OnVisObjectHovered(int index) {
-			barFrameMeshRenderer.material = Options.styles[0].hoverMaterial;
-			valueTextMesh.color = hoverColor;
-			ShowUserDirectionCanvas();
-		}
-
-		public override void OnVisObjectSelected(int index) {
-			barFrameMeshRenderer.material = Options.styles[0].selectionMaterial;
-			valueTextMesh.color = selectColor;
-			ShowUserDirectionCanvas();
-			IsSelected = true;
-		}
-
-		public override void OnVisObjectDeselected(int index) {
-			barFrameMeshRenderer.material = Options.styles[0].defaultMaterial;
-			valueTextMesh.color = deselectColor;
-			HideAllUserDirectionCanvas();
-			IsSelected = false;
-		}
-
-		public override void OnTimeSeriesToggled(bool isActive) {
-
-			if (isActive) {
-				TimeSeries.Spawn(timeSeriesConfiguration, DataPoint, timeElementsContainer);
-			}
-			else {
-				TimeSeries.DespawnSeries();
-			}
-
-		}
-
-		public override void OnMeasurementResultsUpdated() {
-			OnFocusedMeasurementIndexChanged(DataPoint.MeasurementDefinition.GetLatestMeasurementResult());
-		}
-
-		public override void OnFocusedMeasurementIndexChanged(MeasurementResult mr) {
 			if (!AllowedMeasurementTypes.Contains(DataPoint.MeasurementDefinition.MeasurementType)) {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
@@ -200,46 +116,269 @@ namespace Dataskop.Entities.Visualizations {
 				return;
 			}
 
-			switch (DataPoint.MeasurementDefinition.MeasurementType) {
-				case MeasurementType.Bool: {
-					bool receivedValue = mr.ReadAsBool();
-					SetPillarHeight(receivedValue ? 1f : 0f, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum, 0.01f,
-						barFrame.localScale.y);
-					SetDisplayValue(receivedValue);
-					dateMesh.text = mr.GetTime();
-					break;
-				}
-				case MeasurementType.Float: {
-					float receivedValue = mr.ReadAsFloat();
-					SetPillarHeight(receivedValue, DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum, 0.01f,
-						barFrame.localScale.y);
-					SetDisplayValue(receivedValue);
-					SetMinMaxDisplayValues(DataPoint.Attribute.Minimum, DataPoint.Attribute.Maximum);
-					dateMesh.text = mr.GetTime();
-					break;
-				}
-			}
+			if (!HasHistoryEnabled) {
 
-			barFillMeshRenderer.material.color = Options.fillColor;
-			SetAuthorImage();
-		}
+				MeasurementResult focusedResult = def.MeasurementResults[index];
 
-		private void SetAuthorImage() {
-			if (DataPoint.FocusedMeasurement.Author != string.Empty) {
-				authorIconImageRenderer.sprite = DataPoint.AuthorRepository.AuthorSprites[DataPoint.FocusedMeasurement.Author];
-				authorIconImageRenderer.enabled = true;
+				if (FocusIndex != PreviousIndex) {
+					VisObjects[FocusIndex] = VisObjects[PreviousIndex];
+					VisObjects[PreviousIndex] = null;
+					PreviousIndex = FocusIndex;
+				}
+
+				UpdateVisObject(VisObjects[FocusIndex], FocusIndex, focusedResult,
+					IsSelected ? Options.styles[0].selectionMaterial : Options.styles[0].defaultMaterial, true, true, false);
+
 			}
 			else {
-				authorIconImageRenderer.enabled = false;
+
+				int objectCountDistance = Mathf.Abs(PreviousIndex - FocusIndex);
+
+				if (historyMove != null) {
+					StopCoroutine(historyMove);
+					visObjectsContainer.transform.position = moveTarget;
+				}
+
+				historyMove = StartCoroutine(MoveHistory(PreviousIndex < FocusIndex ? Vector3.down : Vector3.up, objectCountDistance));
+
+				// VisObjects above current result
+				for (int i = 1; i < VisObjects.Length - FocusIndex; i++) {
+					int targetIndex = FocusIndex + i;
+					MeasurementResult newResultToAssign = def.MeasurementResults[targetIndex];
+					IVisObject targetObject = VisObjects[targetIndex];
+					UpdateVisObject(targetObject, targetIndex, newResultToAssign, Options.styles[0].timeMaterial, false, false, true);
+				}
+
+				// VisObjects below current result
+				for (int i = 1; i <= FocusIndex; i++) {
+					int targetIndex = FocusIndex - i;
+					MeasurementResult newResultToAssign = def.MeasurementResults[targetIndex];
+					IVisObject targetObject = VisObjects[targetIndex];
+					UpdateVisObject(targetObject, targetIndex, newResultToAssign, Options.styles[0].timeMaterial, false, false, true);
+				}
+
+				MeasurementResult focusedResult = def.MeasurementResults[FocusIndex];
+				UpdateVisObject(VisObjects[FocusIndex], FocusIndex, focusedResult,
+					IsSelected ? Options.styles[0].selectionMaterial : Options.styles[0].defaultMaterial, true, true, true);
+				PreviousIndex = FocusIndex;
+
 			}
+
 		}
 
-		private void ShowUserDirectionCanvas() {
-			canvasGroup.alpha = 1;
+		public void OnSwipeInteraction(PointerInteraction pointerInteraction) {
+
+			switch (pointerInteraction.Direction.y) {
+				case > 0.20f:
+					SwipedUp?.Invoke();
+					break;
+				case < -0.20f:
+					SwipedDown?.Invoke();
+					break;
+			}
+
 		}
 
-		private void HideAllUserDirectionCanvas() {
-			canvasGroup.alpha = 0;
+		public void ApplyStyle(VisualizationStyle style) { }
+
+		public void Despawn() {
+			ClearVisObjects();
+			DataPoint = null;
+			Destroy(gameObject);
+		}
+
+		public void OnVisObjectHovered(int index) {
+
+			if (index == FocusIndex) {
+				if (!IsSelected) {
+					VisObjects[index].SetMaterial(Options.styles[0].hoverMaterial);
+				}
+			}
+			else {
+				VisObjects[index].ShowDisplay();
+			}
+
+			VisObjectHovered?.Invoke(index);
+		}
+
+		public void OnVisObjectSelected(int index) {
+
+			if (index == FocusIndex) {
+				VisObjects[index].SetMaterial(Options.styles[0].selectionMaterial);
+			}
+
+			IsSelected = true;
+			VisObjectSelected?.Invoke(index);
+		}
+
+		public void OnVisObjectDeselected(int index) {
+
+			if (index == FocusIndex) {
+				VisObjects[index].SetMaterial(Options.styles[0].defaultMaterial);
+			}
+			else {
+				VisObjects[index].HideDisplay();
+			}
+
+			IsSelected = false;
+			VisObjectDeselected?.Invoke(index);
+		}
+
+		public void OnTimeSeriesToggled(bool isActive) {
+
+			if (isActive) {
+
+				IReadOnlyList<MeasurementResult> currentResults = DataPoint.MeasurementDefinition.MeasurementResults.ToList();
+				float distance = visHistoryConfig.elementDistance;
+
+				// VisObjects above current result
+				for (int i = 1; i < VisObjects.Length - FocusIndex; i++) {
+
+					if (currentResults[FocusIndex + i] == null) {
+						continue;
+					}
+
+					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y + distance * i, VisOrigin.position.z);
+					VisObjects[FocusIndex + i] =
+						SpawnVisObject(FocusIndex + i, spawnPos, currentResults[FocusIndex + i], true);
+
+				}
+
+				// VisObjects below current result
+				for (int i = 1; i <= FocusIndex; i++) {
+
+					if (currentResults[FocusIndex - i] == null) {
+						continue;
+					}
+
+					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y - distance * i, VisOrigin.position.z);
+					VisObjects[FocusIndex - i] =
+						SpawnVisObject(FocusIndex - i, spawnPos, currentResults[FocusIndex - i], true);
+				}
+
+				HasHistoryEnabled = true;
+			}
+			else {
+
+				if (!HasHistoryEnabled) {
+					return;
+				}
+
+				ClearHistoryVisObjects();
+				HasHistoryEnabled = false;
+			}
+
+		}
+
+		private IVisObject SpawnVisObject(int index, Vector3 pos, MeasurementResult result, bool activeHistory) {
+
+			GameObject newVis = Instantiate(visObjectPrefab, pos, visObjectsContainer.localRotation, visObjectsContainer);
+			IVisObject visObject = newVis.GetComponent<IVisObject>();
+
+			UpdateVisObject(visObject, index, result, Options.styles[0].timeMaterial, activeHistory: activeHistory);
+			visObject.HasHovered += OnVisObjectHovered;
+			visObject.HasSelected += OnVisObjectSelected;
+			visObject.HasDeselected += OnVisObjectDeselected;
+
+			return visObject;
+
+		}
+
+		private void UpdateVisObject(IVisObject target, int index, MeasurementResult result, Material material,
+			bool visibleDisplay = false,
+			bool focused = false, bool activeHistory = false) {
+
+			if (target == null) {
+				return;
+			}
+
+			target.SetDisplayData(new VisualizationResultDisplayData {
+				Result = result,
+				Type = result.MeasurementDefinition.MeasurementType,
+				Attribute = DataPoint.Attribute,
+				AuthorSprite = result.Author != string.Empty
+					? DataPoint.AuthorRepository.AuthorSprites[result.Author]
+					: null,
+				ActiveHistory = activeHistory
+			});
+
+			target.Index = index;
+			target.IsFocused = focused;
+			target.SetMaterial(material);
+
+			if (visibleDisplay) {
+				target.ShowDisplay();
+			}
+			else {
+				target.HideDisplay();
+			}
+
+		}
+
+		private void ClearHistoryVisObjects() {
+
+			if (!HasHistoryEnabled) {
+				return;
+			}
+
+			for (int i = 0; i < VisObjects.Length; i++) {
+
+				if (i == FocusIndex) {
+					continue;
+				}
+
+				if (VisObjects[i] == null) {
+					continue;
+				}
+
+				VisObjects[i].HasHovered -= OnVisObjectHovered;
+				VisObjects[i].HasSelected -= OnVisObjectSelected;
+				VisObjects[i].HasDeselected -= OnVisObjectDeselected;
+				VisObjects[i].Delete();
+				VisObjects[i] = null;
+
+			}
+
+		}
+
+		private void ClearVisObjects() {
+
+			for (int i = 0; i < VisObjects.Length - 1; i++) {
+
+				if (VisObjects[i] == null) {
+					continue;
+				}
+
+				VisObjects[i].HasHovered -= OnVisObjectHovered;
+				VisObjects[i].HasSelected -= OnVisObjectSelected;
+				VisObjects[i].HasDeselected -= OnVisObjectDeselected;
+				VisObjects[i].Delete();
+				VisObjects[i] = null;
+
+			}
+
+		}
+
+		private IEnumerator MoveHistory(Vector3 direction, int multiplier = 1) {
+
+			Vector3 startPosition = visObjectsContainer.transform.position;
+			moveTarget = visObjectsContainer.transform.position +
+			             direction * (visHistoryConfig.elementDistance * multiplier);
+			float moveDuration = visHistoryConfig.animationDuration;
+
+			float t = 0;
+			while (t < moveDuration) {
+
+				visObjectsContainer.transform.position = Vector3.Lerp(startPosition, moveTarget, t / moveDuration);
+
+				t += Time.deltaTime;
+				yield return null;
+
+			}
+
+			visObjectsContainer.transform.position = moveTarget;
+			historyMove = null;
+
 		}
 
 	}

@@ -51,8 +51,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		public TextMeshProUGUI DateTextMesh => dateTextMesh;
 
-		public Image VisRenderer => visRenderer;
-
 		public Image BoolIconRenderer => boolIconRenderer;
 
 		public Image AuthorIconRenderer => authorIconImageRenderer;
