@@ -4,7 +4,6 @@ using Dataskop.Data;
 using Dataskop.Utils;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 namespace Dataskop.Entities.Visualizations {
