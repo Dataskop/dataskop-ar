@@ -3,9 +3,11 @@ using UnityEngine;
 namespace Dataskop.Entities.Visualizations {
 
 	[CreateAssetMenu(fileName = "Options", menuName = "VisOptions/Add Bubble Option...", order = 2)]
-	public class BubbleOptions : ScriptableObject {
+	public class BubbleVisObjectStyle : ScriptableObject, IVisObjectStyle {
 
-		public Style[] styles;
+		public VisObjectStyle[] styles;
+
+		public VisObjectStyle[] Styles => styles;
 
 	}
 

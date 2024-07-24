@@ -39,6 +39,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public int PreviousIndex { get; set; }
 
+		public IVisObjectStyle VisObjectStyle { get; set; }
+
 		public event Action SwipedDown;
 
 		public event Action SwipedUp;

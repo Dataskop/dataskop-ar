@@ -116,6 +116,7 @@ MonoBehaviour:
   barFrameMeshRenderer: {fileID: 4118373520180155626}
   barFill: {fileID: 1090742864066201027}
   barFrame: {fileID: 4030116549008829522}
+  barVisObjectVisObjectStyle: {fileID: 11400000, guid: a90cd0498d65c0d4d8e518f851b5caf4, type: 2}
   boolTrueColor:
     serializedVersion: 2
     rgba: 4284789860
@@ -783,7 +784,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9d6a0ab9fc263fb48bc3a4f3ce77a3e9, type: 2}
+  - {fileID: 2100000, guid: 8333b4cdbe9303f48958bf7255342675, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

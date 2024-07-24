@@ -118,10 +118,17 @@ namespace Dataskop.Entities.Visualizations {
 			dataDisplay.alpha = 0;
 		}
 
-		public void SetMaterial(Material newMaterial) {
-			barFillMeshRenderer.material.color = IsFocused ? new Color(0.1461819f, 0.3496184f, 0.6886792f) : new Color(0.5f, 0.5f, 0.5f);
-			barFrameMeshRenderer.material = newMaterial;
-			valueTextMesh.color = newMaterial.color;
+		/// <summary>
+		/// Applies materials to the vis object.
+		/// </summary>
+		/// <param name="materials"><br/>[0] Bar Frame<br/>[1] Bar Fill</param>
+		public void SetMaterials(params Material[] materials) {
+
+			if (materials.Length < 2) return;
+
+			barFrameMeshRenderer.material = materials[0];
+			barFillMeshRenderer.material = materials[1];
+			valueTextMesh.color = materials[0].color;
 		}
 
 		public void Delete() {
