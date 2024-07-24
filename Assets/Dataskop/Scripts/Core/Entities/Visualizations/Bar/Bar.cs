@@ -245,6 +245,7 @@ namespace Dataskop.Entities.Visualizations {
 					VisObjects[FocusIndex + i] =
 						SpawnVisObject(FocusIndex + i, spawnPos, currentResults[FocusIndex + i], false, false,
 							style.Styles[0].defaultMaterial, style.historyFillMaterial);
+					VisObjects[FocusIndex + i].OnHistoryToggle(true);
 
 				}
 
@@ -259,10 +260,12 @@ namespace Dataskop.Entities.Visualizations {
 					VisObjects[FocusIndex - i] =
 						SpawnVisObject(FocusIndex + i, spawnPos, currentResults[FocusIndex + i], false, false,
 							style.Styles[0].defaultMaterial, style.historyFillMaterial);
+					VisObjects[FocusIndex + i].OnHistoryToggle(true);
 				}
 
 				UpdateVisObject(VisObjects[FocusIndex], FocusIndex, currentResults[FocusIndex], true, true,
 					(IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial), style.focusedFillMaterial);
+				VisObjects[FocusIndex].OnHistoryToggle(true);
 				HasHistoryEnabled = true;
 			}
 			else {
@@ -275,6 +278,7 @@ namespace Dataskop.Entities.Visualizations {
 				UpdateVisObject(VisObjects[FocusIndex], FocusIndex, currentResults[FocusIndex], true,
 					true,
 					(IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial), style.focusedFillMaterial);
+				VisObjects[FocusIndex].OnHistoryToggle(false);
 				HasHistoryEnabled = false;
 			}
 

@@ -120,6 +120,12 @@ namespace Dataskop.Entities.Visualizations {
 			dataDisplay.alpha = 0;
 		}
 
+		/// <summary>
+		/// No Effect.
+		/// </summary>
+		/// <param name="active"></param>
+		public void OnHistoryToggle(bool active) { }
+
 		public void SetMaterials(params Material[] materials) {
 			visRenderer.material = materials[0];
 			valueTextMesh.color = materials[0].color;

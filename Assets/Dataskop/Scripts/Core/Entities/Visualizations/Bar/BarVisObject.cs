@@ -4,6 +4,7 @@ using Dataskop.Data;
 using Dataskop.Utils;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 namespace Dataskop.Entities.Visualizations {
@@ -90,8 +91,6 @@ namespace Dataskop.Entities.Visualizations {
 				authorIconImageRenderer.enabled = false;
 			}
 
-			Rotate(displayData.ActiveHistory);
-
 		}
 
 		public void OnHover() {
@@ -118,6 +117,10 @@ namespace Dataskop.Entities.Visualizations {
 			dataDisplay.alpha = 0;
 		}
 
+		public void OnHistoryToggle(bool active) {
+			Rotate(active);
+		}
+
 		/// <summary>
 		/// Applies materials to the vis object.
 		/// </summary>
@@ -128,7 +131,8 @@ namespace Dataskop.Entities.Visualizations {
 
 			barFrameMeshRenderer.material = materials[0];
 			barFillMeshRenderer.material = materials[1];
-			valueTextMesh.color = materials[0].color;
+			valueTextMesh.color = materials[0].GetColor("_Color");
+
 		}
 
 		public void Delete() {
