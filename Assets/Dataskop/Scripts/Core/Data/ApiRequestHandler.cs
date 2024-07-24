@@ -24,7 +24,7 @@ namespace Dataskop.Data {
 			catch {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
-					Text = $"Could not fetch companies!",
+					Text = "Could not fetch companies!",
 					DisplayDuration = NotificationDuration.Medium
 				});
 
@@ -102,7 +102,7 @@ namespace Dataskop.Data {
 
 		}
 
-		public async Task<IReadOnlyCollection<MeasurementResult>> GetMeasurementResults(MeasurementDefinition measurementDefinition,
+		public async Task<IReadOnlyList<MeasurementResult>> GetMeasurementResults(MeasurementDefinition measurementDefinition,
 			int amount, DateTime? from, DateTime? to) {
 
 			string url =

@@ -23,7 +23,7 @@ namespace Dataskop.Data {
 
 		public int TotalMeasurements { get; set; }
 
-		public IReadOnlyCollection<MeasurementResult> MeasurementResults { get; set; }
+		public IReadOnlyList<MeasurementResult> MeasurementResults { get; set; }
 
 		public MeasurementResult FirstMeasurementResult { get; set; }
 
@@ -67,6 +67,10 @@ namespace Dataskop.Data {
 
 		public MeasurementResult GetLatestMeasurementResult() {
 			return MeasurementResults?.FirstOrDefault();
+		}
+
+		public MeasurementResult GetMeasurementResult(int index) {
+			return MeasurementResults[index];
 		}
 
 	}

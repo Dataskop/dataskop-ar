@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Dataskop.Data;
+using Dataskop.Entities;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
@@ -35,7 +36,8 @@ namespace Dataskop.UI {
 
 		private void Start() {
 			SetVisibility(Root, false);
-			HistorySlider.highValue = dataManager.FetchAmount - 1;
+			HistorySlider.highValue = 1;
+			HistorySlider.lowValue = 0;
 		}
 
 		private void OnEnable() {
@@ -68,7 +70,7 @@ namespace Dataskop.UI {
 		public void OnDataPointSelectionChanged(DataPoint selectedDataPoint) {
 
 			if (SelectedDataPoint != null) {
-				SelectedDataPoint.MeasurementResultChanged -= UpdateTimeLabel;
+				SelectedDataPoint.FocusedIndexChanged -= UpdateTimeLabel;
 			}
 
 			SelectedDataPoint = selectedDataPoint;
@@ -79,26 +81,36 @@ namespace Dataskop.UI {
 				return;
 			}
 
-			SelectedDataPoint.MeasurementResultChanged += UpdateTimeLabel;
-			UpdateTimeLabel(SelectedDataPoint.CurrentMeasurementResult);
+			UpdateTimeLabel(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.FocusedIndex);
+			AdjustTimeLabelPosition();
+			SelectedDataPoint.FocusedIndexChanged += UpdateTimeLabel;
 
-			if (IsActive) {
-				int resultsCount = selectedDataPoint.MeasurementDefinition.MeasurementResults.Count;
-				HistorySlider.highValue = resultsCount - 1;
-				GenerateTicks(resultsCount);
-				SetVisibility(HistorySliderContainer, true);
-				CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
+			if (!IsActive) {
+				return;
 			}
+
+			int newResultsCount = SelectedDataPoint.MeasurementDefinition.MeasurementResults.Count <
+			                      SelectedDataPoint.Vis.VisHistoryConfiguration.visibleHistoryCount
+				? SelectedDataPoint.MeasurementDefinition.MeasurementResults.Count
+				: SelectedDataPoint.Vis.VisHistoryConfiguration.visibleHistoryCount;
+
+			HistorySlider.highValue = newResultsCount - 1;
+			HistorySlider.SetValueWithoutNotify(SelectedDataPoint.FocusedIndex);
+
+			GenerateTicks(newResultsCount);
+			SetVisibility(HistorySliderContainer, true);
+			CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
 
 		}
 
-		private void UpdateTimeLabel(MeasurementResult currentDataPointMeasurementResult) {
-			CurrentTimeLabel.text =
-				$"{currentDataPointMeasurementResult.GetDate()}<br>{currentDataPointMeasurementResult.GetClockTime()}";
+		private void UpdateTimeLabel(MeasurementDefinition def, int index) {
+			MeasurementResult focusedResult = def.MeasurementResults[index];
+			CurrentTimeLabel.text = $"{focusedResult.GetDate()}";
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
 			HistorySlider.SetValueWithoutNotify(newCount);
+			AdjustTimeLabelPosition();
 		}
 
 		public void OnVisualizationOptionChanged(VisualizationOption currentVisOption) {
@@ -137,18 +149,7 @@ namespace Dataskop.UI {
 				SetVisibility(CurrentTimeLabel, IsActive);
 			}
 
-			HistorySlider.value = 0;
-			CurrentTimeLabel.style.top = Dragger.localBound.yMax;
 			historyViewToggled?.Invoke(IsActive);
-
-		}
-
-		public void OnDataPointsResultsUpdated() {
-
-			if (IsActive) {
-				ToggleHistoryView();
-			}
-
 		}
 
 		private IEnumerator DelayToggle() {

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Dataskop.Entities;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
