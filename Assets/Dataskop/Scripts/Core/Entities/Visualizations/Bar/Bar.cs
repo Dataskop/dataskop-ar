@@ -41,6 +41,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public IVisObject[] VisObjects { get; set; }
 
+		public IVisObject FocusedVisObject => VisObjects[FocusIndex];
+
 		public DataPoint DataPoint { get; set; }
 
 		public VisualizationOption VisOption { get; set; }
