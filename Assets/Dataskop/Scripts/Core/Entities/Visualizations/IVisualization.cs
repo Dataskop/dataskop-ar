@@ -9,6 +9,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public IVisObject[] VisObjects { get; set; }
 
+		public IVisObject FocusedVisObject { get; }
+
 		/// <summary>
 		///     The DataPoint this visualization belongs to.
 		/// </summary>
