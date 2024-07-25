@@ -217,12 +217,14 @@ namespace Dataskop.Entities.Visualizations {
 			if (index == FocusIndex) {
 				BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
 				VisObjects[index].SetMaterials(style.Styles[0].defaultMaterial, style.focusedFillMaterial);
+				if (IsSelected) {
+					IsSelected = false;
+				}
 			}
 			else {
 				VisObjects[index].HideDisplay();
 			}
 
-			IsSelected = false;
 			VisObjectDeselected?.Invoke(index);
 		}
 
