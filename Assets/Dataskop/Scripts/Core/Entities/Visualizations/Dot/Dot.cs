@@ -43,6 +43,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public IVisObject[] VisObjects { get; set; }
 
+		public IVisObject FocusedVisObject => VisObjects[FocusIndex];
+
 		public VisualizationOption VisOption { get; set; }
 
 		public VisHistoryConfiguration VisHistoryConfiguration { get; set; }
@@ -254,12 +256,15 @@ namespace Dataskop.Entities.Visualizations {
 
 			if (index == FocusIndex) {
 				VisObjects[index].SetMaterials(VisObjectStyle.Styles[0].defaultMaterial);
+
+				if (IsSelected) {
+					IsSelected = false;
+				}
 			}
 			else {
 				VisObjects[index].HideDisplay();
 			}
-
-			IsSelected = false;
+			
 			VisObjectDeselected?.Invoke(index);
 
 		}

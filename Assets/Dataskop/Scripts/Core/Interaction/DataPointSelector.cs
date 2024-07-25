@@ -86,41 +86,67 @@ namespace Dataskop.Interaction {
 					return;
 				}
 
-				DataPoint hoverDataPoint = hitGameObject.GetComponentInParent<IVisualization>().DataPoint;
-				IVisObject hoveredVisObject = hitGameObject.GetComponent<IVisObject>();
+				DataPoint dataPoint = hitGameObject.GetComponentInParent<IVisualization>().DataPoint;
+				IVisObject visObject = hitGameObject.GetComponent<IVisObject>();
 
-				if (hoveredVisObject == HoveredVisObject) {
+				if (visObject == HoveredVisObject) {
 					return;
 				}
 
-				if (hoveredVisObject != HoveredVisObject) {
-					HoveredVisObject?.OnDeselect();
-					HoveredVisObject = hoveredVisObject;
-					HoveredVisObject?.OnHover();
-				}
+				if (dataPoint.Vis.IsSelected) {
 
-				if (SelectedDataPoint == hoverDataPoint) {
-					return;
-				}
+					if (dataPoint.Vis.FocusedVisObject != visObject) {
 
-				if (HoveredDataPoint == hoverDataPoint) {
-					return;
-				}
+						if (HoveredVisObject == null) {
+							HoveredVisObject = visObject;
+							HoveredVisObject.OnHover();
+						}
+						else {
+							HoveredVisObject.OnDeselect();
+							HoveredVisObject = visObject;
+							HoveredVisObject.OnHover();
+						}
 
-				HoveredDataPoint = hoverDataPoint;
-				HoveredDataPoint.SetSelectionStatus(SelectionState.Hovered);
-				return;
+					}
+
+				}
+				else {
+
+					HoveredDataPoint = dataPoint;
+					HoveredDataPoint.SetSelectionStatus(SelectionState.Hovered);
+
+					if (HoveredVisObject != null) {
+						HoveredVisObject.OnDeselect();
+					}
+
+					HoveredVisObject = visObject;
+					HoveredVisObject.OnHover();
+				}
 
 			}
+			else {
 
-			if (HoveredDataPoint == null) {
-				return;
+				if (HoveredDataPoint == null) {
+
+					if (HoveredVisObject != null) {
+						HoveredVisObject.OnDeselect();
+						HoveredVisObject = null;
+					}
+
+				}
+				else {
+
+					if (HoveredVisObject != null) {
+						HoveredVisObject.OnDeselect();
+						HoveredVisObject = null;
+					}
+
+					HoveredDataPoint?.SetSelectionStatus(SelectionState.Deselected);
+					HoveredDataPoint = null;
+
+				}
+
 			}
-
-			HoveredDataPoint.SetSelectionStatus(SelectionState.Deselected);
-			HoveredDataPoint = null;
-			HoveredVisObject?.OnDeselect();
-			HoveredVisObject = null;
 
 		}
 
@@ -164,9 +190,10 @@ namespace Dataskop.Interaction {
 			SelectedDataPoint?.SetSelectionStatus(SelectionState.Deselected);
 			SelectedDataPoint = tappedDataPoint;
 			SelectedDataPoint?.SetSelectionStatus(SelectionState.Selected);
+			HoveredDataPoint = null;
 
 			if (HoveredDataPoint == SelectedDataPoint) {
-				HoveredDataPoint = null;
+				HoveredVisObject = null;
 			}
 
 		}
