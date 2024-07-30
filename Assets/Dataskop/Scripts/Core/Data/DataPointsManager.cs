@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Dataskop.Entities;
 using Dataskop.Interaction;
@@ -27,10 +26,7 @@ namespace Dataskop.Data {
 		[SerializeField] private DataAttributeManager dataAttrRepo;
 		[SerializeField] private AuthorRepository authorRepository;
 
-		private GameObject dummyVisObject;
 		private bool hasHistoryEnabled;
-
-		public event Action<int> FocusIndexChanged;
 
 		/// <summary>
 		///     List of currently placed markers in the AR world.
@@ -61,11 +57,6 @@ namespace Dataskop.Data {
 		private void Start() {
 
 			inputHandler.WorldPointerUpped += OnSwiped;
-
-			dummyVisObject = new GameObject {
-				tag = "VisObject"
-			};
-
 			LastKnownDevicePositions = new Dictionary<Device, Vector3>();
 
 		}
