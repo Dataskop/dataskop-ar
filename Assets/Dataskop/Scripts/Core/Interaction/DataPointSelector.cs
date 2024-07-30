@@ -1,7 +1,6 @@
 ﻿#nullable enable
 
 using System.Collections;
-using Dataskop.Data;
 using Dataskop.Entities;
 using Dataskop.Entities.Visualizations;
 using UnityEngine;
