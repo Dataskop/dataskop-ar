@@ -53,6 +53,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public event Action<int> VisObjectDeselected;
 
+		public event Action<IVisObject> FocusedVisObjectChanged;
+
 		/// <summary>
 		///     Creates a Visualization for a given Data Point.
 		/// </summary>

@@ -39,6 +39,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public event Action<int> VisObjectDeselected;
 
+		public event Action<IVisObject> FocusedVisObjectChanged;
+
 		public IVisObject[] VisObjects { get; set; }
 
 		public IVisObject FocusedVisObject => VisObjects[FocusIndex];
@@ -162,6 +164,8 @@ namespace Dataskop.Entities.Visualizations {
 				PreviousIndex = FocusIndex;
 
 			}
+
+			FocusedVisObjectChanged?.Invoke(FocusedVisObject);
 
 		}
 
