@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Dataskop.Entities;
 using Dataskop.Interaction;
@@ -28,6 +29,8 @@ namespace Dataskop.Data {
 
 		private GameObject dummyVisObject;
 		private bool hasHistoryEnabled;
+
+		public event Action<int> FocusIndexChanged;
 
 		/// <summary>
 		///     List of currently placed markers in the AR world.
@@ -277,7 +280,7 @@ namespace Dataskop.Data {
 			foreach (DataPoint dp in DataPoints) {
 				dp.SetIndex(index);
 			}
-			
+
 			dataPointHistorySwiped?.Invoke(index);
 
 		}

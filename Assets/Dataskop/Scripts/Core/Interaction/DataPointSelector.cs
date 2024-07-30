@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System.Collections;
+using Dataskop.Data;
 using Dataskop.Entities;
 using Dataskop.Entities.Visualizations;
 using UnityEngine;
@@ -16,6 +17,7 @@ namespace Dataskop.Interaction {
 		[SerializeField] private Camera cam = null!;
 		[SerializeField] private Vector3 screenRayPosition = Vector3.zero;
 		[SerializeField] private InputHandler inputHandler = null!;
+		[SerializeField] private DataPointsManager dataPointsManager = null!;
 
 		[Header("Events")]
 		public UnityEvent<DataPoint?>? onDataPointSelected;
@@ -75,10 +77,8 @@ namespace Dataskop.Interaction {
 
 		}
 
-		private void OnFocusIndexUpdated(int index) {
-
-			//TODO: Update VisObject while having a Selection
-
+		private void OnFocusedVisObjectChanged(IVisObject focusedVisObject) {
+			SelectedVisObject = focusedVisObject;
 		}
 
 		private void SetHoveredDataPoint(Ray ray) {
@@ -160,6 +160,7 @@ namespace Dataskop.Interaction {
 			if (pointedGameObject == null) {
 
 				if (SelectedDataPoint != null) {
+					SelectedDataPoint.Vis.FocusedVisObjectChanged += OnFocusedVisObjectChanged;
 					SelectedDataPoint.SetSelectionStatus(SelectionState.Deselected);
 					SelectedDataPoint = null;
 				}
@@ -188,6 +189,7 @@ namespace Dataskop.Interaction {
 				if (tappedVisObject == tappedDataPoint.Vis.FocusedVisObject) {
 					SelectedVisObject?.OnDeselect();
 					SelectedVisObject = null;
+					SelectedDataPoint.Vis.FocusedVisObjectChanged += OnFocusedVisObjectChanged;
 					SelectedDataPoint?.SetSelectionStatus(SelectionState.Deselected);
 					SelectedDataPoint = null;
 				}
@@ -212,10 +214,16 @@ namespace Dataskop.Interaction {
 
 				SelectedDataPoint?.SetSelectionStatus(SelectionState.Deselected);
 				SelectedVisObject?.OnDeselect();
+
+				if (SelectedDataPoint != null) {
+					SelectedDataPoint.Vis.FocusedVisObjectChanged -= OnFocusedVisObjectChanged;
+				}
+
 				SelectedDataPoint = tappedDataPoint;
 				SelectedVisObject = tappedVisObject;
 				SelectedDataPoint.SetSelectionStatus(SelectionState.Selected);
 				SelectedVisObject.OnSelect();
+				SelectedDataPoint.Vis.FocusedVisObjectChanged += OnFocusedVisObjectChanged;
 
 			}
 

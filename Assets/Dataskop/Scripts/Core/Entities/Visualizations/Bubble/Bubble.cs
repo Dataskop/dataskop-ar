@@ -45,6 +45,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public event Action<int> VisObjectDeselected;
 
+		public event Action<IVisObject> FocusedVisObjectChanged;
+
 		public DataPoint DataPoint { get; set; }
 
 		public IVisObject[] VisObjects { get; set; }
@@ -176,6 +178,8 @@ namespace Dataskop.Entities.Visualizations {
 				PreviousIndex = FocusIndex;
 
 			}
+
+			FocusedVisObjectChanged?.Invoke(FocusedVisObject);
 		}
 
 		public void OnTimeSeriesToggled(bool isActive) {
