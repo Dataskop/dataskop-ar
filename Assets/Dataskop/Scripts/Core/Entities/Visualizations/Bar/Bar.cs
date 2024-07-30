@@ -39,6 +39,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public event Action<int> VisObjectDeselected;
 
+		public event Action<IVisObject> FocusedVisObjectChanged;
+
 		public IVisObject[] VisObjects { get; set; }
 
 		public IVisObject FocusedVisObject => VisObjects[FocusIndex];
@@ -163,6 +165,8 @@ namespace Dataskop.Entities.Visualizations {
 
 			}
 
+			FocusedVisObjectChanged?.Invoke(FocusedVisObject);
+
 		}
 
 		public void OnSwipeInteraction(PointerInteraction pointerInteraction) {
@@ -217,12 +221,14 @@ namespace Dataskop.Entities.Visualizations {
 			if (index == FocusIndex) {
 				BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
 				VisObjects[index].SetMaterials(style.Styles[0].defaultMaterial, style.focusedFillMaterial);
+				if (IsSelected) {
+					IsSelected = false;
+				}
 			}
 			else {
 				VisObjects[index].HideDisplay();
 			}
 
-			IsSelected = false;
 			VisObjectDeselected?.Invoke(index);
 		}
 

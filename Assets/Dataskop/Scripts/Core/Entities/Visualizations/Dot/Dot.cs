@@ -39,6 +39,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public event Action<int> VisObjectDeselected;
 
+		public event Action<IVisObject> FocusedVisObjectChanged;
+
 		public DataPoint DataPoint { get; set; }
 
 		public IVisObject[] VisObjects { get; set; }
@@ -176,6 +178,8 @@ namespace Dataskop.Entities.Visualizations {
 
 			}
 
+			FocusedVisObjectChanged?.Invoke(FocusedVisObject);
+
 		}
 
 		public void OnTimeSeriesToggled(bool isActive) {
@@ -264,7 +268,7 @@ namespace Dataskop.Entities.Visualizations {
 			else {
 				VisObjects[index].HideDisplay();
 			}
-			
+
 			VisObjectDeselected?.Invoke(index);
 
 		}
@@ -389,8 +393,7 @@ namespace Dataskop.Entities.Visualizations {
 		private IEnumerator MoveHistory(Vector3 direction, int multiplier = 1) {
 
 			Vector3 startPosition = visObjectsContainer.transform.position;
-			moveTarget = visObjectsContainer.transform.position +
-			             direction * (visHistoryConfig.elementDistance * multiplier);
+			moveTarget = visObjectsContainer.transform.position + direction * (visHistoryConfig.elementDistance * multiplier);
 			float moveDuration = visHistoryConfig.animationDuration;
 
 			float t = 0;

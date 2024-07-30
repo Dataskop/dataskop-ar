@@ -130,6 +130,11 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public void Delete() {
+
+			if (animationCoroutine != null) {
+				StopCoroutine(animationCoroutine);
+			}
+
 			Destroy(gameObject);
 		}
 
