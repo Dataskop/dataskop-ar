@@ -225,7 +225,6 @@ namespace Dataskop.Data {
 					dataPointInstance.MeasurementDefinition = definition;
 					dataPointInstance.Device = projectDevices[i];
 					dataPointInstance.AuthorRepository = AuthorRepository;
-					dataPointInstance.FocusedIndex = 0;
 					dataPointInstance.FocusedIndexChangedByTap += OnIndexChangeRequested;
 
 					//Move the DataPoint to its location

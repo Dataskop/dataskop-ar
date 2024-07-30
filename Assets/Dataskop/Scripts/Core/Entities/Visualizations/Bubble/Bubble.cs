@@ -116,6 +116,7 @@ namespace Dataskop.Entities.Visualizations {
 			labelLine.startWidth = 0.0075f;
 			labelLine.endWidth = 0.0075f;
 
+			PreviousIndex = FocusIndex;
 			OnFocusedIndexChanged(DataPoint.MeasurementDefinition, FocusIndex);
 			IsInitialized = true;
 		}
@@ -234,6 +235,11 @@ namespace Dataskop.Entities.Visualizations {
 
 			if (index == FocusIndex) {
 				if (!IsSelected) {
+
+					if (VisObjects[index] == null) {
+						return;
+					}
+
 					VisObjects[index].SetMaterials(VisObjectStyle.Styles[0].hoverMaterial);
 				}
 			}
@@ -259,6 +265,11 @@ namespace Dataskop.Entities.Visualizations {
 		public void OnVisObjectDeselected(int index) {
 
 			if (index == FocusIndex) {
+
+				if (VisObjects[index] == null) {
+					return;
+				}
+
 				VisObjects[index].SetMaterials(VisObjectStyle.Styles[0].defaultMaterial);
 
 				if (IsSelected) {

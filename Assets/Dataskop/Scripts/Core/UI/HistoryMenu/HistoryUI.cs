@@ -59,6 +59,11 @@ namespace Dataskop.UI {
 		}
 
 		private void SliderValueChanged(ChangeEvent<int> e) {
+
+			if (!IsActive) {
+				return;
+			}
+
 			sliderChanged?.Invoke(e.newValue, e.previousValue);
 			AdjustTimeLabelPosition();
 		}
