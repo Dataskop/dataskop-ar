@@ -91,8 +91,9 @@ namespace Dataskop.Entities.Visualizations {
 			VisHistoryConfiguration = visHistoryConfig;
 			VisObjectStyle = visObjectStyle;
 			Type = VisualizationType.Bubble;
+			VisOrigin.localScale *= Scale;
+			VisOrigin.root.localPosition = Offset;
 
-			//TODO: Handle MeasurementResults being less than configured time series configuration visible history count.
 			VisObjects = DataPoint.MeasurementDefinition.MeasurementResults.Count < VisHistoryConfiguration.visibleHistoryCount
 				? new IVisObject[dp.MeasurementDefinition.MeasurementResults.Count]
 				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
@@ -102,10 +103,7 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjects[FocusIndex].HasHovered += OnVisObjectHovered;
 			VisObjects[FocusIndex].HasSelected += OnVisObjectSelected;
 			VisObjects[FocusIndex].HasDeselected += OnVisObjectDeselected;
-
-			VisOrigin.localScale *= Scale;
-			VisOrigin.root.localPosition = Offset;
-
+			VisObjects[FocusIndex].VisCollider.enabled = true;
 			dropShadow.transform.localScale *= Scale;
 			dropShadow.transform.localPosition -= Offset;
 
