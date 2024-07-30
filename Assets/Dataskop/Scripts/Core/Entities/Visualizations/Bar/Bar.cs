@@ -100,6 +100,7 @@ namespace Dataskop.Entities.Visualizations {
 			VisOrigin.localScale *= Scale;
 			VisOrigin.root.localPosition = Offset;
 
+			PreviousIndex = FocusIndex;
 			OnFocusedIndexChanged(DataPoint.MeasurementDefinition, FocusIndex);
 			IsInitialized = true;
 		}
@@ -194,6 +195,10 @@ namespace Dataskop.Entities.Visualizations {
 
 			if (index == FocusIndex) {
 				if (!IsSelected) {
+					if (VisObjects[index] == null) {
+						return;
+					}
+
 					BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
 					VisObjects[index].SetMaterials(style.Styles[0].hoverMaterial, style.focusedFillMaterial);
 				}
@@ -219,8 +224,14 @@ namespace Dataskop.Entities.Visualizations {
 		public void OnVisObjectDeselected(int index) {
 
 			if (index == FocusIndex) {
+
+				if (VisObjects[index] == null) {
+					return;
+				}
+
 				BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
 				VisObjects[index].SetMaterials(style.Styles[0].defaultMaterial, style.focusedFillMaterial);
+
 				if (IsSelected) {
 					IsSelected = false;
 				}
