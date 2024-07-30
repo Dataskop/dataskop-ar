@@ -25,9 +25,11 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private Color historyColor;
 
 		private Coroutine historyMove;
-		private Vector3 moveTarget = Vector3.zero;
 		private bool isRotated;
+		private Vector3 moveTarget = Vector3.zero;
 		private Vector3 origin;
+
+		private int FocusIndex => DataPoint.FocusedIndex;
 
 		public event Action SwipedDown;
 
@@ -74,8 +76,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		public IVisObjectStyle VisObjectStyle { get; set; }
 
-		private int FocusIndex => DataPoint.FocusedIndex;
-
 		public void Initialize(DataPoint dp) {
 
 			DataPoint = dp;
@@ -86,7 +86,9 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjectStyle = visObjectStyle;
 			Type = VisualizationType.Bar;
 
-			//TODO: Handle MeasurementResults being less than configured time series configuration visible history count.
+			VisOrigin.localScale *= Scale;
+			VisOrigin.root.localPosition = Offset;
+
 			VisObjects = DataPoint.MeasurementDefinition.MeasurementResults.Count < VisHistoryConfiguration.visibleHistoryCount
 				? new IVisObject[dp.MeasurementDefinition.MeasurementResults.Count]
 				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
@@ -96,12 +98,12 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjects[FocusIndex].HasHovered += OnVisObjectHovered;
 			VisObjects[FocusIndex].HasSelected += OnVisObjectSelected;
 			VisObjects[FocusIndex].HasDeselected += OnVisObjectDeselected;
+			VisObjects[FocusIndex].VisCollider.enabled = true;
 
-			VisOrigin.localScale *= Scale;
-			VisOrigin.root.localPosition = Offset;
-
+			PreviousIndex = FocusIndex;
 			OnFocusedIndexChanged(DataPoint.MeasurementDefinition, FocusIndex);
 			IsInitialized = true;
+
 		}
 
 		public void OnFocusedIndexChanged(MeasurementDefinition def, int index) {
@@ -127,7 +129,7 @@ namespace Dataskop.Entities.Visualizations {
 				}
 
 				UpdateVisObject(VisObjects[FocusIndex], FocusIndex, focusedResult, true, true,
-					(IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial), style.focusedFillMaterial);
+					IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial, style.focusedFillMaterial);
 
 			}
 			else {
@@ -160,7 +162,7 @@ namespace Dataskop.Entities.Visualizations {
 				}
 
 				UpdateVisObject(VisObjects[FocusIndex], FocusIndex, focusedResult, true, true,
-					(IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial), style.focusedFillMaterial);
+					IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial, style.focusedFillMaterial);
 				PreviousIndex = FocusIndex;
 
 			}
@@ -194,6 +196,10 @@ namespace Dataskop.Entities.Visualizations {
 
 			if (index == FocusIndex) {
 				if (!IsSelected) {
+					if (VisObjects[index] == null) {
+						return;
+					}
+
 					BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
 					VisObjects[index].SetMaterials(style.Styles[0].hoverMaterial, style.focusedFillMaterial);
 				}
@@ -219,8 +225,14 @@ namespace Dataskop.Entities.Visualizations {
 		public void OnVisObjectDeselected(int index) {
 
 			if (index == FocusIndex) {
+
+				if (VisObjects[index] == null) {
+					return;
+				}
+
 				BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
 				VisObjects[index].SetMaterials(style.Styles[0].defaultMaterial, style.focusedFillMaterial);
+
 				if (IsSelected) {
 					IsSelected = false;
 				}
@@ -271,7 +283,7 @@ namespace Dataskop.Entities.Visualizations {
 				}
 
 				UpdateVisObject(VisObjects[FocusIndex], FocusIndex, currentResults[FocusIndex], true, true,
-					(IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial), style.focusedFillMaterial);
+					IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial, style.focusedFillMaterial);
 				VisObjects[FocusIndex].OnHistoryToggle(true);
 				HasHistoryEnabled = true;
 			}
@@ -284,7 +296,7 @@ namespace Dataskop.Entities.Visualizations {
 				ClearHistoryVisObjects();
 				UpdateVisObject(VisObjects[FocusIndex], FocusIndex, currentResults[FocusIndex], true,
 					true,
-					(IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial), style.focusedFillMaterial);
+					IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial, style.focusedFillMaterial);
 				VisObjects[FocusIndex].OnHistoryToggle(false);
 				HasHistoryEnabled = false;
 			}
@@ -301,6 +313,7 @@ namespace Dataskop.Entities.Visualizations {
 			visObject.HasHovered += OnVisObjectHovered;
 			visObject.HasSelected += OnVisObjectSelected;
 			visObject.HasDeselected += OnVisObjectDeselected;
+			visObject.VisCollider.enabled = true;
 
 			return visObject;
 

@@ -24,6 +24,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public Image AuthorIconRenderer { get; }
 
+		public Collider VisCollider { get; }
+
 		public event Action<int> HasHovered;
 
 		public event Action<int> HasSelected;

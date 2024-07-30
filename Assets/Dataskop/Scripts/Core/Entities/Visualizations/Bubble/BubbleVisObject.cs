@@ -10,15 +10,15 @@ namespace Dataskop.Entities.Visualizations {
 	public class BubbleVisObject : MonoBehaviour, IVisObject {
 
 		[Header("References")]
+		[SerializeField] private SphereCollider visCollider;
 		[SerializeField] private CanvasGroup dataDisplay;
 		[SerializeField] private TextMeshProUGUI idTextMesh;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI dateTextMesh;
 		[SerializeField] private Image visRenderer;
 		[SerializeField] private Image boolIconRenderer;
-		[SerializeField] private Image authorIconImageRenderer;
 		[SerializeField] private Sprite[] boolIcons;
-		[SerializeField] private SphereCollider visCollider;
+		[SerializeField] private Image authorIconImageRenderer;
 
 		[Header("Values")]
 		[SerializeField] private Color32 boolTrueColor;
@@ -26,12 +26,12 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private AnimationCurve scaleCurve;
 		[SerializeField] public float minScale;
 		[SerializeField] public float maxScale;
-
-		private Coroutine scaleRoutine;
 		private Coroutine animationCoroutine;
-		private Coroutine moveLineCoroutine;
 		private Vector3 animationTarget;
 		private bool isSelected;
+		private Coroutine moveLineCoroutine;
+
+		private Coroutine scaleRoutine;
 
 		public event Action<int> HasHovered;
 
@@ -54,6 +54,8 @@ namespace Dataskop.Entities.Visualizations {
 		public Image BoolIconRenderer => boolIconRenderer;
 
 		public Image AuthorIconRenderer => authorIconImageRenderer;
+
+		public Collider VisCollider => visCollider;
 
 		public void SetDisplayData(VisualizationResultDisplayData displayData) {
 
@@ -121,7 +123,7 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		/// <summary>
-		/// No Effect.
+		///     No Effect.
 		/// </summary>
 		/// <param name="active"></param>
 		public void OnHistoryToggle(bool active) { }
