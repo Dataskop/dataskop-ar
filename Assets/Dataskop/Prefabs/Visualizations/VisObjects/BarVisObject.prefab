@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68d9b9926e5c0174a9007b21519e1479, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  visCollider: {fileID: 3160133214895280065}
   dataDisplay: {fileID: 1754059613357891096}
   authorDisplay: {fileID: 7115969492603797466}
   idTextMesh: {fileID: 2429133796675626725}
@@ -116,7 +117,6 @@ MonoBehaviour:
   barFrameMeshRenderer: {fileID: 4118373520180155626}
   barFill: {fileID: 1090742864066201027}
   barFrame: {fileID: 4030116549008829522}
-  barVisObjectVisObjectStyle: {fileID: 11400000, guid: a90cd0498d65c0d4d8e518f851b5caf4, type: 2}
   boolTrueColor:
     serializedVersion: 2
     rgba: 4284789860

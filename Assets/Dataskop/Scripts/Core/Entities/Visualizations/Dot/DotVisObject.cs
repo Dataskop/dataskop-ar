@@ -10,14 +10,15 @@ namespace Dataskop.Entities.Visualizations {
 	public class DotVisObject : MonoBehaviour, IVisObject {
 
 		[Header("References")]
+		[SerializeField] private SphereCollider visCollider;
 		[SerializeField] private CanvasGroup dataDisplay;
 		[SerializeField] private TextMeshProUGUI idTextMesh;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI dateTextMesh;
 		[SerializeField] private Image visRenderer;
 		[SerializeField] private Image boolIconRenderer;
-		[SerializeField] private Image authorIconImageRenderer;
 		[SerializeField] private Sprite[] boolIcons;
+		[SerializeField] private Image authorIconImageRenderer;
 
 		[Header("Values")]
 		[SerializeField] private Color32 boolTrueColor;
@@ -54,6 +55,8 @@ namespace Dataskop.Entities.Visualizations {
 		public Image BoolIconRenderer => boolIconRenderer;
 
 		public Image AuthorIconRenderer => authorIconImageRenderer;
+
+		public Collider VisCollider => visCollider;
 
 		public void SetDisplayData(VisualizationResultDisplayData displayData) {
 
@@ -117,12 +120,10 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		/// <summary>
-		/// No Effect.
+		///     No Effect.
 		/// </summary>
 		/// <param name="active"></param>
-		public void OnHistoryToggle(bool active) {
-			return;
-		}
+		public void OnHistoryToggle(bool active) { }
 
 		public void SetMaterials(params Material[] materials) {
 			visRenderer.material = materials[0];

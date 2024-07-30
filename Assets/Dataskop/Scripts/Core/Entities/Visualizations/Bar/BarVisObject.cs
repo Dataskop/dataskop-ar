@@ -11,6 +11,7 @@ namespace Dataskop.Entities.Visualizations {
 	public class BarVisObject : MonoBehaviour, IVisObject {
 
 		[Header("References")]
+		[SerializeField] private BoxCollider visCollider;
 		[SerializeField] private CanvasGroup dataDisplay;
 		[SerializeField] private CanvasGroup authorDisplay;
 		[SerializeField] private TextMeshProUGUI idTextMesh;
@@ -19,8 +20,8 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private TextMeshProUGUI maxValueTextMesh;
 		[SerializeField] private TextMeshProUGUI minValueTextMesh;
 		[SerializeField] private Image boolIconRenderer;
-		[SerializeField] private Image authorIconImageRenderer;
 		[SerializeField] private Sprite[] boolIcons;
+		[SerializeField] private Image authorIconImageRenderer;
 		[SerializeField] private MeshRenderer barFillMeshRenderer;
 		[SerializeField] private MeshRenderer barFrameMeshRenderer;
 		[SerializeField] private Transform barFill;
@@ -48,6 +49,8 @@ namespace Dataskop.Entities.Visualizations {
 		public Image BoolIconRenderer => boolIconRenderer;
 
 		public Image AuthorIconRenderer => authorIconImageRenderer;
+
+		public Collider VisCollider => visCollider;
 
 		public event Action<int> HasHovered;
 
@@ -121,9 +124,9 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		/// <summary>
-		/// Applies materials to the vis object.
+		///     Applies materials to the vis object.
 		/// </summary>
-		/// <param name="materials"><br/>[0] Bar Frame<br/>[1] Bar Fill</param>
+		/// <param name="materials"><br />[0] Bar Frame<br />[1] Bar Fill</param>
 		public void SetMaterials(params Material[] materials) {
 
 			if (materials.Length < 2) return;

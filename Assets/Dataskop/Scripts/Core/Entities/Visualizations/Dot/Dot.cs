@@ -29,6 +29,8 @@ namespace Dataskop.Entities.Visualizations {
 		private Coroutine historyMove;
 		private Vector3 moveTarget = Vector3.zero;
 
+		private int FocusIndex => DataPoint.FocusedIndex;
+
 		public event Action SwipedDown;
 
 		public event Action SwipedUp;
@@ -73,8 +75,6 @@ namespace Dataskop.Entities.Visualizations {
 		public int PreviousIndex { get; set; }
 
 		public IVisObjectStyle VisObjectStyle { get; set; }
-
-		private int FocusIndex => DataPoint.FocusedIndex;
 
 		public void Initialize(DataPoint dp) {
 
