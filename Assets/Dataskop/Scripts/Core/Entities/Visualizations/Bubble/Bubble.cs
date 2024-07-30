@@ -26,14 +26,16 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private Color hoverColor;
 		[SerializeField] private Color selectColor;
 		[SerializeField] private Color historyColor;
-
-		private Vector3 moveTarget = Vector3.zero;
-		private Vector3 prevScale;
-		private Coroutine historyMove = null;
 		private Coroutine groundLineRoutine;
+		private Coroutine historyMove;
 		private Coroutine labelLineRoutineLower;
 		private Coroutine labelLineRoutineUpper;
 		private Coroutine labelRoutine;
+
+		private Vector3 moveTarget = Vector3.zero;
+		private Vector3 prevScale;
+
+		private int FocusIndex => DataPoint.FocusedIndex;
 
 		public event Action SwipedDown;
 
@@ -80,8 +82,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		public IVisObjectStyle VisObjectStyle { get; set; }
 
-		private int FocusIndex => DataPoint.FocusedIndex;
-
 		public void Initialize(DataPoint dp) {
 
 			DataPoint = dp;
@@ -92,7 +92,9 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjectStyle = visObjectStyle;
 			Type = VisualizationType.Bubble;
 
-			//TODO: Handle MeasurementResults being less than configured time series configuration visible history count.
+			VisOrigin.localScale *= Scale;
+			VisOrigin.root.localPosition = Offset;
+
 			VisObjects = DataPoint.MeasurementDefinition.MeasurementResults.Count < VisHistoryConfiguration.visibleHistoryCount
 				? new IVisObject[dp.MeasurementDefinition.MeasurementResults.Count]
 				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
@@ -102,9 +104,7 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjects[FocusIndex].HasHovered += OnVisObjectHovered;
 			VisObjects[FocusIndex].HasSelected += OnVisObjectSelected;
 			VisObjects[FocusIndex].HasDeselected += OnVisObjectDeselected;
-
-			VisOrigin.localScale *= Scale;
-			VisOrigin.root.localPosition = Offset;
+			VisObjects[FocusIndex].VisCollider.enabled = true;
 
 			dropShadow.transform.localScale *= Scale;
 			dropShadow.transform.localPosition -= Offset;
@@ -116,6 +116,7 @@ namespace Dataskop.Entities.Visualizations {
 			labelLine.startWidth = 0.0075f;
 			labelLine.endWidth = 0.0075f;
 
+			PreviousIndex = FocusIndex;
 			OnFocusedIndexChanged(DataPoint.MeasurementDefinition, FocusIndex);
 			IsInitialized = true;
 		}
@@ -234,6 +235,11 @@ namespace Dataskop.Entities.Visualizations {
 
 			if (index == FocusIndex) {
 				if (!IsSelected) {
+
+					if (VisObjects[index] == null) {
+						return;
+					}
+
 					VisObjects[index].SetMaterials(VisObjectStyle.Styles[0].hoverMaterial);
 				}
 			}
@@ -259,6 +265,11 @@ namespace Dataskop.Entities.Visualizations {
 		public void OnVisObjectDeselected(int index) {
 
 			if (index == FocusIndex) {
+
+				if (VisObjects[index] == null) {
+					return;
+				}
+
 				VisObjects[index].SetMaterials(VisObjectStyle.Styles[0].defaultMaterial);
 
 				if (IsSelected) {
@@ -307,6 +318,7 @@ namespace Dataskop.Entities.Visualizations {
 			visObject.HasHovered += OnVisObjectHovered;
 			visObject.HasSelected += OnVisObjectSelected;
 			visObject.HasDeselected += OnVisObjectDeselected;
+			visObject.VisCollider.enabled = true;
 
 			return visObject;
 
