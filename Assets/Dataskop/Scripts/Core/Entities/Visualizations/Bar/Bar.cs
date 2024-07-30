@@ -25,9 +25,11 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private Color historyColor;
 
 		private Coroutine historyMove;
-		private Vector3 moveTarget = Vector3.zero;
 		private bool isRotated;
+		private Vector3 moveTarget = Vector3.zero;
 		private Vector3 origin;
+
+		private int FocusIndex => DataPoint.FocusedIndex;
 
 		public event Action SwipedDown;
 
@@ -73,8 +75,6 @@ namespace Dataskop.Entities.Visualizations {
 		public int PreviousIndex { get; set; }
 
 		public IVisObjectStyle VisObjectStyle { get; set; }
-
-		private int FocusIndex => DataPoint.FocusedIndex;
 
 		public void Initialize(DataPoint dp) {
 
@@ -128,7 +128,7 @@ namespace Dataskop.Entities.Visualizations {
 				}
 
 				UpdateVisObject(VisObjects[FocusIndex], FocusIndex, focusedResult, true, true,
-					(IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial), style.focusedFillMaterial);
+					IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial, style.focusedFillMaterial);
 
 			}
 			else {
@@ -161,7 +161,7 @@ namespace Dataskop.Entities.Visualizations {
 				}
 
 				UpdateVisObject(VisObjects[FocusIndex], FocusIndex, focusedResult, true, true,
-					(IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial), style.focusedFillMaterial);
+					IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial, style.focusedFillMaterial);
 				PreviousIndex = FocusIndex;
 
 			}
@@ -282,7 +282,7 @@ namespace Dataskop.Entities.Visualizations {
 				}
 
 				UpdateVisObject(VisObjects[FocusIndex], FocusIndex, currentResults[FocusIndex], true, true,
-					(IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial), style.focusedFillMaterial);
+					IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial, style.focusedFillMaterial);
 				VisObjects[FocusIndex].OnHistoryToggle(true);
 				HasHistoryEnabled = true;
 			}
@@ -295,7 +295,7 @@ namespace Dataskop.Entities.Visualizations {
 				ClearHistoryVisObjects();
 				UpdateVisObject(VisObjects[FocusIndex], FocusIndex, currentResults[FocusIndex], true,
 					true,
-					(IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial), style.focusedFillMaterial);
+					IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial, style.focusedFillMaterial);
 				VisObjects[FocusIndex].OnHistoryToggle(false);
 				HasHistoryEnabled = false;
 			}

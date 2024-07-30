@@ -26,14 +26,16 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private Color hoverColor;
 		[SerializeField] private Color selectColor;
 		[SerializeField] private Color historyColor;
-
-		private Vector3 moveTarget = Vector3.zero;
-		private Vector3 prevScale;
-		private Coroutine historyMove = null;
 		private Coroutine groundLineRoutine;
+		private Coroutine historyMove;
 		private Coroutine labelLineRoutineLower;
 		private Coroutine labelLineRoutineUpper;
 		private Coroutine labelRoutine;
+
+		private Vector3 moveTarget = Vector3.zero;
+		private Vector3 prevScale;
+
+		private int FocusIndex => DataPoint.FocusedIndex;
 
 		public event Action SwipedDown;
 
@@ -79,8 +81,6 @@ namespace Dataskop.Entities.Visualizations {
 		public int PreviousIndex { get; set; }
 
 		public IVisObjectStyle VisObjectStyle { get; set; }
-
-		private int FocusIndex => DataPoint.FocusedIndex;
 
 		public void Initialize(DataPoint dp) {
 
