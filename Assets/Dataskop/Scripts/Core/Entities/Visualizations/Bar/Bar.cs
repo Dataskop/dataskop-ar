@@ -267,7 +267,7 @@ namespace Dataskop.Entities.Visualizations {
 					VisObjects[FocusIndex - i] =
 						SpawnVisObject(FocusIndex + i, spawnPos, currentResults[FocusIndex + i], false, false,
 							style.Styles[0].defaultMaterial, style.historyFillMaterial);
-					VisObjects[FocusIndex + i].OnHistoryToggle(true);
+					VisObjects[FocusIndex - i].OnHistoryToggle(true);
 				}
 
 				UpdateVisObject(VisObjects[FocusIndex], FocusIndex, currentResults[FocusIndex], true, true,
