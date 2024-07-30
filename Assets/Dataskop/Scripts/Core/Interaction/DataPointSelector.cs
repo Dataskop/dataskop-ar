@@ -1,7 +1,6 @@
 ﻿#nullable enable
 
 using System.Collections;
-using Dataskop.Data;
 using Dataskop.Entities;
 using Dataskop.Entities.Visualizations;
 using UnityEngine;
@@ -98,7 +97,6 @@ namespace Dataskop.Interaction {
 				}
 
 				if (dataPoint.Vis.IsSelected) {
-
 					if (dataPoint.Vis.FocusedVisObject != visObject) {
 
 						if (HoveredVisObject == null) {
@@ -112,7 +110,6 @@ namespace Dataskop.Interaction {
 						}
 
 					}
-
 				}
 				else {
 
@@ -229,6 +226,17 @@ namespace Dataskop.Interaction {
 		}
 
 		public void SelectDataPointOnVisualizationChange() {
+
+			if (SelectedVisObject != null) {
+				SelectedVisObject.OnDeselect();
+				SelectedVisObject = null;
+			}
+
+			if (HoveredVisObject != null) {
+				HoveredVisObject.OnDeselect();
+				HoveredVisObject = null;
+			}
+
 			PreviouslySelectedDataPoint = SelectedDataPoint;
 
 			if (PreviouslySelectedDataPoint == null) {
