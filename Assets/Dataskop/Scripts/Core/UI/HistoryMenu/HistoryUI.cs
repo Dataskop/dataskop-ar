@@ -68,10 +68,6 @@ namespace Dataskop.UI {
 			AdjustTimeLabelPosition();
 		}
 
-		private void AdjustTimeLabelPosition() {
-			CurrentTimeLabel.style.top = Dragger.localBound.yMax;
-		}
-
 		public void OnDataPointSelectionChanged(DataPoint selectedDataPoint) {
 
 			if (SelectedDataPoint != null) {
@@ -87,7 +83,6 @@ namespace Dataskop.UI {
 			}
 
 			UpdateTimeLabel(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.FocusedIndex);
-			AdjustTimeLabelPosition();
 			SelectedDataPoint.FocusedIndexChanged += UpdateTimeLabel;
 
 			if (!IsActive) {
@@ -101,8 +96,8 @@ namespace Dataskop.UI {
 
 			HistorySlider.highValue = newResultsCount - 1;
 			HistorySlider.SetValueWithoutNotify(SelectedDataPoint.FocusedIndex);
-
 			GenerateTicks(newResultsCount);
+			AdjustTimeLabelPosition();
 			SetVisibility(HistorySliderContainer, true);
 			CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
 
@@ -119,8 +114,6 @@ namespace Dataskop.UI {
 		}
 
 		public void OnVisualizationOptionChanged(VisualizationOption currentVisOption) {
-
-			HistorySlider.value = 0;
 
 			if (IsActive) {
 
@@ -139,6 +132,11 @@ namespace Dataskop.UI {
 				SetVisibility(HistorySliderContainer, false);
 				IsActive = false;
 			}
+
+		}
+
+		private void AdjustTimeLabelPosition() {
+			CurrentTimeLabel.style.top = Dragger.localBound.yMax;
 		}
 
 		private static void SetVisibility(VisualElement element, bool isVisible) {
@@ -152,13 +150,15 @@ namespace Dataskop.UI {
 			if (SelectedDataPoint) {
 				SetVisibility(HistorySliderContainer, IsActive);
 				SetVisibility(CurrentTimeLabel, IsActive);
+				AdjustTimeLabelPosition();
 			}
 
 			historyViewToggled?.Invoke(IsActive);
+
 		}
 
 		private IEnumerator DelayToggle() {
-			yield return new WaitForSeconds(0.015f);
+			yield return new WaitForEndOfFrame();
 			historyViewToggled?.Invoke(IsActive);
 		}
 
@@ -167,37 +167,41 @@ namespace Dataskop.UI {
 			ClearTicks();
 
 			// Get the total height of the slider track where ticks will be placed
-			float sliderTrackHeight = HistorySliderContainer.resolvedStyle.height;
+			float sliderTrackHeight = HistorySlider.resolvedStyle.height;
 
 			// Determine the interval for displaying ticks to avoid clutter for large data points
 			int tickInterval = Mathf.CeilToInt(dataPointsCount / 20f);
 
 			// Calculate the space between ticks
-			float tickSpacing = sliderTrackHeight / (dataPointsCount / (float)tickInterval);
+			float tickSpacing = sliderTrackHeight / (dataPointsCount/ (float)tickInterval);
 
 			// Generate ticks
-			for (int i = 0; i < dataPointsCount; i += tickInterval) {
+			for (int i = 0; i <= dataPointsCount; i += tickInterval) {
+
 				VisualElement tick = new();
 				tick.AddToClassList("slider-tick");
 
 				// Set the size of the tick
 				tick.style.width = 20; // The width of the tick mark, stretching out from the slider
-				tick.style.height = 6; // The height of the tick mark
+				tick.style.height = 2; // The height of the tick mark
 
 				// Calculate the vertical position of the tick
-				float tickPosition = tickSpacing * (i / tickInterval);
+				float tickPosition = tickSpacing * ((float)i / tickInterval);
 
 				// The position is calculated from the bottom (sliderTrackHeight - position - half height of tick)
 				// to correctly align with the vertical slider's orientation
-				tick.style.top = sliderTrackHeight - tickPosition - tick.resolvedStyle.height / 2;
+				tick.style.top = sliderTrackHeight - tickPosition - tick.style.height.value.value / 2;
+
 				// Add the tick to the slider container
-				HistorySliderContainer.Add(tick);
+				HistorySlider.Add(tick);
+
 			}
+
 		}
 
 		private void ClearTicks() {
 			// Get all tick elements and remove them
-			List<VisualElement> ticks = HistorySliderContainer.Query(className: "slider-tick").ToList();
+			List<VisualElement> ticks = HistorySlider.Query(className: "slider-tick").ToList();
 			foreach (VisualElement tick in ticks) {
 				tick.RemoveFromHierarchy();
 			}
