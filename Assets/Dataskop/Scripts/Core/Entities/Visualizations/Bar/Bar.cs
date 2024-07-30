@@ -313,6 +313,7 @@ namespace Dataskop.Entities.Visualizations {
 			visObject.HasHovered += OnVisObjectHovered;
 			visObject.HasSelected += OnVisObjectSelected;
 			visObject.HasDeselected += OnVisObjectDeselected;
+			visObject.VisCollider.enabled = true;
 
 			return visObject;
 

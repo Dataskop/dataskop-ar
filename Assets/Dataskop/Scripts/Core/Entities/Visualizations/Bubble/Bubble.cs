@@ -91,6 +91,7 @@ namespace Dataskop.Entities.Visualizations {
 			VisHistoryConfiguration = visHistoryConfig;
 			VisObjectStyle = visObjectStyle;
 			Type = VisualizationType.Bubble;
+
 			VisOrigin.localScale *= Scale;
 			VisOrigin.root.localPosition = Offset;
 
@@ -104,6 +105,7 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjects[FocusIndex].HasSelected += OnVisObjectSelected;
 			VisObjects[FocusIndex].HasDeselected += OnVisObjectDeselected;
 			VisObjects[FocusIndex].VisCollider.enabled = true;
+
 			dropShadow.transform.localScale *= Scale;
 			dropShadow.transform.localPosition -= Offset;
 
@@ -316,6 +318,7 @@ namespace Dataskop.Entities.Visualizations {
 			visObject.HasHovered += OnVisObjectHovered;
 			visObject.HasSelected += OnVisObjectSelected;
 			visObject.HasDeselected += OnVisObjectDeselected;
+			visObject.VisCollider.enabled = true;
 
 			return visObject;
 
