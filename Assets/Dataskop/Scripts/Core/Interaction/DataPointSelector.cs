@@ -17,7 +17,6 @@ namespace Dataskop.Interaction {
 		[SerializeField] private Camera cam = null!;
 		[SerializeField] private Vector3 screenRayPosition = Vector3.zero;
 		[SerializeField] private InputHandler inputHandler = null!;
-		[SerializeField] private DataPointsManager dataPointsManager = null!;
 
 		[Header("Events")]
 		public UnityEvent<DataPoint?>? onDataPointSelected;
@@ -244,6 +243,8 @@ namespace Dataskop.Interaction {
 			yield return new WaitForEndOfFrame();
 			SelectedDataPoint = PreviouslySelectedDataPoint;
 			SelectedDataPoint?.SetSelectionStatus(SelectionState.Selected);
+			SelectedVisObject = SelectedDataPoint?.Vis.FocusedVisObject;
+			SelectedVisObject?.OnSelect();
 			onVisChangeWithSelection?.Invoke(false);
 		}
 
