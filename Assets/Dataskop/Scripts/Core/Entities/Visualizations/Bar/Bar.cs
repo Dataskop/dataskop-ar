@@ -86,7 +86,9 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjectStyle = visObjectStyle;
 			Type = VisualizationType.Bar;
 
-			//TODO: Handle MeasurementResults being less than configured time series configuration visible history count.
+			VisOrigin.localScale *= Scale;
+			VisOrigin.root.localPosition = Offset;
+
 			VisObjects = DataPoint.MeasurementDefinition.MeasurementResults.Count < VisHistoryConfiguration.visibleHistoryCount
 				? new IVisObject[dp.MeasurementDefinition.MeasurementResults.Count]
 				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
@@ -96,13 +98,12 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjects[FocusIndex].HasHovered += OnVisObjectHovered;
 			VisObjects[FocusIndex].HasSelected += OnVisObjectSelected;
 			VisObjects[FocusIndex].HasDeselected += OnVisObjectDeselected;
-
-			VisOrigin.localScale *= Scale;
-			VisOrigin.root.localPosition = Offset;
+			VisObjects[FocusIndex].VisCollider.enabled = true;
 
 			PreviousIndex = FocusIndex;
 			OnFocusedIndexChanged(DataPoint.MeasurementDefinition, FocusIndex);
 			IsInitialized = true;
+
 		}
 
 		public void OnFocusedIndexChanged(MeasurementDefinition def, int index) {
