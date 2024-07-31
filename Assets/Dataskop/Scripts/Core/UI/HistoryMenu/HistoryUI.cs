@@ -77,7 +77,6 @@ namespace Dataskop.UI {
 				return;
 			}
 
-			UpdateTimeLabel(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.FocusedIndex);
 			SelectedDataPoint.FocusedIndexChanged += UpdateTimeLabel;
 
 			if (!IsActive) {
@@ -93,7 +92,7 @@ namespace Dataskop.UI {
 
 			StartCoroutine(GenerateTicks(newResultsCount));
 			CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
-
+			UpdateTimeLabel(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.FocusedIndex);
 		}
 
 		private int GetMeasurementCount() {
@@ -115,6 +114,7 @@ namespace Dataskop.UI {
 
 		public void OnDataPointHistorySwiped(int newCount) {
 			HistorySlider.SetValueWithoutNotify(newCount);
+			AdjustTimeLabelPosition();
 		}
 
 		public void OnVisualizationOptionChanged(VisualizationOption currentVisOption) {
