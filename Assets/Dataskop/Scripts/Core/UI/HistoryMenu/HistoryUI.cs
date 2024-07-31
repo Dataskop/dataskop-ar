@@ -16,13 +16,10 @@ namespace Dataskop.UI {
 
 		[Header("References")]
 		[SerializeField] private UIDocument historyMenuDoc;
-		[SerializeField] private DataManager dataManager;
 
 		private VisualElement Root { get; set; }
 
 		private VisualElement HistoryContainer { get; set; }
-
-		private VisualElement HistorySliderContainer { get; set; }
 
 		private VisualElement Dragger { get; set; }
 
@@ -35,27 +32,25 @@ namespace Dataskop.UI {
 		private DataPoint SelectedDataPoint { get; set; }
 
 		private void Start() {
-			SetVisibility(Root, false);
-			HistorySlider.highValue = 1;
-			HistorySlider.lowValue = 0;
+			SetVisibility(HistoryContainer, false);
 		}
 
 		private void OnEnable() {
 
 			Root = historyMenuDoc.rootVisualElement;
 			HistoryContainer = Root.Q<VisualElement>("HistoryContainer");
-			HistorySliderContainer = HistoryContainer.Q<VisualElement>("HistorySliderContainer");
 
-			HistorySlider = HistorySliderContainer.Q<SliderInt>("Slider");
+			HistorySlider = HistoryContainer.Q<SliderInt>("Slider");
 			HistorySlider.RegisterCallback<ChangeEvent<int>>(SliderValueChanged);
 
-			CurrentTimeLabel = HistorySliderContainer.Q<Label>("CurrentTime");
+			CurrentTimeLabel = HistoryContainer.Q<Label>("CurrentTime");
 			Dragger = HistorySlider.Q<VisualElement>("unity-dragger");
+			Dragger.RegisterCallback<GeometryChangedEvent>(_ => AdjustTimeLabelPosition());
 
 		}
 
 		private void OnDisable() {
-			HistorySliderContainer.UnregisterCallback<ChangeEvent<int>>(SliderValueChanged);
+			HistorySlider.UnregisterCallback<ChangeEvent<int>>(SliderValueChanged);
 		}
 
 		private void SliderValueChanged(ChangeEvent<int> e) {
@@ -68,10 +63,6 @@ namespace Dataskop.UI {
 			AdjustTimeLabelPosition();
 		}
 
-		private void AdjustTimeLabelPosition() {
-			CurrentTimeLabel.style.top = Dragger.localBound.yMax;
-		}
-
 		public void OnDataPointSelectionChanged(DataPoint selectedDataPoint) {
 
 			if (SelectedDataPoint != null) {
@@ -82,30 +73,39 @@ namespace Dataskop.UI {
 
 			if (SelectedDataPoint == null) {
 				CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Hidden);
-				SetVisibility(HistorySliderContainer, false);
+				SetVisibility(HistoryContainer, false);
 				return;
 			}
 
 			UpdateTimeLabel(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.FocusedIndex);
-			AdjustTimeLabelPosition();
 			SelectedDataPoint.FocusedIndexChanged += UpdateTimeLabel;
 
 			if (!IsActive) {
 				return;
 			}
 
-			int newResultsCount = SelectedDataPoint.MeasurementDefinition.MeasurementResults.Count <
-			                      SelectedDataPoint.Vis.VisHistoryConfiguration.visibleHistoryCount
-				? SelectedDataPoint.MeasurementDefinition.MeasurementResults.Count
-				: SelectedDataPoint.Vis.VisHistoryConfiguration.visibleHistoryCount;
+			SetVisibility(HistoryContainer, true);
+
+			int newResultsCount = GetMeasurementCount();
 
 			HistorySlider.highValue = newResultsCount - 1;
 			HistorySlider.SetValueWithoutNotify(SelectedDataPoint.FocusedIndex);
 
-			GenerateTicks(newResultsCount);
-			SetVisibility(HistorySliderContainer, true);
+			StartCoroutine(GenerateTicks(newResultsCount));
 			CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
 
+		}
+
+		private int GetMeasurementCount() {
+
+			if (SelectedDataPoint == null) {
+				return 0;
+			}
+
+			return SelectedDataPoint.MeasurementDefinition.MeasurementResults.Count <
+			       SelectedDataPoint.Vis.VisHistoryConfiguration.visibleHistoryCount
+				? SelectedDataPoint.MeasurementDefinition.MeasurementResults.Count
+				: SelectedDataPoint.Vis.VisHistoryConfiguration.visibleHistoryCount;
 		}
 
 		private void UpdateTimeLabel(MeasurementDefinition def, int index) {
@@ -115,12 +115,9 @@ namespace Dataskop.UI {
 
 		public void OnDataPointHistorySwiped(int newCount) {
 			HistorySlider.SetValueWithoutNotify(newCount);
-			AdjustTimeLabelPosition();
 		}
 
 		public void OnVisualizationOptionChanged(VisualizationOption currentVisOption) {
-
-			HistorySlider.value = 0;
 
 			if (IsActive) {
 
@@ -130,19 +127,24 @@ namespace Dataskop.UI {
 				}
 
 				SetVisibility(Root, currentVisOption.Style.IsTimeSeries);
-				SetVisibility(HistorySliderContainer, false);
+				SetVisibility(HistoryContainer, false);
 				IsActive = false;
 
 			}
 			else {
 				SetVisibility(Root, currentVisOption.Style.IsTimeSeries);
-				SetVisibility(HistorySliderContainer, false);
+				SetVisibility(HistoryContainer, false);
 				IsActive = false;
 			}
+
 		}
 
-		private static void SetVisibility(VisualElement element, bool isVisible) {
-			element.style.visibility = new StyleEnum<Visibility>(isVisible ? Visibility.Visible : Visibility.Hidden);
+		private void AdjustTimeLabelPosition() {
+			CurrentTimeLabel.style.top = Dragger.localBound.yMax - Dragger.resolvedStyle.height;
+		}
+
+		private void SetVisibility(VisualElement element, bool isVisible) {
+			element.style.display = new StyleEnum<DisplayStyle>(isVisible ? DisplayStyle.Flex : DisplayStyle.None);
 		}
 
 		public void ToggleHistoryView() {
@@ -150,24 +152,28 @@ namespace Dataskop.UI {
 			IsActive = !IsActive;
 
 			if (SelectedDataPoint) {
-				SetVisibility(HistorySliderContainer, IsActive);
+				SetVisibility(HistoryContainer, IsActive);
 				SetVisibility(CurrentTimeLabel, IsActive);
+				StartCoroutine(GenerateTicks(GetMeasurementCount()));
 			}
 
 			historyViewToggled?.Invoke(IsActive);
+
 		}
 
 		private IEnumerator DelayToggle() {
-			yield return new WaitForSeconds(0.015f);
+			yield return new WaitForEndOfFrame();
 			historyViewToggled?.Invoke(IsActive);
 		}
 
-		private void GenerateTicks(int dataPointsCount) {
+		private IEnumerator GenerateTicks(int dataPointsCount) {
 			// Clear existing ticks
 			ClearTicks();
 
+			yield return new WaitForEndOfFrame();
+
 			// Get the total height of the slider track where ticks will be placed
-			float sliderTrackHeight = HistorySliderContainer.resolvedStyle.height;
+			float sliderTrackHeight = HistorySlider.resolvedStyle.height;
 
 			// Determine the interval for displaying ticks to avoid clutter for large data points
 			int tickInterval = Mathf.CeilToInt(dataPointsCount / 20f);
@@ -176,28 +182,33 @@ namespace Dataskop.UI {
 			float tickSpacing = sliderTrackHeight / (dataPointsCount / (float)tickInterval);
 
 			// Generate ticks
-			for (int i = 0; i < dataPointsCount; i += tickInterval) {
+			for (int i = 0; i <= dataPointsCount; i += tickInterval) {
+
 				VisualElement tick = new();
 				tick.AddToClassList("slider-tick");
 
 				// Set the size of the tick
 				tick.style.width = 20; // The width of the tick mark, stretching out from the slider
-				tick.style.height = 6; // The height of the tick mark
+				tick.style.height = 2; // The height of the tick mark
 
 				// Calculate the vertical position of the tick
-				float tickPosition = tickSpacing * (i / tickInterval);
+				float tickPosition = tickSpacing * ((float)i / tickInterval);
 
 				// The position is calculated from the bottom (sliderTrackHeight - position - half height of tick)
 				// to correctly align with the vertical slider's orientation
-				tick.style.top = sliderTrackHeight - tickPosition - tick.resolvedStyle.height / 2;
+				tick.style.top = sliderTrackHeight - tickPosition + tick.style.height.value.value / 2 - (Dragger.resolvedStyle.height / 2);
+				tick.style.left = 50;
+
 				// Add the tick to the slider container
-				HistorySliderContainer.Add(tick);
+				HistorySlider.Add(tick);
+
 			}
+
 		}
 
 		private void ClearTicks() {
 			// Get all tick elements and remove them
-			List<VisualElement> ticks = HistorySliderContainer.Query(className: "slider-tick").ToList();
+			List<VisualElement> ticks = HistorySlider.Query(className: "slider-tick").ToList();
 			foreach (VisualElement tick in ticks) {
 				tick.RemoveFromHierarchy();
 			}

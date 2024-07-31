@@ -148,6 +148,11 @@ namespace Dataskop.Entities {
 		}
 
 		private void SetMapIconColor(Color color) {
+
+			if (mapIconBorder == null) {
+				return;
+			}
+
 			mapIconBorder.color = color;
 		}
 
