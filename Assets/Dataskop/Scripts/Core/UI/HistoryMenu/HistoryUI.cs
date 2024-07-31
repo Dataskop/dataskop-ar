@@ -16,7 +16,6 @@ namespace Dataskop.UI {
 
 		[Header("References")]
 		[SerializeField] private UIDocument historyMenuDoc;
-		[SerializeField] private DataManager dataManager;
 
 		private VisualElement Root { get; set; }
 
@@ -46,6 +45,7 @@ namespace Dataskop.UI {
 
 			CurrentTimeLabel = HistoryContainer.Q<Label>("CurrentTime");
 			Dragger = HistorySlider.Q<VisualElement>("unity-dragger");
+			Dragger.RegisterCallback<GeometryChangedEvent>(_ => AdjustTimeLabelPosition());
 
 		}
 
@@ -84,18 +84,28 @@ namespace Dataskop.UI {
 				return;
 			}
 
-			int newResultsCount = SelectedDataPoint.MeasurementDefinition.MeasurementResults.Count <
-			                      SelectedDataPoint.Vis.VisHistoryConfiguration.visibleHistoryCount
-				? SelectedDataPoint.MeasurementDefinition.MeasurementResults.Count
-				: SelectedDataPoint.Vis.VisHistoryConfiguration.visibleHistoryCount;
+			SetVisibility(HistoryContainer, true);
+
+			int newResultsCount = GetMeasurementCount();
 
 			HistorySlider.highValue = newResultsCount - 1;
 			HistorySlider.SetValueWithoutNotify(SelectedDataPoint.FocusedIndex);
-			GenerateTicks(newResultsCount);
-			AdjustTimeLabelPosition();
-			SetVisibility(HistoryContainer, true);
+
+			StartCoroutine(GenerateTicks(newResultsCount));
 			CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
 
+		}
+
+		private int GetMeasurementCount() {
+
+			if (SelectedDataPoint == null) {
+				return 0;
+			}
+
+			return SelectedDataPoint.MeasurementDefinition.MeasurementResults.Count <
+			       SelectedDataPoint.Vis.VisHistoryConfiguration.visibleHistoryCount
+				? SelectedDataPoint.MeasurementDefinition.MeasurementResults.Count
+				: SelectedDataPoint.Vis.VisHistoryConfiguration.visibleHistoryCount;
 		}
 
 		private void UpdateTimeLabel(MeasurementDefinition def, int index) {
@@ -105,7 +115,6 @@ namespace Dataskop.UI {
 
 		public void OnDataPointHistorySwiped(int newCount) {
 			HistorySlider.SetValueWithoutNotify(newCount);
-			AdjustTimeLabelPosition();
 		}
 
 		public void OnVisualizationOptionChanged(VisualizationOption currentVisOption) {
@@ -131,11 +140,11 @@ namespace Dataskop.UI {
 		}
 
 		private void AdjustTimeLabelPosition() {
-			CurrentTimeLabel.style.top = Dragger.localBound.yMax;
+			CurrentTimeLabel.style.top = Dragger.localBound.yMax - Dragger.resolvedStyle.height;
 		}
 
-		private static void SetVisibility(VisualElement element, bool isVisible) {
-			element.style.visibility = new StyleEnum<Visibility>(isVisible ? Visibility.Visible : Visibility.Hidden);
+		private void SetVisibility(VisualElement element, bool isVisible) {
+			element.style.display = new StyleEnum<DisplayStyle>(isVisible ? DisplayStyle.Flex : DisplayStyle.None);
 		}
 
 		public void ToggleHistoryView() {
@@ -145,7 +154,7 @@ namespace Dataskop.UI {
 			if (SelectedDataPoint) {
 				SetVisibility(HistoryContainer, IsActive);
 				SetVisibility(CurrentTimeLabel, IsActive);
-				AdjustTimeLabelPosition();
+				StartCoroutine(GenerateTicks(GetMeasurementCount()));
 			}
 
 			historyViewToggled?.Invoke(IsActive);
@@ -157,9 +166,11 @@ namespace Dataskop.UI {
 			historyViewToggled?.Invoke(IsActive);
 		}
 
-		private void GenerateTicks(int dataPointsCount) {
+		private IEnumerator GenerateTicks(int dataPointsCount) {
 			// Clear existing ticks
 			ClearTicks();
+
+			yield return new WaitForEndOfFrame();
 
 			// Get the total height of the slider track where ticks will be placed
 			float sliderTrackHeight = HistorySlider.resolvedStyle.height;
@@ -178,14 +189,15 @@ namespace Dataskop.UI {
 
 				// Set the size of the tick
 				tick.style.width = 20; // The width of the tick mark, stretching out from the slider
-				tick.style.height = i % 5 == 0 ? 6 : 2; // The height of the tick mark
+				tick.style.height = 2; // The height of the tick mark
 
 				// Calculate the vertical position of the tick
 				float tickPosition = tickSpacing * ((float)i / tickInterval);
 
 				// The position is calculated from the bottom (sliderTrackHeight - position - half height of tick)
 				// to correctly align with the vertical slider's orientation
-				tick.style.top = sliderTrackHeight - tickPosition - tick.style.height.value.value / 2;
+				tick.style.top = sliderTrackHeight - tickPosition + tick.style.height.value.value / 2 - (Dragger.resolvedStyle.height / 2);
+				tick.style.left = 50;
 
 				// Add the tick to the slider container
 				HistorySlider.Add(tick);
