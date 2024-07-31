@@ -16,7 +16,7 @@
 
 .unity-base-slider__dragger {
     width: 60px;
-    height: 18px;
+    height: 20px;
     border-radius: 3px;
     background-color: rgb(255, 255, 255);
     border-width: 0;
@@ -44,9 +44,8 @@
     padding-right: 0;
     padding-top: 0;
     padding-bottom: 0;
-    top: 9px;
     position: absolute;
-    left: 29px;
+    left: 30px;
 }
 
 .unity-base-slider__dragger:hover {
