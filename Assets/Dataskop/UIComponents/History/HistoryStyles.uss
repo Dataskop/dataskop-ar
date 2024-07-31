@@ -15,16 +15,15 @@
 }
 
 .unity-base-slider__dragger {
-    width: 100px;
-    height: 30px;
-    left: 2px;
+    width: 60px;
+    height: 20px;
     border-radius: 3px;
     background-color: rgb(255, 255, 255);
     border-width: 0;
-    border-left-width: 3px;
-    border-right-width: 3px;
-    border-top-width: 3px;
-    border-bottom-width: 3px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
     border-left-color: rgb(37, 89, 176);
     border-right-color: rgb(37, 89, 176);
     border-top-color: rgb(37, 89, 176);
@@ -33,9 +32,20 @@
     border-bottom-left-radius: 8px;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
-    align-items: stretch;
+    align-items: center;
     justify-content: flex-end;
     transition: transform 0.3s, box-shadow 0.3s;
+    align-self: center;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    position: absolute;
+    left: 30px;
 }
 
 .unity-base-slider__dragger:hover {
@@ -60,15 +70,7 @@
 }
 
 .history-container {
-    height: 600px;
-    justify-content: space-between;
-    width: 100%;
-    align-items: center;
     flex-direction: row;
-    padding-left: 25px;
-    padding-right: 25px;
-    padding-top: 25px;
-    padding-bottom: 25px;
     top: 180px;
 }
 
