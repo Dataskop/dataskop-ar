@@ -233,7 +233,7 @@ namespace Dataskop.Entities.Visualizations {
 					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y - distance * i, VisOrigin.position.z);
 					VisObjects[DataPoint.FocusedIndex - i] = SpawnVisObject(DataPoint.FocusedIndex - i, spawnPos, result, false, false,
 						VisObjectStyle.Styles[0].timeMaterial);
-					
+
 					MeasurementResult res2 = currentResults[DataPoint.FocusedIndex - i + 1];
 
 					if (res2 == null) {
@@ -249,7 +249,7 @@ namespace Dataskop.Entities.Visualizations {
 						visObjectsContainer.localRotation,
 						visObjectsContainer);
 					dataGapIndicators.Add(indicator);
-					
+
 				}
 
 				groundLine.enabled = false;
