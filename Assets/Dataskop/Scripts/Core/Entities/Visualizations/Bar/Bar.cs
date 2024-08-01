@@ -14,6 +14,7 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private GameObject visObjectPrefab;
 		[SerializeField] private Transform visObjectsContainer;
 		[SerializeField] private BarVisObjectStyle visObjectStyle;
+		[SerializeField] private GameObject dataGapIndicatorPrefab;
 
 		[Header("Vis Values")]
 		[SerializeField] private Vector3 offset;
@@ -28,6 +29,7 @@ namespace Dataskop.Entities.Visualizations {
 		private bool isRotated;
 		private Vector3 moveTarget = Vector3.zero;
 		private Vector3 origin;
+		private List<GameObject> dataGapIndicators = new();
 
 		public event Action SwipedDown;
 
@@ -139,7 +141,8 @@ namespace Dataskop.Entities.Visualizations {
 					visObjectsContainer.transform.position = moveTarget;
 				}
 
-				historyMove = StartCoroutine(MoveHistory(PreviousIndex < DataPoint.FocusedIndex ? Vector3.down : Vector3.up, objectCountDistance));
+				historyMove = StartCoroutine(MoveHistory(PreviousIndex < DataPoint.FocusedIndex ? Vector3.down : Vector3.up,
+					objectCountDistance));
 
 				// VisObjects above current result
 				for (int i = 1; i < VisObjects.Length - DataPoint.FocusedIndex; i++) {
@@ -254,33 +257,69 @@ namespace Dataskop.Entities.Visualizations {
 				// VisObjects above current result
 				for (int i = 1; i < VisObjects.Length - DataPoint.FocusedIndex; i++) {
 
-					if (currentResults[DataPoint.FocusedIndex + i] == null) {
+					MeasurementResult result = currentResults[DataPoint.FocusedIndex + i];
+
+					if (result == null) {
 						continue;
 					}
 
 					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y + distance * i, VisOrigin.position.z);
-					VisObjects[DataPoint.FocusedIndex + i] =
-						SpawnVisObject(DataPoint.FocusedIndex + i, spawnPos, currentResults[DataPoint.FocusedIndex + i], false, false,
-							style.Styles[0].defaultMaterial, style.historyFillMaterial);
+					VisObjects[DataPoint.FocusedIndex + i] = SpawnVisObject(DataPoint.FocusedIndex + i, spawnPos, result, false, false,
+						style.Styles[0].defaultMaterial, style.historyFillMaterial);
 					VisObjects[DataPoint.FocusedIndex + i].OnHistoryToggle(true);
+
+					MeasurementResult res2 = currentResults[DataPoint.FocusedIndex + i - 1];
+
+					if (res2 == null) {
+						continue;
+					}
+
+					if (!DataPoint.MeasurementDefinition.IsDataGap(result, res2)) {
+						continue;
+					}
+
+					float yPos = (spawnPos.y - VisObjects[DataPoint.FocusedIndex + i - 1].VisObjectTransform.position.y) / 2f;
+					GameObject indicator = Instantiate(dataGapIndicatorPrefab, new Vector3(spawnPos.x, spawnPos.y - yPos, spawnPos.z),
+						visObjectsContainer.localRotation,
+						visObjectsContainer);
+					dataGapIndicators.Add(indicator);
 
 				}
 
 				// VisObjects below current result
 				for (int i = 1; i <= DataPoint.FocusedIndex; i++) {
 
-					if (currentResults[DataPoint.FocusedIndex - i] == null) {
+					MeasurementResult result = currentResults[DataPoint.FocusedIndex - i];
+
+					if (result == null) {
 						continue;
 					}
 
 					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y - distance * i, VisOrigin.position.z);
-					VisObjects[DataPoint.FocusedIndex - i] =
-						SpawnVisObject(DataPoint.FocusedIndex + i, spawnPos, currentResults[DataPoint.FocusedIndex + i], false, false,
-							style.Styles[0].defaultMaterial, style.historyFillMaterial);
+					VisObjects[DataPoint.FocusedIndex - i] = SpawnVisObject(DataPoint.FocusedIndex + i, spawnPos, result, false, false,
+						style.Styles[0].defaultMaterial, style.historyFillMaterial);
 					VisObjects[DataPoint.FocusedIndex - i].OnHistoryToggle(true);
+
+					MeasurementResult res2 = currentResults[DataPoint.FocusedIndex - i + 1];
+
+					if (res2 == null) {
+						continue;
+					}
+
+					if (!DataPoint.MeasurementDefinition.IsDataGap(result, res2)) {
+						continue;
+					}
+
+					float yPos = (spawnPos.y - VisObjects[DataPoint.FocusedIndex - i + 1].VisObjectTransform.position.y) / 2f;
+					GameObject indicator = Instantiate(dataGapIndicatorPrefab, new Vector3(spawnPos.x, spawnPos.y + yPos, spawnPos.z),
+						visObjectsContainer.localRotation,
+						visObjectsContainer);
+					dataGapIndicators.Add(indicator);
+
 				}
 
-				UpdateVisObject(VisObjects[DataPoint.FocusedIndex], DataPoint.FocusedIndex, currentResults[DataPoint.FocusedIndex], true, true,
+				UpdateVisObject(VisObjects[DataPoint.FocusedIndex], DataPoint.FocusedIndex, currentResults[DataPoint.FocusedIndex], true,
+					true,
 					IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial, style.focusedFillMaterial);
 				VisObjects[DataPoint.FocusedIndex].OnHistoryToggle(true);
 				HasHistoryEnabled = true;
@@ -368,6 +407,8 @@ namespace Dataskop.Entities.Visualizations {
 				VisObjects[i].HasDeselected -= OnVisObjectDeselected;
 				VisObjects[i].Delete();
 				VisObjects[i] = null;
+				dataGapIndicators.ForEach(Destroy);
+				dataGapIndicators.Clear();
 
 			}
 
@@ -386,6 +427,8 @@ namespace Dataskop.Entities.Visualizations {
 				VisObjects[i].HasDeselected -= OnVisObjectDeselected;
 				VisObjects[i].Delete();
 				VisObjects[i] = null;
+				dataGapIndicators.ForEach(Destroy);
+				dataGapIndicators.Clear();
 
 			}
 
