@@ -16,6 +16,7 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private DotVisObjectStyle visObjectStyle;
 		[SerializeField] private Transform dropShadow;
 		[SerializeField] private LineRenderer groundLine;
+		[SerializeField] private GameObject dataGapIndicatorPrefab;
 
 		[Header("Vis Values")]
 		[SerializeField] private Vector3 offset;
@@ -28,6 +29,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		private Coroutine historyMove;
 		private Vector3 moveTarget = Vector3.zero;
+		private List<GameObject> dataGapIndicators;
 
 		public event Action SwipedDown;
 
@@ -112,6 +114,8 @@ namespace Dataskop.Entities.Visualizations {
 
 			groundLine.startWidth = 0.0075f;
 			groundLine.endWidth = 0.0075f;
+
+			dataGapIndicators = new List<GameObject>();
 
 			PreviousIndex = DataPoint.FocusedIndex;
 			OnFocusedIndexChanged(DataPoint.MeasurementDefinition, DataPoint.FocusedIndex);
@@ -201,6 +205,19 @@ namespace Dataskop.Entities.Visualizations {
 					VisObjects[DataPoint.FocusedIndex + i] = SpawnVisObject(DataPoint.FocusedIndex + i, spawnPos,
 						currentResults[DataPoint.FocusedIndex + i], false, false,
 						VisObjectStyle.Styles[0].timeMaterial);
+
+					TimeSpan timeDiff = currentResults[DataPoint.FocusedIndex + i].Timestamp -
+					                    currentResults[DataPoint.FocusedIndex + i - 1].Timestamp;
+					TimeSpan interval = new (0, 0, DataPoint.MeasurementDefinition.MeasuringInterval / 10);
+
+					if (Math.Truncate(Math.Abs(timeDiff.TotalSeconds)) > interval.TotalSeconds) {
+						float yPos = (spawnPos.y - VisObjects[DataPoint.FocusedIndex + i - 1].VisObjectTransform.position.y) / 2f;
+						GameObject gapIndicator = Instantiate(dataGapIndicatorPrefab, new(spawnPos.x, spawnPos.y - yPos, spawnPos.z),
+							visObjectsContainer.localRotation,
+							visObjectsContainer);
+						dataGapIndicators.Add(gapIndicator);
+					}
+
 				}
 
 				// VisObjects below current result
@@ -214,6 +231,19 @@ namespace Dataskop.Entities.Visualizations {
 					VisObjects[DataPoint.FocusedIndex - i] = SpawnVisObject(DataPoint.FocusedIndex - i, spawnPos,
 						currentResults[DataPoint.FocusedIndex - i], false, false,
 						VisObjectStyle.Styles[0].timeMaterial);
+
+					TimeSpan timeDiff = currentResults[DataPoint.FocusedIndex - i].Timestamp -
+					                    currentResults[DataPoint.FocusedIndex - i + 1].Timestamp;
+					TimeSpan interval = new (0, 0, DataPoint.MeasurementDefinition.MeasuringInterval / 10);
+
+					if (Math.Truncate(Math.Abs(timeDiff.TotalSeconds)) > interval.TotalSeconds) {
+						float yPos = Mathf.Abs(spawnPos.y - VisObjects[DataPoint.FocusedIndex - i + 1].VisObjectTransform.position.y) / 2f;
+						GameObject gapIndicator = Instantiate(dataGapIndicatorPrefab, new(spawnPos.x, spawnPos.y + yPos, spawnPos.z),
+							visObjectsContainer.localRotation,
+							visObjectsContainer);
+						dataGapIndicators.Add(gapIndicator);
+					}
+
 				}
 
 				groundLine.enabled = false;

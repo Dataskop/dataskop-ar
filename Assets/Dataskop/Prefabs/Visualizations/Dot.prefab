@@ -188,6 +188,7 @@ MonoBehaviour:
   visObjectStyle: {fileID: 11400000, guid: 5d031eafaf15a8244a7369eb55394f0b, type: 2}
   dropShadow: {fileID: 3959282354504990483}
   groundLine: {fileID: 6640198457753545217}
+  dataGapIndicatorPrefab: {fileID: 4403895755513534517, guid: 9434c06c325ea6346a2a65ba51da5b4c, type: 3}
   offset: {x: 0, y: 1, z: 0}
   scaleFactor: 0.25
   visHistoryConfig:
