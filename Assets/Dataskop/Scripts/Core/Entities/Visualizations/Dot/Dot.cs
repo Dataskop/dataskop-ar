@@ -29,7 +29,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		private Coroutine historyMove;
 		private Vector3 moveTarget = Vector3.zero;
-		private List<GameObject> dataGapIndicators = new List<GameObject>();
+		private List<GameObject> dataGapIndicators = new();
 
 		public event Action SwipedDown;
 
