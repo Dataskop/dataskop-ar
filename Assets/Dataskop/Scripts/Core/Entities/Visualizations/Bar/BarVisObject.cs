@@ -52,6 +52,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public Collider VisCollider => visCollider;
 
+		public Transform VisObjectTransform => transform;
+
 		public event Action<int> HasHovered;
 
 		public event Action<int> HasSelected;

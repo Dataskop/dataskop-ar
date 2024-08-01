@@ -16,6 +16,7 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private DotVisObjectStyle visObjectStyle;
 		[SerializeField] private Transform dropShadow;
 		[SerializeField] private LineRenderer groundLine;
+		[SerializeField] private GameObject dataGapIndicatorPrefab;
 
 		[Header("Vis Values")]
 		[SerializeField] private Vector3 offset;
@@ -28,6 +29,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		private Coroutine historyMove;
 		private Vector3 moveTarget = Vector3.zero;
+		private List<GameObject> dataGapIndicators = new();
 
 		public event Action SwipedDown;
 
@@ -102,13 +104,14 @@ namespace Dataskop.Entities.Visualizations {
 
 			dropShadow.transform.localScale *= Scale;
 			dropShadow.transform.localPosition -= Offset;
-/*
+
+			/*
 			SetLinePosition(groundLine,
 				new Vector3(VisOrigin.localPosition.x,
 					VisOrigin.localPosition.y - VisObjects[DataPoint.FocusedIndex].VisRenderer.sprite.bounds.size.y * 0.75f,
 					VisOrigin.localPosition.z),
 				dropShadow.localPosition);
-				*/
+			*/
 
 			groundLine.startWidth = 0.0075f;
 			groundLine.endWidth = 0.0075f;
@@ -193,27 +196,63 @@ namespace Dataskop.Entities.Visualizations {
 				// VisObjects above current result
 				for (int i = 1; i < VisObjects.Length - DataPoint.FocusedIndex; i++) {
 
-					if (currentResults[DataPoint.FocusedIndex + i] == null) {
+					MeasurementResult result = currentResults[DataPoint.FocusedIndex + i];
+
+					if (result == null) {
 						continue;
 					}
 
 					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y + distance * i, VisOrigin.position.z);
 					VisObjects[DataPoint.FocusedIndex + i] = SpawnVisObject(DataPoint.FocusedIndex + i, spawnPos,
-						currentResults[DataPoint.FocusedIndex + i], false, false,
-						VisObjectStyle.Styles[0].timeMaterial);
+						result, false, false, VisObjectStyle.Styles[0].timeMaterial);
+
+					MeasurementResult res2 = currentResults[DataPoint.FocusedIndex + i - 1];
+
+					if (res2 == null) {
+						continue;
+					}
+
+					if (!DataPoint.MeasurementDefinition.IsDataGap(result, res2)) {
+						continue;
+					}
+
+					float yPos = (spawnPos.y - VisObjects[DataPoint.FocusedIndex + i - 1].VisObjectTransform.position.y) / 2f;
+					GameObject indicator = Instantiate(dataGapIndicatorPrefab, new Vector3(spawnPos.x, spawnPos.y - yPos, spawnPos.z),
+						visObjectsContainer.localRotation,
+						visObjectsContainer);
+					dataGapIndicators.Add(indicator);
+
 				}
 
 				// VisObjects below current result
 				for (int i = 1; i <= DataPoint.FocusedIndex; i++) {
 
-					if (currentResults[DataPoint.FocusedIndex - i] == null) {
+					MeasurementResult result = currentResults[DataPoint.FocusedIndex - i];
+
+					if (result == null) {
 						continue;
 					}
 
 					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y - distance * i, VisOrigin.position.z);
 					VisObjects[DataPoint.FocusedIndex - i] = SpawnVisObject(DataPoint.FocusedIndex - i, spawnPos,
-						currentResults[DataPoint.FocusedIndex - i], false, false,
-						VisObjectStyle.Styles[0].timeMaterial);
+						result, false, false, VisObjectStyle.Styles[0].timeMaterial);
+
+					MeasurementResult res2 = currentResults[DataPoint.FocusedIndex - i + 1];
+
+					if (res2 == null) {
+						continue;
+					}
+
+					if (!DataPoint.MeasurementDefinition.IsDataGap(result, res2)) {
+						continue;
+					}
+
+					float yPos = (spawnPos.y - VisObjects[DataPoint.FocusedIndex - i + 1].VisObjectTransform.position.y) / 2f;
+					GameObject indicator = Instantiate(dataGapIndicatorPrefab, new Vector3(spawnPos.x, spawnPos.y + yPos, spawnPos.z),
+						visObjectsContainer.localRotation,
+						visObjectsContainer);
+					dataGapIndicators.Add(indicator);
+
 				}
 
 				groundLine.enabled = false;
@@ -377,6 +416,8 @@ namespace Dataskop.Entities.Visualizations {
 				VisObjects[i].HasDeselected -= OnVisObjectDeselected;
 				VisObjects[i].Delete();
 				VisObjects[i] = null;
+				dataGapIndicators.ForEach(Destroy);
+				dataGapIndicators.Clear();
 
 			}
 
@@ -395,6 +436,8 @@ namespace Dataskop.Entities.Visualizations {
 				VisObjects[i].HasDeselected -= OnVisObjectDeselected;
 				VisObjects[i].Delete();
 				VisObjects[i] = null;
+				dataGapIndicators.ForEach(Destroy);
+				dataGapIndicators.Clear();
 
 			}
 

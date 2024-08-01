@@ -190,6 +190,7 @@ MonoBehaviour:
   dropShadow: {fileID: 7669548959106058827}
   groundLine: {fileID: 4226972398150195897}
   labelLine: {fileID: 1095265369420110130}
+  dataGapIndicatorPrefab: {fileID: 4403895755513534517, guid: 9434c06c325ea6346a2a65ba51da5b4c, type: 3}
   offset: {x: 0, y: 1, z: 0}
   scaleFactor: 0.25
   visHistoryConfig:
