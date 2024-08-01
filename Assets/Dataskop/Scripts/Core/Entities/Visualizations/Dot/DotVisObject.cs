@@ -34,6 +34,8 @@ namespace Dataskop.Entities.Visualizations {
 		private bool isSelected;
 		private Coroutine moveLineCoroutine;
 
+		public Transform VisObjectTransform => transform;
+
 		public event Action<int> HasHovered;
 
 		public event Action<int> HasSelected;

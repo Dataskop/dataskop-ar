@@ -57,6 +57,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public Collider VisCollider => visCollider;
 
+		public Transform VisObjectTransform => transform;
+
 		public void SetDisplayData(VisualizationResultDisplayData displayData) {
 
 			idTextMesh.text = displayData.Result.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper();
