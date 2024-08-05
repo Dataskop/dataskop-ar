@@ -31,7 +31,7 @@ namespace Dataskop.Entities.Visualizations {
 		private Coroutine historyMove;
 		private Vector3 moveTarget = Vector3.zero;
 
-		private bool HasHistoryEnabled { get; set; }
+		public bool HasHistoryEnabled { get; private set; }
 
 		private float Scale { get; set; }
 
@@ -280,6 +280,10 @@ namespace Dataskop.Entities.Visualizations {
 					break;
 			}
 
+		}
+
+		public void OnMeasurementResultsUpdated(int newIndex) {
+			OnFocusedIndexChanged(DataPoint.MeasurementDefinition, newIndex);
 		}
 
 		public void ApplyStyle(VisualizationStyle style) {
