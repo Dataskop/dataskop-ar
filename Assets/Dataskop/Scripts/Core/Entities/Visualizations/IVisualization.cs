@@ -22,6 +22,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public bool IsSelected { get; }
 
+		public bool HasHistoryEnabled { get; }
+
 		/// <summary>
 		///     The Transform of the whole Visualization.
 		/// </summary>
@@ -55,6 +57,8 @@ namespace Dataskop.Entities.Visualizations {
 		public void OnFocusedIndexChanged(MeasurementDefinition def, int index);
 
 		public void OnSwipeInteraction(PointerInteraction pointerInteraction);
+
+		public void OnMeasurementResultsUpdated(int newIndex);
 
 		public void ApplyStyle(VisualizationStyle style);
 

@@ -55,7 +55,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public bool IsSelected { get; private set; }
 
-		private bool HasHistoryEnabled { get; set; }
+		public bool HasHistoryEnabled { get; private set; }
 
 		public Transform VisOrigin { get; set; }
 
@@ -180,6 +180,10 @@ namespace Dataskop.Entities.Visualizations {
 					break;
 			}
 
+		}
+
+		public void OnMeasurementResultsUpdated(int newIndex) {
+			throw new NotImplementedException();
 		}
 
 		public void ApplyStyle(VisualizationStyle style) { }
