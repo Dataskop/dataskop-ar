@@ -48,7 +48,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public event Action<IVisObject> FocusedVisObjectChanged;
 
-		public DataPoint DataPoint { get; set; }
+		public DataPoint DataPoint { get; private set; }
 
 		public IVisObject[] VisObjects { get; set; }
 
@@ -58,11 +58,9 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisHistoryConfiguration VisHistoryConfiguration { get; set; }
 
-		public bool IsSelected { get; set; }
+		public bool IsSelected { get; private set; }
 
-		public bool IsInitialized { get; set; }
-
-		public bool HasHistoryEnabled { get; set; }
+		private bool HasHistoryEnabled { get; set; }
 
 		public Transform VisOrigin { get; set; }
 
@@ -71,15 +69,15 @@ namespace Dataskop.Entities.Visualizations {
 			MeasurementType.Bool
 		};
 
-		public Vector3 Offset { get; set; }
+		public Vector3 Offset { get; private set; }
 
-		public float Scale { get; set; }
+		private float Scale { get; set; }
 
 		public VisualizationType Type { get; set; }
 
-		public int PreviousIndex { get; set; }
+		private int PreviousIndex { get; set; }
 
-		public IVisObjectStyle VisObjectStyle { get; set; }
+		private IVisObjectStyle VisObjectStyle { get; set; }
 
 		public void Initialize(DataPoint dp) {
 
@@ -117,7 +115,6 @@ namespace Dataskop.Entities.Visualizations {
 
 			PreviousIndex = DataPoint.FocusedIndex;
 			OnFocusedIndexChanged(DataPoint.MeasurementDefinition, DataPoint.FocusedIndex);
-			IsInitialized = true;
 		}
 
 		public void OnFocusedIndexChanged(MeasurementDefinition def, int index) {
@@ -269,7 +266,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-		public void OnVisObjectHovered(int index) {
+		private void OnVisObjectHovered(int index) {
 
 			if (index == DataPoint.FocusedIndex) {
 				if (!IsSelected) {
@@ -289,7 +286,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-		public void OnVisObjectSelected(int index) {
+		private void OnVisObjectSelected(int index) {
 
 			if (index == DataPoint.FocusedIndex) {
 				VisObjects[index].SetMaterials(VisObjectStyle.Styles[0].selectionMaterial);
@@ -300,7 +297,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-		public void OnVisObjectDeselected(int index) {
+		private void OnVisObjectDeselected(int index) {
 
 			if (index == DataPoint?.FocusedIndex) {
 
