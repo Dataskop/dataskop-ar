@@ -14,17 +14,13 @@ namespace Dataskop.Entities.Visualizations {
 		/// <summary>
 		///     The DataPoint this visualization belongs to.
 		/// </summary>
-		public DataPoint DataPoint { get; set; }
+		public DataPoint DataPoint { get; }
 
 		public VisualizationOption VisOption { get; set; }
 
 		public VisHistoryConfiguration VisHistoryConfiguration { get; set; }
 
-		public bool IsSelected { get; set; }
-
-		public bool IsInitialized { get; set; }
-
-		public bool HasHistoryEnabled { get; set; }
+		public bool IsSelected { get; }
 
 		/// <summary>
 		///     The Transform of the whole Visualization.
@@ -33,15 +29,9 @@ namespace Dataskop.Entities.Visualizations {
 
 		public MeasurementType[] AllowedMeasurementTypes { get; set; }
 
-		public Vector3 Offset { get; set; }
-
-		public float Scale { get; set; }
+		public Vector3 Offset { get; }
 
 		public VisualizationType Type { get; set; }
-
-		public int PreviousIndex { get; set; }
-
-		public IVisObjectStyle VisObjectStyle { get; set; }
 
 		public event Action SwipedDown;
 
@@ -59,12 +49,6 @@ namespace Dataskop.Entities.Visualizations {
 		///     Creates a Visualization for a given Data Point.
 		/// </summary>
 		public void Initialize(DataPoint dp);
-
-		public void OnVisObjectHovered(int index);
-
-		public void OnVisObjectSelected(int index);
-
-		public void OnVisObjectDeselected(int index);
 
 		public void OnTimeSeriesToggled(bool isActive);
 

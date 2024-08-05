@@ -26,10 +26,18 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private Color hoverColor;
 		[SerializeField] private Color selectColor;
 		[SerializeField] private Color historyColor;
+		private readonly List<GameObject> dataGapIndicators = new();
 
 		private Coroutine historyMove;
 		private Vector3 moveTarget = Vector3.zero;
-		private List<GameObject> dataGapIndicators = new();
+
+		private bool HasHistoryEnabled { get; set; }
+
+		private float Scale { get; set; }
+
+		private int PreviousIndex { get; set; }
+
+		private IVisObjectStyle VisObjectStyle { get; set; }
 
 		public event Action SwipedDown;
 
@@ -43,7 +51,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public event Action<IVisObject> FocusedVisObjectChanged;
 
-		public DataPoint DataPoint { get; set; }
+		public DataPoint DataPoint { get; private set; }
 
 		public IVisObject[] VisObjects { get; set; }
 
@@ -53,11 +61,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisHistoryConfiguration VisHistoryConfiguration { get; set; }
 
-		public bool IsSelected { get; set; }
-
-		public bool IsInitialized { get; set; }
-
-		public bool HasHistoryEnabled { get; set; }
+		public bool IsSelected { get; private set; }
 
 		public Transform VisOrigin { get; set; }
 
@@ -66,15 +70,9 @@ namespace Dataskop.Entities.Visualizations {
 			MeasurementType.Bool
 		};
 
-		public Vector3 Offset { get; set; }
-
-		public float Scale { get; set; }
+		public Vector3 Offset { get; private set; }
 
 		public VisualizationType Type { get; set; }
-
-		public int PreviousIndex { get; set; }
-
-		public IVisObjectStyle VisObjectStyle { get; set; }
 
 		public void Initialize(DataPoint dp) {
 
@@ -118,7 +116,6 @@ namespace Dataskop.Entities.Visualizations {
 
 			PreviousIndex = DataPoint.FocusedIndex;
 			OnFocusedIndexChanged(DataPoint.MeasurementDefinition, DataPoint.FocusedIndex);
-			IsInitialized = true;
 
 		}
 
@@ -272,60 +269,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-		public void OnVisObjectHovered(int index) {
-
-			if (index == DataPoint.FocusedIndex) {
-				if (!IsSelected) {
-
-					if (VisObjects[index] == null) {
-						return;
-					}
-
-					VisObjects[index].SetMaterials(VisObjectStyle.Styles[0].hoverMaterial);
-				}
-			}
-			else {
-				VisObjects[index].ShowDisplay();
-			}
-
-			VisObjectHovered?.Invoke(index);
-
-		}
-
-		public void OnVisObjectSelected(int index) {
-
-			if (index == DataPoint.FocusedIndex) {
-				VisObjects[index].SetMaterials(VisObjectStyle.Styles[0].selectionMaterial);
-			}
-
-			IsSelected = true;
-			VisObjectSelected?.Invoke(index);
-
-		}
-
-		public void OnVisObjectDeselected(int index) {
-
-			if (index == DataPoint?.FocusedIndex) {
-
-				if (VisObjects[index] == null) {
-					return;
-				}
-
-				VisObjects[index].SetMaterials(VisObjectStyle.Styles[0].defaultMaterial);
-
-				if (IsSelected) {
-					IsSelected = false;
-				}
-
-			}
-			else {
-				VisObjects[index].HideDisplay();
-			}
-
-			VisObjectDeselected?.Invoke(index);
-
-		}
-
 		public void OnSwipeInteraction(PointerInteraction pointerInteraction) {
 
 			switch (pointerInteraction.Direction.y) {
@@ -348,6 +291,60 @@ namespace Dataskop.Entities.Visualizations {
 			ClearVisObjects();
 			DataPoint = null;
 			Destroy(gameObject);
+		}
+
+		private void OnVisObjectHovered(int index) {
+
+			if (index == DataPoint.FocusedIndex) {
+				if (!IsSelected) {
+
+					if (VisObjects[index] == null) {
+						return;
+					}
+
+					VisObjects[index].SetMaterials(VisObjectStyle.Styles[0].hoverMaterial);
+				}
+			}
+			else {
+				VisObjects[index].ShowDisplay();
+			}
+
+			VisObjectHovered?.Invoke(index);
+
+		}
+
+		private void OnVisObjectSelected(int index) {
+
+			if (index == DataPoint.FocusedIndex) {
+				VisObjects[index].SetMaterials(VisObjectStyle.Styles[0].selectionMaterial);
+			}
+
+			IsSelected = true;
+			VisObjectSelected?.Invoke(index);
+
+		}
+
+		private void OnVisObjectDeselected(int index) {
+
+			if (index == DataPoint?.FocusedIndex) {
+
+				if (VisObjects[index] == null) {
+					return;
+				}
+
+				VisObjects[index].SetMaterials(VisObjectStyle.Styles[0].defaultMaterial);
+
+				if (IsSelected) {
+					IsSelected = false;
+				}
+
+			}
+			else {
+				VisObjects[index].HideDisplay();
+			}
+
+			VisObjectDeselected?.Invoke(index);
+
 		}
 
 		private IVisObject SpawnVisObject(int index, Vector3 pos, MeasurementResult result, bool visibleDisplay,
