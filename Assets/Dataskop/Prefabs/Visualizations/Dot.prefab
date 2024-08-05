@@ -192,7 +192,7 @@ MonoBehaviour:
   offset: {x: 0, y: 1, z: 0}
   scaleFactor: 0.25
   visHistoryConfig:
-    visibleHistoryCount: 50
+    visibleHistoryCount: 200
     elementDistance: 0.32
     animationDuration: 0.125
     isFading: 0
