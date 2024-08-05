@@ -73,6 +73,16 @@ namespace Dataskop.Data {
 			return MeasurementResults[index];
 		}
 
+		public int? GetIndexOfMeasurementResult(MeasurementResult mr) {
+
+			if (MeasurementResults.Contains(mr)) {
+				return Array.IndexOf(MeasurementResults.ToArray(), mr);
+			}
+
+			return null;
+
+		}
+
 		public bool IsDataGap(MeasurementResult result1, MeasurementResult result2) {
 			TimeSpan timeDiff = result1.Timestamp - result2.Timestamp;
 			TimeSpan interval = new(0, 0, MeasuringInterval / 10);

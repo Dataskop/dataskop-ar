@@ -20,10 +20,9 @@ namespace Dataskop.Entities {
 
 		public MeasurementDefinition MeasurementDefinition { get; set; }
 
-		public int FocusedIndex { get; set; }
+		public int FocusedIndex { get; private set; }
 
-		//TODO: Check for Usages of this if necessary to refactor to event subscription
-		public MeasurementResult FocusedMeasurement => MeasurementDefinition.GetMeasurementResult(FocusedIndex);
+		public MeasurementResult FocusedMeasurement { get; set; }
 
 		public DataAttribute Attribute { get; set; }
 
@@ -72,7 +71,28 @@ namespace Dataskop.Entities {
 		}
 
 		public void OnMeasurementResultsUpdated() {
-			//TODO: What happens when Measurement Results get updated (either through request or auto refetch)...
+
+			int? indexOfPreviousResult = MeasurementDefinition.GetIndexOfMeasurementResult(FocusedMeasurement);
+
+			if (indexOfPreviousResult == null) {
+				return;
+			}
+
+			if (Vis.HasHistoryEnabled) {
+				SetIndex(indexOfPreviousResult.Value);
+				//Vis.OnMeasurementResultsUpdated(indexOfPreviousResult.Value);
+			}
+			else {
+
+				if (FocusedIndex != 0) {
+					SetIndex(indexOfPreviousResult.Value);
+				}
+				else {
+					SetIndex(0);
+				}
+
+			}
+
 		}
 
 		private void IncreaseMeasurementIndex() {
@@ -115,14 +135,9 @@ namespace Dataskop.Entities {
 		}
 
 		public void SetIndex(int index) {
-
-			if (index == FocusedIndex) {
-				return;
-			}
-
 			FocusedIndex = index;
+			FocusedMeasurement = MeasurementDefinition.GetMeasurementResult(FocusedIndex);
 			FocusedIndexChanged?.Invoke(MeasurementDefinition, FocusedIndex);
-
 		}
 
 		/// <summary>
