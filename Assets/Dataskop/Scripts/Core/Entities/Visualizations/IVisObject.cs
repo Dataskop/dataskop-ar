@@ -1,8 +1,6 @@
 using System;
 using Dataskop.Data;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Dataskop.Entities.Visualizations {
 
@@ -11,18 +9,6 @@ namespace Dataskop.Entities.Visualizations {
 		public int Index { get; set; }
 
 		public bool IsFocused { get; set; }
-
-		public CanvasGroup DataDisplay { get; }
-
-		public TextMeshProUGUI IDTextMesh { get; }
-
-		public TextMeshProUGUI ValueTextMesh { get; }
-
-		public TextMeshProUGUI DateTextMesh { get; }
-
-		public Image BoolIconRenderer { get; }
-
-		public Image AuthorIconRenderer { get; }
 
 		public Collider VisCollider { get; }
 

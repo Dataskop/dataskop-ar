@@ -46,18 +46,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		public bool IsFocused { get; set; }
 
-		public CanvasGroup DataDisplay => dataDisplay;
-
-		public TextMeshProUGUI IDTextMesh => idTextMesh;
-
-		public TextMeshProUGUI ValueTextMesh => valueTextMesh;
-
-		public TextMeshProUGUI DateTextMesh => dateTextMesh;
-
-		public Image BoolIconRenderer => boolIconRenderer;
-
-		public Image AuthorIconRenderer => authorIconImageRenderer;
-
 		public Collider VisCollider => visCollider;
 
 		public void SetDisplayData(VisualizationResultDisplayData displayData) {
