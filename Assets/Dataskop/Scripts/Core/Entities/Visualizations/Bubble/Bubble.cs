@@ -27,6 +27,7 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private Color hoverColor;
 		[SerializeField] private Color selectColor;
 		[SerializeField] private Color historyColor;
+		private readonly List<GameObject> dataGapIndicators = new();
 		private Coroutine groundLineRoutine;
 		private Coroutine historyMove;
 		private Coroutine labelLineRoutineLower;
@@ -34,7 +35,12 @@ namespace Dataskop.Entities.Visualizations {
 		private Coroutine labelRoutine;
 		private Vector3 moveTarget = Vector3.zero;
 		private Vector3 prevScale;
-		private List<GameObject> dataGapIndicators = new();
+
+		private float Scale { get; set; }
+
+		private int PreviousIndex { get; set; }
+
+		private IVisObjectStyle VisObjectStyle { get; set; }
 
 		public event Action SwipedDown;
 
@@ -71,13 +77,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public Vector3 Offset { get; private set; }
 
-		private float Scale { get; set; }
-
 		public VisualizationType Type { get; set; }
-
-		private int PreviousIndex { get; set; }
-
-		private IVisObjectStyle VisObjectStyle { get; set; }
 
 		public void Initialize(DataPoint dp) {
 
@@ -266,6 +266,34 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
+		public void OnSwipeInteraction(PointerInteraction pointerInteraction) {
+
+			switch (pointerInteraction.Direction.y) {
+				case > 0.20f:
+					SwipedUp?.Invoke();
+					break;
+				case < -0.20f:
+					SwipedDown?.Invoke();
+					break;
+			}
+
+		}
+
+		public void OnMeasurementResultsUpdated(int newIndex) {
+			throw new NotImplementedException();
+		}
+
+		public void ApplyStyle(VisualizationStyle style) {
+			dropShadow.gameObject.SetActive(style.HasDropShadow);
+			groundLine.gameObject.SetActive(style.HasGroundLine);
+		}
+
+		public void Despawn() {
+			ClearVisObjects();
+			DataPoint = null;
+			Destroy(gameObject);
+		}
+
 		private void OnVisObjectHovered(int index) {
 
 			if (index == DataPoint.FocusedIndex) {
@@ -317,34 +345,6 @@ namespace Dataskop.Entities.Visualizations {
 
 			VisObjectDeselected?.Invoke(index);
 
-		}
-
-		public void OnSwipeInteraction(PointerInteraction pointerInteraction) {
-
-			switch (pointerInteraction.Direction.y) {
-				case > 0.20f:
-					SwipedUp?.Invoke();
-					break;
-				case < -0.20f:
-					SwipedDown?.Invoke();
-					break;
-			}
-
-		}
-
-		public void OnMeasurementResultsUpdated(int newIndex) {
-			throw new NotImplementedException();
-		}
-
-		public void ApplyStyle(VisualizationStyle style) {
-			dropShadow.gameObject.SetActive(style.HasDropShadow);
-			groundLine.gameObject.SetActive(style.HasGroundLine);
-		}
-
-		public void Despawn() {
-			ClearVisObjects();
-			DataPoint = null;
-			Destroy(gameObject);
 		}
 
 		private IVisObject SpawnVisObject(int index, Vector3 pos, MeasurementResult result, bool visibleDisplay,

@@ -31,13 +31,13 @@ namespace Dataskop.Entities.Visualizations {
 		private Coroutine historyMove;
 		private Vector3 moveTarget = Vector3.zero;
 
-		public bool HasHistoryEnabled { get; private set; }
-
 		private float Scale { get; set; }
 
 		private int PreviousIndex { get; set; }
 
 		private IVisObjectStyle VisObjectStyle { get; set; }
+
+		public bool HasHistoryEnabled { get; private set; }
 
 		public event Action SwipedDown;
 

@@ -196,7 +196,7 @@ namespace Dataskop.UI {
 
 				// The position is calculated from the bottom (sliderTrackHeight - position - half height of tick)
 				// to correctly align with the vertical slider's orientation
-				tick.style.top = sliderTrackHeight - tickPosition + tick.style.height.value.value / 2 - (Dragger.resolvedStyle.height / 2);
+				tick.style.top = sliderTrackHeight - tickPosition + tick.style.height.value.value / 2 - Dragger.resolvedStyle.height / 2;
 				tick.style.left = 50;
 
 				// Add the tick to the slider container
