@@ -3,7 +3,6 @@ using System.Collections;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using ZXing;
@@ -18,7 +17,7 @@ namespace Dataskop.Interaction {
 		[Header("References")]
 		[SerializeField] private ARCameraManager arCamManager;
 
-		private readonly WaitForSeconds qrReadCooldown = new(5f);
+		private readonly WaitForSeconds qrReadCooldown = new(10f);
 
 		private BarcodeReader QrReader { get; set; }
 
@@ -30,11 +29,7 @@ namespace Dataskop.Interaction {
 
 		private void Start() {
 			QrReader = new BarcodeReader();
-
-			if (SceneManager.GetActiveScene().buildIndex == 2) {
-				ShouldLookForQrCode = true;
-			}
-
+			ShouldLookForQrCode = true;
 		}
 
 		private void OnEnable() {
