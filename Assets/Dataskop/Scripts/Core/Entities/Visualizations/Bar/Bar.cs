@@ -24,12 +24,18 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private Color hoverColor;
 		[SerializeField] private Color selectColor;
 		[SerializeField] private Color historyColor;
+		private readonly List<GameObject> dataGapIndicators = new();
 
 		private Coroutine historyMove;
 		private bool isRotated;
 		private Vector3 moveTarget = Vector3.zero;
 		private Vector3 origin;
-		private List<GameObject> dataGapIndicators = new();
+
+		private float Scale { get; set; }
+
+		private int PreviousIndex { get; set; }
+
+		private IVisObjectStyle VisObjectStyle { get; set; }
 
 		public event Action SwipedDown;
 
@@ -66,13 +72,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public Vector3 Offset { get; private set; }
 
-		private float Scale { get; set; }
-
 		public VisualizationType Type { get; set; }
-
-		private int PreviousIndex { get; set; }
-
-		private IVisObjectStyle VisObjectStyle { get; set; }
 
 		public void Initialize(DataPoint dp) {
 
@@ -194,58 +194,6 @@ namespace Dataskop.Entities.Visualizations {
 			Destroy(gameObject);
 		}
 
-		private void OnVisObjectHovered(int index) {
-
-			if (index == DataPoint.FocusedIndex) {
-				if (!IsSelected) {
-					if (VisObjects[index] == null) {
-						return;
-					}
-
-					BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
-					VisObjects[index].SetMaterials(style.Styles[0].hoverMaterial, style.focusedFillMaterial);
-				}
-			}
-			else {
-				VisObjects[index].ShowDisplay();
-			}
-
-			VisObjectHovered?.Invoke(index);
-		}
-
-		private void OnVisObjectSelected(int index) {
-
-			if (index == DataPoint.FocusedIndex) {
-				BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
-				VisObjects[index].SetMaterials(style.Styles[0].selectionMaterial, style.focusedFillMaterial);
-			}
-
-			IsSelected = true;
-			VisObjectSelected?.Invoke(index);
-		}
-
-		private void OnVisObjectDeselected(int index) {
-
-			if (index == DataPoint?.FocusedIndex) {
-
-				if (VisObjects[index] == null) {
-					return;
-				}
-
-				BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
-				VisObjects[index].SetMaterials(style.Styles[0].defaultMaterial, style.focusedFillMaterial);
-
-				if (IsSelected) {
-					IsSelected = false;
-				}
-			}
-			else {
-				VisObjects[index].HideDisplay();
-			}
-
-			VisObjectDeselected?.Invoke(index);
-		}
-
 		public void OnTimeSeriesToggled(bool isActive) {
 
 			BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
@@ -339,6 +287,58 @@ namespace Dataskop.Entities.Visualizations {
 				HasHistoryEnabled = false;
 			}
 
+		}
+
+		private void OnVisObjectHovered(int index) {
+
+			if (index == DataPoint.FocusedIndex) {
+				if (!IsSelected) {
+					if (VisObjects[index] == null) {
+						return;
+					}
+
+					BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
+					VisObjects[index].SetMaterials(style.Styles[0].hoverMaterial, style.focusedFillMaterial);
+				}
+			}
+			else {
+				VisObjects[index].ShowDisplay();
+			}
+
+			VisObjectHovered?.Invoke(index);
+		}
+
+		private void OnVisObjectSelected(int index) {
+
+			if (index == DataPoint.FocusedIndex) {
+				BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
+				VisObjects[index].SetMaterials(style.Styles[0].selectionMaterial, style.focusedFillMaterial);
+			}
+
+			IsSelected = true;
+			VisObjectSelected?.Invoke(index);
+		}
+
+		private void OnVisObjectDeselected(int index) {
+
+			if (index == DataPoint?.FocusedIndex) {
+
+				if (VisObjects[index] == null) {
+					return;
+				}
+
+				BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
+				VisObjects[index].SetMaterials(style.Styles[0].defaultMaterial, style.focusedFillMaterial);
+
+				if (IsSelected) {
+					IsSelected = false;
+				}
+			}
+			else {
+				VisObjects[index].HideDisplay();
+			}
+
+			VisObjectDeselected?.Invoke(index);
 		}
 
 		private IVisObject SpawnVisObject(int index, Vector3 pos, MeasurementResult result, bool visibleDisplay,
