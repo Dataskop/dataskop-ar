@@ -75,10 +75,6 @@ namespace Dataskop.Interaction {
 
 		}
 
-		private void OnFocusedVisObjectChanged(IVisObject focusedVisObject) {
-			SelectedVisObject = focusedVisObject;
-		}
-
 		private void SetHoveredDataPoint(Ray ray) {
 
 			if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, TargetLayerMask)) {
@@ -155,15 +151,15 @@ namespace Dataskop.Interaction {
 
 			if (pointedGameObject == null) {
 
-				if (SelectedDataPoint != null) {
-					SelectedDataPoint.Vis.FocusedVisObjectChanged += OnFocusedVisObjectChanged;
-					SelectedDataPoint.SetSelectionStatus(SelectionState.Deselected);
-					SelectedDataPoint = null;
-				}
-
 				if (SelectedVisObject != null) {
 					SelectedVisObject.OnDeselect();
 					SelectedVisObject = null;
+				}
+
+				if (SelectedDataPoint != null) {
+					SelectedDataPoint.Vis.FocusedVisObjectChanged -= OnFocusedVisObjectChanged;
+					SelectedDataPoint.SetSelectionStatus(SelectionState.Deselected);
+					SelectedDataPoint = null;
 				}
 
 				return;
@@ -185,7 +181,7 @@ namespace Dataskop.Interaction {
 				if (tappedVisObject == tappedDataPoint.Vis.FocusedVisObject) {
 					SelectedVisObject?.OnDeselect();
 					SelectedVisObject = null;
-					SelectedDataPoint.Vis.FocusedVisObjectChanged += OnFocusedVisObjectChanged;
+					SelectedDataPoint.Vis.FocusedVisObjectChanged -= OnFocusedVisObjectChanged;
 					SelectedDataPoint?.SetSelectionStatus(SelectionState.Deselected);
 					SelectedDataPoint = null;
 				}
@@ -204,25 +200,35 @@ namespace Dataskop.Interaction {
 			}
 			else {
 
-				if (HoveredVisObject == tappedVisObject) {
-					HoveredVisObject = null;
-				}
-
-				SelectedDataPoint?.SetSelectionStatus(SelectionState.Deselected);
-				SelectedVisObject?.OnDeselect();
-
 				if (SelectedDataPoint != null) {
 					SelectedDataPoint.Vis.FocusedVisObjectChanged -= OnFocusedVisObjectChanged;
 				}
 
-				SelectedDataPoint = tappedDataPoint;
+				if (HoveredVisObject == tappedVisObject) {
+					HoveredVisObject.OnDeselect();
+					HoveredVisObject = null;
+				}
+
+				SelectedDataPoint?.SetSelectionStatus(SelectionState.Deselected);
+
+				if (SelectedVisObject != null) {
+					SelectedVisObject.OnDeselect();
+					SelectedVisObject = null;
+				}
+
 				SelectedVisObject = tappedVisObject;
-				SelectedDataPoint.SetSelectionStatus(SelectionState.Selected);
 				SelectedVisObject.OnSelect();
+
+				SelectedDataPoint = tappedDataPoint;
+				SelectedDataPoint.SetSelectionStatus(SelectionState.Selected);
 				SelectedDataPoint.Vis.FocusedVisObjectChanged += OnFocusedVisObjectChanged;
 
 			}
 
+		}
+
+		private void OnFocusedVisObjectChanged(IVisObject focusedVisObject) {
+			SelectedVisObject = focusedVisObject;
 		}
 
 		public void SelectDataPointOnVisualizationChange() {
