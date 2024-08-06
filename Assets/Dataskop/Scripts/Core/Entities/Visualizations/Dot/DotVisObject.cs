@@ -161,6 +161,10 @@ namespace Dataskop.Entities.Visualizations {
 				visRenderer.transform.localScale = animationTarget;
 			}
 
+			if (visRenderer == null) {
+				return;
+			}
+
 			animationTarget = visRenderer.transform.localScale / selectionScale;
 
 			animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
