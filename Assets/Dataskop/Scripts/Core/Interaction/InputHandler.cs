@@ -15,6 +15,8 @@ namespace Dataskop.Interaction {
 
 		private bool isInteracting;
 
+		public Camera MainCamera => mainCamera;
+
 		private Vector2 TapPosition { get; set; }
 
 		private PointerInteraction CurrentPointerInteraction { get; set; }
