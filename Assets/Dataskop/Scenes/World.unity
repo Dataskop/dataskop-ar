@@ -3704,7 +3704,7 @@ MonoBehaviour:
   visRepository: {fileID: 341186874}
   dataAttrRepo: {fileID: 1847521410}
   authorRepository: {fileID: 1884349583}
-  nearbyDevicesDistance: 50
+  nearbyDevicesDistance: 100
 --- !u!4 &1884349582
 Transform:
   m_ObjectHideFlags: 0
