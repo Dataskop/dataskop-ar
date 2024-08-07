@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Dataskop.Entities;
 using Dataskop.Interaction;
 using Mapbox.Unity.Map;
@@ -15,6 +17,7 @@ namespace Dataskop.Data {
 		[Header("Events")]
 		public UnityEvent<VisualizationOption> onVisualizationChanged;
 		public UnityEvent<int> dataPointHistorySwiped;
+		public UnityEvent<int> nearbyDevicesUpdated;
 
 		[Header("References")]
 		[SerializeField] private DataManager dataManager;
@@ -25,6 +28,9 @@ namespace Dataskop.Data {
 		[SerializeField] private VisualizationRepository visRepository;
 		[SerializeField] private DataAttributeManager dataAttrRepo;
 		[SerializeField] private AuthorRepository authorRepository;
+
+		[Header("Values")]
+		[SerializeField] private float nearbyDevicesDistance;
 
 		private bool hasHistoryEnabled;
 
@@ -171,6 +177,7 @@ namespace Dataskop.Data {
 			SpawnDataPoints();
 
 			HasLoadedDataPoints = true;
+			StartCoroutine(GetNearbyDevicesTask());
 
 		}
 
@@ -199,6 +206,7 @@ namespace Dataskop.Data {
 			}
 
 			HasLoadedDataPoints = true;
+			StartCoroutine(GetNearbyDevicesTask());
 
 		}
 
@@ -260,6 +268,18 @@ namespace Dataskop.Data {
 
 		public void PlaceDataPoint(Vector3 newPosition, Transform dataPointTransform) {
 			dataPointTransform.localPosition = newPosition;
+		}
+
+		private IEnumerator GetNearbyDevicesTask() {
+			while (HasLoadedDataPoints) {
+				int count = GetDevicesNearPosition(inputHandler.MainCamera.transform.position);
+				nearbyDevicesUpdated?.Invoke(count);
+				yield return new WaitForSeconds(5);
+			}
+		}
+
+		private int GetDevicesNearPosition(Vector3 position) {
+			return DataPoints.Count(dp => Vector3.Distance(dp.transform.position, position) <= nearbyDevicesDistance);
 		}
 
 		private void OnIndexChangeRequested(int index) {
