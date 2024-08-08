@@ -94,6 +94,10 @@
                     <ui:Label text="Date Created:" display-tooltip-when-elided="true" name="CreationDate" class="data-text data-title" />
                     <ui:Label text="-" display-tooltip-when-elided="true" name="CreationDateValue" class="data-text data-value" />
                 </ui:VisualElement>
+                <ui:VisualElement class="data-row data-long-text">
+                    <ui:Label text="Available Measurements:" display-tooltip-when-elided="true" name="Measurements" class="data-text data-title" />
+                    <ui:Label text="-" display-tooltip-when-elided="true" name="MeasurementsValue" enable-rich-text="true" parse-escape-sequences="false" class="data-text data-value data-value-long-text" />
+                </ui:VisualElement>
                 <ui:VisualElement class="data-row" style="background-color: rgba(255, 255, 255, 0);">
                     <ui:Label text="Total Devices in Project:" display-tooltip-when-elided="true" name="TotalDevices" class="data-text data-title" />
                     <ui:Label text="-" display-tooltip-when-elided="true" name="TotalDevicesValue" class="data-text data-value" />
@@ -101,10 +105,6 @@
                 <ui:VisualElement class="data-row" style="background-color: rgba(255, 255, 255, 0);">
                     <ui:Label text="Devices near you:" display-tooltip-when-elided="true" name="DevicesNearby" class="data-text data-title" />
                     <ui:Label text="-" display-tooltip-when-elided="true" name="DevicesNearbyValue" class="data-text data-value" />
-                </ui:VisualElement>
-                <ui:VisualElement class="data-row data-long-text">
-                    <ui:Label text="Available Measurements:" display-tooltip-when-elided="true" name="Measurements" class="data-text data-title" />
-                    <ui:Label text="-" display-tooltip-when-elided="true" name="MeasurementsValue" enable-rich-text="true" parse-escape-sequences="false" class="data-text data-value data-value-long-text" />
                 </ui:VisualElement>
             </ui:ScrollView>
         </ui:VisualElement>
