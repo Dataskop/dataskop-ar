@@ -81,7 +81,7 @@
             <ui:VisualElement name="ProjectOverview" picking-mode="Ignore" class="meta-info-container" style="flex-direction: row; justify-content: space-between; margin-top: 45px; margin-bottom: 20px; width: 98%;">
                 <ui:Label text="Project Overview" display-tooltip-when-elided="true" name="OverviewHeadline" class="meta-info-text" style="-unity-font-style: bold; font-size: 32px; color: rgb(60, 60, 60); -unity-font: url(&quot;project://database/Assets/Dataskop/Fonts/OpenSans-Semibold.ttf?fileID=12800000&amp;guid=218956a5c2a6e42d6a60afccf80b002b&amp;type=3#OpenSans-Semibold&quot;); -unity-font-definition: initial; margin-left: 0;" />
             </ui:VisualElement>
-            <ui:VisualElement name="ProjectData" class="data-display-container" style="flex-grow: 0; flex-direction: column; margin-right: 0; margin-left: 0; width: 98%; height: auto; flex-shrink: 1; flex-basis: auto; padding-right: 15px; padding-left: 15px;">
+            <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="ProjectData" class="data-display-container project-summary-data-container" style="margin-bottom: 50px;">
                 <ui:VisualElement class="data-row" style="background-color: rgba(255, 255, 255, 0);">
                     <ui:Label text="Name:" display-tooltip-when-elided="true" name="Name" class="data-text data-title" />
                     <ui:Label text="-" display-tooltip-when-elided="true" name="NameValue" class="data-text data-value" />
@@ -102,7 +102,7 @@
                     <ui:Label text="Available Measurements:" display-tooltip-when-elided="true" name="Measurements" class="data-text data-title" />
                     <ui:Label text="-" display-tooltip-when-elided="true" name="MeasurementsValue" enable-rich-text="true" parse-escape-sequences="false" class="data-text data-value data-value-long-text" />
                 </ui:VisualElement>
-            </ui:VisualElement>
+            </ui:ScrollView>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
