@@ -73,10 +73,35 @@
         <ui:VisualElement name="MapContainer" class="data-container" style="display: flex;">
             <ui:VisualElement name="Map" class="map" />
             <ui:Button display-tooltip-when-elided="true" name="ZoomInButton" text="+" class="app-button" style="position: absolute; top: 70px; left: auto; right: 70px; font-size: 64px; -unity-text-align: middle-center; margin-left: 4px; margin-right: 4px; margin-top: 4px; margin-bottom: 4px; -unity-font: url(&quot;project://database/Assets/Dataskop/Fonts/OpenSans-Bold.ttf?fileID=12800000&amp;guid=7dfc2e1472ac84e1bb749a8a9f934483&amp;type=3#OpenSans-Bold&quot;); padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 17px; justify-content: center; color: rgb(37, 89, 176); -unity-font-style: bold;" />
-            <ui:Button display-tooltip-when-elided="true" name="ZoomOutButton" text="-" class="app-button" style="position: absolute; top: 170px; left: auto; right: 70px; margin-left: 4px; margin-right: 4px; margin-top: 4px; margin-bottom: 4px; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 17px; font-size: 72px; -unity-font: url(&quot;project://database/Assets/Dataskop/Fonts/OpenSans-Bold.ttf?fileID=12800000&amp;guid=7dfc2e1472ac84e1bb749a8a9f934483&amp;type=3#OpenSans-Bold&quot;); color: rgb(37, 89, 176); -unity-font-style: bold;" />
-            <ui:VisualElement name="LocatorContainer" class="locator-container data-display-container" style="flex-direction: row; justify-content: space-between;">
+            <ui:VisualElement name="LocatorContainer" class="locator-container data-display-container" style="flex-direction: row; justify-content: space-between; padding-top: 15px; padding-right: 15px; padding-bottom: 15px; padding-left: 15px; margin-right: 0; margin-left: 0; width: 98%;">
                 <ui:Label text="Location" display-tooltip-when-elided="true" name="Location" class="locator-text" style="-unity-text-align: middle-left; -unity-font: url(&quot;project://database/Assets/Dataskop/Fonts/OpenSans-Semibold.ttf?fileID=12800000&amp;guid=218956a5c2a6e42d6a60afccf80b002b&amp;type=3#OpenSans-Semibold&quot;);" />
                 <ui:Label text="Area" display-tooltip-when-elided="true" name="Area" class="locator-text" />
+            </ui:VisualElement>
+            <ui:Button display-tooltip-when-elided="true" name="ZoomOutButton" text="-" class="app-button" style="position: absolute; top: 170px; left: auto; right: 70px; margin-left: 4px; margin-right: 4px; margin-top: 4px; margin-bottom: 4px; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 17px; font-size: 72px; -unity-font: url(&quot;project://database/Assets/Dataskop/Fonts/OpenSans-Bold.ttf?fileID=12800000&amp;guid=7dfc2e1472ac84e1bb749a8a9f934483&amp;type=3#OpenSans-Bold&quot;); color: rgb(37, 89, 176); -unity-font-style: bold;" />
+            <ui:VisualElement name="ProjectOverview" picking-mode="Ignore" class="meta-info-container" style="flex-direction: row; justify-content: space-between; margin-top: 45px; margin-bottom: 20px; width: 98%;">
+                <ui:Label text="Project Overview" display-tooltip-when-elided="true" name="OverviewHeadline" class="meta-info-text" style="-unity-font-style: bold; font-size: 32px; color: rgb(60, 60, 60); -unity-font: url(&quot;project://database/Assets/Dataskop/Fonts/OpenSans-Semibold.ttf?fileID=12800000&amp;guid=218956a5c2a6e42d6a60afccf80b002b&amp;type=3#OpenSans-Semibold&quot;); -unity-font-definition: initial; margin-left: 0;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="ProjectData" class="data-display-container" style="flex-grow: 0; flex-direction: column; margin-right: 0; margin-left: 0; width: 98%; height: auto; flex-shrink: 1; flex-basis: auto; padding-right: 15px; padding-left: 15px;">
+                <ui:VisualElement class="data-row" style="background-color: rgba(255, 255, 255, 0);">
+                    <ui:Label text="Name:" display-tooltip-when-elided="true" name="Name" class="data-text data-title" />
+                    <ui:Label text="-" display-tooltip-when-elided="true" name="NameValue" class="data-text data-value" />
+                </ui:VisualElement>
+                <ui:VisualElement class="data-row data-long-text">
+                    <ui:Label text="Description:" display-tooltip-when-elided="true" name="Description" class="data-text data-title" />
+                    <ui:Label text="-" display-tooltip-when-elided="true" name="DescriptionValue" enable-rich-text="true" parse-escape-sequences="false" class="data-text data-value data-value-long-text" />
+                </ui:VisualElement>
+                <ui:VisualElement class="data-row" style="background-color: rgba(255, 255, 255, 0);">
+                    <ui:Label text="Total Devices:" display-tooltip-when-elided="true" name="TotalDevices" class="data-text data-title" />
+                    <ui:Label text="-" display-tooltip-when-elided="true" name="TotalDevicesValue" class="data-text data-value" />
+                </ui:VisualElement>
+                <ui:VisualElement class="data-row" style="background-color: rgba(255, 255, 255, 0);">
+                    <ui:Label text="Devices near you:" display-tooltip-when-elided="true" name="DevicesNearby" class="data-text data-title" />
+                    <ui:Label text="-" display-tooltip-when-elided="true" name="DevicesNearbyValue" class="data-text data-value" />
+                </ui:VisualElement>
+                <ui:VisualElement class="data-row data-long-text">
+                    <ui:Label text="Available Measurements:" display-tooltip-when-elided="true" name="Measurements" class="data-text data-title" />
+                    <ui:Label text="-" display-tooltip-when-elided="true" name="MeasurementsValue" enable-rich-text="true" parse-escape-sequences="false" class="data-text data-value data-value-long-text" />
+                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
