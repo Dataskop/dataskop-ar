@@ -31,7 +31,7 @@ namespace Dataskop.UI {
 
 		public void OnProjectLoaded(Project project) {
 			ProjectName.text = project.Information.Name;
-			ProjectDescription.text = project.Information.Info;
+			ProjectDescription.text = project.Information.Description;
 			ProjectTotalDevices.text = project.Devices.Count.ToString("00");
 			
 			string[] array = new string[project.Properties.Attributes.Count];
