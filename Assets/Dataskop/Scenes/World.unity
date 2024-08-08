@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44402185, g: 0.49316472, b: 0.57223153, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -506,6 +506,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 614059771}
+        m_TargetAssemblyTypeName: Dataskop.UI.InfoCardProjectSummary, Dataskop
+        m_MethodName: OnProjectLoaded
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   loadingIndicator: {fileID: 1499203927}
   fetchAmount: 2000
   fetchInterval: 15000
@@ -786,6 +798,7 @@ GameObject:
   - component: {fileID: 614059765}
   - component: {fileID: 614059767}
   - component: {fileID: 614059769}
+  - component: {fileID: 614059771}
   - component: {fileID: 614059770}
   m_Layer: 5
   m_Name: InfoCardCanvas
@@ -1038,6 +1051,19 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   section: 0
+--- !u!114 &614059771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614059760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 003872e1cc189cc419d824ba8c9d86ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  infoCardDoc: {fileID: 614059761}
 --- !u!1 &620153294
 GameObject:
   m_ObjectHideFlags: 0
@@ -3695,7 +3721,19 @@ MonoBehaviour:
         m_CallState: 2
   nearbyDevicesUpdated:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 614059771}
+        m_TargetAssemblyTypeName: Dataskop.UI.InfoCardProjectSummary, Dataskop
+        m_MethodName: OnNearbyDevicesUpdated
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   dataManager: {fileID: 284049158}
   inputHandler: {fileID: 1561813931}
   map: {fileID: 7949688664006150128}
