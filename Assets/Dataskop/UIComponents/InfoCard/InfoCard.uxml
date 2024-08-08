@@ -91,7 +91,11 @@
                     <ui:Label text="-" display-tooltip-when-elided="true" name="DescriptionValue" enable-rich-text="true" parse-escape-sequences="false" class="data-text data-value data-value-long-text" />
                 </ui:VisualElement>
                 <ui:VisualElement class="data-row" style="background-color: rgba(255, 255, 255, 0);">
-                    <ui:Label text="Total Devices:" display-tooltip-when-elided="true" name="TotalDevices" class="data-text data-title" />
+                    <ui:Label text="Date Created:" display-tooltip-when-elided="true" name="CreationDate" class="data-text data-title" />
+                    <ui:Label text="-" display-tooltip-when-elided="true" name="CreationDateValue" class="data-text data-value" />
+                </ui:VisualElement>
+                <ui:VisualElement class="data-row" style="background-color: rgba(255, 255, 255, 0);">
+                    <ui:Label text="Total Devices in Project:" display-tooltip-when-elided="true" name="TotalDevices" class="data-text data-title" />
                     <ui:Label text="-" display-tooltip-when-elided="true" name="TotalDevicesValue" class="data-text data-value" />
                 </ui:VisualElement>
                 <ui:VisualElement class="data-row" style="background-color: rgba(255, 255, 255, 0);">

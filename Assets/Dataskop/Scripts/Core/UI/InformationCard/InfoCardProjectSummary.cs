@@ -16,6 +16,7 @@ namespace Dataskop.UI {
 		
 		private Label ProjectName { get; set; }
 		private Label ProjectDescription { get; set; }
+		private Label ProjectCreationDate { get; set; }
 		private Label ProjectTotalDevices { get; set; }
 		private Label ProjectDevicesNearby { get; set; }
 		private Label ProjectMeasurements { get; set; }
@@ -24,6 +25,7 @@ namespace Dataskop.UI {
 			ProjectSummaryContainer = infoCardDoc.rootVisualElement.Q<VisualElement>("ProjectData");
 			ProjectName = ProjectSummaryContainer.Q<Label>("NameValue");
 			ProjectDescription = ProjectSummaryContainer.Q<Label>("DescriptionValue");
+			ProjectCreationDate = ProjectSummaryContainer.Q<Label>("CreationDateValue");
 			ProjectTotalDevices = ProjectSummaryContainer.Q<Label>("TotalDevicesValue");
 			ProjectDevicesNearby = ProjectSummaryContainer.Q<Label>("DevicesNearbyValue");
 			ProjectMeasurements = ProjectSummaryContainer.Q<Label>("MeasurementsValue");
@@ -32,6 +34,7 @@ namespace Dataskop.UI {
 		public void OnProjectLoaded(Project project) {
 			ProjectName.text = project.Information.Name;
 			ProjectDescription.text = project.Information.Description;
+			ProjectCreationDate.text = project.Information.CreatedDate.ToShortDateString();
 			ProjectTotalDevices.text = project.Devices.Count.ToString("00");
 			
 			string[] array = new string[project.Properties.Attributes.Count];
