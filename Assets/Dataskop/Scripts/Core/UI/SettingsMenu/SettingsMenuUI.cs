@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Android;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
@@ -74,9 +75,9 @@ namespace Dataskop.UI {
 
 		private Label TitleLabel { get; set; }
 
-		private TextField DateFromInput { get; set; }
+		private TextField DateInputFrom { get; set; }
 
-		private TextField DateToInput { get; set; }
+		private TextField DateInputTo { get; set; }
 
 		private TextField AmountInput { get; set; }
 
@@ -125,9 +126,11 @@ namespace Dataskop.UI {
 
 			TitleLabel = Root.Q<Label>("MenuTitle");
 
-			DateFromInput = SettingsMenuContainer.Q<TextField>("DateFromInput");
+			DateInputFrom = SettingsMenuContainer.Q<TextField>("DateInputFrom");
+			DateInputFrom.RegisterCallback<ChangeEvent<string>>(OnDateInputFromChanged);
 			//TODO: Add Event and functioning Date Inputs
-			DateToInput = SettingsMenuContainer.Q<TextField>("DateToInput");
+			DateInputTo = SettingsMenuContainer.Q<TextField>("DateInputTo");
+			DateInputTo.RegisterCallback<ChangeEvent<string>>(OnDateInputToChanged);
 
 			AmountInput = SettingsMenuContainer.Q<TextField>("AmountInput");
 			AmountInput.RegisterCallback<ChangeEvent<string>>(OnFetchAmountInputChanged);
@@ -310,6 +313,14 @@ namespace Dataskop.UI {
 				CooldownInput.value = DefaultCooldown;
 			}
 
+		}
+
+		private void OnDateInputFromChanged(ChangeEvent<string> e) {
+			throw new NotImplementedException();
+		}
+
+		private void OnDateInputToChanged(ChangeEvent<string> e) {
+			throw new NotImplementedException();
 		}
 
 		public void OnInfoCardStateChanged(InfoCardState state) {
