@@ -10,8 +10,8 @@ namespace Dataskop.UI {
 		private const string MenuOpenAnimation = "settings-menu-open";
 		private const string TogglerAnimation = "toggler-on";
 		private const string KnobAnimation = "knob-on";
-		private const string DefaultAmount = "10";
-		private const string DefaultCooldown = "30";
+		private const string DefaultAmount = "50";
+		private const string DefaultCooldown = "60";
 		private const string ProjectSelectionTitle = "Projects";
 		private const string SettingsTitle = "Settings";
 
