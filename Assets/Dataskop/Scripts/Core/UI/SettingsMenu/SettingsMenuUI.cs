@@ -25,6 +25,7 @@ namespace Dataskop.UI {
 		public UnityEvent<int> amountInputChanged;
 		public UnityEvent<int> cooldownInputChanged;
 		public UnityEvent<DateTime, DateTime> validTimeRangeEntered;
+		public UnityEvent dateFilterDisabled;
 
 		[Header("References")]
 		[SerializeField] private UIDocument menuDocument;
@@ -290,6 +291,10 @@ namespace Dataskop.UI {
 			dateFilterActive = !dateFilterActive;
 			DateFromContainer.style.display = new StyleEnum<DisplayStyle>(dateFilterActive ? DisplayStyle.Flex : DisplayStyle.None);
 			DateToContainer.style.display = new StyleEnum<DisplayStyle>(dateFilterActive ? DisplayStyle.Flex : DisplayStyle.None);
+
+			if (dateFilterActive == false) {
+				dateFilterDisabled?.Invoke();
+			}
 		}
 
 		private static void Toggle(VisualElement pressedButton) {
@@ -338,30 +343,36 @@ namespace Dataskop.UI {
 
 		private void OnDateInputFromChanged(ChangeEvent<string> e) {
 
-			if (DateTime.TryParse(e.newValue, out DateTime from)) {
-				fromDate = from;
-				if (fromDate != null && toDate != null) {
-					validTimeRangeEntered?.Invoke(fromDate.Value, toDate.Value);
-				}
+			if (DateTime.TryParse(e.newValue, out DateTime newDate)) {
+				fromDate = newDate;
+				ValidateDates();
+				return;
+
 			}
-			else {
-				fromDate = null;
-			}
+
+			fromDate = null;
 
 		}
 
 		private void OnDateInputToChanged(ChangeEvent<string> e) {
 
-			if (DateTime.TryParse(e.newValue, out DateTime to)) {
-				toDate = to;
-				if (fromDate != null && toDate != null) {
-					validTimeRangeEntered?.Invoke(fromDate.Value, toDate.Value);
-				}
-			}
-			else {
-				toDate = null;
+			if (DateTime.TryParse(e.newValue, out DateTime newDate)) {
+				toDate = newDate;
+				ValidateDates();
+				return;
 			}
 
+			toDate = null;
+
+		}
+
+		private void ValidateDates() {
+			if (fromDate == null || toDate == null)
+				return;
+
+			if (dateFilterActive) {
+				validTimeRangeEntered?.Invoke(fromDate.Value, toDate.Value);
+			}
 		}
 
 		public void OnInfoCardStateChanged(InfoCardState state) {
