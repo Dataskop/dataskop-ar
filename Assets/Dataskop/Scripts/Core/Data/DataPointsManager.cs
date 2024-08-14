@@ -30,7 +30,7 @@ namespace Dataskop.Data {
 		[SerializeField] private AuthorRepository authorRepository;
 
 		[Header("Values")]
-		[SerializeField] private float nearbyDevicesDistance;
+		[SerializeField] public float nearbyDevicesDistance;
 
 		private bool hasHistoryEnabled;
 
