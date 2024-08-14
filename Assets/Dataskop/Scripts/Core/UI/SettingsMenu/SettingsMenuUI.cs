@@ -10,8 +10,8 @@ namespace Dataskop.UI {
 		private const string MenuOpenAnimation = "settings-menu-open";
 		private const string TogglerAnimation = "toggler-on";
 		private const string KnobAnimation = "knob-on";
-		private const string DefaultAmount = "10";
-		private const string DefaultCooldown = "30";
+		private const string DefaultAmount = "50";
+		private const string DefaultCooldown = "60";
 		private const string ProjectSelectionTitle = "Projects";
 		private const string SettingsTitle = "Settings";
 
@@ -24,6 +24,8 @@ namespace Dataskop.UI {
 		public UnityEvent sidePanelOpened;
 		public UnityEvent<int> amountInputChanged;
 		public UnityEvent<int> cooldownInputChanged;
+		public UnityEvent<DateTime, DateTime> validTimeRangeEntered;
+		public UnityEvent dateFilterDisabled;
 
 		[Header("References")]
 		[SerializeField] private UIDocument menuDocument;
@@ -35,6 +37,9 @@ namespace Dataskop.UI {
 		private bool isProjectSelectorActive;
 
 		private bool isSettingsMenuActive;
+		private bool dateFilterActive;
+		private DateTime? fromDate;
+		private DateTime? toDate;
 
 		private MenuView CurrentView { get; set; } = MenuView.Settings;
 
@@ -58,6 +63,8 @@ namespace Dataskop.UI {
 
 		private Button ToggleMinimapButton { get; set; }
 
+		private Button ToggleDateFilterButton { get; set; }
+
 		private Button ResetCalibrationButton { get; set; }
 
 		private Button LogoutButton { get; set; }
@@ -74,9 +81,13 @@ namespace Dataskop.UI {
 
 		private Label TitleLabel { get; set; }
 
-		private TextField DateFromInput { get; set; }
+		private VisualElement DateFromContainer { get; set; }
 
-		private TextField DateToInput { get; set; }
+		private VisualElement DateToContainer { get; set; }
+
+		private TextField DateInputFrom { get; set; }
+
+		private TextField DateInputTo { get; set; }
 
 		private TextField AmountInput { get; set; }
 
@@ -106,11 +117,17 @@ namespace Dataskop.UI {
 
 			HistoryIcon = HistoryButton.Q<VisualElement>("Icon");
 
+			DateFromContainer = SettingsMenuContainer.Q<VisualElement>("DateFromContainer");
+			DateToContainer = SettingsMenuContainer.Q<VisualElement>("DateToContainer");
+
 			ToggleOcclusionButton = SettingsMenuContainer.Q<Button>("Option_Occlusion");
 			ToggleOcclusionButton.RegisterCallback<ClickEvent>(_ => ToggleOcclusion());
 
 			ToggleMinimapButton = SettingsMenuContainer.Q<Button>("Option_Minimap");
 			ToggleMinimapButton.RegisterCallback<ClickEvent>(_ => ToggleMinimap());
+
+			ToggleDateFilterButton = SettingsMenuContainer.Q<Button>("Option_DateFilter");
+			ToggleDateFilterButton.RegisterCallback<ClickEvent>(_ => ToggleDateFilter());
 
 			ResetCalibrationButton = SettingsMenuContainer.Q<Button>("ResetCalibrationButton");
 			ResetCalibrationButton.RegisterCallback<ClickEvent>(_ => ResetCalibrationPressed());
@@ -125,9 +142,10 @@ namespace Dataskop.UI {
 
 			TitleLabel = Root.Q<Label>("MenuTitle");
 
-			DateFromInput = SettingsMenuContainer.Q<TextField>("DateFromInput");
-			//TODO: Add Event and functioning Date Inputs
-			DateToInput = SettingsMenuContainer.Q<TextField>("DateToInput");
+			DateInputFrom = SettingsMenuContainer.Q<TextField>("DateInputFrom");
+			DateInputFrom.RegisterCallback<ChangeEvent<string>>(OnDateInputFromChanged);
+			DateInputTo = SettingsMenuContainer.Q<TextField>("DateInputTo");
+			DateInputTo.RegisterCallback<ChangeEvent<string>>(OnDateInputToChanged);
 
 			AmountInput = SettingsMenuContainer.Q<TextField>("AmountInput");
 			AmountInput.RegisterCallback<ChangeEvent<string>>(OnFetchAmountInputChanged);
@@ -268,6 +286,17 @@ namespace Dataskop.UI {
 			onToggleMinimapButtonPressed?.Invoke();
 		}
 
+		private void ToggleDateFilter() {
+			Toggle(ToggleDateFilterButton);
+			dateFilterActive = !dateFilterActive;
+			DateFromContainer.style.display = new StyleEnum<DisplayStyle>(dateFilterActive ? DisplayStyle.Flex : DisplayStyle.None);
+			DateToContainer.style.display = new StyleEnum<DisplayStyle>(dateFilterActive ? DisplayStyle.Flex : DisplayStyle.None);
+
+			if (dateFilterActive == false) {
+				dateFilterDisabled?.Invoke();
+			}
+		}
+
 		private static void Toggle(VisualElement pressedButton) {
 			pressedButton.Q<VisualElement>(null, "knob-off").ToggleInClassList(KnobAnimation);
 			pressedButton.Q<VisualElement>(null, "toggler-off").ToggleInClassList(TogglerAnimation);
@@ -310,6 +339,40 @@ namespace Dataskop.UI {
 				CooldownInput.value = DefaultCooldown;
 			}
 
+		}
+
+		private void OnDateInputFromChanged(ChangeEvent<string> e) {
+
+			if (DateTime.TryParse(e.newValue, out DateTime newDate)) {
+				fromDate = newDate;
+				ValidateDates();
+				return;
+
+			}
+
+			fromDate = null;
+
+		}
+
+		private void OnDateInputToChanged(ChangeEvent<string> e) {
+
+			if (DateTime.TryParse(e.newValue, out DateTime newDate)) {
+				toDate = newDate;
+				ValidateDates();
+				return;
+			}
+
+			toDate = null;
+
+		}
+
+		private void ValidateDates() {
+			if (fromDate == null || toDate == null)
+				return;
+
+			if (dateFilterActive) {
+				validTimeRangeEntered?.Invoke(fromDate.Value, toDate.Value);
+			}
 		}
 
 		public void OnInfoCardStateChanged(InfoCardState state) {
