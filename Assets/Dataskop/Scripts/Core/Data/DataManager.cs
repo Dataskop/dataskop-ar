@@ -378,7 +378,7 @@ namespace Dataskop.Data {
 		public void OnCooldownInputChanged(int newValue) {
 			int milliseconds = newValue * 1000;
 			fetchInterval = Mathf.Clamp(milliseconds, 2000, 900000);
-			PlayerPrefs.SetInt("fetchInterval", fetchInterval);
+			PlayerPrefs.SetInt("fetchInterval", fetchInterval / 1000);
 		}
 
 		public void OnAmountInputChanged(int newValue) {
