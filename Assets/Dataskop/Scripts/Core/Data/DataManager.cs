@@ -21,8 +21,8 @@ namespace Dataskop.Data {
 		[SerializeField] private LoadingIndicator loadingIndicator;
 
 		[Header("Values")]
-		[SerializeField] private int fetchAmount = 2000;
-		[SerializeField] private int fetchInterval = 10000; // 10 Seconds
+		[SerializeField] private int fetchAmount;
+		[SerializeField] private int fetchInterval;
 
 		public readonly ApiRequestHandler RequestHandler = new();
 
@@ -62,6 +62,11 @@ namespace Dataskop.Data {
 		///     Invoked when measurement results has been updated.
 		/// </summary>
 		public event Action HasUpdatedMeasurementResults;
+
+		private void Awake() {
+			FetchAmount = PlayerPrefs.HasKey("fetchAmount") ? PlayerPrefs.GetInt("fetchAmount") : 2000;
+			fetchInterval = PlayerPrefs.HasKey("fetchInterval") ? PlayerPrefs.GetInt("fetchInterval") : 10000;
+		}
 
 		public void Initialize() {
 
@@ -373,10 +378,12 @@ namespace Dataskop.Data {
 		public void OnCooldownInputChanged(int newValue) {
 			int milliseconds = newValue * 1000;
 			fetchInterval = Mathf.Clamp(milliseconds, 2000, 900000);
+			PlayerPrefs.SetInt("fetchInterval", fetchInterval);
 		}
 
 		public void OnAmountInputChanged(int newValue) {
 			FetchAmount = Mathf.Clamp(newValue, 1, 2000);
+			PlayerPrefs.SetInt("fetchAmount", FetchAmount);
 		}
 
 	}
