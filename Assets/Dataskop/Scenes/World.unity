@@ -2106,7 +2106,7 @@ GameObject:
   - component: {fileID: 1186035118}
   - component: {fileID: 1186035117}
   - component: {fileID: 1186035119}
-  m_Layer: 11
+  m_Layer: 12
   m_Name: DevicesNearbyRadius
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2155,7 +2155,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.1254902, g: 0.32941177, b: 0.73333335, a: 0.27450982}
+  m_Color: {r: 0.1254902, g: 0.32941177, b: 0.73333335, a: 0.15686275}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2225,6 +2225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 1186035115}
+  dataPointsManager: {fileID: 1884349581}
 --- !u!1 &1283874238
 GameObject:
   m_ObjectHideFlags: 0
@@ -2587,7 +2588,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 2119
+    m_Bits: 6215
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 6c002e83dc0e47546b0a92796d0ed167, type: 2}
   m_TargetDisplay: 0
