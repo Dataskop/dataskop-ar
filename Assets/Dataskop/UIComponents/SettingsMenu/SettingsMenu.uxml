@@ -8,25 +8,35 @@
         <ui:VisualElement name="Splitter" class="splitter" style="height: 4px; border-top-left-radius: 2px; border-bottom-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; width: 96%; background-color: rgb(123, 123, 123);" />
         <ui:ScrollView name="ProjectSelectionContainer" class="project-selection-container" style="width: 100%; height: auto; max-height: 800px; position: relative; display: none;" />
         <ui:VisualElement name="SettingsMenuContainer" class="settings-menu-container" style="display: flex; background-color: rgba(0, 0, 0, 0);">
-            <ui:VisualElement name="DateFromContainer" class="option-container" style="flex-direction: row; justify-content: space-between;">
-                <ui:Label text="Date from" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" />
-                <ui:TextField name="DateFromInput" max-length="100" value="2012-06-26T11:55:36" class="text-input" style="justify-content: flex-start;" />
+            <ui:VisualElement name="DateFilterContainer" class="option-container" style="justify-content: center; flex-direction: row;">
+                <ui:Button display-tooltip-when-elided="true" name="Option_DateFilter" class="option-toggle-button-container" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 20px; padding-bottom: 0; padding-left: 0; width: 100%; overflow: visible;">
+                    <ui:Label text="Filter by Date" display-tooltip-when-elided="true" enable-rich-text="true" class="option-label" />
+                    <ui:VisualElement name="Toggler" class="toggle-button-background toggler-off">
+                        <ui:VisualElement name="Knob" class="toggle-button-knob knob-off" />
+                    </ui:VisualElement>
+                </ui:Button>
             </ui:VisualElement>
-            <ui:VisualElement name="DateToContainer" class="option-container" style="justify-content: space-between; flex-direction: row;">
-                <ui:Label text="to" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" />
-                <ui:TextField name="DateToInput" max-length="100" value="2012-06-26T11:55:36" class="text-input" style="flex-wrap: nowrap; white-space: nowrap; text-overflow: clip; -unity-text-align: middle-left;" />
+            <ui:VisualElement name="DateFromContainer" class="option-container" style="flex-direction: row; justify-content: flex-end; display: none;">
+                <ui:Label text="from" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" style="margin-right: 20px;" />
+                <ui:TextField name="DateInputFrom" max-length="19" class="text-input" style="justify-content: flex-start;" />
             </ui:VisualElement>
+            <ui:VisualElement name="DateToContainer" class="option-container" style="justify-content: flex-end; flex-direction: row; display: none;">
+                <ui:Label text="to" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" style="margin-right: 20px;" />
+                <ui:TextField name="DateInputTo" max-length="19" class="text-input" style="flex-wrap: nowrap; white-space: nowrap; text-overflow: clip; -unity-text-align: middle-left;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Splitter" class="splitter" />
             <ui:VisualElement name="AmountContainer" class="option-container" style="justify-content: space-between; flex-direction: row;">
-                <ui:Label text="Historic Data" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" />
+                <ui:Label text="Fetch Amount" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" style="flex-wrap: wrap;" />
                 <ui:TextField name="AmountInput" max-length="4" value="2000" class="text-input" />
             </ui:VisualElement>
+            <ui:VisualElement name="Splitter" class="splitter" />
             <ui:VisualElement name="CooldownContainer" class="option-container" style="justify-content: space-between; flex-direction: row;">
                 <ui:Label text="Interval (s)" display-tooltip-when-elided="true" class="option-label" />
                 <ui:TextField name="CooldownInput" value="10" class="text-input" />
             </ui:VisualElement>
             <ui:VisualElement name="Splitter" class="splitter" />
             <ui:VisualElement name="OptionContainer_Occlusion" class="option-container" style="justify-content: center; flex-direction: row;">
-                <ui:Button display-tooltip-when-elided="true" name="Option_Occlusion" class="option-toggle-button-container" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; width: 100%; overflow: visible;">
+                <ui:Button display-tooltip-when-elided="true" name="Option_Occlusion" class="option-toggle-button-container" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 20px; padding-bottom: 0; padding-left: 0; width: 100%; overflow: visible;">
                     <ui:Label text="Occlusion" display-tooltip-when-elided="true" class="option-label" />
                     <ui:VisualElement name="Toggler" class="toggle-button-background toggler-off">
                         <ui:VisualElement name="Knob" class="toggle-button-knob knob-off" />
@@ -35,14 +45,13 @@
             </ui:VisualElement>
             <ui:VisualElement name="Splitter" class="splitter" />
             <ui:VisualElement name="OptionContainer_Minimap" class="option-container" style="width: 90%;">
-                <ui:Button display-tooltip-when-elided="true" name="Option_Minimap" class="option-toggle-button-container" style="width: 100%; overflow: visible;">
+                <ui:Button display-tooltip-when-elided="true" name="Option_Minimap" class="option-toggle-button-container" style="width: 100%; overflow: visible; padding-right: 20px;">
                     <ui:Label text="Minimap" display-tooltip-when-elided="true" class="option-label" />
                     <ui:VisualElement name="Toggler" class="toggle-button-background toggler-off toggler-on">
                         <ui:VisualElement name="Knob" class="toggle-button-knob knob-off knob-on" style="overflow: visible;" />
                     </ui:VisualElement>
                 </ui:Button>
             </ui:VisualElement>
-            <ui:VisualElement name="Splitter" class="splitter" />
             <ui:VisualElement name="Splitter" class="splitter" />
             <ui:VisualElement name="OptionContainer_ResetCalibration" class="option-container">
                 <ui:Button text="Reset Calibration" display-tooltip-when-elided="true" name="ResetCalibrationButton" class="option-button" style="color: rgb(238, 0, 8);" />

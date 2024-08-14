@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Android;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
@@ -25,6 +24,7 @@ namespace Dataskop.UI {
 		public UnityEvent sidePanelOpened;
 		public UnityEvent<int> amountInputChanged;
 		public UnityEvent<int> cooldownInputChanged;
+		public UnityEvent<DateTime, DateTime> validTimeRangeEntered;
 
 		[Header("References")]
 		[SerializeField] private UIDocument menuDocument;
@@ -36,6 +36,9 @@ namespace Dataskop.UI {
 		private bool isProjectSelectorActive;
 
 		private bool isSettingsMenuActive;
+		private bool dateFilterActive;
+		private DateTime? fromDate;
+		private DateTime? toDate;
 
 		private MenuView CurrentView { get; set; } = MenuView.Settings;
 
@@ -59,6 +62,8 @@ namespace Dataskop.UI {
 
 		private Button ToggleMinimapButton { get; set; }
 
+		private Button ToggleDateFilterButton { get; set; }
+
 		private Button ResetCalibrationButton { get; set; }
 
 		private Button LogoutButton { get; set; }
@@ -74,6 +79,10 @@ namespace Dataskop.UI {
 		private Label VersionLabel { get; set; }
 
 		private Label TitleLabel { get; set; }
+
+		private VisualElement DateFromContainer { get; set; }
+
+		private VisualElement DateToContainer { get; set; }
 
 		private TextField DateInputFrom { get; set; }
 
@@ -107,11 +116,17 @@ namespace Dataskop.UI {
 
 			HistoryIcon = HistoryButton.Q<VisualElement>("Icon");
 
+			DateFromContainer = SettingsMenuContainer.Q<VisualElement>("DateFromContainer");
+			DateToContainer = SettingsMenuContainer.Q<VisualElement>("DateToContainer");
+
 			ToggleOcclusionButton = SettingsMenuContainer.Q<Button>("Option_Occlusion");
 			ToggleOcclusionButton.RegisterCallback<ClickEvent>(_ => ToggleOcclusion());
 
 			ToggleMinimapButton = SettingsMenuContainer.Q<Button>("Option_Minimap");
 			ToggleMinimapButton.RegisterCallback<ClickEvent>(_ => ToggleMinimap());
+
+			ToggleDateFilterButton = SettingsMenuContainer.Q<Button>("Option_DateFilter");
+			ToggleDateFilterButton.RegisterCallback<ClickEvent>(_ => ToggleDateFilter());
 
 			ResetCalibrationButton = SettingsMenuContainer.Q<Button>("ResetCalibrationButton");
 			ResetCalibrationButton.RegisterCallback<ClickEvent>(_ => ResetCalibrationPressed());
@@ -128,7 +143,6 @@ namespace Dataskop.UI {
 
 			DateInputFrom = SettingsMenuContainer.Q<TextField>("DateInputFrom");
 			DateInputFrom.RegisterCallback<ChangeEvent<string>>(OnDateInputFromChanged);
-			//TODO: Add Event and functioning Date Inputs
 			DateInputTo = SettingsMenuContainer.Q<TextField>("DateInputTo");
 			DateInputTo.RegisterCallback<ChangeEvent<string>>(OnDateInputToChanged);
 
@@ -271,6 +285,13 @@ namespace Dataskop.UI {
 			onToggleMinimapButtonPressed?.Invoke();
 		}
 
+		private void ToggleDateFilter() {
+			Toggle(ToggleDateFilterButton);
+			dateFilterActive = !dateFilterActive;
+			DateFromContainer.style.display = new StyleEnum<DisplayStyle>(dateFilterActive ? DisplayStyle.Flex : DisplayStyle.None);
+			DateToContainer.style.display = new StyleEnum<DisplayStyle>(dateFilterActive ? DisplayStyle.Flex : DisplayStyle.None);
+		}
+
 		private static void Toggle(VisualElement pressedButton) {
 			pressedButton.Q<VisualElement>(null, "knob-off").ToggleInClassList(KnobAnimation);
 			pressedButton.Q<VisualElement>(null, "toggler-off").ToggleInClassList(TogglerAnimation);
@@ -316,11 +337,31 @@ namespace Dataskop.UI {
 		}
 
 		private void OnDateInputFromChanged(ChangeEvent<string> e) {
-			throw new NotImplementedException();
+
+			if (DateTime.TryParse(e.newValue, out DateTime from)) {
+				fromDate = from;
+				if (fromDate != null && toDate != null) {
+					validTimeRangeEntered?.Invoke(fromDate.Value, toDate.Value);
+				}
+			}
+			else {
+				fromDate = null;
+			}
+
 		}
 
 		private void OnDateInputToChanged(ChangeEvent<string> e) {
-			throw new NotImplementedException();
+
+			if (DateTime.TryParse(e.newValue, out DateTime to)) {
+				toDate = to;
+				if (fromDate != null && toDate != null) {
+					validTimeRangeEntered?.Invoke(fromDate.Value, toDate.Value);
+				}
+			}
+			else {
+				toDate = null;
+			}
+
 		}
 
 		public void OnInfoCardStateChanged(InfoCardState state) {
