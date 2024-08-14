@@ -32,6 +32,8 @@ namespace Dataskop.Data {
 		[Header("Values")]
 		[SerializeField] private float nearbyDevicesDistance;
 
+		public float NearbyDevicesDistance => nearbyDevicesDistance;
+
 		private bool hasHistoryEnabled;
 
 		/// <summary>

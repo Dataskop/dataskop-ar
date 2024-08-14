@@ -11,6 +11,7 @@ namespace Dataskop.UI {
 	public class InfoCardProjectSummary : MonoBehaviour {
 
 		[SerializeField] private UIDocument infoCardDoc;
+		[SerializeField] private DataPointsManager dataPointsManager;
 		
 		private VisualElement ProjectSummaryContainer { get; set; }
 		
@@ -18,7 +19,8 @@ namespace Dataskop.UI {
 		private Label ProjectDescription { get; set; }
 		private Label ProjectCreationDate { get; set; }
 		private Label ProjectTotalDevices { get; set; }
-		private Label ProjectDevicesNearby { get; set; }
+		private Label ProjectDevicesNearbyLabel { get; set; }
+		private Label ProjectDevicesNearbyValue { get; set; }
 		private Label ProjectMeasurements { get; set; }
 
 		private void Awake() {
@@ -27,7 +29,8 @@ namespace Dataskop.UI {
 			ProjectDescription = ProjectSummaryContainer.Q<Label>("DescriptionValue");
 			ProjectCreationDate = ProjectSummaryContainer.Q<Label>("CreationDateValue");
 			ProjectTotalDevices = ProjectSummaryContainer.Q<Label>("TotalDevicesValue");
-			ProjectDevicesNearby = ProjectSummaryContainer.Q<Label>("DevicesNearbyValue");
+			ProjectDevicesNearbyLabel = ProjectSummaryContainer.Q<Label>("DevicesNearby");
+			ProjectDevicesNearbyValue = ProjectSummaryContainer.Q<Label>("DevicesNearbyValue");
 			ProjectMeasurements = ProjectSummaryContainer.Q<Label>("MeasurementsValue");
 		}
 
@@ -36,6 +39,7 @@ namespace Dataskop.UI {
 			ProjectDescription.text = project.Information.Description;
 			ProjectCreationDate.text = project.Information.CreatedDate.ToShortDateString();
 			ProjectTotalDevices.text = project.Devices.Count.ToString("00");
+			ProjectDevicesNearbyLabel.text = "Devices near you (within " + dataPointsManager.NearbyDevicesDistance + "m radius):";
 			
 			string[] array = new string[project.Properties.Attributes.Count];
 			for (int i = 0; i < array.Length; i++) {
@@ -46,7 +50,7 @@ namespace Dataskop.UI {
 		}
 
 		public void OnNearbyDevicesUpdated(int devicesNearbyCount) {
-			ProjectDevicesNearby.text = devicesNearbyCount.ToString("00");
+			ProjectDevicesNearbyValue.text = devicesNearbyCount.ToString("00");
 		}
 
 	}
