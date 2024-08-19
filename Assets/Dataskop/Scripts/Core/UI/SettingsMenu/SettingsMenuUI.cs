@@ -153,7 +153,7 @@ namespace Dataskop.UI {
 
 			CooldownInput = SettingsMenuContainer.Q<TextField>("CooldownInput");
 			CooldownInput.RegisterCallback<ChangeEvent<string>>(OnFetchIntervalInputChanged);
-			CooldownInput.SetValueWithoutNotify(PlayerPrefs.HasKey("fetchInterval") ? PlayerPrefs.GetInt("fetchInterval").ToString() : "10000");
+			CooldownInput.SetValueWithoutNotify(PlayerPrefs.HasKey("fetchInterval") ? (PlayerPrefs.GetInt("fetchInterval") / 1000).ToString() : "10");
 		}
 
 		private void OnDisable() {
@@ -319,7 +319,8 @@ namespace Dataskop.UI {
 			}
 
 			if (int.TryParse(e.newValue, out int value)) {
-				amountInputChanged?.Invoke(value);
+				int validValue = Mathf.Clamp(value, 1, 2000);
+				amountInputChanged?.Invoke(validValue);
 			}
 			else {
 				AmountInput.value = DefaultAmount;
@@ -334,7 +335,9 @@ namespace Dataskop.UI {
 			}
 
 			if (int.TryParse(e.newValue, out int value)) {
-				cooldownInputChanged?.Invoke(value);
+				int milliseconds = value * 1000;
+				int validValue = Mathf.Clamp(milliseconds, 2000, 900000);
+				cooldownInputChanged?.Invoke(validValue / 1000);
 			}
 			else {
 				CooldownInput.value = DefaultCooldown;
