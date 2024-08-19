@@ -20,10 +20,10 @@ namespace Dataskop.UI {
 		private VisualElement Root { get; set; }
 
 		private VisualElement HistoryContainer { get; set; }
-		
-		private VisualElement RangeContainer { get; set; }
 
 		private VisualElement Dragger { get; set; }
+		
+		private VisualElement RangeContainer { get; set; }
 
 		private SliderInt HistorySlider { get; set; }
 
