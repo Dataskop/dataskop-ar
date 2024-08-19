@@ -20,6 +20,8 @@ namespace Dataskop.UI {
 		private VisualElement Root { get; set; }
 
 		private VisualElement HistoryContainer { get; set; }
+		
+		private VisualElement RangeContainer { get; set; }
 
 		private VisualElement Dragger { get; set; }
 
@@ -33,12 +35,14 @@ namespace Dataskop.UI {
 
 		private void Start() {
 			SetVisibility(HistoryContainer, false);
+			SetVisibility(RangeContainer, false);
 		}
 
 		private void OnEnable() {
 
 			Root = historyMenuDoc.rootVisualElement;
 			HistoryContainer = Root.Q<VisualElement>("HistoryContainer");
+			RangeContainer = Root.Q<VisualElement>("RangeContainer");
 
 			HistorySlider = HistoryContainer.Q<SliderInt>("Slider");
 			HistorySlider.RegisterCallback<ChangeEvent<int>>(SliderValueChanged);
@@ -74,6 +78,7 @@ namespace Dataskop.UI {
 			if (SelectedDataPoint == null) {
 				CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Hidden);
 				SetVisibility(HistoryContainer, false);
+				SetVisibility(RangeContainer, false);
 				return;
 			}
 
@@ -84,6 +89,7 @@ namespace Dataskop.UI {
 			}
 
 			SetVisibility(HistoryContainer, true);
+			SetVisibility(RangeContainer, true);
 
 			int newResultsCount = GetMeasurementCount();
 
@@ -128,12 +134,14 @@ namespace Dataskop.UI {
 
 				SetVisibility(Root, currentVisOption.Style.IsTimeSeries);
 				SetVisibility(HistoryContainer, false);
+				SetVisibility(RangeContainer, false);
 				IsActive = false;
 
 			}
 			else {
 				SetVisibility(Root, currentVisOption.Style.IsTimeSeries);
 				SetVisibility(HistoryContainer, false);
+				SetVisibility(RangeContainer, false);
 				IsActive = false;
 			}
 
@@ -154,6 +162,7 @@ namespace Dataskop.UI {
 			if (SelectedDataPoint) {
 				SetVisibility(HistoryContainer, IsActive);
 				SetVisibility(CurrentTimeLabel, IsActive);
+				SetVisibility(RangeContainer, IsActive);
 				StartCoroutine(GenerateTicks(GetMeasurementCount()));
 			}
 
