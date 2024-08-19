@@ -24,6 +24,8 @@ namespace Dataskop.UI {
 		private VisualElement Dragger { get; set; }
 		
 		private VisualElement RangeContainer { get; set; }
+		
+		private MinMaxSlider MinMaxSlider { get; set; }
 
 		private SliderInt HistorySlider { get; set; }
 
@@ -42,7 +44,6 @@ namespace Dataskop.UI {
 
 			Root = historyMenuDoc.rootVisualElement;
 			HistoryContainer = Root.Q<VisualElement>("HistoryContainer");
-			RangeContainer = Root.Q<VisualElement>("RangeContainer");
 
 			HistorySlider = HistoryContainer.Q<SliderInt>("Slider");
 			HistorySlider.RegisterCallback<ChangeEvent<int>>(SliderValueChanged);
@@ -50,7 +51,9 @@ namespace Dataskop.UI {
 			CurrentTimeLabel = HistoryContainer.Q<Label>("CurrentTime");
 			Dragger = HistorySlider.Q<VisualElement>("unity-dragger");
 			Dragger.RegisterCallback<GeometryChangedEvent>(_ => AdjustTimeLabelPosition());
-
+			
+			RangeContainer = Root.Q<VisualElement>("RangeContainer");
+			MinMaxSlider = Root.Q<MinMaxSlider>("MinMaxSlider");
 		}
 
 		private void OnDisable() {
