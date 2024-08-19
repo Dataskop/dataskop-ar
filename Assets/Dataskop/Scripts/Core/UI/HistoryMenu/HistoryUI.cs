@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Dataskop.Data;
 using Dataskop.Entities;
 using UnityEngine;
@@ -22,16 +23,18 @@ namespace Dataskop.UI {
 		private VisualElement HistoryContainer { get; set; }
 
 		private VisualElement Dragger { get; set; }
-		
+
 		private VisualElement RangeContainer { get; set; }
-		
-		private MinMaxSlider MinMaxSlider { get; set; }
 
 		private SliderInt HistorySlider { get; set; }
 
 		private bool IsActive { get; set; }
 
 		private Label CurrentTimeLabel { get; set; }
+
+		private Label MinDateLabel { get; set; }
+
+		private Label MaxDateLabel { get; set; }
 
 		private DataPoint SelectedDataPoint { get; set; }
 
@@ -51,9 +54,11 @@ namespace Dataskop.UI {
 			CurrentTimeLabel = HistoryContainer.Q<Label>("CurrentTime");
 			Dragger = HistorySlider.Q<VisualElement>("unity-dragger");
 			Dragger.RegisterCallback<GeometryChangedEvent>(_ => AdjustTimeLabelPosition());
-			
+
 			RangeContainer = Root.Q<VisualElement>("RangeContainer");
-			MinMaxSlider = Root.Q<MinMaxSlider>("MinMaxSlider");
+
+			MinDateLabel = RangeContainer.Q<Label>("LabelMinDate");
+			MaxDateLabel = RangeContainer.Q<Label>("LabelMaxDate");
 		}
 
 		private void OnDisable() {
@@ -102,6 +107,7 @@ namespace Dataskop.UI {
 			StartCoroutine(GenerateTicks(newResultsCount));
 			CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
 			UpdateTimeLabel(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.FocusedIndex);
+			UpdateDateRange(SelectedDataPoint.MeasurementDefinition);
 		}
 
 		private int GetMeasurementCount() {
@@ -119,6 +125,14 @@ namespace Dataskop.UI {
 		private void UpdateTimeLabel(MeasurementDefinition def, int index) {
 			MeasurementResult focusedResult = def.MeasurementResults[index];
 			CurrentTimeLabel.text = $"{focusedResult.GetDate()}";
+		}
+
+		private void UpdateDateRange(MeasurementDefinition def) {
+			MeasurementResult firstResult = def.MeasurementResults.First();
+			MeasurementResult lastResult = def.MeasurementResults.Last();
+
+			MaxDateLabel.text = firstResult.GetShortDate();
+			MinDateLabel.text = lastResult.GetShortDate();
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
