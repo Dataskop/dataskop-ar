@@ -28,6 +28,8 @@ namespace Dataskop.UI {
 
 		private SliderInt HistorySlider { get; set; }
 
+		private MinMaxSlider MinMaxSlider { get; set; }
+
 		private bool IsActive { get; set; }
 
 		private Label CurrentTimeLabel { get; set; }
@@ -61,6 +63,8 @@ namespace Dataskop.UI {
 
 			MinDateLabel = RangeContainer.Q<Label>("LabelMinDate");
 			MaxDateLabel = RangeContainer.Q<Label>("LabelMaxDate");
+
+			MinMaxSlider = RangeContainer.Q<MinMaxSlider>("MinMaxSlider");
 		}
 
 		private void OnDisable() {
@@ -114,7 +118,7 @@ namespace Dataskop.UI {
 			if (selectedDataPoint.MeasurementDefinition.DeviceId == currentDeviceId) {
 				return;
 			}
-			UpdateDateRange(SelectedDataPoint.MeasurementDefinition);
+			UpdateDateRange(SelectedDataPoint.MeasurementDefinition, newResultsCount - 1);
 			currentDeviceId = selectedDataPoint.MeasurementDefinition.DeviceId;
 		}
 
@@ -135,12 +139,15 @@ namespace Dataskop.UI {
 			CurrentTimeLabel.text = $"{focusedResult.GetDate()}";
 		}
 
-		private void UpdateDateRange(MeasurementDefinition def) {
+		private void UpdateDateRange(MeasurementDefinition def, int highLimit) {
 			MeasurementResult firstResult = def.MeasurementResults.First();
 			MeasurementResult lastResult = def.MeasurementResults.Last();
 
 			MaxDateLabel.text = firstResult.GetShortDate();
 			MinDateLabel.text = lastResult.GetShortDate();
+
+			MinMaxSlider.lowLimit = 0;
+			MinMaxSlider.highLimit = highLimit;
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
