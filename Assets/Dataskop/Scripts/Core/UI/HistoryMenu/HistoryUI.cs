@@ -38,6 +38,8 @@ namespace Dataskop.UI {
 
 		private DataPoint SelectedDataPoint { get; set; }
 
+		private string currentDeviceId;
+
 		private void Start() {
 			SetVisibility(HistoryContainer, false);
 			SetVisibility(RangeContainer, false);
@@ -107,7 +109,13 @@ namespace Dataskop.UI {
 			StartCoroutine(GenerateTicks(newResultsCount));
 			CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
 			UpdateTimeLabel(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.FocusedIndex);
+
+			// check if we are still on the same device before updating time range
+			if (selectedDataPoint.MeasurementDefinition.DeviceId == currentDeviceId) {
+				return;
+			}
 			UpdateDateRange(SelectedDataPoint.MeasurementDefinition);
+			currentDeviceId = selectedDataPoint.MeasurementDefinition.DeviceId;
 		}
 
 		private int GetMeasurementCount() {
