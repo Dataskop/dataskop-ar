@@ -375,13 +375,12 @@ namespace Dataskop.Data {
 			await UpdateProjectMeasurements();
 		}
 
-		public void OnCooldownInputChanged(int newValue) {
-			int milliseconds = newValue * 1000;
+		public void OnCooldownInputChanged(int milliseconds) {
 			fetchInterval = milliseconds;
 		}
 
-		public void OnAmountInputChanged(int newValue) {
-			FetchAmount = newValue;
+		public void OnAmountInputChanged(int amount) {
+			FetchAmount = amount;
 		}
 
 	}
