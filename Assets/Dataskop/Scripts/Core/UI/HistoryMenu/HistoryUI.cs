@@ -26,6 +26,10 @@ namespace Dataskop.UI {
 
 		private VisualElement RangeContainer { get; set; }
 
+		private VisualElement TopDragger { get; set; }
+		
+		private VisualElement BottomDragger { get; set; }
+
 		private SliderInt HistorySlider { get; set; }
 
 		private MinMaxSlider MinMaxSlider { get; set; }
@@ -72,6 +76,11 @@ namespace Dataskop.UI {
 			MaxValueLabel = RangeContainer.Q<Label>("LabelMaxValue");
 
 			MinMaxSlider = RangeContainer.Q<MinMaxSlider>("MinMaxSlider");
+
+			TopDragger = RangeContainer.Q<VisualElement>("unity-thumb-max");
+			BottomDragger = RangeContainer.Q<VisualElement>("unity-thumb-min");
+			TopDragger.RegisterCallback<GeometryChangedEvent>(_ => AdjustDateLabelPositions());
+			BottomDragger.RegisterCallback<GeometryChangedEvent>(_ => AdjustDateLabelPositions());
 		}
 
 		private void OnDisable() {
@@ -161,6 +170,8 @@ namespace Dataskop.UI {
 			
 			MinMaxSlider.minValue = 0;
 			MinMaxSlider.maxValue = maxValue;
+
+			AdjustDateLabelPositions();
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
@@ -194,6 +205,11 @@ namespace Dataskop.UI {
 
 		private void AdjustTimeLabelPosition() {
 			CurrentTimeLabel.style.top = Dragger.localBound.yMax - Dragger.resolvedStyle.height;
+		}
+
+		private void AdjustDateLabelPositions() {
+			MaxValueLabel.style.left = TopDragger.localBound.xMax - TopDragger.resolvedStyle.width - 42;
+			MinValueLabel.style.left = BottomDragger.localBound.xMax - BottomDragger.resolvedStyle.width - 42;
 		}
 
 		private void SetVisibility(VisualElement element, bool isVisible) {
