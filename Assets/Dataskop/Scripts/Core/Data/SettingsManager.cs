@@ -1,20 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Dataskop
-{
-    public class SettingsManager : MonoBehaviour {
+namespace Dataskop {
 
-	    private const string KeyFetchAmount = "fetchAmount";
-	    private const string KeyFetchInterval = "fetchInterval";
+	public class SettingsManager : MonoBehaviour {
 
-        public void OnAmountInputChanged(int newValue) {
-	        PlayerPrefs.SetInt(KeyFetchAmount, newValue);
-        }
+		private const string KeyFetchAmount = "fetchAmount";
+		private const string KeyFetchInterval = "fetchInterval";
 
-        public void OnFetchIntervalInputChanged(int newValue) {
-	        PlayerPrefs.SetInt(KeyFetchInterval, newValue * 1000);
-        }
-    }
+		public void OnAmountInputChanged(int newValue) {
+			PlayerPrefs.SetInt(KeyFetchAmount, newValue);
+		}
+
+		public void OnFetchIntervalInputChanged(int newValue) {
+			PlayerPrefs.SetInt(KeyFetchInterval, newValue);
+		}
+
+	}
+
 }
