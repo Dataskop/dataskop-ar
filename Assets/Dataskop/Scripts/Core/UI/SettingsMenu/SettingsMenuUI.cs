@@ -10,8 +10,8 @@ namespace Dataskop.UI {
 		private const string MenuOpenAnimation = "settings-menu-open";
 		private const string TogglerAnimation = "toggler-on";
 		private const string KnobAnimation = "knob-on";
-		private const string DefaultAmount = "50";
-		private const string DefaultCooldown = "60";
+		private const string DefaultAmount = "2000";
+		private const string DefaultCooldown = "10";
 		private const string ProjectSelectionTitle = "Projects";
 		private const string SettingsTitle = "Settings";
 
@@ -149,10 +149,11 @@ namespace Dataskop.UI {
 
 			AmountInput = SettingsMenuContainer.Q<TextField>("AmountInput");
 			AmountInput.RegisterCallback<ChangeEvent<string>>(OnFetchAmountInputChanged);
+			AmountInput.SetValueWithoutNotify(PlayerPrefs.HasKey("fetchAmount") ? PlayerPrefs.GetInt("fetchAmount").ToString() : DefaultAmount);
 
 			CooldownInput = SettingsMenuContainer.Q<TextField>("CooldownInput");
 			CooldownInput.RegisterCallback<ChangeEvent<string>>(OnFetchIntervalInputChanged);
-
+			CooldownInput.SetValueWithoutNotify(PlayerPrefs.HasKey("fetchInterval") ? (PlayerPrefs.GetInt("fetchInterval") / 1000).ToString() : DefaultCooldown);
 		}
 
 		private void OnDisable() {
@@ -318,7 +319,8 @@ namespace Dataskop.UI {
 			}
 
 			if (int.TryParse(e.newValue, out int value)) {
-				amountInputChanged?.Invoke(value);
+				int validValue = Mathf.Clamp(value, 1, 2000);
+				amountInputChanged?.Invoke(validValue);
 			}
 			else {
 				AmountInput.value = DefaultAmount;
@@ -333,7 +335,9 @@ namespace Dataskop.UI {
 			}
 
 			if (int.TryParse(e.newValue, out int value)) {
-				cooldownInputChanged?.Invoke(value);
+				int milliseconds = value * 1000;
+				int validValue = Mathf.Clamp(milliseconds, 2000, 900000);
+				cooldownInputChanged?.Invoke(validValue);
 			}
 			else {
 				CooldownInput.value = DefaultCooldown;
