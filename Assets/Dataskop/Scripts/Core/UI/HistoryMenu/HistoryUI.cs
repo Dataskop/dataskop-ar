@@ -38,6 +38,10 @@ namespace Dataskop.UI {
 
 		private Label MaxDateLabel { get; set; }
 
+		private Label MinValueLabel { get; set; }
+
+		private Label MaxValueLabel { get; set; }
+
 		private DataPoint SelectedDataPoint { get; set; }
 
 		private string currentDeviceId;
@@ -63,6 +67,9 @@ namespace Dataskop.UI {
 
 			MinDateLabel = RangeContainer.Q<Label>("LabelMinDate");
 			MaxDateLabel = RangeContainer.Q<Label>("LabelMaxDate");
+
+			MinValueLabel = RangeContainer.Q<Label>("LabelMinValue");
+			MaxValueLabel = RangeContainer.Q<Label>("LabelMaxValue");
 
 			MinMaxSlider = RangeContainer.Q<MinMaxSlider>("MinMaxSlider");
 		}
@@ -114,14 +121,11 @@ namespace Dataskop.UI {
 			CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
 			UpdateTimeLabel(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.FocusedIndex);
 
-			// update positions of minmaxSlider handles
-			UpdateMinMaxSlider(newResultsCount - 1);
-
 			// check if we are still on the same device before updating time range
 			if (selectedDataPoint.MeasurementDefinition.DeviceId == currentDeviceId) {
 				return;
 			}
-			UpdateDateRange(SelectedDataPoint.MeasurementDefinition);
+			UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, newResultsCount - 1);
 			currentDeviceId = selectedDataPoint.MeasurementDefinition.DeviceId;
 		}
 
@@ -142,20 +146,21 @@ namespace Dataskop.UI {
 			CurrentTimeLabel.text = $"{focusedResult.GetDate()}";
 		}
 
-		private void UpdateDateRange(MeasurementDefinition def) {
+		private void UpdateMinMaxSlider(MeasurementDefinition def, int maxValue) {
 			MeasurementResult firstResult = def.MeasurementResults.First();
 			MeasurementResult lastResult = def.MeasurementResults.Last();
 
-			MaxDateLabel.text = firstResult.GetShortDate();
-			MinDateLabel.text = lastResult.GetShortDate();
+			MaxDateLabel.text = lastResult.GetShortDate();
+			MinDateLabel.text = firstResult.GetShortDate();
 
-			MinMaxSlider.lowLimit = 0; // lowest possible value of range - minDate
-			MinMaxSlider.highLimit = def.TotalMeasurements; // highest possible value of range - maxDate
-		}
+			MaxValueLabel.text = def.MeasurementResults[maxValue].GetShortDate();
+			MinValueLabel.text = firstResult.GetShortDate();
 
-		private void UpdateMinMaxSlider(int maxValue) {
-			MinMaxSlider.minValue = 10; // date at the bottom of historyslider
-			MinMaxSlider.maxValue = maxValue; // date at the top of historyslider
+			MinMaxSlider.lowLimit = 0;
+			MinMaxSlider.highLimit = def.TotalMeasurements;
+			
+			MinMaxSlider.minValue = 0;
+			MinMaxSlider.maxValue = maxValue;
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
