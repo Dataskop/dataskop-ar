@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -148,6 +148,7 @@ GameObject:
   - component: {fileID: 213483609}
   - component: {fileID: 213483610}
   - component: {fileID: 213483611}
+  - component: {fileID: 213483614}
   - component: {fileID: 213483612}
   - component: {fileID: 213483613}
   m_Layer: 5
@@ -368,12 +369,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  validTimeRangeEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  dateFilterDisabled:
-    m_PersistentCalls:
-      m_Calls: []
   menuDocument: {fileID: 213483610}
   selectedIconColor: {r: 0.8584906, g: 0.41105816, b: 0.044544328, a: 1}
   deselectedIconColor: {r: 0.14618193, g: 0.3496184, b: 0.6886792, a: 1}
@@ -453,6 +448,33 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   section: 2
+--- !u!114 &213483614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213483608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d67a411fbf9ad244bb1fadb439a436b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dateFilterButtonPressed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 284049158}
+        m_TargetAssemblyTypeName: Dataskop.Data.DataManager, Dataskop
+        m_MethodName: OnDateFilterPressed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &284049157
 GameObject:
   m_ObjectHideFlags: 0

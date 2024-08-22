@@ -383,6 +383,10 @@ namespace Dataskop.Data {
 			FetchAmount = amount;
 		}
 
+		public void OnDateFilterPressed(DateTime from, DateTime to) {
+			Debug.Log($"Trying to filter from {from} to {to}");
+		}
+
 	}
 
 }
