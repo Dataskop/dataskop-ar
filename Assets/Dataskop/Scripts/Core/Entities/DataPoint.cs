@@ -80,7 +80,6 @@ namespace Dataskop.Entities {
 
 			if (Vis.HasHistoryEnabled) {
 				SetIndex(indexOfPreviousResult.Value);
-				//Vis.OnMeasurementResultsUpdated(indexOfPreviousResult.Value);
 			}
 			else {
 

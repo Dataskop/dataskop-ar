@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -308,6 +309,10 @@ namespace Dataskop.Data {
 				dp.OnMeasurementResultsUpdated();
 			}
 
+		}
+
+		private void OnDataFiltered(DateTime from, DateTime to) {
+			//Debug.Log(DataPoints[0].MeasurementDefinition.GetIndexOfMeasurementResult());
 		}
 
 		private void ClearDataPoints() {

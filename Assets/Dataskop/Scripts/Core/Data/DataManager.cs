@@ -63,6 +63,8 @@ namespace Dataskop.Data {
 		/// </summary>
 		public event Action HasUpdatedMeasurementResults;
 
+		public event Action<DateTime, DateTime> HasDateFiltered;
+
 		private void Awake() {
 			FetchAmount = PlayerPrefs.HasKey("fetchAmount") ? PlayerPrefs.GetInt("fetchAmount") : 2000;
 			fetchInterval = PlayerPrefs.HasKey("fetchInterval") ? PlayerPrefs.GetInt("fetchInterval") : 10000;
@@ -357,6 +359,49 @@ namespace Dataskop.Data {
 
 		}
 
+		private async Task FilterByDate(DateTime from, DateTime to) {
+			LoadingIndicator.Show();
+
+			// already validated (from earlier than to)
+
+			await UpdateProjectMeasurements();
+
+			// Fetch data that is missing from the current MDs according to the user request
+			foreach (Device d in SelectedProject.Devices) {
+				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
+
+					MeasurementResult firstAvailableResult = md.MeasurementResults[0];
+					MeasurementResult latestAvailableResult = md.GetLatestMeasurementResult();
+					DateTime fetchFrom = from;
+					DateTime fetchTo = to;
+
+					if (from > firstAvailableResult.Timestamp && to < latestAvailableResult.Timestamp) {
+						// Check if there is missing data.
+						continue;
+					}
+
+					if (to > firstAvailableResult.Timestamp) {
+						fetchTo = firstAvailableResult.Timestamp;
+					}
+
+					IReadOnlyCollection<MeasurementResult> newResults =
+						await RequestHandler.GetMeasurementResults(md, FetchAmount, fetchFrom, fetchTo);
+					IEnumerable<MeasurementResult> trimmedResults = newResults.SkipLast(1);
+
+					if (!trimmedResults.Any()) {
+						continue;
+					}
+
+					md.MeasurementResults = trimmedResults.Concat(md.MeasurementResults).ToArray();
+
+				}
+
+			}
+
+			HasDateFiltered?.Invoke(from, to);
+			LoadingIndicator.Hide();
+		}
+
 		private async void RefetchDataTimer() {
 			while (ShouldRefetch) {
 				if (FetchTimer?.ElapsedMilliseconds > fetchInterval) {
@@ -383,8 +428,10 @@ namespace Dataskop.Data {
 			FetchAmount = amount;
 		}
 
-		public void OnDateFilterPressed(DateTime from, DateTime to) {
+		public async void OnDateFilterPressed(DateTime from, DateTime to) {
 			Debug.Log($"Trying to filter from {from} to {to}");
+			ShouldRefetch = false;
+			await FilterByDate(from, to);
 		}
 
 	}
