@@ -61,6 +61,7 @@ namespace Dataskop.Data {
 
 		private void Awake() {
 			DataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
+			DataManager.HasDateFiltered += OnDataFiltered;
 		}
 
 		private void Start() {
@@ -312,7 +313,15 @@ namespace Dataskop.Data {
 		}
 
 		private void OnDataFiltered(DateTime from, DateTime to) {
-			//Debug.Log(DataPoints[0].MeasurementDefinition.GetIndexOfMeasurementResult());
+
+			if (!HasLoadedDataPoints) {
+				return;
+			}
+
+			foreach (DataPoint dp in DataPoints) {
+				dp.OnDateFiltered(from, to);
+			}
+
 		}
 
 		private void ClearDataPoints() {

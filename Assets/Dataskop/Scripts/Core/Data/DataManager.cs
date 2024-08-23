@@ -375,7 +375,7 @@ namespace Dataskop.Data {
 					DateTime fetchFrom = from;
 					DateTime fetchTo = to;
 
-					if (from > firstAvailableResult.Timestamp && to < latestAvailableResult.Timestamp) {
+					if (from >= firstAvailableResult.Timestamp && to <= latestAvailableResult.Timestamp) {
 						// Check if there is missing data.
 						continue;
 					}
