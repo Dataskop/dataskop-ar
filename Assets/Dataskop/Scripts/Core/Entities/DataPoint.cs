@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Dataskop.Data;
 using Dataskop.Entities.Visualizations;
 using Dataskop.Interaction;
@@ -80,7 +82,6 @@ namespace Dataskop.Entities {
 
 			if (Vis.HasHistoryEnabled) {
 				SetIndex(indexOfPreviousResult.Value);
-				//Vis.OnMeasurementResultsUpdated(indexOfPreviousResult.Value);
 			}
 			else {
 
@@ -93,6 +94,12 @@ namespace Dataskop.Entities {
 
 			}
 
+		}
+
+		public void OnDateFiltered(DateTime from, DateTime to) {
+			MeasurementResult[] filteredResults = MeasurementDefinition.GetMeasurementResults(from, to).ToArray();
+			Debug.Log(filteredResults[0].Timestamp);
+			Debug.Log(filteredResults.Last().Timestamp);
 		}
 
 		private void IncreaseMeasurementIndex() {

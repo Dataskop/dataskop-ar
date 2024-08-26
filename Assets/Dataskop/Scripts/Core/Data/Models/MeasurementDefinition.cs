@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
@@ -87,6 +89,10 @@ namespace Dataskop.Data {
 			TimeSpan timeDiff = result1.Timestamp - result2.Timestamp;
 			TimeSpan interval = new(0, 0, MeasuringInterval / 10);
 			return Math.Truncate(Math.Abs(timeDiff.TotalSeconds)) > interval.TotalSeconds;
+		}
+
+		public IEnumerable<MeasurementResult> GetMeasurementResults(DateTime from, DateTime to) {
+			return MeasurementResults.Where(mr => mr.Timestamp >= from && mr.Timestamp <= to).ToList();
 		}
 
 	}

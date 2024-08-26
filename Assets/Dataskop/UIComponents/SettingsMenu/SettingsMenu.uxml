@@ -1,4 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="DatePicker" src="project://database/Assets/Dataskop/UIComponents/SettingsMenu/DatePicker.uxml?fileID=9197481963319205126&amp;guid=ff8ada5c85d7d534e9c96a582d116af9&amp;type=3#DatePicker" />
     <Style src="project://database/Assets/Dataskop/UIComponents/SettingsMenu/SettingsMenuStyles.uss?fileID=7433441132597879392&amp;guid=3ea82a0a9c67db041b4dad349eb75bbd&amp;type=3#SettingsMenuStyles" />
     <ui:VisualElement name="MenuContainer" class="settings-menu-close" style="width: 520px; height: auto; position: absolute; align-items: center; background-color: rgba(229, 229, 229, 0.78); border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; left: 101%; top: 15%;">
         <ui:VisualElement name="TitleContainer" class="titlecontainer">
@@ -8,22 +9,7 @@
         <ui:VisualElement name="Splitter" class="splitter" style="height: 4px; border-top-left-radius: 2px; border-bottom-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; width: 96%; background-color: rgb(123, 123, 123);" />
         <ui:ScrollView name="ProjectSelectionContainer" class="project-selection-container" style="width: 100%; height: auto; max-height: 800px; position: relative; display: none;" />
         <ui:VisualElement name="SettingsMenuContainer" class="settings-menu-container" style="display: flex; background-color: rgba(0, 0, 0, 0);">
-            <ui:VisualElement name="DateFilterContainer" class="option-container" style="justify-content: center; flex-direction: row;">
-                <ui:Button display-tooltip-when-elided="true" name="Option_DateFilter" class="option-toggle-button-container" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 20px; padding-bottom: 0; padding-left: 0; width: 100%; overflow: visible;">
-                    <ui:Label text="Filter by Date" display-tooltip-when-elided="true" enable-rich-text="true" class="option-label" />
-                    <ui:VisualElement name="Toggler" class="toggle-button-background toggler-off">
-                        <ui:VisualElement name="Knob" class="toggle-button-knob knob-off" />
-                    </ui:VisualElement>
-                </ui:Button>
-            </ui:VisualElement>
-            <ui:VisualElement name="DateFromContainer" class="option-container" style="flex-direction: row; justify-content: flex-end; display: none;">
-                <ui:Label text="from" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" style="margin-right: 20px;" />
-                <ui:TextField name="DateInputFrom" max-length="19" class="text-input" style="justify-content: flex-start;" />
-            </ui:VisualElement>
-            <ui:VisualElement name="DateToContainer" class="option-container" style="justify-content: flex-end; flex-direction: row; display: none;">
-                <ui:Label text="to" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" style="margin-right: 20px;" />
-                <ui:TextField name="DateInputTo" max-length="19" class="text-input" style="flex-wrap: nowrap; white-space: nowrap; text-overflow: clip; -unity-text-align: middle-left;" />
-            </ui:VisualElement>
+            <ui:Instance template="DatePicker" name="DatePicker" class="option-container" style="flex-direction: row; height: auto; justify-content: center;" />
             <ui:VisualElement name="Splitter" class="splitter" />
             <ui:VisualElement name="AmountContainer" class="option-container" style="justify-content: space-between; flex-direction: row;">
                 <ui:Label text="Fetch Amount" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" style="flex-wrap: wrap;" />

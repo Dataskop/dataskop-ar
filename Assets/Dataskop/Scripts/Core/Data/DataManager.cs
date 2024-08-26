@@ -63,6 +63,8 @@ namespace Dataskop.Data {
 		/// </summary>
 		public event Action HasUpdatedMeasurementResults;
 
+		public event Action<DateTime, DateTime> HasDateFiltered;
+
 		private void Awake() {
 			FetchAmount = PlayerPrefs.HasKey("fetchAmount") ? PlayerPrefs.GetInt("fetchAmount") : 2000;
 			fetchInterval = PlayerPrefs.HasKey("fetchInterval") ? PlayerPrefs.GetInt("fetchInterval") : 10000;
@@ -357,6 +359,50 @@ namespace Dataskop.Data {
 
 		}
 
+		private async Task FilterByDate(DateTime from, DateTime to) {
+			LoadingIndicator.Show();
+
+			// already validated (from earlier than to)
+
+			await UpdateProjectMeasurements();
+
+			// Fetch data that is missing from the current MDs according to the user request
+			foreach (Device d in SelectedProject.Devices) {
+				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
+
+					MeasurementResult firstAvailableResult = md.MeasurementResults[0];
+					MeasurementResult latestAvailableResult = md.GetLatestMeasurementResult();
+
+					if (from >= firstAvailableResult.Timestamp && to <= latestAvailableResult.Timestamp) {
+						// TODO: What happens when both dates are inside the available Results?
+						// Check if there is missing data.
+						continue;
+					}
+
+					if (to <= firstAvailableResult.Timestamp) {
+
+						IReadOnlyCollection<MeasurementResult> newResults =
+							await RequestHandler.GetMeasurementResults(md, FetchAmount, from, to);
+
+						if (!newResults.Any()) {
+							//TODO: Add Notification for no Results for given Date for MD
+							Debug.Log("No data found in this Time Range");
+						}
+
+						md.MeasurementResults = latestAvailableResult == newResults.First()
+							? md.MeasurementResults.Skip(1).Concat(newResults).ToArray()
+							: md.MeasurementResults.Concat(newResults).ToArray();
+
+					}
+
+				}
+
+			}
+
+			HasDateFiltered?.Invoke(from, to);
+			LoadingIndicator.Hide();
+		}
+
 		private async void RefetchDataTimer() {
 			while (ShouldRefetch) {
 				if (FetchTimer?.ElapsedMilliseconds > fetchInterval) {
@@ -381,6 +427,12 @@ namespace Dataskop.Data {
 
 		public void OnAmountInputChanged(int amount) {
 			FetchAmount = amount;
+		}
+
+		public async void OnDateFilterPressed(DateTime from, DateTime to) {
+			Debug.Log($"Trying to filter from {from} to {to}");
+			ShouldRefetch = false;
+			await FilterByDate(from, to);
 		}
 
 	}
