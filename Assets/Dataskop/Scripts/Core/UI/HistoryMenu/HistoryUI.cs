@@ -162,8 +162,8 @@ namespace Dataskop.UI {
 			MaxDateLabel.text = lastResult.GetShortDate();
 			MinDateLabel.text = firstResult.GetShortDate();
 
-			MaxValueLabel.text = def.MeasurementResults[maxValue].GetShortDate();
-			MinValueLabel.text = firstResult.GetShortDate();
+			MaxValueLabel.text = def.MeasurementResults[maxValue].GetShortDate().Remove(6, 4);
+			MinValueLabel.text = firstResult.GetShortDate().Remove(6, 4);
 
 			MinMaxSlider.lowLimit = 0;
 			MinMaxSlider.highLimit = def.TotalMeasurements;
@@ -208,8 +208,8 @@ namespace Dataskop.UI {
 		}
 
 		private void AdjustDateLabelPositions() {
-			MaxValueLabel.style.left = TopDragger.localBound.xMax - TopDragger.resolvedStyle.width - 42;
-			MinValueLabel.style.left = BottomDragger.localBound.xMax - BottomDragger.resolvedStyle.width - 42;
+			MaxValueLabel.style.left = TopDragger.localBound.xMax - TopDragger.resolvedStyle.width - 18;
+			MinValueLabel.style.left = BottomDragger.localBound.xMax - BottomDragger.resolvedStyle.width - 18;
 		}
 
 		private void SetVisibility(VisualElement element, bool isVisible) {
