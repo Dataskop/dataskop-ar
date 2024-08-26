@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Dataskop.Entities;
 using Dataskop.Interaction;
 using Mapbox.Unity.Map;
@@ -181,7 +180,7 @@ namespace Dataskop.Data {
 			SpawnDataPoints();
 
 			HasLoadedDataPoints = true;
-			StartCoroutine(GetNearbyDevicesTask());
+			StartCoroutine(GetNearbyDevicesTask(5));
 
 		}
 
@@ -210,7 +209,7 @@ namespace Dataskop.Data {
 			}
 
 			HasLoadedDataPoints = true;
-			StartCoroutine(GetNearbyDevicesTask());
+			StartCoroutine(GetNearbyDevicesTask(5));
 
 		}
 
@@ -274,11 +273,11 @@ namespace Dataskop.Data {
 			dataPointTransform.localPosition = newPosition;
 		}
 
-		private IEnumerator GetNearbyDevicesTask() {
+		private IEnumerator GetNearbyDevicesTask(float seconds) {
 			while (HasLoadedDataPoints) {
 				int count = GetDevicesNearPosition(inputHandler.MainCamera.transform.position);
 				nearbyDevicesUpdated?.Invoke(count);
-				yield return new WaitForSeconds(5);
+				yield return new WaitForSeconds(seconds);
 			}
 		}
 
