@@ -372,27 +372,28 @@ namespace Dataskop.Data {
 
 					MeasurementResult firstAvailableResult = md.MeasurementResults[0];
 					MeasurementResult latestAvailableResult = md.GetLatestMeasurementResult();
-					DateTime fetchFrom = from;
-					DateTime fetchTo = to;
 
 					if (from >= firstAvailableResult.Timestamp && to <= latestAvailableResult.Timestamp) {
+						// TODO: What happens when both dates are inside the available Results?
 						// Check if there is missing data.
 						continue;
 					}
 
-					if (to > firstAvailableResult.Timestamp) {
-						fetchTo = firstAvailableResult.Timestamp;
+					if (to <= firstAvailableResult.Timestamp) {
+
+						IReadOnlyCollection<MeasurementResult> newResults =
+							await RequestHandler.GetMeasurementResults(md, FetchAmount, from, to);
+
+						if (!newResults.Any()) {
+							//TODO: Add Notification for no Results for given Date for MD
+							Debug.Log("No data found in this Time Range");
+						}
+
+						md.MeasurementResults = latestAvailableResult == newResults.First()
+							? md.MeasurementResults.Skip(1).Concat(newResults).ToArray()
+							: md.MeasurementResults.Concat(newResults).ToArray();
+
 					}
-
-					IReadOnlyCollection<MeasurementResult> newResults =
-						await RequestHandler.GetMeasurementResults(md, FetchAmount, fetchFrom, fetchTo);
-					IEnumerable<MeasurementResult> trimmedResults = newResults.SkipLast(1);
-
-					if (!trimmedResults.Any()) {
-						continue;
-					}
-
-					md.MeasurementResults = trimmedResults.Concat(md.MeasurementResults).ToArray();
 
 				}
 
