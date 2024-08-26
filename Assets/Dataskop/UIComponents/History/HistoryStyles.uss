@@ -82,9 +82,9 @@
 }
 
 .unity-min-max-slider__max-thumb {
-    background-color: rgb(37, 89, 176);
+    background-color: rgb(253, 253, 253);
     border-width: 2px;
-	border-color: rgb(253, 253, 253);
+	border-color: rgb(37, 89, 176);
     border-radius: 8px;
     min-height: 60px;
     min-width: 20px;
@@ -92,13 +92,17 @@
 }
 
 .unity-min-max-slider__min-thumb {
-    background-color: rgb(37, 89, 176);
+    background-color: rgb(253, 253, 253);
     border-width: 2px;
-    border-color: rgb(253, 253, 253);
+    border-color: rgb(37, 89, 176);
     border-radius: 8px;
     min-height: 60px;
     min-width: 20px;
     margin-top: -28px;
+}
+
+.unity-min-max-slider__dragger {
+	background-color: rgb(37, 89, 176);
 }
 
 .white-label {
