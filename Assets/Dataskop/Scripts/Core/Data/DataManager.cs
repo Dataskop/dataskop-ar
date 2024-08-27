@@ -374,7 +374,7 @@ namespace Dataskop.Data {
 			foreach (Device d in SelectedProject.Devices) {
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
-					(DateTime, DateTime)[] modifiedRanges = md.CheckForRangeOverlap(from, to);
+					TimeRange[] modifiedRanges = md.CheckForRangeOverlap(from, to);
 
 					if (modifiedRanges.Length < 1) {
 						//TODO: No Modified Ranges detected, can safely use Results from already loaded Data

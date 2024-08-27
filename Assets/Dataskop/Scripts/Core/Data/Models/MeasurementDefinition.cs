@@ -119,9 +119,9 @@ namespace Dataskop.Data {
 		/// <param name="from">Startime of given time range</param>
 		/// <param name="to">Endtime of given time range</param>
 		/// <returns>Returns one or more time ranges.</returns>
-		public (DateTime, DateTime)[] CheckForRangeOverlap(DateTime from, DateTime to) {
+		public TimeRange[] CheckForRangeOverlap(DateTime from, DateTime to) {
 
-			List<(DateTime, DateTime)> newRanges = new List<(DateTime, DateTime)>();
+			List<TimeRange> newRanges = new();
 
 			foreach (MeasurementResultRange mrr in MeasurementResults) {
 
@@ -140,7 +140,7 @@ namespace Dataskop.Data {
 
 			}
 
-			return Array.Empty<(DateTime, DateTime)>();
+			return Array.Empty<TimeRange>();
 
 		}
 
