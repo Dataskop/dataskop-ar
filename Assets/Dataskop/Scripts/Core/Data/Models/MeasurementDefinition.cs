@@ -114,12 +114,12 @@ namespace Dataskop.Data {
 		}
 
 		/// <summary>
-		/// Checks if start and end times of a given range are overlapping with any existing ranges.
+		/// Finds all gaps in the available Measurement Results given a from/to range.
 		/// </summary>
 		/// <param name="from">Startime of given time range</param>
 		/// <param name="to">Endtime of given time range</param>
-		/// <returns>Returns one or more time ranges.</returns>
-		public TimeRange[] CheckForRangeOverlap(DateTime from, DateTime to) {
+		/// <returns>Returns an array of time ranges.</returns>
+		public TimeRange[] GetDataGaps(DateTime from, DateTime to) {
 
 			List<TimeRange> newRanges = new();
 
@@ -131,11 +131,8 @@ namespace Dataskop.Data {
 				TimeRange tr = mrr.GetTimeRange();
 
 				if (from < tr.StartTime && to > tr.EndTime) {
+					// The given time range is contained by a single available measurement range - no gaps.
 					break;
-				}
-
-				if (from < tr.StartTime && from > tr.EndTime && to > tr.EndTime) {
-					newFrom = tr.EndTime;
 				}
 
 			}
