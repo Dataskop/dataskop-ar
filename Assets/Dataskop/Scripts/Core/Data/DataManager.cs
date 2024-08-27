@@ -374,7 +374,10 @@ namespace Dataskop.Data {
 			foreach (Device d in SelectedProject.Devices) {
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
-					TimeRange[] newTimeRanges = md.GetDataGaps(from, to);
+					TimeRange[] newTimeRanges = md.GetAllDataGaps();
+					foreach (TimeRange tr in newTimeRanges) {
+						Debug.Log($"{tr.StartTime}, {tr.EndTime}");
+					}
 
 					if (newTimeRanges.Length < 1) {
 						//TODO: No Modified Ranges detected, can safely use Results from already loaded Data

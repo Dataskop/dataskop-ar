@@ -98,8 +98,6 @@ namespace Dataskop.Entities {
 
 		public void OnDateFiltered(DateTime from, DateTime to) {
 			MeasurementResult[] filteredResults = MeasurementDefinition.GetMeasurementResults(from, to).ToArray();
-			Debug.Log(filteredResults[0].Timestamp);
-			Debug.Log(filteredResults.Last().Timestamp);
 		}
 
 		private void IncreaseMeasurementIndex() {

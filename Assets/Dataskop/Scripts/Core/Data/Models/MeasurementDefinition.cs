@@ -119,25 +119,23 @@ namespace Dataskop.Data {
 		/// <param name="from">Startime of given time range</param>
 		/// <param name="to">Endtime of given time range</param>
 		/// <returns>Returns an array of time ranges.</returns>
-		public TimeRange[] GetDataGaps(DateTime from, DateTime to) {
+		public TimeRange[] GetAllDataGaps() {
 
 			List<TimeRange> newRanges = new();
 
-			foreach (MeasurementResultRange mrr in MeasurementResults) {
+			if (MeasurementResults.Count < 2) {
+				// Only one range available - no gaps
+				return newRanges.ToArray();
+			}
 
-				DateTime newFrom = from;
-				DateTime newTo = to;
+			for (int i = 0; i < MeasurementResults.Count - 2; i++) {
 
-				TimeRange tr = mrr.GetTimeRange();
-
-				if (from < tr.StartTime && to > tr.EndTime) {
-					// The given time range is contained by a single available measurement range - no gaps.
-					break;
-				}
+				TimeRange tr = new(MeasurementResults[i].GetTimeRange().EndTime, MeasurementResults[i + 1].GetTimeRange().StartTime);
+				newRanges.Add(tr);
 
 			}
 
-			return Array.Empty<TimeRange>();
+			return newRanges.ToArray();
 
 		}
 
