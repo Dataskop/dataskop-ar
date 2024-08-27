@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using UnityEngine;
 
 namespace Dataskop.Data {
 
@@ -6,9 +6,9 @@ namespace Dataskop.Data {
 
 		public int Count { get; }
 
-		public IReadOnlyCollection<MeasurementResult> MeasurementResults { get; }
+		public MeasurementResultRange MeasurementResults { get; }
 
-		public MeasurementResultsResponse(int count, IReadOnlyCollection<MeasurementResult> measurementResults) {
+		public MeasurementResultsResponse(int count, MeasurementResultRange measurementResults) {
 			Count = count;
 			MeasurementResults = measurementResults;
 		}

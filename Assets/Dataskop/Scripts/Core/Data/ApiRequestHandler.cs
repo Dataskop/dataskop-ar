@@ -102,7 +102,7 @@ namespace Dataskop.Data {
 
 		}
 
-		public async Task<IReadOnlyList<MeasurementResult>> GetMeasurementResults(MeasurementDefinition measurementDefinition,
+		public async Task<MeasurementResultRange> GetMeasurementResults(MeasurementDefinition measurementDefinition,
 			int amount, DateTime? from, DateTime? to) {
 
 			string url =
@@ -116,7 +116,7 @@ namespace Dataskop.Data {
 
 			try {
 				MeasurementResultsResponse resultsResponse = JsonConvert.DeserializeObject<MeasurementResultsResponse>(response);
-				List<MeasurementResult> measurementResults = resultsResponse?.MeasurementResults.ToList();
+				MeasurementResultRange measurementResults = resultsResponse?.MeasurementResults;
 
 				foreach (MeasurementResult mr in measurementResults!) {
 					mr.MeasurementDefinition = measurementDefinition;

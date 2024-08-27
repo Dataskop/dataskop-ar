@@ -300,7 +300,7 @@ namespace Dataskop.Data {
 				DisplayDuration = NotificationDuration.Short
 			});
 
-			ShouldRefetch = true;
+			ShouldRefetch = false;
 			FetchTimer = new Stopwatch();
 			FetchTimer.Start();
 			RefetchDataTimer();
@@ -316,7 +316,8 @@ namespace Dataskop.Data {
 					md.FirstMeasurementResult = await RequestHandler.GetFirstMeasurementResult(md);
 					int? count = await RequestHandler.GetCount(md);
 					md.TotalMeasurements = count ?? -1;
-					md.MeasurementResults = await RequestHandler.GetMeasurementResults(md, FetchAmount, null, null);
+					MeasurementResultRange newResults = await RequestHandler.GetMeasurementResults(md, FetchAmount, null, null);
+					md.MeasurementResults = md.MeasurementResults.Append(newResults).ToList();
 				}
 			}
 
@@ -335,7 +336,7 @@ namespace Dataskop.Data {
 					MeasurementResult latestResult = md.GetLatestMeasurementResult();
 
 					if (DateTime.TryParse(latestResult.GetDate(), out DateTime latestDate)) {
-						IReadOnlyCollection<MeasurementResult> newResults =
+						MeasurementResultRange newResults =
 							await RequestHandler.GetMeasurementResults(md, FetchAmount, latestDate, DateTime.Now);
 						IEnumerable<MeasurementResult> trimmedResults = newResults.Skip(1);
 
@@ -343,8 +344,12 @@ namespace Dataskop.Data {
 							continue;
 						}
 
+						//TODO: Update the Project Measurements correctly when new data is coming in from continuous fetch
+						//Make sure the first MRR is the most recent one and add the new results to that one.
+						/*
 						IEnumerable<MeasurementResult> allResults = newResults.SkipLast(1).Concat(md.MeasurementResults);
 						md.MeasurementResults = allResults.ToArray();
+						*/
 					}
 					else {
 						Debug.Log("Invalid Date Format");
@@ -370,6 +375,7 @@ namespace Dataskop.Data {
 			foreach (Device d in SelectedProject.Devices) {
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
+					/*
 					MeasurementResult firstAvailableResult = md.MeasurementResults[0];
 					MeasurementResult latestAvailableResult = md.GetLatestMeasurementResult();
 
@@ -381,8 +387,7 @@ namespace Dataskop.Data {
 
 					if (to <= firstAvailableResult.Timestamp) {
 
-						IReadOnlyCollection<MeasurementResult> newResults =
-							await RequestHandler.GetMeasurementResults(md, FetchAmount, from, to);
+						MeasurementResultRange newResults = await RequestHandler.GetMeasurementResults(md, FetchAmount, from, to);
 
 						if (!newResults.Any()) {
 							//TODO: Add Notification for no Results for given Date for MD
@@ -393,7 +398,10 @@ namespace Dataskop.Data {
 							? md.MeasurementResults.Skip(1).Concat(newResults).ToArray()
 							: md.MeasurementResults.Concat(newResults).ToArray();
 
+
 					}
+
+					*/
 
 				}
 

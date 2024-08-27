@@ -87,8 +87,8 @@ namespace Dataskop.Entities.Visualizations {
 			VisOrigin.localScale *= Scale;
 			VisOrigin.root.localPosition = Offset;
 
-			VisObjects = DataPoint.MeasurementDefinition.MeasurementResults.Count < VisHistoryConfiguration.visibleHistoryCount
-				? new IVisObject[dp.MeasurementDefinition.MeasurementResults.Count]
+			VisObjects = DataPoint.MeasurementDefinition.MeasurementResults.First().Count < VisHistoryConfiguration.visibleHistoryCount
+				? new IVisObject[dp.MeasurementDefinition.MeasurementResults.First().Count]
 				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
 
 			GameObject visObject = Instantiate(visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer);
@@ -115,7 +115,7 @@ namespace Dataskop.Entities.Visualizations {
 			}
 
 			BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
-			MeasurementResult focusedResult = def.MeasurementResults[DataPoint.FocusedIndex];
+			MeasurementResult focusedResult = def.GetMeasurementResult(DataPoint.FocusedIndex);
 
 			if (!HasHistoryEnabled) {
 
@@ -144,7 +144,7 @@ namespace Dataskop.Entities.Visualizations {
 				// VisObjects above current result
 				for (int i = 1; i < VisObjects.Length - DataPoint.FocusedIndex; i++) {
 					int targetIndex = DataPoint.FocusedIndex + i;
-					MeasurementResult newResultToAssign = def.MeasurementResults[targetIndex];
+					MeasurementResult newResultToAssign = def.GetMeasurementResult(targetIndex);
 					IVisObject targetObject = VisObjects[targetIndex];
 					UpdateVisObject(targetObject, targetIndex, newResultToAssign, false, false, style.Styles[0].timeMaterial,
 						style.historyFillMaterial);
@@ -153,7 +153,7 @@ namespace Dataskop.Entities.Visualizations {
 				// VisObjects below current result
 				for (int i = 1; i <= DataPoint.FocusedIndex; i++) {
 					int targetIndex = DataPoint.FocusedIndex - i;
-					MeasurementResult newResultToAssign = def.MeasurementResults[targetIndex];
+					MeasurementResult newResultToAssign = def.GetMeasurementResult(targetIndex);
 					IVisObject targetObject = VisObjects[targetIndex];
 					UpdateVisObject(targetObject, targetIndex, newResultToAssign, false, false, style.Styles[0].timeMaterial,
 						style.historyFillMaterial);
@@ -197,7 +197,7 @@ namespace Dataskop.Entities.Visualizations {
 		public void OnTimeSeriesToggled(bool isActive) {
 
 			BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
-			IReadOnlyList<MeasurementResult> currentResults = DataPoint.MeasurementDefinition.MeasurementResults.ToList();
+			MeasurementResultRange currentResults = DataPoint.MeasurementDefinition.MeasurementResults.First();
 
 			if (isActive) {
 

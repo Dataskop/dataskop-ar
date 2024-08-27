@@ -92,8 +92,8 @@ namespace Dataskop.Entities.Visualizations {
 			VisOrigin.localScale *= Scale;
 			VisOrigin.root.localPosition = Offset;
 
-			VisObjects = DataPoint.MeasurementDefinition.MeasurementResults.Count < VisHistoryConfiguration.visibleHistoryCount
-				? new IVisObject[dp.MeasurementDefinition.MeasurementResults.Count]
+			VisObjects = DataPoint.MeasurementDefinition.MeasurementResults.First().Count < VisHistoryConfiguration.visibleHistoryCount
+				? new IVisObject[dp.MeasurementDefinition.MeasurementResults.First().Count]
 				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
 
 			GameObject visObject = Instantiate(visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer);
@@ -130,7 +130,7 @@ namespace Dataskop.Entities.Visualizations {
 
 			if (!HasHistoryEnabled) {
 
-				MeasurementResult focusedResult = def.MeasurementResults[index];
+				MeasurementResult focusedResult = def.GetMeasurementResult(index);
 
 				if (DataPoint.FocusedIndex != PreviousIndex) {
 					VisObjects[DataPoint.FocusedIndex] = VisObjects[PreviousIndex];
@@ -157,7 +157,7 @@ namespace Dataskop.Entities.Visualizations {
 				// VisObjects above current result
 				for (int i = 1; i < VisObjects.Length - DataPoint.FocusedIndex; i++) {
 					int targetIndex = DataPoint.FocusedIndex + i;
-					MeasurementResult newResultToAssign = def.MeasurementResults[targetIndex];
+					MeasurementResult newResultToAssign = def.GetMeasurementResult(targetIndex);
 					IVisObject targetObject = VisObjects[targetIndex];
 					UpdateVisObject(targetObject, targetIndex, newResultToAssign, false, false, VisObjectStyle.Styles[0].timeMaterial);
 				}
@@ -165,12 +165,12 @@ namespace Dataskop.Entities.Visualizations {
 				// VisObjects below current result
 				for (int i = 1; i <= DataPoint.FocusedIndex; i++) {
 					int targetIndex = DataPoint.FocusedIndex - i;
-					MeasurementResult newResultToAssign = def.MeasurementResults[targetIndex];
+					MeasurementResult newResultToAssign = def.GetMeasurementResult(targetIndex);
 					IVisObject targetObject = VisObjects[targetIndex];
 					UpdateVisObject(targetObject, targetIndex, newResultToAssign, false, false, VisObjectStyle.Styles[0].timeMaterial);
 				}
 
-				MeasurementResult focusedResult = def.MeasurementResults[DataPoint.FocusedIndex];
+				MeasurementResult focusedResult = def.GetMeasurementResult(DataPoint.FocusedIndex);
 				UpdateVisObject(VisObjects[DataPoint.FocusedIndex], DataPoint.FocusedIndex, focusedResult, true, true,
 					IsSelected ? VisObjectStyle.Styles[0].selectionMaterial : VisObjectStyle.Styles[0].defaultMaterial);
 				PreviousIndex = DataPoint.FocusedIndex;
@@ -184,7 +184,7 @@ namespace Dataskop.Entities.Visualizations {
 
 			if (isActive) {
 
-				IReadOnlyList<MeasurementResult> currentResults = DataPoint.MeasurementDefinition.MeasurementResults.ToList();
+				MeasurementResultRange currentResults = DataPoint.MeasurementDefinition.MeasurementResults.First();
 				float distance = visHistoryConfig.elementDistance;
 
 				// VisObjects above current result

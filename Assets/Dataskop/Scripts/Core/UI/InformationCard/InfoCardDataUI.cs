@@ -84,7 +84,7 @@ namespace Dataskop.UI {
 
 		private void UpdateIndexTextElements(MeasurementDefinition def, int index) {
 
-			MeasurementResult focusedResult = def.MeasurementResults[index];
+			MeasurementResult focusedResult = def.GetMeasurementResult(index);
 
 			IdLabel.text = focusedResult.MeasurementDefinition.ID.ToString();
 			MeasurementLabel.text =

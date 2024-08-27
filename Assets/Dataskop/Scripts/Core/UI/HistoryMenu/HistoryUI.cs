@@ -108,7 +108,7 @@ namespace Dataskop.UI {
 		}
 
 		private void UpdateTimeLabel(MeasurementDefinition def, int index) {
-			MeasurementResult focusedResult = def.MeasurementResults[index];
+			MeasurementResult focusedResult = def.GetMeasurementResult(index);
 			CurrentTimeLabel.text = $"{focusedResult.GetDate()}";
 		}
 

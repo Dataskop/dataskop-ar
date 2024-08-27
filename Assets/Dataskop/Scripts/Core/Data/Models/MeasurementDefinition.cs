@@ -23,9 +23,11 @@ namespace Dataskop.Data {
 
 		public int MeasuringInterval { get; }
 
+		public float GapThreshold => MeasuringInterval / 2f;
+
 		public int TotalMeasurements { get; set; }
 
-		public IReadOnlyList<MeasurementResult> MeasurementResults { get; set; }
+		public IReadOnlyList<MeasurementResultRange> MeasurementResults { get; set; } = new List<MeasurementResultRange>();
 
 		public MeasurementResult FirstMeasurementResult { get; set; }
 
@@ -68,16 +70,16 @@ namespace Dataskop.Data {
 		}
 
 		public MeasurementResult GetLatestMeasurementResult() {
-			return MeasurementResults?.FirstOrDefault();
+			return MeasurementResults.First()?.FirstOrDefault();
 		}
 
 		public MeasurementResult GetMeasurementResult(int index) {
-			return MeasurementResults[index];
+			return GetAllResults().ToArray()[index];
 		}
 
 		public int? GetIndexOfMeasurementResult(MeasurementResult mr) {
 
-			if (MeasurementResults.Contains(mr)) {
+			if (GetAllResults().Contains(mr)) {
 				return Array.IndexOf(MeasurementResults.ToArray(), mr);
 			}
 
@@ -88,11 +90,15 @@ namespace Dataskop.Data {
 		public bool IsDataGap(MeasurementResult result1, MeasurementResult result2) {
 			TimeSpan timeDiff = result1.Timestamp - result2.Timestamp;
 			TimeSpan interval = new(0, 0, MeasuringInterval / 10);
-			return Math.Truncate(Math.Abs(timeDiff.TotalSeconds)) > interval.TotalSeconds;
+			return Math.Truncate(Math.Abs(timeDiff.TotalSeconds)) > interval.TotalSeconds + GapThreshold;
+		}
+
+		private IEnumerable<MeasurementResult> GetAllResults() {
+			return MeasurementResults.SelectMany(x => x).ToArray();
 		}
 
 		public IEnumerable<MeasurementResult> GetMeasurementResults(DateTime from, DateTime to) {
-			return MeasurementResults.Where(mr => mr.Timestamp >= from && mr.Timestamp <= to).ToList();
+			return GetAllResults().Where(mr => mr.Timestamp < from && mr.Timestamp > to).ToList();
 		}
 
 	}
