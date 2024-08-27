@@ -300,7 +300,7 @@ namespace Dataskop.Data {
 				DisplayDuration = NotificationDuration.Short
 			});
 
-			ShouldRefetch = false;
+			ShouldRefetch = true;
 			FetchTimer = new Stopwatch();
 			FetchTimer.Start();
 			RefetchDataTimer();
@@ -338,18 +338,17 @@ namespace Dataskop.Data {
 					if (DateTime.TryParse(latestResult.GetDate(), out DateTime latestDate)) {
 						MeasurementResultRange newResults =
 							await RequestHandler.GetMeasurementResults(md, FetchAmount, latestDate, DateTime.Now);
-						IEnumerable<MeasurementResult> trimmedResults = newResults.Skip(1);
-
-						if (!trimmedResults.Any()) {
-							continue;
-						}
 
 						//TODO: Update the Project Measurements correctly when new data is coming in from continuous fetch
 						//Make sure the first MRR is the most recent one and add the new results to that one.
-						/*
-						IEnumerable<MeasurementResult> allResults = newResults.SkipLast(1).Concat(md.MeasurementResults);
-						md.MeasurementResults = allResults.ToArray();
-						*/
+
+						if (!newResults.SkipLast(1).Any()) {
+							continue;
+						}
+
+						MeasurementResultRange allResults = new(newResults.SkipLast(1).Concat(md.GetLatestRange()));
+						md.ReplaceMeasurementResultRange(0, allResults);
+
 					}
 					else {
 						Debug.Log("Invalid Date Format");
@@ -375,33 +374,12 @@ namespace Dataskop.Data {
 			foreach (Device d in SelectedProject.Devices) {
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
-					/*
-					MeasurementResult firstAvailableResult = md.MeasurementResults[0];
-					MeasurementResult latestAvailableResult = md.GetLatestMeasurementResult();
+					(DateTime, DateTime)[] modifiedRanges = md.CheckForRangeOverlap(from, to);
 
-					if (from >= firstAvailableResult.Timestamp && to <= latestAvailableResult.Timestamp) {
-						// TODO: What happens when both dates are inside the available Results?
-						// Check if there is missing data.
+					if (modifiedRanges.Length < 1) {
+						//TODO: No Modified Ranges detected, can safely use Results from already loaded Data
 						continue;
 					}
-
-					if (to <= firstAvailableResult.Timestamp) {
-
-						MeasurementResultRange newResults = await RequestHandler.GetMeasurementResults(md, FetchAmount, from, to);
-
-						if (!newResults.Any()) {
-							//TODO: Add Notification for no Results for given Date for MD
-							Debug.Log("No data found in this Time Range");
-						}
-
-						md.MeasurementResults = latestAvailableResult == newResults.First()
-							? md.MeasurementResults.Skip(1).Concat(newResults).ToArray()
-							: md.MeasurementResults.Concat(newResults).ToArray();
-
-
-					}
-
-					*/
 
 				}
 

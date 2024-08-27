@@ -10,9 +10,9 @@ namespace Dataskop {
 
 		private readonly IList<MeasurementResult> list = new List<MeasurementResult>();
 
-		public DateTime StartTime => list[0].Timestamp;
+		private DateTime StartTime => list[0].Timestamp;
 
-		public DateTime EndTime => list.Last().Timestamp;
+		private DateTime EndTime => list.Last().Timestamp;
 
 		public MeasurementResult this[int index] {
 			get => list[index];
@@ -22,6 +22,14 @@ namespace Dataskop {
 		public int Count => list.Count;
 
 		public bool IsReadOnly => list.IsReadOnly;
+
+		public TimeRange GetTimeRange() {
+			return new TimeRange(StartTime, EndTime);
+		}
+
+		public MeasurementResultRange(IEnumerable<MeasurementResult> newList) {
+			list = newList.ToList();
+		}
 
 		public IEnumerator<MeasurementResult> GetEnumerator() {
 			return list.GetEnumerator();

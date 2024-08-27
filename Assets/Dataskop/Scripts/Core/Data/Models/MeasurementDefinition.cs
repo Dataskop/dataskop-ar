@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
@@ -23,7 +21,7 @@ namespace Dataskop.Data {
 
 		public int MeasuringInterval { get; }
 
-		public float GapThreshold => MeasuringInterval / 2f;
+		private float GapThreshold => MeasuringInterval / 2f;
 
 		public int TotalMeasurements { get; set; }
 
@@ -99,6 +97,67 @@ namespace Dataskop.Data {
 
 		public IEnumerable<MeasurementResult> GetMeasurementResults(DateTime from, DateTime to) {
 			return GetAllResults().Where(mr => mr.Timestamp < from && mr.Timestamp > to).ToList();
+		}
+
+		public IReadOnlyList<MeasurementResultRange> AddMeasurementResultRange(MeasurementResultRange range) {
+
+			//TODO: Append new range, merge with connecting range(s) and sort List of MeasurementResultRanges
+
+			// Check if StartTime of new range is inside one of the ranges in the current List
+			foreach (var mrr in MeasurementResults) {
+				//if (range.StartTime => mrr.StartTime && range.EndTime <= )
+
+			}
+
+			SortRanges();
+			return MeasurementResults;
+		}
+
+		/// <summary>
+		/// Checks if start and end times of a given range are overlapping with any existing ranges.
+		/// </summary>
+		/// <param name="from">Startime of given time range</param>
+		/// <param name="to">Endtime of given time range</param>
+		/// <returns>Returns one or more time ranges.</returns>
+		public (DateTime, DateTime)[] CheckForRangeOverlap(DateTime from, DateTime to) {
+
+			List<(DateTime, DateTime)> newRanges = new List<(DateTime, DateTime)>();
+
+			foreach (MeasurementResultRange mrr in MeasurementResults) {
+
+				DateTime newFrom = from;
+				DateTime newTo = to;
+
+				TimeRange tr = mrr.GetTimeRange();
+
+				if (from < tr.StartTime && to > tr.EndTime) {
+					break;
+				}
+
+				if (from < tr.StartTime && from > tr.EndTime && to > tr.EndTime) {
+					newFrom = tr.EndTime;
+				}
+
+			}
+
+			return Array.Empty<(DateTime, DateTime)>();
+
+		}
+
+		public IReadOnlyList<MeasurementResultRange> ReplaceMeasurementResultRange(int index, MeasurementResultRange newRange) {
+			MeasurementResults.ToList()[index] = newRange;
+			return MeasurementResults;
+		}
+
+		public MeasurementResultRange GetLatestRange() {
+			return MeasurementResults.First();
+		}
+
+		private void SortRanges() {
+			MeasurementResults = MeasurementResults
+				.OrderByDescending(mrr => mrr.GetTimeRange().StartTime)
+				.ThenByDescending(mrr => mrr.GetTimeRange().EndTime)
+				.ToList();
 		}
 
 	}
