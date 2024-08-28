@@ -208,8 +208,8 @@ namespace Dataskop.UI {
 		}
 
 		private void AdjustDateLabelPositions() {
-			MaxValueLabel.style.left = TopDragger.localBound.xMax - TopDragger.resolvedStyle.width - 20;
-			MinValueLabel.style.left = BottomDragger.localBound.xMax - BottomDragger.resolvedStyle.width - 20;
+			MaxValueLabel.style.left = TopDragger.localBound.xMax - TopDragger.resolvedStyle.width;
+			MinValueLabel.style.left = BottomDragger.localBound.xMax - BottomDragger.resolvedStyle.width;
 		}
 
 		private void SetVisibility(VisualElement element, bool isVisible) {
