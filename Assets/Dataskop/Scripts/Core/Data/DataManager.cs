@@ -373,8 +373,8 @@ namespace Dataskop.Data {
 			// Fetch data that is missing from the current MDs according to the user request
 			foreach (Device d in SelectedProject.Devices) {
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
-
-					TimeRange[] newTimeRanges = md.GetAllDataGaps();
+					
+					TimeRange[] newTimeRanges = md.GetRangeGaps();
 					foreach (TimeRange tr in newTimeRanges) {
 						Debug.Log($"{tr.StartTime}, {tr.EndTime}");
 					}

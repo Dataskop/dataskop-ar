@@ -21,13 +21,13 @@ namespace Dataskop.Data {
 
 		public int MeasuringInterval { get; }
 
-		private float GapThreshold => MeasuringInterval / 2f;
-
 		public int TotalMeasurements { get; set; }
 
 		public IReadOnlyList<MeasurementResultRange> MeasurementResults { get; set; } = new List<MeasurementResultRange>();
 
 		public MeasurementResult FirstMeasurementResult { get; set; }
+
+		private float GapThreshold => MeasuringInterval / 2f;
 
 		public MeasurementDefinition(int id, MeasurementDefinitionInformation information, string additionalProperties,
 			int measurementInterval, int valueType, int downstreamType) {
@@ -71,6 +71,10 @@ namespace Dataskop.Data {
 			return MeasurementResults.First()?.FirstOrDefault();
 		}
 
+		public MeasurementResultRange GetLatestRange() {
+			return MeasurementResults.First();
+		}
+
 		public MeasurementResult GetMeasurementResult(int index) {
 			return GetAllResults().ToArray()[index];
 		}
@@ -89,10 +93,6 @@ namespace Dataskop.Data {
 			TimeSpan timeDiff = result1.Timestamp - result2.Timestamp;
 			TimeSpan interval = new(0, 0, MeasuringInterval / 10);
 			return Math.Truncate(Math.Abs(timeDiff.TotalSeconds)) > interval.TotalSeconds + GapThreshold;
-		}
-
-		private IEnumerable<MeasurementResult> GetAllResults() {
-			return MeasurementResults.SelectMany(x => x).ToArray();
 		}
 
 		public IEnumerable<MeasurementResult> GetMeasurementResults(DateTime from, DateTime to) {
@@ -116,10 +116,8 @@ namespace Dataskop.Data {
 		/// <summary>
 		/// Finds all gaps in the available Measurement Results given a from/to range.
 		/// </summary>
-		/// <param name="from">Startime of given time range</param>
-		/// <param name="to">Endtime of given time range</param>
-		/// <returns>Returns an array of time ranges.</returns>
-		public TimeRange[] GetAllDataGaps() {
+		/// <returns>Returns an array of time ranges between measurement ranges.</returns>
+		public TimeRange[] GetRangeGaps() {
 
 			List<TimeRange> newRanges = new();
 
@@ -144,15 +142,15 @@ namespace Dataskop.Data {
 			return MeasurementResults;
 		}
 
-		public MeasurementResultRange GetLatestRange() {
-			return MeasurementResults.First();
-		}
-
 		private void SortRanges() {
 			MeasurementResults = MeasurementResults
 				.OrderByDescending(mrr => mrr.GetTimeRange().StartTime)
 				.ThenByDescending(mrr => mrr.GetTimeRange().EndTime)
 				.ToList();
+		}
+
+		private IEnumerable<MeasurementResult> GetAllResults() {
+			return MeasurementResults.SelectMany(x => x).ToArray();
 		}
 
 	}
