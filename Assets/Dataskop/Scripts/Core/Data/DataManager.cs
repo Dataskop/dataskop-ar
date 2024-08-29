@@ -63,7 +63,7 @@ namespace Dataskop.Data {
 		/// </summary>
 		public event Action HasUpdatedMeasurementResults;
 
-		public event Action<DateTime, DateTime> HasDateFiltered;
+		public event Action<TimeRange> HasDateFiltered;
 
 		private void Awake() {
 			FetchAmount = PlayerPrefs.HasKey("fetchAmount") ? PlayerPrefs.GetInt("fetchAmount") : 2000;
@@ -339,9 +339,6 @@ namespace Dataskop.Data {
 						MeasurementResultRange newResults =
 							await RequestHandler.GetMeasurementResults(md, FetchAmount, latestDate, DateTime.Now);
 
-						//TODO: Update the Project Measurements correctly when new data is coming in from continuous fetch
-						//Make sure the first MRR is the most recent one and add the new results to that one.
-
 						if (!newResults.SkipLast(1).Any()) {
 							continue;
 						}
@@ -366,25 +363,30 @@ namespace Dataskop.Data {
 		private async Task FilterByDate(TimeRange timeRange) {
 			LoadingIndicator.Show();
 
-			// already validated (from earlier than to)
-
 			await UpdateProjectMeasurements();
 
 			// Fetch data that is missing from the current MDs according to the user request
 			foreach (Device d in SelectedProject.Devices) {
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
-					/*
-					TimeRange[] newTimeRanges = md.GetRangeGaps();
+					TimeRange[] newTimeRanges = md.GetTimeRangeGaps();
+					TimeRange[] availableTimeRanges = md.GetAvailableTimeRanges();
+
 					foreach (TimeRange tr in newTimeRanges) {
-						Debug.Log($"{tr.StartTime}, {tr.EndTime}");
+						Debug.Log($"Gap: {tr.StartTime}, {tr.EndTime}");
+					}				
+					
+					foreach (TimeRange tr in availableTimeRanges) {
+						Debug.Log($"Available: {tr.StartTime}, {tr.EndTime}");
 					}
+
 
 					if (newTimeRanges.Length < 1) {
 						//TODO: No Modified Ranges detected, can safely use Results from already loaded Data
 						continue;
 					}
-					*/
+
+					// Fetch all the data for the missing TimeRanges
 
 				}
 

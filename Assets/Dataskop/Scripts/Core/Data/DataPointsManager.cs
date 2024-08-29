@@ -311,14 +311,14 @@ namespace Dataskop.Data {
 
 		}
 
-		private void OnDataFiltered(DateTime from, DateTime to) {
+		private void OnDataFiltered(TimeRange timeRange) {
 
 			if (!HasLoadedDataPoints) {
 				return;
 			}
 
 			foreach (DataPoint dp in DataPoints) {
-				dp.OnDateFiltered(from, to);
+				dp.OnDateFiltered(timeRange);
 			}
 
 		}

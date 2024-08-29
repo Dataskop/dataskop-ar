@@ -10,9 +10,9 @@ namespace Dataskop {
 
 		private readonly IList<MeasurementResult> list = new List<MeasurementResult>();
 
-		private DateTime StartTime => list[0].Timestamp;
+		private DateTime StartTime => list.Last().Timestamp;
 
-		private DateTime EndTime => list.Last().Timestamp;
+		private DateTime EndTime => list.First().Timestamp;
 
 		public MeasurementResult this[int index] {
 			get => list[index];

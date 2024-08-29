@@ -96,8 +96,8 @@ namespace Dataskop.Entities {
 
 		}
 
-		public void OnDateFiltered(DateTime from, DateTime to) {
-			MeasurementResult[] filteredResults = MeasurementDefinition.GetMeasurementResults(from, to).ToArray();
+		public void OnDateFiltered(TimeRange timeRange) {
+			MeasurementResult[] filteredResults = MeasurementDefinition.GetMeasurementResults(timeRange).ToArray();
 		}
 
 		private void IncreaseMeasurementIndex() {

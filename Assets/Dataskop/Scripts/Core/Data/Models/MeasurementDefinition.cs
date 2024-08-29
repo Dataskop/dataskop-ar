@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
+using UnityEngine;
 
 namespace Dataskop.Data {
 
@@ -75,6 +76,30 @@ namespace Dataskop.Data {
 			return MeasurementResults.First();
 		}
 
+		public IEnumerable<MeasurementResult> GetMeasurementResults(TimeRange timeRange) {
+
+			try {
+				MeasurementResultRange foundRange = MeasurementResults
+					.FirstOrDefault(x =>
+						x.GetTimeRange().StartTime <= timeRange.StartTime && x.GetTimeRange().EndTime >= timeRange.EndTime);
+
+				if (foundRange == null) {
+					Debug.Log($"Could not find MeasurementResults for given TimeRange.");
+				}
+
+				return foundRange;
+			}
+			catch (InvalidOperationException e) when (MeasurementResults.Count == 0) {
+				Debug.Log($"MeasurementResults collection is empty.");
+				return null;
+			}
+			catch (Exception e) {
+				Debug.Log($"Could not get MeasurementResults for given TimeRange: {e.Message}");
+				return null;
+			}
+
+		}
+
 		public MeasurementResult GetMeasurementResult(int index) {
 			return GetAllResults().ToArray()[index];
 		}
@@ -95,10 +120,6 @@ namespace Dataskop.Data {
 			return Math.Truncate(Math.Abs(timeDiff.TotalSeconds)) > interval.TotalSeconds + GapThreshold;
 		}
 
-		public IEnumerable<MeasurementResult> GetMeasurementResults(DateTime from, DateTime to) {
-			return GetAllResults().Where(mr => mr.Timestamp > from && mr.Timestamp < to).ToList();
-		}
-
 		public IReadOnlyList<MeasurementResultRange> AddMeasurementResultRange(MeasurementResultRange range) {
 
 			//TODO: Append new range, merge with connecting range(s) and sort List of MeasurementResultRanges
@@ -106,8 +127,10 @@ namespace Dataskop.Data {
 			// Check if StartTime of new range is inside one of the ranges in the current List
 			foreach (var mrr in MeasurementResults) {
 				//if (range.StartTime => mrr.StartTime && range.EndTime <= )
-
 			}
+
+			var newRanges = MeasurementResults.Append(range);
+			MeasurementResults = newRanges.ToList();
 
 			SortRanges();
 			return MeasurementResults;
@@ -117,24 +140,47 @@ namespace Dataskop.Data {
 		/// Finds all gaps in the available Measurement Results given a from/to range.
 		/// </summary>
 		/// <returns>Returns an array of time ranges between measurement ranges.</returns>
-		public TimeRange[] GetRangeGaps() {
+		public TimeRange[] GetTimeRangeGaps() {
 
-			List<TimeRange> newRanges = new();
+			TimeRange[] newRanges = Array.Empty<TimeRange>();
 
-			if (MeasurementResults.Count < 2) {
-				// Only one range available - no gaps
-				return newRanges.ToArray();
+			if (MeasurementResults != null) {
+
+				if (MeasurementResults.Count < 2) {
+					// Only one range available - no gaps
+					return newRanges;
+				}
+
+				newRanges = new TimeRange[MeasurementResults.Count - 1];
+
+				for (int i = 0; i < MeasurementResults.Count - 1; i++) {
+
+					TimeRange tr = new(MeasurementResults[i].GetTimeRange().EndTime, MeasurementResults[i + 1].GetTimeRange().StartTime);
+					newRanges[i] = tr;
+
+				}
+
 			}
 
-			for (int i = 0; i < MeasurementResults.Count - 1; i++) {
+			return newRanges;
 
-				TimeRange tr = new(MeasurementResults[i].GetTimeRange().EndTime, MeasurementResults[i + 1].GetTimeRange().StartTime);
-				newRanges.Add(tr);
+		}
+
+		public TimeRange[] GetAvailableTimeRanges() {
+
+			TimeRange[] availableRanges = Array.Empty<TimeRange>();
+
+			if (MeasurementResults != null) {
+				availableRanges = new TimeRange[MeasurementResults.Count];
+
+				for (int i = 0; i < availableRanges.Length; i++) {
+					var resultTime = MeasurementResults[i].GetTimeRange();
+					availableRanges[i] = new TimeRange(resultTime.StartTime, resultTime.EndTime);
+				}
 
 			}
 
-			return newRanges.ToArray();
-
+			return availableRanges;
 		}
 
 		public IReadOnlyList<MeasurementResultRange> ReplaceMeasurementResultRange(int index, MeasurementResultRange newRange) {
