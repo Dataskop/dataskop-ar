@@ -338,7 +338,6 @@ namespace Dataskop.Data {
 					if (DateTime.TryParse(latestResult.GetDate(), out DateTime latestDate)) {
 						MeasurementResultRange newResults =
 							await RequestHandler.GetMeasurementResults(md, FetchAmount, latestDate, DateTime.Now);
-						
 
 						//TODO: Update the Project Measurements correctly when new data is coming in from continuous fetch
 						//Make sure the first MRR is the most recent one and add the new results to that one.
@@ -364,7 +363,7 @@ namespace Dataskop.Data {
 
 		}
 
-		private async Task FilterByDate(DateTime from, DateTime to) {
+		private async Task FilterByDate(TimeRange timeRange) {
 			LoadingIndicator.Show();
 
 			// already validated (from earlier than to)
@@ -374,7 +373,7 @@ namespace Dataskop.Data {
 			// Fetch data that is missing from the current MDs according to the user request
 			foreach (Device d in SelectedProject.Devices) {
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
-					
+
 					/*
 					TimeRange[] newTimeRanges = md.GetRangeGaps();
 					foreach (TimeRange tr in newTimeRanges) {
@@ -386,14 +385,12 @@ namespace Dataskop.Data {
 						continue;
 					}
 					*/
-					
-					
 
 				}
 
 			}
 
-			HasDateFiltered?.Invoke(from, to);
+			HasDateFiltered?.Invoke(timeRange);
 			LoadingIndicator.Hide();
 		}
 
@@ -423,10 +420,10 @@ namespace Dataskop.Data {
 			FetchAmount = amount;
 		}
 
-		public async void OnDateFilterPressed(DateTime from, DateTime to) {
-			Debug.Log($"Trying to filter from {from} to {to}");
+		public async void OnDateFilterPressed(TimeRange timeRange) {
+			Debug.Log($"Trying to filter from {timeRange.StartTime} to {timeRange.EndTime}");
 			ShouldRefetch = false;
-			await FilterByDate(from, to);
+			await FilterByDate(timeRange);
 		}
 
 	}

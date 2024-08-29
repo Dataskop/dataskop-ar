@@ -2,7 +2,7 @@ using System;
 
 namespace Dataskop {
 
-	public struct TimeRange {
+	public readonly struct TimeRange {
 
 		public DateTime StartTime { get; }
 
@@ -18,6 +18,10 @@ namespace Dataskop {
 				StartTime = end;
 			}
 
+		}
+
+		public bool IsInRange(DateTime dateToCheck) {
+			return dateToCheck > StartTime && dateToCheck < EndTime;
 		}
 
 	}
