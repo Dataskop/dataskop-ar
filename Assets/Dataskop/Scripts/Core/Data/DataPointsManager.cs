@@ -107,6 +107,7 @@ namespace Dataskop.Data {
 		public void OnHistoryViewChanged(bool enable) {
 
 			hasHistoryEnabled = enable;
+			DataManager.ShouldRefetch = !enable;
 
 			foreach (DataPoint dp in DataPoints) {
 				ToggleTimeSeries(dp, enable);

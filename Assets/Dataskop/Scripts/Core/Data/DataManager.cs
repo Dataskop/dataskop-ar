@@ -39,7 +39,7 @@ namespace Dataskop.Data {
 
 		private Stopwatch FetchTimer { get; set; }
 
-		private bool ShouldRefetch { get; set; }
+		public bool ShouldRefetch { get; set; }
 
 		private void OnDisable() {
 			ShouldRefetch = false;
@@ -318,7 +318,6 @@ namespace Dataskop.Data {
 					md.TotalMeasurements = count ?? -1;
 					MeasurementResultRange newResults = await RequestHandler.GetMeasurementResults(md, FetchAmount, null, null);
 					md.AddMeasurementResultRange(newResults);
-					Debug.Log(md.FirstMeasurementResult.Timestamp);
 				}
 			}
 
@@ -368,17 +367,12 @@ namespace Dataskop.Data {
 
 			// Fetch data that is missing from the current MDs according to the user request
 			foreach (Device d in SelectedProject.Devices) {
+				
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
 					TimeRange[] missingRanges = md.GetMissingTimeRanges(timeRange);
 
-					foreach (TimeRange tr in missingRanges) {
-						Debug.Log(
-							$"Available: {md.GetLatestRange().GetTimeRange().StartTime}, {md.GetLatestRange().GetTimeRange().EndTime}");
-						Debug.Log($"Missing: {tr.StartTime}, {tr.EndTime}");
-					}
-
-					foreach (var t in missingRanges) {
+					foreach (TimeRange t in missingRanges) {
 						MeasurementResultRange results =
 							await RequestHandler.GetMeasurementResults(md, FetchAmount, t.StartTime, t.EndTime);
 						md.AddMeasurementResultRange(results);
@@ -388,7 +382,7 @@ namespace Dataskop.Data {
 
 			}
 
-			HasDateFiltered?.Invoke(timeRange);
+			//HasDateFiltered?.Invoke(timeRange);
 			LoadingIndicator.Hide();
 		}
 

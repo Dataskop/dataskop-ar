@@ -108,14 +108,9 @@ namespace Dataskop.Interaction {
 					}
 				}
 				else {
-
 					HoveredDataPoint = dataPoint;
 					HoveredDataPoint.SetSelectionStatus(SelectionState.Hovered);
-
-					if (HoveredVisObject != null) {
-						HoveredVisObject.OnDeselect();
-					}
-
+					HoveredVisObject?.OnDeselect();
 					HoveredVisObject = visObject;
 					HoveredVisObject.OnHover();
 				}

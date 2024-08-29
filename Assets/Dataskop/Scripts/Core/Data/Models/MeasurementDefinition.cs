@@ -101,7 +101,7 @@ namespace Dataskop.Data {
 		}
 
 		public MeasurementResult GetMeasurementResult(int index) {
-			return GetAllResults().ToArray()[index];
+			return GetLatestMeasurementResult();
 		}
 
 		public int? GetIndexOfMeasurementResult(MeasurementResult mr) {
@@ -120,22 +120,56 @@ namespace Dataskop.Data {
 			return Math.Truncate(Math.Abs(timeDiff.TotalSeconds)) > interval.TotalSeconds + GapThreshold;
 		}
 
-		public void AddMeasurementResultRange(MeasurementResultRange range) {
+		public void AddMeasurementResultRange(MeasurementResultRange newRange) {
 
-			//TODO: Append new range, merge with connecting range(s) and sort List of MeasurementResultRanges
+			//TODO: Add new range, merge with connecting range(s) and sort List of MeasurementResultRanges
 
 			// Check if StartTime of new range is inside one of the ranges in the current List
-			foreach (var mrr in MeasurementResults) {
-				//if (range.StartTime => mrr.StartTime && range.EndTime <= )
-			}
-
-			if (range.Count < 1) {
+			if (newRange.Count < 1) {
 				return;
 			}
 
-			IEnumerable<MeasurementResultRange> newRanges = MeasurementResults.Append(range);
-			MeasurementResults = newRanges.ToList();
+			List<MeasurementResultRange> currentRanges = MeasurementResults.ToList();
+			currentRanges.Add(newRange);
+			MeasurementResults = currentRanges;
 			SortRanges();
+
+			if (MeasurementResults.Count < 2) {
+				return;
+			}
+
+			MeasurementResults = TryMergingExistingRanges();
+
+		}
+
+		private IReadOnlyList<MeasurementResultRange> TryMergingExistingRanges() {
+
+			List<MeasurementResultRange> mergedRanges = MeasurementResults.ToList();
+
+			for (int i = 0; i < mergedRanges.Count - 1; i++) {
+				MeasurementResultRange firstRange = mergedRanges[i];
+				MeasurementResultRange secondRange = mergedRanges[i + 1];
+
+				var endTime = firstRange.GetTimeRange().EndTime;
+				var startTime = secondRange.GetTimeRange().StartTime;
+
+				if ((endTime - startTime).TotalSeconds <= MeasuringInterval / 10f) {
+
+					if (firstRange.Last() == secondRange.First()) {
+						firstRange = new(firstRange.SkipLast(1).Concat(secondRange));
+					}
+					else {
+						firstRange = new(firstRange.Concat(secondRange));
+					}
+
+					i++;
+				}
+				else {
+					mergedRanges.Add(firstRange);
+				}
+			}
+
+			return mergedRanges;
 		}
 
 		private TimeRange[] GetAvailableTimeRanges() {
