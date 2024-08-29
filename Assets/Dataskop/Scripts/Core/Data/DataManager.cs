@@ -317,7 +317,8 @@ namespace Dataskop.Data {
 					int? count = await RequestHandler.GetCount(md);
 					md.TotalMeasurements = count ?? -1;
 					MeasurementResultRange newResults = await RequestHandler.GetMeasurementResults(md, FetchAmount, null, null);
-					md.MeasurementResults = md.MeasurementResults.Append(newResults).ToList();
+					md.AddMeasurementResultRange(newResults);
+					Debug.Log(md.FirstMeasurementResult.Timestamp);
 				}
 			}
 
@@ -369,24 +370,19 @@ namespace Dataskop.Data {
 			foreach (Device d in SelectedProject.Devices) {
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
-					TimeRange[] newTimeRanges = md.GetTimeRangeGaps();
-					TimeRange[] availableTimeRanges = md.GetAvailableTimeRanges();
+					TimeRange[] missingRanges = md.GetMissingTimeRanges(timeRange);
 
-					foreach (TimeRange tr in newTimeRanges) {
-						Debug.Log($"Gap: {tr.StartTime}, {tr.EndTime}");
-					}				
-					
-					foreach (TimeRange tr in availableTimeRanges) {
-						Debug.Log($"Available: {tr.StartTime}, {tr.EndTime}");
+					foreach (TimeRange tr in missingRanges) {
+						Debug.Log(
+							$"Available: {md.GetLatestRange().GetTimeRange().StartTime}, {md.GetLatestRange().GetTimeRange().EndTime}");
+						Debug.Log($"Missing: {tr.StartTime}, {tr.EndTime}");
 					}
 
-
-					if (newTimeRanges.Length < 1) {
-						//TODO: No Modified Ranges detected, can safely use Results from already loaded Data
-						continue;
+					foreach (var t in missingRanges) {
+						MeasurementResultRange results =
+							await RequestHandler.GetMeasurementResults(md, FetchAmount, t.StartTime, t.EndTime);
+						md.AddMeasurementResultRange(results);
 					}
-
-					// Fetch all the data for the missing TimeRanges
 
 				}
 
