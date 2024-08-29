@@ -143,29 +143,18 @@ namespace Dataskop.Data {
 		}
 
 		private IReadOnlyList<MeasurementResultRange> TryMergingExistingRanges() {
-
 			List<MeasurementResultRange> mergedRanges = MeasurementResults.ToList();
 
 			for (int i = 0; i < mergedRanges.Count - 1; i++) {
 				MeasurementResultRange firstRange = mergedRanges[i];
 				MeasurementResultRange secondRange = mergedRanges[i + 1];
 
-				var endTime = firstRange.GetTimeRange().EndTime;
-				var startTime = secondRange.GetTimeRange().StartTime;
+				TimeSpan timeDifference = secondRange.GetTimeRange().EndTime - firstRange.GetTimeRange().StartTime;
 
-				if ((endTime - startTime).TotalSeconds <= MeasuringInterval / 10f) {
-
-					if (firstRange.Last() == secondRange.First()) {
-						firstRange = new(firstRange.SkipLast(1).Concat(secondRange));
-					}
-					else {
-						firstRange = new(firstRange.Concat(secondRange));
-					}
-
-					i++;
-				}
-				else {
-					mergedRanges.Add(firstRange);
+				if (timeDifference.TotalSeconds <= MeasuringInterval / 10f && firstRange.Last() == secondRange.First()) {
+					mergedRanges[i] = new(firstRange.Concat(secondRange.Skip(1)));
+					mergedRanges.RemoveAt(i + 1);
+					i--;
 				}
 			}
 
