@@ -27,7 +27,7 @@ namespace Dataskop.UI {
 		private VisualElement RangeContainer { get; set; }
 
 		private VisualElement TopDragger { get; set; }
-		
+
 		private VisualElement BottomDragger { get; set; }
 
 		private SliderInt HistorySlider { get; set; }
@@ -49,6 +49,7 @@ namespace Dataskop.UI {
 		private DataPoint SelectedDataPoint { get; set; }
 
 		private string currentDeviceId;
+		private string currentAttributeId;
 
 		private void Start() {
 			SetVisibility(HistoryContainer, false);
@@ -79,8 +80,9 @@ namespace Dataskop.UI {
 
 			TopDragger = RangeContainer.Q<VisualElement>("unity-thumb-max");
 			BottomDragger = RangeContainer.Q<VisualElement>("unity-thumb-min");
-			TopDragger.RegisterCallback<GeometryChangedEvent>(_ => AdjustDateLabelPositions());
-			BottomDragger.RegisterCallback<GeometryChangedEvent>(_ => AdjustDateLabelPositions());
+
+			TopDragger.RegisterCallback<GeometryChangedEvent>(_ => AdjustTopDateLabelPositions());
+			BottomDragger.RegisterCallback<GeometryChangedEvent>(_ => AdjustBottomDateLabelPositions());
 		}
 
 		private void OnDisable() {
@@ -131,11 +133,13 @@ namespace Dataskop.UI {
 			UpdateTimeLabel(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.FocusedIndex);
 
 			// check if we are still on the same device before updating time range
-			if (selectedDataPoint.MeasurementDefinition.DeviceId == currentDeviceId) {
+			if (selectedDataPoint.MeasurementDefinition.DeviceId == currentDeviceId &&
+			    selectedDataPoint.MeasurementDefinition.AttributeId == currentAttributeId) {
 				return;
 			}
 			UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, newResultsCount - 1);
 			currentDeviceId = selectedDataPoint.MeasurementDefinition.DeviceId;
+			currentAttributeId = selectedDataPoint.MeasurementDefinition.AttributeId;
 		}
 
 		private int GetMeasurementCount() {
@@ -167,11 +171,9 @@ namespace Dataskop.UI {
 
 			MinMaxSlider.lowLimit = 0;
 			MinMaxSlider.highLimit = def.TotalMeasurements;
-			
+
 			MinMaxSlider.minValue = 0;
 			MinMaxSlider.maxValue = maxValue;
-
-			AdjustDateLabelPositions();
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
@@ -207,9 +209,12 @@ namespace Dataskop.UI {
 			CurrentTimeLabel.style.top = Dragger.localBound.yMax - Dragger.resolvedStyle.height;
 		}
 
-		private void AdjustDateLabelPositions() {
-			MaxValueLabel.style.left = TopDragger.localBound.xMax - TopDragger.resolvedStyle.width;
-			MinValueLabel.style.left = BottomDragger.localBound.xMax - BottomDragger.resolvedStyle.width;
+		private void AdjustTopDateLabelPositions() {
+			MaxValueLabel.style.left = TopDragger.localBound.xMax - TopDragger.resolvedStyle.width - 25;
+		}
+
+		private void AdjustBottomDateLabelPositions() {
+			MinValueLabel.style.left = BottomDragger.localBound.xMax - BottomDragger.resolvedStyle.width - 30;
 		}
 
 		private void SetVisibility(VisualElement element, bool isVisible) {

@@ -83,20 +83,14 @@
 
 .unity-min-max-slider__max-thumb {
 	background-color: rgba(253, 253, 253, 0);
-	border-width: 2px;
-	border-color: rgb(253, 253, 253);
-	border-bottom-left-radius: 8px;
-	border-bottom-right-radius: 8px;
+	border-color: rgba(253, 253, 253, 0);
 	min-height: 44px;
 	margin-top: -1px;
 }
 
 .unity-min-max-slider__min-thumb {
 	background-color: rgba(253, 253, 253, 0);
-	border-width: 2px;
-	border-color: rgb(253, 253, 253);
-	border-bottom-left-radius: 8px;
-	border-bottom-right-radius: 8px;
+	border-color: rgba(253, 253, 253, 0);
 	min-height: 44px;
 	margin-top: -1px;
 }
