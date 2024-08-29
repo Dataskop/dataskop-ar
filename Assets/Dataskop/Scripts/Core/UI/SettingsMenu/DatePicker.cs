@@ -11,7 +11,7 @@ namespace Dataskop.UI {
 
 	public class DatePicker : MonoBehaviour {
 
-		public UnityEvent<DateTime, DateTime>? dateFilterButtonPressed;
+		public UnityEvent<TimeRange>? dateFilterButtonPressed;
 
 		private bool dateFilterActive;
 		private DateTime? fromDate;
@@ -61,9 +61,10 @@ namespace Dataskop.UI {
 		private void OnDateFilterButtonPressed(ClickEvent e) {
 
 			if (fromDate != null && toDate != null) {
-				if (fromDate.Value <= toDate.Value) {
-					dateFilterButtonPressed?.Invoke(fromDate.Value, toDate.Value);
-				}
+				TimeRange foundRange = new(fromDate.Value, toDate.Value);
+				dateFilterButtonPressed?.Invoke(foundRange);
+				dateFromInput.value = foundRange.StartTime.ToString("s", culture);
+				dateToInput.value = foundRange.EndTime.ToString("s", culture);
 			}
 			else {
 				NotificationHandler.Add(new Notification {

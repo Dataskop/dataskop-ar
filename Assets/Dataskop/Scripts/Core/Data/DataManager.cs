@@ -338,6 +338,7 @@ namespace Dataskop.Data {
 					if (DateTime.TryParse(latestResult.GetDate(), out DateTime latestDate)) {
 						MeasurementResultRange newResults =
 							await RequestHandler.GetMeasurementResults(md, FetchAmount, latestDate, DateTime.Now);
+						
 
 						//TODO: Update the Project Measurements correctly when new data is coming in from continuous fetch
 						//Make sure the first MRR is the most recent one and add the new results to that one.
@@ -374,6 +375,7 @@ namespace Dataskop.Data {
 			foreach (Device d in SelectedProject.Devices) {
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 					
+					/*
 					TimeRange[] newTimeRanges = md.GetRangeGaps();
 					foreach (TimeRange tr in newTimeRanges) {
 						Debug.Log($"{tr.StartTime}, {tr.EndTime}");
@@ -383,6 +385,9 @@ namespace Dataskop.Data {
 						//TODO: No Modified Ranges detected, can safely use Results from already loaded Data
 						continue;
 					}
+					*/
+					
+					
 
 				}
 

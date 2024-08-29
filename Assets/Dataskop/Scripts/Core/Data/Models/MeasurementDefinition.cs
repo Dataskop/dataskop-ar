@@ -96,7 +96,7 @@ namespace Dataskop.Data {
 		}
 
 		public IEnumerable<MeasurementResult> GetMeasurementResults(DateTime from, DateTime to) {
-			return GetAllResults().Where(mr => mr.Timestamp < from && mr.Timestamp > to).ToList();
+			return GetAllResults().Where(mr => mr.Timestamp > from && mr.Timestamp < to).ToList();
 		}
 
 		public IReadOnlyList<MeasurementResultRange> AddMeasurementResultRange(MeasurementResultRange range) {
@@ -126,7 +126,7 @@ namespace Dataskop.Data {
 				return newRanges.ToArray();
 			}
 
-			for (int i = 0; i < MeasurementResults.Count - 2; i++) {
+			for (int i = 0; i < MeasurementResults.Count - 1; i++) {
 
 				TimeRange tr = new(MeasurementResults[i].GetTimeRange().EndTime, MeasurementResults[i + 1].GetTimeRange().StartTime);
 				newRanges.Add(tr);
