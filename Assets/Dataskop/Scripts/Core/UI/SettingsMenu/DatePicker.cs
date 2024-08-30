@@ -22,6 +22,9 @@ namespace Dataskop.UI {
 		private TextField dateToInput = null!;
 		private Button dateFilterButton = null!;
 		private CultureInfo culture = null!;
+		private VisualElement dialogWindow = null!;
+		private Button cancelButton = null!;
+		private Button proceedButton = null!;
 
 		private void Awake() {
 			culture = CultureInfo.CurrentCulture;
@@ -34,6 +37,9 @@ namespace Dataskop.UI {
 			dateToInput.RegisterCallback<ChangeEvent<string>>(OnDateInputToChanged);
 			dateFilterButton = root.Q<Button>("DateFilterButton");
 			dateFilterButton.RegisterCallback<ClickEvent>(OnDateFilterButtonPressed);
+			dialogWindow = root.Q<VisualElement>("Dialog");
+			cancelButton = dialogWindow.Q<Button>("CancelButton");
+			proceedButton = dialogWindow.Q<Button>("ProceedButton");
 		}
 
 		private void OnDateInputFromChanged(ChangeEvent<string> e) {
@@ -62,9 +68,9 @@ namespace Dataskop.UI {
 
 			if (fromDate != null && toDate != null) {
 				TimeRange foundRange = new(fromDate.Value, toDate.Value);
-				dateFilterButtonPressed?.Invoke(foundRange);
 				dateFromInput.value = foundRange.StartTime.ToString("s", culture);
 				dateToInput.value = foundRange.EndTime.ToString("s", culture);
+				RequestConfirmation(foundRange);
 			}
 			else {
 				NotificationHandler.Add(new Notification {
@@ -75,6 +81,25 @@ namespace Dataskop.UI {
 				});
 			}
 
+		}
+
+		private void RequestConfirmation(TimeRange range) {
+			dialogWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
+			proceedButton.RegisterCallback<ClickEvent, TimeRange>(OnConfirm, range);
+			cancelButton.RegisterCallback<ClickEvent>(OnCancel);
+		}
+
+		private void OnConfirm(ClickEvent e, TimeRange range) {
+			dateFilterButtonPressed?.Invoke(range);
+			dialogWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+			proceedButton.UnregisterCallback<ClickEvent, TimeRange>(OnConfirm);
+			cancelButton.UnregisterCallback<ClickEvent>(OnCancel);
+		}
+
+		private void OnCancel(ClickEvent e) {
+			dialogWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+			proceedButton.UnregisterCallback<ClickEvent, TimeRange>(OnConfirm);
+			cancelButton.UnregisterCallback<ClickEvent>(OnCancel);
 		}
 
 	}

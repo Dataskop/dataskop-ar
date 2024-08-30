@@ -63,4 +63,12 @@
             <ui:VisualElement name="Icon" style="width: 80%; height: 80%; background-image: url(&quot;project://database/Assets/Dataskop/Images/Icons/history_2.png?fileID=21300000&amp;guid=05f81af70211b944ca68708381346964&amp;type=3#history_2&quot;); background-color: rgba(27, 27, 27, 0); -unity-background-image-tint-color: rgb(0, 80, 150); font-size: 22px; color: rgba(255, 255, 255, 0.22); align-items: center; justify-content: center;" />
         </ui:Button>
     </ui:VisualElement>
+    <ui:VisualElement name="Dialog" class="settings-menu-container option-container" style="flex-grow: 1; position: absolute; top: 30%; width: 600px; height: 350px; left: auto; align-self: center; background-color: rgb(156, 156, 156); border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; padding-top: 25px; padding-right: 25px; padding-bottom: 25px; padding-left: 25px; display: none;">
+        <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Dataskop/Images/Icons/alert.png?fileID=2800000&amp;guid=6fe7ad4363d6fe744966294110d7dde9&amp;type=3#alert&quot;); width: 40px; height: auto; -unity-background-image-tint-color: rgb(255, 229, 0); -unity-background-scale-mode: scale-to-fit;" />
+        <ui:Label tabindex="-1" text="You are about to request data&lt;br&gt;that could take a long time to load.&lt;br&gt;&lt;br&gt;Do you want to continue?" parse-escape-sequences="true" display-tooltip-when-elided="true" class="option-label" style="-unity-text-align: upper-center; width: 90%; display: flex;" />
+        <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between; width: 80%;">
+            <ui:Button text="Cancel" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CancelButton" class="option-button" style="width: 33%;" />
+            <ui:Button text="Proceed" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ProceedButton" class="option-button" style="width: 33%;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
 </ui:UXML>
