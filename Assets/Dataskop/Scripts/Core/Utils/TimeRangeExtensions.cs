@@ -8,11 +8,11 @@ namespace Dataskop {
 		public static TimeRange[] GetTimeRangeGaps(TimeRange searchRange, TimeRange[] availableRanges) {
 
 			List<TimeRange> missingTimeRanges = new();
-			
+
 			DateTime previousEndTime = searchRange.StartTime;
 
 			for (int i = availableRanges.Length - 1; i >= 0; i--) {
-				
+
 				TimeRange availableTimeRange = availableRanges[i];
 
 				if (searchRange.StartTime > availableTimeRange.EndTime) {
@@ -22,6 +22,7 @@ namespace Dataskop {
 				if (IsInTimeRange(searchRange.EndTime, availableTimeRange)) {
 
 					//TODO: Check this case when only one available TimeRange and search is inside this one.
+
 					if (searchRange.EndTime > previousEndTime) {
 						missingTimeRanges.Add(new TimeRange(previousEndTime, availableTimeRange.StartTime));
 					}
