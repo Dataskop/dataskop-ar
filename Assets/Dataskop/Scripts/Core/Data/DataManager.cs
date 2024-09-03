@@ -339,7 +339,7 @@ namespace Dataskop.Data {
 						MeasurementResultRange newResults =
 							await RequestHandler.GetMeasurementResults(md, FetchAmount, latestDate, DateTime.Now);
 
-						if (!newResults.SkipLast(1).Any()) {
+						if (newResults == null || !newResults.SkipLast(1).Any()) {
 							continue;
 						}
 
@@ -367,7 +367,7 @@ namespace Dataskop.Data {
 
 			// Fetch data that is missing from the current MDs according to the user request
 			foreach (Device d in SelectedProject.Devices) {
-				
+
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
 					TimeRange[] missingRanges = md.GetMissingTimeRanges(timeRange);

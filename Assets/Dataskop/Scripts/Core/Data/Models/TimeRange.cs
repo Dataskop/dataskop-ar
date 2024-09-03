@@ -12,7 +12,7 @@ namespace Dataskop {
 
 			StartTime = start;
 			EndTime = end;
-
+			
 			if (EndTime < StartTime) {
 				EndTime = start;
 				StartTime = end;
