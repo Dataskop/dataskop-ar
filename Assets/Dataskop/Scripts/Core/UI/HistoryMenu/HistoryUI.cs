@@ -6,7 +6,9 @@ using Dataskop.Data;
 using Dataskop.Entities;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.UIElements;
+using Position = UnityEngine.UIElements.Position;
 
 namespace Dataskop.UI {
 
@@ -141,6 +143,9 @@ namespace Dataskop.UI {
 			UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, newResultsCount - 1);
 			currentDeviceId = selectedDataPoint.MeasurementDefinition.DeviceId;
 			currentAttributeId = selectedDataPoint.MeasurementDefinition.AttributeId;
+			
+			// draw cache rects
+			CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
 		}
 
 		private int GetMeasurementCount() {
@@ -168,7 +173,6 @@ namespace Dataskop.UI {
 			EndRangeLabel.text = def.GetLatestRange().GetTimeRange().EndTime.ToString(CultureInfo.CurrentCulture).Remove(6, 13);
 
 			MinMaxSlider.lowLimit = 0;
-			// change this to the amount of days
 			TimeRange overAllRange = new (firstResult.Timestamp, lastResult.Timestamp);
 			MinMaxSlider.highLimit = overAllRange.Span.Days;
 
@@ -287,6 +291,24 @@ namespace Dataskop.UI {
 			List<VisualElement> ticks = HistorySlider.Query(className: "slider-tick").ToList();
 			foreach (VisualElement tick in ticks) {
 				tick.RemoveFromHierarchy();
+			}
+		}
+
+		private void CreateCacheRect(MeasurementDefinition def) {
+
+			Debug.Log(def.MeasurementResults.First().GetTimeRange().StartTime);
+			
+			foreach (MeasurementResultRange measurementResultRange in def.MeasurementResults) {
+				VisualElement rect = new VisualElement();
+				rect.style.position = Position.Absolute;
+				rect.style.left = 0;	// needs to be dynamic
+				rect.style.width = 25; // needs to be dynamic
+				rect.style.height = 10;
+				rect.style.marginTop = 2;
+				rect.style.marginLeft = 1;
+				rect.style.backgroundColor = new StyleColor(Color.blue);
+				
+				RangeContainer.Add(rect);
 			}
 		}
 
