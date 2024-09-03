@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Dataskop.Data;
 using Dataskop.Entities;
 using UnityEngine;
@@ -23,16 +24,36 @@ namespace Dataskop.UI {
 
 		private VisualElement Dragger { get; set; }
 
+		private VisualElement RangeContainer { get; set; }
+
+		private VisualElement TopDragger { get; set; }
+
+		private VisualElement BottomDragger { get; set; }
+
 		private SliderInt HistorySlider { get; set; }
+
+		private MinMaxSlider MinMaxSlider { get; set; }
 
 		private bool IsActive { get; set; }
 
 		private Label CurrentTimeLabel { get; set; }
 
+		private Label MinDateLabel { get; set; }
+
+		private Label MaxDateLabel { get; set; }
+
+		private Label MinValueLabel { get; set; }
+
+		private Label MaxValueLabel { get; set; }
+
 		private DataPoint SelectedDataPoint { get; set; }
+
+		private string currentDeviceId;
+		private string currentAttributeId;
 
 		private void Start() {
 			SetVisibility(HistoryContainer, false);
+			SetVisibility(RangeContainer, false);
 		}
 
 		private void OnEnable() {
@@ -47,6 +68,21 @@ namespace Dataskop.UI {
 			Dragger = HistorySlider.Q<VisualElement>("unity-dragger");
 			Dragger.RegisterCallback<GeometryChangedEvent>(_ => AdjustTimeLabelPosition());
 
+			RangeContainer = Root.Q<VisualElement>("RangeContainer");
+
+			MinDateLabel = RangeContainer.Q<Label>("LabelMinDate");
+			MaxDateLabel = RangeContainer.Q<Label>("LabelMaxDate");
+
+			MinValueLabel = RangeContainer.Q<Label>("LabelMinValue");
+			MaxValueLabel = RangeContainer.Q<Label>("LabelMaxValue");
+
+			MinMaxSlider = RangeContainer.Q<MinMaxSlider>("MinMaxSlider");
+
+			TopDragger = RangeContainer.Q<VisualElement>("unity-thumb-max");
+			BottomDragger = RangeContainer.Q<VisualElement>("unity-thumb-min");
+
+			TopDragger.RegisterCallback<GeometryChangedEvent>(_ => AdjustTopDateLabelPositions());
+			BottomDragger.RegisterCallback<GeometryChangedEvent>(_ => AdjustBottomDateLabelPositions());
 		}
 
 		private void OnDisable() {
@@ -74,6 +110,7 @@ namespace Dataskop.UI {
 			if (SelectedDataPoint == null) {
 				CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Hidden);
 				SetVisibility(HistoryContainer, false);
+				SetVisibility(RangeContainer, false);
 				return;
 			}
 
@@ -84,6 +121,7 @@ namespace Dataskop.UI {
 			}
 
 			SetVisibility(HistoryContainer, true);
+			SetVisibility(RangeContainer, true);
 
 			int newResultsCount = GetMeasurementCount();
 
@@ -93,6 +131,15 @@ namespace Dataskop.UI {
 			StartCoroutine(GenerateTicks(newResultsCount));
 			CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
 			UpdateTimeLabel(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.FocusedIndex);
+
+			// check if we are still on the same device before updating time range
+			if (selectedDataPoint.MeasurementDefinition.DeviceId == currentDeviceId &&
+			    selectedDataPoint.MeasurementDefinition.AttributeId == currentAttributeId) {
+				return;
+			}
+			UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, newResultsCount - 1);
+			currentDeviceId = selectedDataPoint.MeasurementDefinition.DeviceId;
+			currentAttributeId = selectedDataPoint.MeasurementDefinition.AttributeId;
 		}
 
 		private int GetMeasurementCount() {
@@ -112,6 +159,23 @@ namespace Dataskop.UI {
 			CurrentTimeLabel.text = $"{focusedResult.GetDate()}";
 		}
 
+		private void UpdateMinMaxSlider(MeasurementDefinition def, int maxValue) {
+			MeasurementResult firstResult = def.MeasurementResults.First();
+			MeasurementResult lastResult = def.MeasurementResults.Last();
+
+			MaxDateLabel.text = lastResult.GetShortDate();
+			MinDateLabel.text = firstResult.GetShortDate();
+
+			MaxValueLabel.text = def.MeasurementResults[maxValue].GetShortDate().Remove(6, 4);
+			MinValueLabel.text = firstResult.GetShortDate().Remove(6, 4);
+
+			MinMaxSlider.lowLimit = 0;
+			MinMaxSlider.highLimit = def.TotalMeasurements;
+
+			MinMaxSlider.minValue = 0;
+			MinMaxSlider.maxValue = maxValue;
+		}
+
 		public void OnDataPointHistorySwiped(int newCount) {
 			HistorySlider.SetValueWithoutNotify(newCount);
 			AdjustTimeLabelPosition();
@@ -128,12 +192,14 @@ namespace Dataskop.UI {
 
 				SetVisibility(Root, currentVisOption.Style.IsTimeSeries);
 				SetVisibility(HistoryContainer, false);
+				SetVisibility(RangeContainer, false);
 				IsActive = false;
 
 			}
 			else {
 				SetVisibility(Root, currentVisOption.Style.IsTimeSeries);
 				SetVisibility(HistoryContainer, false);
+				SetVisibility(RangeContainer, false);
 				IsActive = false;
 			}
 
@@ -141,6 +207,14 @@ namespace Dataskop.UI {
 
 		private void AdjustTimeLabelPosition() {
 			CurrentTimeLabel.style.top = Dragger.localBound.yMax - Dragger.resolvedStyle.height;
+		}
+
+		private void AdjustTopDateLabelPositions() {
+			MaxValueLabel.style.left = TopDragger.localBound.xMax - TopDragger.resolvedStyle.width - 25;
+		}
+
+		private void AdjustBottomDateLabelPositions() {
+			MinValueLabel.style.left = BottomDragger.localBound.xMax - BottomDragger.resolvedStyle.width - 30;
 		}
 
 		private void SetVisibility(VisualElement element, bool isVisible) {
@@ -154,6 +228,7 @@ namespace Dataskop.UI {
 			if (SelectedDataPoint) {
 				SetVisibility(HistoryContainer, IsActive);
 				SetVisibility(CurrentTimeLabel, IsActive);
+				SetVisibility(RangeContainer, IsActive);
 				StartCoroutine(GenerateTicks(GetMeasurementCount()));
 			}
 

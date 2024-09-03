@@ -110,6 +110,10 @@ namespace Dataskop.Data {
 			return $"{Timestamp:s}";
 		}
 
+		public string GetShortDate() {
+			return Timestamp.ToShortDateString();
+		}
+
 		public string GetClockTime() {
 			return $"{Timestamp.ToLongTimeString()}";
 		}
