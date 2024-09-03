@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Dataskop.Data;
 using Dataskop.Entities;
@@ -38,13 +39,13 @@ namespace Dataskop.UI {
 
 		private Label CurrentTimeLabel { get; set; }
 
-		private Label MinDateLabel { get; set; }
+		private Label UltimateEndTime { get; set; }
 
-		private Label MaxDateLabel { get; set; }
+		private Label UltimateStartTime { get; set; }
 
-		private Label MinValueLabel { get; set; }
+		private Label EndRangeLabel { get; set; }
 
-		private Label MaxValueLabel { get; set; }
+		private Label StartRangeLabel { get; set; }
 
 		private DataPoint SelectedDataPoint { get; set; }
 
@@ -70,11 +71,11 @@ namespace Dataskop.UI {
 
 			RangeContainer = Root.Q<VisualElement>("RangeContainer");
 
-			MinDateLabel = RangeContainer.Q<Label>("LabelMinDate");
-			MaxDateLabel = RangeContainer.Q<Label>("LabelMaxDate");
+			UltimateEndTime = RangeContainer.Q<Label>("LabelMinDate");
+			UltimateStartTime = RangeContainer.Q<Label>("LabelMaxDate");
 
-			MinValueLabel = RangeContainer.Q<Label>("LabelMinValue");
-			MaxValueLabel = RangeContainer.Q<Label>("LabelMaxValue");
+			EndRangeLabel = RangeContainer.Q<Label>("LabelMinValue");
+			StartRangeLabel = RangeContainer.Q<Label>("LabelMaxValue");
 
 			MinMaxSlider = RangeContainer.Q<MinMaxSlider>("MinMaxSlider");
 
@@ -148,10 +149,7 @@ namespace Dataskop.UI {
 				return 0;
 			}
 
-			return SelectedDataPoint.MeasurementDefinition.MeasurementResults.Count <
-			       SelectedDataPoint.Vis.VisHistoryConfiguration.visibleHistoryCount
-				? SelectedDataPoint.MeasurementDefinition.MeasurementResults.Count
-				: SelectedDataPoint.Vis.VisHistoryConfiguration.visibleHistoryCount;
+			return SelectedDataPoint.MeasurementDefinition.GetLatestRange().Count;
 		}
 
 		private void UpdateTimeLabel(MeasurementDefinition def, int index) {
@@ -163,17 +161,20 @@ namespace Dataskop.UI {
 			MeasurementResult firstResult = def.FirstMeasurementResult;
 			MeasurementResult lastResult = def.GetLatestMeasurementResult();
 
-			MaxDateLabel.text = lastResult.GetShortDate();
-			MinDateLabel.text = firstResult.GetShortDate();
+			UltimateStartTime.text = firstResult.GetShortDate();
+			UltimateEndTime.text = lastResult.GetShortDate();
 
-			MaxValueLabel.text = def.GetLatestRange().Last().GetShortDate().Remove(6, 4);
-			MinValueLabel.text = firstResult.GetShortDate().Remove(6, 4);
+			StartRangeLabel.text = def.GetLatestRange().GetTimeRange().StartTime.ToString(CultureInfo.CurrentCulture).Remove(6, 13);
+			EndRangeLabel.text = def.GetLatestRange().GetTimeRange().EndTime.ToString(CultureInfo.CurrentCulture).Remove(6, 13);
 
 			MinMaxSlider.lowLimit = 0;
-			MinMaxSlider.highLimit = def.TotalMeasurements;
+			// change this to the amount of days
+			TimeRange overAllRange = new (firstResult.Timestamp, lastResult.Timestamp);
+			MinMaxSlider.highLimit = overAllRange.Span.Days;
 
 			MinMaxSlider.minValue = 0;
-			MinMaxSlider.maxValue = maxValue;
+			TimeRange cachedData = new(def.GetLatestRange().GetTimeRange().StartTime, lastResult.Timestamp);
+			MinMaxSlider.maxValue = cachedData.Span.Days;
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
@@ -210,11 +211,11 @@ namespace Dataskop.UI {
 		}
 
 		private void AdjustTopDateLabelPositions() {
-			MaxValueLabel.style.left = TopDragger.localBound.xMax - TopDragger.resolvedStyle.width - 25;
+			StartRangeLabel.style.left = TopDragger.localBound.xMax - TopDragger.resolvedStyle.width - 25;
 		}
 
 		private void AdjustBottomDateLabelPositions() {
-			MinValueLabel.style.left = BottomDragger.localBound.xMax - BottomDragger.resolvedStyle.width - 30;
+			EndRangeLabel.style.left = BottomDragger.localBound.xMax - BottomDragger.resolvedStyle.width - 25;
 		}
 
 		private void SetVisibility(VisualElement element, bool isVisible) {
