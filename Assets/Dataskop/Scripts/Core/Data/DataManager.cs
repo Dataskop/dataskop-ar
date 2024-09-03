@@ -372,6 +372,10 @@ namespace Dataskop.Data {
 
 					TimeRange[] missingRanges = TimeRangeExtensions.GetTimeRangeGaps(timeRange, md.GetAvailableTimeRanges());
 
+					if (missingRanges.Length < 1) {
+						continue;
+					}
+
 					foreach (TimeRange t in missingRanges) {
 						MeasurementResultRange results =
 							await RequestHandler.GetMeasurementResults(md, FetchAmount, t.StartTime, t.EndTime);
