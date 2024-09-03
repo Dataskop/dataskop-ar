@@ -21,6 +21,7 @@ namespace Dataskop {
 
 				if (IsInTimeRange(searchRange.EndTime, availableTimeRange)) {
 
+					//TODO: Check this case when only one available TimeRange and search is inside this one.
 					if (searchRange.EndTime > previousEndTime) {
 						missingTimeRanges.Add(new TimeRange(previousEndTime, availableTimeRange.StartTime));
 					}
