@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Dataskop {
 
-	public static class TimeRangeUtils {
+	public static class TimeRangeExtensions {
 
 		public static TimeRange[] GetTimeRangeGaps(TimeRange searchRange, TimeRange[] availableRanges) {
 
@@ -17,7 +17,7 @@ namespace Dataskop {
 					continue;
 				}
 
-				if (searchRange.EndTime >= availableTimeRange.StartTime && searchRange.EndTime <= availableTimeRange.EndTime) {
+				if (IsInTimeRange(searchRange.EndTime, availableTimeRange)) {
 
 					if (searchRange.EndTime > previousEndTime) {
 						missingTimeRanges.Add(new TimeRange(previousEndTime, availableTimeRange.StartTime));
@@ -38,6 +38,10 @@ namespace Dataskop {
 
 			return missingTimeRanges.ToArray();
 
+		}
+
+		public static bool IsInTimeRange(DateTime dateToCheck, TimeRange range) {
+			return dateToCheck >= range.StartTime && dateToCheck <= range.EndTime;
 		}
 
 	}

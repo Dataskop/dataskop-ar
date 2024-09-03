@@ -370,7 +370,7 @@ namespace Dataskop.Data {
 
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
-					TimeRange[] missingRanges = TimeRangeUtils.GetTimeRangeGaps(timeRange, md.GetAvailableTimeRanges());
+					TimeRange[] missingRanges = TimeRangeExtensions.GetTimeRangeGaps(timeRange, md.GetAvailableTimeRanges());
 
 					foreach (TimeRange t in missingRanges) {
 						MeasurementResultRange results =
@@ -382,7 +382,7 @@ namespace Dataskop.Data {
 
 			}
 
-			//HasDateFiltered?.Invoke(timeRange);
+			HasDateFiltered?.Invoke(timeRange);
 			LoadingIndicator.Hide();
 		}
 
