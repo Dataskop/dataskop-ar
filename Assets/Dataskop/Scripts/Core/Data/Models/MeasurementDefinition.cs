@@ -159,7 +159,7 @@ namespace Dataskop.Data {
 			return mergedRanges;
 		}
 
-		private TimeRange[] GetAvailableTimeRanges() {
+		public TimeRange[] GetAvailableTimeRanges() {
 
 			TimeRange[] availableRanges = Array.Empty<TimeRange>();
 
@@ -174,41 +174,6 @@ namespace Dataskop.Data {
 			}
 
 			return availableRanges;
-		}
-
-		public TimeRange[] GetMissingTimeRanges(TimeRange newTimeRange) {
-
-			TimeRange[] availableTimeRanges = GetAvailableTimeRanges();
-			List<TimeRange> missingTimeRanges = new();
-			DateTime previousEndTime = newTimeRange.StartTime;
-
-			for (int i = availableTimeRanges.Length - 1; i >= 0; i--) {
-				TimeRange availableTimeRange = availableTimeRanges[i];
-
-				if (newTimeRange.StartTime > availableTimeRange.EndTime) {
-					continue;
-				}
-
-				if (newTimeRange.EndTime >= availableTimeRange.StartTime && newTimeRange.EndTime <= availableTimeRange.EndTime) {
-
-					if (newTimeRange.EndTime > previousEndTime) {
-						missingTimeRanges.Add(new TimeRange(previousEndTime, availableTimeRange.StartTime));
-					}
-
-					break;
-				}
-
-				if (newTimeRange.EndTime <= availableTimeRange.StartTime) {
-					missingTimeRanges.Add(new TimeRange(previousEndTime, newTimeRange.EndTime));
-				}
-				else {
-					missingTimeRanges.Add(new TimeRange(previousEndTime, availableTimeRange.StartTime));
-					previousEndTime = availableTimeRange.EndTime;
-				}
-
-			}
-
-			return missingTimeRanges.ToArray();
 		}
 
 		public IReadOnlyList<MeasurementResultRange> ReplaceMeasurementResultRange(int index, MeasurementResultRange newRange) {
