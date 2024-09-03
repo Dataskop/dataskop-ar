@@ -122,8 +122,6 @@ namespace Dataskop.Data {
 
 		public void AddMeasurementResultRange(MeasurementResultRange newRange) {
 
-			//TODO: Add new range, merge with connecting range(s) and sort List of MeasurementResultRanges
-
 			// Check if StartTime of new range is inside one of the ranges in the current List
 			if (newRange.Count < 1) {
 				return;
@@ -138,11 +136,11 @@ namespace Dataskop.Data {
 				return;
 			}
 
-			MeasurementResults = TryMergingExistingRanges();
+			MeasurementResults = GetMergedRanges();
 
 		}
 
-		private IReadOnlyList<MeasurementResultRange> TryMergingExistingRanges() {
+		private IReadOnlyList<MeasurementResultRange> GetMergedRanges() {
 			List<MeasurementResultRange> mergedRanges = MeasurementResults.ToList();
 
 			for (int i = 0; i < mergedRanges.Count - 1; i++) {

@@ -10,5 +10,6 @@
             <ui:TextField name="DateInputTo" max-length="19" class="text-input" style="flex-wrap: nowrap; white-space: nowrap; text-overflow: clip; -unity-text-align: middle-left;" />
         </ui:VisualElement>
         <ui:Button text="Filter" parse-escape-sequences="true" display-tooltip-when-elided="true" name="DateFilterButton" class="option-button" />
+        <ui:VisualElement name="Splitter" class="splitter" />
     </ui:VisualElement>
 </ui:UXML>

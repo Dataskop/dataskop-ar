@@ -26,6 +26,10 @@ namespace Dataskop.UI {
 		private Button cancelButton = null!;
 		private Button proceedButton = null!;
 
+		public void OnProjectLoaded() =>
+			GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("DatePicker")
+				.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
+
 		private void Awake() {
 			culture = CultureInfo.CurrentCulture;
 			VisualElement root = GetComponent<UIDocument>().rootVisualElement;
