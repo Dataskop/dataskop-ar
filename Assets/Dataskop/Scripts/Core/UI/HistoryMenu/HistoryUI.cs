@@ -160,13 +160,13 @@ namespace Dataskop.UI {
 		}
 
 		private void UpdateMinMaxSlider(MeasurementDefinition def, int maxValue) {
-			MeasurementResult firstResult = def.MeasurementResults.First();
-			MeasurementResult lastResult = def.MeasurementResults.Last();
+			MeasurementResult firstResult = def.FirstMeasurementResult;
+			MeasurementResult lastResult = def.GetLatestMeasurementResult();
 
 			MaxDateLabel.text = lastResult.GetShortDate();
 			MinDateLabel.text = firstResult.GetShortDate();
 
-			MaxValueLabel.text = def.MeasurementResults[maxValue].GetShortDate().Remove(6, 4);
+			MaxValueLabel.text = def.GetLatestRange().Last().GetShortDate().Remove(6, 4);
 			MinValueLabel.text = firstResult.GetShortDate().Remove(6, 4);
 
 			MinMaxSlider.lowLimit = 0;
