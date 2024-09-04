@@ -24,8 +24,7 @@ namespace Dataskop {
 				}
 
 				if (IsInTimeRange(searchRange.EndTime, availableTimeRange)) {
-					previousEndTime = availableTimeRange.StartTime;
-					missingTimeRanges.Add(new TimeRange(previousEndTime, searchRange.StartTime));
+					missingTimeRanges.Add(new TimeRange(previousEndTime, availableTimeRange.StartTime));
 					break;
 				}
 
