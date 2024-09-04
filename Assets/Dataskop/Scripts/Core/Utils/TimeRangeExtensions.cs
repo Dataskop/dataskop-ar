@@ -15,18 +15,17 @@ namespace Dataskop {
 
 				TimeRange availableTimeRange = availableRanges[i];
 
+				if (IsInTimeRange(searchRange.StartTime, availableTimeRange) && IsInTimeRange(searchRange.EndTime, availableTimeRange)) {
+					break;
+				}
+
 				if (searchRange.StartTime > availableTimeRange.EndTime) {
 					continue;
 				}
 
 				if (IsInTimeRange(searchRange.EndTime, availableTimeRange)) {
-
-					//TODO: Check this case when only one available TimeRange and search is inside this one.
-
-					if (searchRange.EndTime > previousEndTime) {
-						missingTimeRanges.Add(new TimeRange(previousEndTime, availableTimeRange.StartTime));
-					}
-
+					previousEndTime = availableTimeRange.StartTime;
+					missingTimeRanges.Add(new TimeRange(previousEndTime, searchRange.StartTime));
 					break;
 				}
 
