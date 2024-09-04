@@ -295,19 +295,28 @@ namespace Dataskop.UI {
 		}
 
 		private void CreateCacheRect(MeasurementDefinition def) {
-
-			Debug.Log(def.MeasurementResults.First().GetTimeRange().StartTime);
+			int number = 1;
 			
 			foreach (MeasurementResultRange measurementResultRange in def.MeasurementResults) {
-				VisualElement rect = new VisualElement();
-				rect.style.position = Position.Absolute;
-				rect.style.left = 0;	// needs to be dynamic
-				rect.style.width = 25; // needs to be dynamic
-				rect.style.height = 10;
-				rect.style.marginTop = 2;
-				rect.style.marginLeft = 1;
-				rect.style.backgroundColor = new StyleColor(Color.blue);
+				TimeRange timeRangeCurrentRect = new(measurementResultRange.GetTimeRange().StartTime,
+					measurementResultRange.GetTimeRange().EndTime);
+
+				// Debug.Log for testing purposes
+				Debug.Log("Starttime" + timeRangeCurrentRect.StartTime + "Rangenumber" + number);
+				Debug.Log("Endtime" + timeRangeCurrentRect.EndTime + "Rangenumber" + number);
+				number++;
 				
+				VisualElement rect = new VisualElement {
+					style = {
+						position = Position.Absolute,
+						left = 0, // needs to be dynamic
+						width = 25, // needs to be dynamic
+						height = 10,
+						marginTop = 2,
+						marginLeft = 1,
+						backgroundColor = new StyleColor(Color.blue)
+					}
+				};
 				RangeContainer.Add(rect);
 			}
 		}

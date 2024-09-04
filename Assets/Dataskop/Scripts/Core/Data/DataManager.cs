@@ -386,7 +386,7 @@ namespace Dataskop.Data {
 
 			}
 
-			HasDateFiltered?.Invoke(timeRange);
+			//HasDateFiltered?.Invoke(timeRange);
 			LoadingIndicator.Hide();
 		}
 

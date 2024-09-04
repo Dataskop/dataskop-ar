@@ -121,6 +121,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void OnFocusedIndexChanged(MeasurementDefinition def, int index) {
 
+			index = 0;
 			if (!AllowedMeasurementTypes.Contains(def.MeasurementResults[index][0].MeasurementDefinition.MeasurementType)) {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
