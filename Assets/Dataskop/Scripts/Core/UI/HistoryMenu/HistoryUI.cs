@@ -295,28 +295,38 @@ namespace Dataskop.UI {
 		}
 
 		private void CreateCacheRect(MeasurementDefinition def) {
-			int number = 1;
+			MeasurementResult firstResult = def.FirstMeasurementResult;
+
+			/* foreach (var VARIABLE in RangeContainer.Children()) {
+				if (VARIABLE.GetClasses().Contains("cache-rect")) {
+					RangeContainer.Remove(VARIABLE);
+				}
+			} */
 			
 			foreach (MeasurementResultRange measurementResultRange in def.MeasurementResults) {
 				TimeRange timeRangeCurrentRect = new(measurementResultRange.GetTimeRange().StartTime,
 					measurementResultRange.GetTimeRange().EndTime);
+				TimeRange timeRangeAllDataEndTimeCurrentRange = new (firstResult.Timestamp, measurementResultRange.GetTimeRange().EndTime);
+
+				int numberDaysCurrentRect = timeRangeCurrentRect.Span.Days;
+				int numberDaysCurrentRectRange = timeRangeAllDataEndTimeCurrentRange.Span.Days;	
 
 				// Debug.Log for testing purposes
-				Debug.Log("Starttime" + timeRangeCurrentRect.StartTime + "Rangenumber" + number);
-				Debug.Log("Endtime" + timeRangeCurrentRect.EndTime + "Rangenumber" + number);
-				number++;
+				Debug.Log("Starttime " + timeRangeCurrentRect.StartTime + "RangeCount "  + measurementResultRange.Count);
+				Debug.Log("Endtime " + timeRangeCurrentRect.EndTime + "RangeCount " +  measurementResultRange.Count);
 				
 				VisualElement rect = new VisualElement {
 					style = {
 						position = Position.Absolute,
-						left = 0, // needs to be dynamic
-						width = 25, // needs to be dynamic
+						left = (600 / MinMaxSlider.highLimit) * (MinMaxSlider.highLimit - numberDaysCurrentRectRange), // needs to be dynamic
+						width = (600 / MinMaxSlider.highLimit) * numberDaysCurrentRect, // needs to be dynamic
 						height = 10,
 						marginTop = 2,
 						marginLeft = 1,
 						backgroundColor = new StyleColor(Color.blue)
 					}
 				};
+				rect.AddToClassList("cache-rect");
 				RangeContainer.Add(rect);
 			}
 		}
