@@ -178,9 +178,6 @@ namespace Dataskop.UI {
 			MinMaxSlider.minValue = 0;
 			TimeRange cachedData = new(def.GetLatestRange().GetTimeRange().StartTime, lastResult.Timestamp);
 			MinMaxSlider.maxValue = (int)Math.Ceiling(cachedData.Span.TotalDays);
-			
-			Debug.Log(overAllRange.Span.TotalDays + " " + cachedData.Span.TotalDays);
-			Debug.Log(def.GetLatestRange().GetTimeRange().Span);
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
@@ -308,6 +305,9 @@ namespace Dataskop.UI {
 				int numberDaysCurrentRect = (int)Math.Round(timeRangeCurrentRect.Span.TotalDays + 1);
 				int numberDaysCurrentRectRange = timeRangeAllDataEndTimeCurrentRange.Span.Days;
 
+				Debug.Log(numberDaysCurrentRect);
+				int calculatedWidth = (int)Math.Ceiling((600 / (MinMaxSlider.highLimit + 1))) * numberDaysCurrentRect;
+
 				VisualElement rect = new VisualElement {
 					style = {
 						position = Position.Absolute,
@@ -316,8 +316,7 @@ namespace Dataskop.UI {
 							(MinMaxSlider.highLimit -
 							 numberDaysCurrentRectRange), // calculate left position (because of transform) to be drawn from EndTime of currentRange up
 						width =
-							(600 / (MinMaxSlider.highLimit + 1)) *
-							numberDaysCurrentRect, // calculate width (because of transform) to correspond to number of days
+							calculatedWidth > 600 ? 600 : calculatedWidth, // calculate width (because of transform) to correspond to number of days
 						height = 10,
 						marginTop = -5,
 						marginLeft = 1,
