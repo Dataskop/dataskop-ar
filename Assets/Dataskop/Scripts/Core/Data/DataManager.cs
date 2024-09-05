@@ -364,16 +364,28 @@ namespace Dataskop.Data {
 
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
-					TimeRange[] missingRanges = TimeRangeExtensions.GetTimeRangeGaps(timeRange, md.GetAvailableTimeRanges());
+					TimeRange searchRange = timeRange.StartTime < md.FirstMeasurementResult.Timestamp
+						? new TimeRange(md.FirstMeasurementResult.Timestamp, timeRange.EndTime) : timeRange;
+
+					TimeRange[] missingRanges = TimeRangeExtensions.GetTimeRangeGaps(searchRange, md.GetAvailableTimeRanges());
 
 					if (missingRanges.Length < 1) {
 						continue;
 					}
 
 					foreach (TimeRange t in missingRanges) {
-						MeasurementResultRange results =
-							await RequestHandler.GetMeasurementResults(md, FetchAmount, t.StartTime, t.EndTime);
-						md.AddMeasurementResultRange(results, t);
+
+						MeasurementResultRange results;
+						DateTime dynamicStartTime = t.StartTime;
+
+						do {
+							results = await RequestHandler.GetMeasurementResults(md, FetchAmount, dynamicStartTime, t.EndTime);
+							md.AddMeasurementResultRange(results,
+								new TimeRange(dynamicStartTime, results.Count > 0 ? results.First().Timestamp : t.EndTime));
+							dynamicStartTime = results.Count > 0 ? results.First().Timestamp + new TimeSpan(0, 0, md.MeasuringInterval / 10)
+								: t.EndTime;
+						} while (results.Count > 0 || dynamicStartTime < t.EndTime);
+
 					}
 
 				}
