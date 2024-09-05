@@ -137,6 +137,7 @@ namespace Dataskop.Data {
 		}
 
 		private IReadOnlyList<MeasurementResultRange> GetMergedRanges() {
+
 			List<MeasurementResultRange> mergedRanges = MeasurementResults.ToList();
 
 			for (int i = 0; i < mergedRanges.Count - 1; i++) {
@@ -145,11 +146,27 @@ namespace Dataskop.Data {
 
 				TimeSpan timeDifference = secondRange.GetTimeRange().EndTime - firstRange.GetTimeRange().StartTime;
 
-				if (timeDifference.TotalSeconds <= MeasuringInterval / 10f && firstRange.Last() == secondRange.First()) {
-					mergedRanges[i] = new(firstRange.Concat(secondRange.Skip(1)));
+				//TODO: Rework Merge based solely on TimeDiff
+				if (Math.Abs(timeDifference.TotalSeconds) <= MeasuringInterval / 10f) {
+
+					if (firstRange.Any() && secondRange.Any()) {
+
+						if (firstRange.Last() == secondRange.First()) {
+							mergedRanges[i] = new(firstRange.SkipLast(1).Concat(secondRange));
+						}
+
+					}
+					else {
+						mergedRanges[i] = new(firstRange.Concat(secondRange));
+					}
+
+					mergedRanges[i]
+						.SetTimeRange(new TimeRange(secondRange.GetTimeRange().StartTime, firstRange.GetTimeRange().EndTime));
 					mergedRanges.RemoveAt(i + 1);
 					i--;
+
 				}
+
 			}
 
 			return mergedRanges;
@@ -163,8 +180,8 @@ namespace Dataskop.Data {
 				availableRanges = new TimeRange[MeasurementResults.Count];
 
 				for (int i = 0; i < availableRanges.Length; i++) {
-					var resultTime = MeasurementResults[i].GetTimeRange();
-					availableRanges[i] = new TimeRange(resultTime.StartTime, resultTime.EndTime);
+					var rangeTime = MeasurementResults[i].GetTimeRange();
+					availableRanges[i] = new TimeRange(rangeTime.StartTime, rangeTime.EndTime);
 				}
 
 			}
