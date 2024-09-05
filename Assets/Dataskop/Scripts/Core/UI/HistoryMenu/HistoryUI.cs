@@ -142,7 +142,7 @@ namespace Dataskop.UI {
 			if (SelectedDataPoint == null) {
 				return;
 			}
-			UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, newResultsCount - 1);
+			UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition);
 			// draw cache rects
 			CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
 		}
@@ -161,7 +161,7 @@ namespace Dataskop.UI {
 			CurrentTimeLabel.text = focusedResult.GetDate();
 		}
 
-		private void UpdateMinMaxSlider(MeasurementDefinition def, int maxValue) {
+		private void UpdateMinMaxSlider(MeasurementDefinition def) {
 			MeasurementResult firstResult = def.FirstMeasurementResult;
 			MeasurementResult lastResult = def.GetLatestMeasurementResult();
 
@@ -180,6 +180,7 @@ namespace Dataskop.UI {
 			MinMaxSlider.maxValue = (int)Math.Ceiling(cachedData.Span.TotalDays);
 			
 			Debug.Log(overAllRange.Span.TotalDays + " " + cachedData.Span.TotalDays);
+			Debug.Log(def.GetLatestRange().GetTimeRange().Span);
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
