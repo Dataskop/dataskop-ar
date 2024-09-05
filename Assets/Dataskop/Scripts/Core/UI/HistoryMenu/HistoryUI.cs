@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -178,7 +179,9 @@ namespace Dataskop.UI {
 
 			MinMaxSlider.minValue = 0;
 			TimeRange cachedData = new(def.GetLatestRange().GetTimeRange().StartTime, lastResult.Timestamp);
-			MinMaxSlider.maxValue = cachedData.Span.Days;
+			MinMaxSlider.maxValue = (int)Math.Ceiling(cachedData.Span.TotalDays);
+			
+			Debug.Log(overAllRange.Span.TotalDays + " " + cachedData.Span.TotalDays);
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
@@ -303,7 +306,7 @@ namespace Dataskop.UI {
 					measurementResultRange.GetTimeRange().EndTime);
 				TimeRange timeRangeAllDataEndTimeCurrentRange = new(firstResult.Timestamp, measurementResultRange.GetTimeRange().EndTime);
 
-				int numberDaysCurrentRect = timeRangeCurrentRect.Span.Days + 1;
+				int numberDaysCurrentRect = (int)Math.Round(timeRangeCurrentRect.Span.TotalDays + 1);
 				int numberDaysCurrentRectRange = timeRangeAllDataEndTimeCurrentRange.Span.Days;
 
 				VisualElement rect = new VisualElement {
