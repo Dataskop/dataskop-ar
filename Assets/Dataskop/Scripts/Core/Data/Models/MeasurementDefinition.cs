@@ -120,9 +120,10 @@ namespace Dataskop.Data {
 			return Math.Truncate(Math.Abs(timeDiff.TotalSeconds)) > interval.TotalSeconds + GapThreshold;
 		}
 
-		public void AddMeasurementResultRange(MeasurementResultRange newRange) {
+		public void AddMeasurementResultRange(MeasurementResultRange newRange, TimeRange timeRange) {
 
 			List<MeasurementResultRange> currentRanges = MeasurementResults.ToList();
+			newRange.SetTimeRange(timeRange);
 			currentRanges.Add(newRange);
 			MeasurementResults = currentRanges;
 			SortRanges();

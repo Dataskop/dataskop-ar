@@ -21,7 +21,7 @@ namespace Dataskop.UI {
 		private TextField dateFromInput = null!;
 		private TextField dateToInput = null!;
 		private Button dateFilterButton = null!;
-		private CultureInfo culture = null!;
+		private CultureInfo culture = AppOptions.DateCulture;
 		private VisualElement dialogWindow = null!;
 		private Button cancelButton = null!;
 		private Button proceedButton = null!;
@@ -31,7 +31,6 @@ namespace Dataskop.UI {
 				.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
 
 		private void Awake() {
-			culture = CultureInfo.CurrentCulture;
 			VisualElement root = GetComponent<UIDocument>().rootVisualElement;
 			dateFromContainer = root.Q<VisualElement>("DateFromContainer");
 			dateToContainer = root.Q<VisualElement>("DateToContainer");
