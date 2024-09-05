@@ -10,9 +10,9 @@ namespace Dataskop {
 
 		private readonly IList<MeasurementResult> list = new List<MeasurementResult>();
 
-		private DateTime StartTime => list.Last().Timestamp;
+		private DateTime StartTime { get; set; }
 
-		private DateTime EndTime => list.First().Timestamp;
+		private DateTime EndTime { get; set; }
 
 		public MeasurementResult this[int index] {
 			get => list[index];
@@ -25,6 +25,11 @@ namespace Dataskop {
 
 		public TimeRange GetTimeRange() {
 			return new TimeRange(StartTime, EndTime);
+		}
+
+		public void SetTimeRange(TimeRange newRange) {
+			StartTime = newRange.StartTime;
+			EndTime = newRange.EndTime;
 		}
 
 		public MeasurementResultRange(IEnumerable<MeasurementResult> newList) {
@@ -70,7 +75,6 @@ namespace Dataskop {
 		public void RemoveAt(int index) {
 			list.RemoveAt(index);
 		}
-		
 
 	}
 

@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using Dataskop.Data;
 using Dataskop.Entities;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SocialPlatforms;
 using UnityEngine.UIElements;
 using Position = UnityEngine.UIElements.Position;
 
@@ -159,7 +157,7 @@ namespace Dataskop.UI {
 
 		private void UpdateTimeLabel(MeasurementDefinition def, int index) {
 			MeasurementResult focusedResult = def.GetMeasurementResult(index);
-			CurrentTimeLabel.text = $"{focusedResult.GetDate()}";
+			CurrentTimeLabel.text = focusedResult.GetDate();
 		}
 
 		private void UpdateMinMaxSlider(MeasurementDefinition def, int maxValue) {
@@ -169,8 +167,8 @@ namespace Dataskop.UI {
 			UltimateStartTime.text = firstResult.GetShortDate();
 			UltimateEndTime.text = lastResult.GetShortDate();
 
-			StartRangeLabel.text = def.GetLatestRange().GetTimeRange().StartTime.ToString(CultureInfo.CurrentCulture).Remove(6, 13);
-			EndRangeLabel.text = def.GetLatestRange().GetTimeRange().EndTime.ToString(CultureInfo.CurrentCulture).Remove(6, 13);
+			StartRangeLabel.text = def.GetLatestRange().GetTimeRange().StartTime.ToString(AppOptions.DateCulture).Remove(6, 13);
+			EndRangeLabel.text = def.GetLatestRange().GetTimeRange().EndTime.ToString(AppOptions.DateCulture).Remove(6, 13);
 
 			MinMaxSlider.lowLimit = 0;
 			TimeRange overAllRange = new(firstResult.Timestamp, lastResult.Timestamp);
