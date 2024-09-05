@@ -335,21 +335,15 @@ namespace Dataskop.Data {
 
 					MeasurementResult latestResult = md.GetLatestMeasurementResult();
 
-					if (DateTime.TryParse(latestResult.GetDate(), out DateTime latestDate)) {
-						MeasurementResultRange newResults =
-							await RequestHandler.GetMeasurementResults(md, FetchAmount, latestDate, DateTime.Now);
+					MeasurementResultRange newResults =
+						await RequestHandler.GetMeasurementResults(md, FetchAmount, latestResult.Timestamp, DateTime.Now);
 
-						if (newResults == null || !newResults.SkipLast(1).Any()) {
-							continue;
-						}
-
-						MeasurementResultRange allResults = new(newResults.SkipLast(1).Concat(md.GetLatestRange()));
-						md.ReplaceMeasurementResultRange(0, allResults);
-
+					if (newResults == null || !newResults.SkipLast(1).Any()) {
+						continue;
 					}
-					else {
-						Debug.Log("Invalid Date Format");
-					}
+
+					MeasurementResultRange allResults = new(newResults.SkipLast(1).Concat(md.GetLatestRange()));
+					md.ReplaceMeasurementResultRange(0, allResults);
 
 				}
 

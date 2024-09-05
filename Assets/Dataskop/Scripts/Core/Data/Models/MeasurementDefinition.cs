@@ -122,11 +122,6 @@ namespace Dataskop.Data {
 
 		public void AddMeasurementResultRange(MeasurementResultRange newRange) {
 
-			// Check if StartTime of new range is inside one of the ranges in the current List
-			if (newRange.Count < 1) {
-				return;
-			}
-
 			List<MeasurementResultRange> currentRanges = MeasurementResults.ToList();
 			currentRanges.Add(newRange);
 			MeasurementResults = currentRanges;

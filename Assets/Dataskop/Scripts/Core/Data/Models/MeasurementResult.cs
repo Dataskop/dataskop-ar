@@ -29,7 +29,7 @@ namespace Dataskop.Data {
 			string additionalProperties) {
 			Value = value;
 			ValueType = valueType;
-			Timestamp = DateTime.Parse(timeStamp);
+			Timestamp = DateTime.Parse(timeStamp, AppOptions.DateCulture);
 			Position = location;
 			MeasurementDefinition = md;
 
@@ -102,20 +102,12 @@ namespace Dataskop.Data {
 
 		}
 
-		public string GetTime() {
-			return $"{GetDate()}";
-		}
-
-		public string GetDate() {
-			return $"{Timestamp:s}";
-		}
-
 		public string GetShortDate() {
 			return Timestamp.ToShortDateString();
 		}
 
-		public string GetClockTime() {
-			return $"{Timestamp.ToLongTimeString()}";
+		public string GetDate() {
+			return Timestamp.ToString(AppOptions.DateCulture);
 		}
 
 		/// <summary>

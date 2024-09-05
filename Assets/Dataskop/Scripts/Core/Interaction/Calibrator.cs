@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Dataskop.Data;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -41,6 +42,7 @@ namespace Dataskop.Interaction {
 		public bool IsCalibrating { get; private set; }
 
 		private void Awake() {
+			CultureInfo.DefaultThreadCurrentCulture = AppOptions.DateCulture;
 			FPSManager.SetApplicationTargetFrameRate(30);
 		}
 

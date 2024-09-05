@@ -90,11 +90,11 @@ namespace Dataskop.UI {
 			MeasurementLabel.text =
 				$"{focusedResult.ReadAsFloat().ToString("00.00", CultureInfo.InvariantCulture)} {SelectedDataPoint!.Attribute.Unit}";
 			LocationLabel.text = focusedResult.Position.GetLatLong();
-			TimeStampLabel.text = focusedResult.GetTime();
+			TimeStampLabel.text = focusedResult.GetDate();
 			MeasurementDefinitionLabel.text = focusedResult.MeasurementDefinition.MeasurementDefinitionInformation.Name;
 			DeviceLabel.text = focusedResult.MeasurementDefinition.DeviceId;
 			TotalMeasurementsLabel.text = focusedResult.MeasurementDefinition.TotalMeasurements.ToString();
-			FirstMeasurementLabel.text = focusedResult.MeasurementDefinition.FirstMeasurementResult.GetTime();
+			FirstMeasurementLabel.text = focusedResult.MeasurementDefinition.FirstMeasurementResult.GetDate();
 			MeasurementIntervalLabel.text = $"{focusedResult.MeasurementDefinition.MeasuringInterval / 10}s";
 
 			AuthorIcon.style.backgroundImage = !string.IsNullOrEmpty(focusedResult.Author)
