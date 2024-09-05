@@ -29,6 +29,8 @@ namespace Dataskop.UI {
 
 		private VisualElement RangeContainer { get; set; }
 
+		private VisualElement RectContainer { get; set; }
+
 		private VisualElement TopDragger { get; set; }
 
 		private VisualElement BottomDragger { get; set; }
@@ -86,6 +88,8 @@ namespace Dataskop.UI {
 
 			TopDragger.RegisterCallback<GeometryChangedEvent>(_ => AdjustTopDateLabelPositions());
 			BottomDragger.RegisterCallback<GeometryChangedEvent>(_ => AdjustBottomDateLabelPositions());
+
+			RectContainer = Root.Q<VisualElement>("RectContainer");
 		}
 
 		private void OnDisable() {
@@ -136,14 +140,10 @@ namespace Dataskop.UI {
 			UpdateTimeLabel(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.FocusedIndex);
 
 			// check if we are still on the same device before updating time range
-			if (selectedDataPoint.MeasurementDefinition.DeviceId == currentDeviceId &&
-			    selectedDataPoint.MeasurementDefinition.AttributeId == currentAttributeId) {
+			if (SelectedDataPoint == null) {
 				return;
 			}
 			UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, newResultsCount - 1);
-			currentDeviceId = selectedDataPoint.MeasurementDefinition.DeviceId;
-			currentAttributeId = selectedDataPoint.MeasurementDefinition.AttributeId;
-			
 			// draw cache rects
 			CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
 		}
@@ -173,7 +173,7 @@ namespace Dataskop.UI {
 			EndRangeLabel.text = def.GetLatestRange().GetTimeRange().EndTime.ToString(CultureInfo.CurrentCulture).Remove(6, 13);
 
 			MinMaxSlider.lowLimit = 0;
-			TimeRange overAllRange = new (firstResult.Timestamp, lastResult.Timestamp);
+			TimeRange overAllRange = new(firstResult.Timestamp, lastResult.Timestamp);
 			MinMaxSlider.highLimit = overAllRange.Span.Days;
 
 			MinMaxSlider.minValue = 0;
@@ -295,39 +295,34 @@ namespace Dataskop.UI {
 		}
 
 		private void CreateCacheRect(MeasurementDefinition def) {
+			RectContainer.Clear();
 			MeasurementResult firstResult = def.FirstMeasurementResult;
 
-			/* foreach (var VARIABLE in RangeContainer.Children()) {
-				if (VARIABLE.GetClasses().Contains("cache-rect")) {
-					RangeContainer.Remove(VARIABLE);
-				}
-			} */
-			
 			foreach (MeasurementResultRange measurementResultRange in def.MeasurementResults) {
 				TimeRange timeRangeCurrentRect = new(measurementResultRange.GetTimeRange().StartTime,
 					measurementResultRange.GetTimeRange().EndTime);
-				TimeRange timeRangeAllDataEndTimeCurrentRange = new (firstResult.Timestamp, measurementResultRange.GetTimeRange().EndTime);
+				TimeRange timeRangeAllDataEndTimeCurrentRange = new(firstResult.Timestamp, measurementResultRange.GetTimeRange().EndTime);
 
-				int numberDaysCurrentRect = timeRangeCurrentRect.Span.Days;
-				int numberDaysCurrentRectRange = timeRangeAllDataEndTimeCurrentRange.Span.Days;	
+				int numberDaysCurrentRect = timeRangeCurrentRect.Span.Days + 1;
+				int numberDaysCurrentRectRange = timeRangeAllDataEndTimeCurrentRange.Span.Days;
 
-				// Debug.Log for testing purposes
-				Debug.Log("Starttime " + timeRangeCurrentRect.StartTime + "RangeCount "  + measurementResultRange.Count);
-				Debug.Log("Endtime " + timeRangeCurrentRect.EndTime + "RangeCount " +  measurementResultRange.Count);
-				
 				VisualElement rect = new VisualElement {
 					style = {
 						position = Position.Absolute,
-						left = (600 / MinMaxSlider.highLimit) * (MinMaxSlider.highLimit - numberDaysCurrentRectRange), // needs to be dynamic
-						width = (600 / MinMaxSlider.highLimit) * numberDaysCurrentRect, // needs to be dynamic
+						left =
+							(600 / (MinMaxSlider.highLimit + 1)) *
+							(MinMaxSlider.highLimit -
+							 numberDaysCurrentRectRange), // calculate left position (because of transform) to be drawn from EndTime of currentRange up
+						width =
+							(600 / (MinMaxSlider.highLimit + 1)) *
+							numberDaysCurrentRect, // calculate width (because of transform) to correspond to number of days
 						height = 10,
 						marginTop = 2,
 						marginLeft = 1,
 						backgroundColor = new StyleColor(Color.blue)
 					}
 				};
-				rect.AddToClassList("cache-rect");
-				RangeContainer.Add(rect);
+				RectContainer.Add(rect);
 			}
 		}
 
