@@ -317,9 +317,9 @@ namespace Dataskop.UI {
 							(600 / (MinMaxSlider.highLimit + 1)) *
 							numberDaysCurrentRect, // calculate width (because of transform) to correspond to number of days
 						height = 10,
-						marginTop = 2,
+						marginTop = -5,
 						marginLeft = 1,
-						backgroundColor = new StyleColor(Color.blue)
+						backgroundColor = new StyleColor(new Color32(37,89,176, 200))
 					}
 				};
 				RectContainer.Add(rect);
