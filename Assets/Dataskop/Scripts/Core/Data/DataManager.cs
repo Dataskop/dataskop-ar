@@ -317,7 +317,7 @@ namespace Dataskop.Data {
 					int? count = await RequestHandler.GetCount(md);
 					md.TotalMeasurements = count ?? -1;
 					MeasurementResultRange newResults = await RequestHandler.GetMeasurementResults(md, FetchAmount, null, null);
-					md.AddMeasurementResultRange(newResults);
+					md.AddMeasurementResultRange(newResults, new TimeRange(newResults.Last().Timestamp, newResults.First().Timestamp));
 				}
 			}
 
@@ -373,7 +373,7 @@ namespace Dataskop.Data {
 					foreach (TimeRange t in missingRanges) {
 						MeasurementResultRange results =
 							await RequestHandler.GetMeasurementResults(md, FetchAmount, t.StartTime, t.EndTime);
-						md.AddMeasurementResultRange(results);
+						md.AddMeasurementResultRange(results, t);
 					}
 
 				}
