@@ -320,7 +320,7 @@ namespace Dataskop.UI {
 						height = 10,
 						marginTop = -5,
 						marginLeft = 1,
-						backgroundColor = new StyleColor(new Color32(37,89,176, 200))
+						backgroundColor = new StyleColor(new Color32(219,105,11, 200))
 					}
 				};
 				RectContainer.Add(rect);

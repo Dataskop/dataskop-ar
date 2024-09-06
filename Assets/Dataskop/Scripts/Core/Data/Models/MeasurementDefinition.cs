@@ -146,7 +146,6 @@ namespace Dataskop.Data {
 
 				TimeSpan timeDifference = secondRange.GetTimeRange().EndTime - firstRange.GetTimeRange().StartTime;
 
-				//TODO: Rework Merge based solely on TimeDiff
 				if (Math.Abs(timeDifference.TotalSeconds) <= MeasuringInterval / 10f) {
 
 					if (firstRange.Any() && secondRange.Any()) {

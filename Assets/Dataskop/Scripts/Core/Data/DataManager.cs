@@ -373,20 +373,29 @@ namespace Dataskop.Data {
 						continue;
 					}
 
-					foreach (TimeRange t in missingRanges) {
+					foreach (TimeRange t in missingRanges) {ö
 
 						MeasurementResultRange results;
 						DateTime dynamicStartTime = t.StartTime;
 
 						do {
+							destroyCancellationToken.ThrowIfCancellationRequested();
 							results = await RequestHandler.GetMeasurementResults(md, FetchAmount, dynamicStartTime, t.EndTime);
 							md.AddMeasurementResultRange(results,
 								new TimeRange(dynamicStartTime, results.Count > 0 ? results.First().Timestamp : t.EndTime));
-							dynamicStartTime = results.Count > 0 ? results.First().Timestamp + new TimeSpan(0, 0, md.MeasuringInterval / 10)
+							dynamicStartTime = results.Count > 0
+								? results.First().Timestamp + new TimeSpan(0, 0, md.MeasuringInterval / 10)
 								: t.EndTime;
-						} while (results.Count > 0 || dynamicStartTime < t.EndTime);
+						} while (results.Count > 0 && dynamicStartTime < t.EndTime);
 
 					}
+
+					Debug.Log($"Result Ranges in {md.DeviceId} - {md.AttributeId} ({md.ID}):");
+					foreach (var m in md.MeasurementResults) {
+						Debug.Log(
+							$"from {m.GetTimeRange().StartTime} to {m.GetTimeRange().EndTime} with {m.Count} results");
+					}
+					Debug.Log(" ");
 
 				}
 
@@ -423,7 +432,6 @@ namespace Dataskop.Data {
 		}
 
 		public async void OnDateFilterPressed(TimeRange timeRange) {
-			Debug.Log($"Trying to filter from {timeRange.StartTime} to {timeRange.EndTime}");
 			ShouldRefetch = false;
 			await FilterByDate(timeRange);
 		}
