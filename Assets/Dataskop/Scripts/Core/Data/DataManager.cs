@@ -364,29 +364,52 @@ namespace Dataskop.Data {
 
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
-					TimeRange searchRange = timeRange.StartTime < md.FirstMeasurementResult.Timestamp
-						? new TimeRange(md.FirstMeasurementResult.Timestamp, timeRange.EndTime) : timeRange;
+					DateTime clampedStartTime = timeRange.StartTime < md.FirstMeasurementResult.Timestamp
+						? md.FirstMeasurementResult.Timestamp : timeRange.StartTime;
+					DateTime clampedEndTime = timeRange.EndTime > md.LatestMeasurementResult.Timestamp
+						? md.LatestMeasurementResult.Timestamp : timeRange.EndTime;
 
+					TimeRange searchRange = new(clampedStartTime, clampedEndTime);
 					TimeRange[] missingRanges = TimeRangeExtensions.GetTimeRangeGaps(searchRange, md.GetAvailableTimeRanges());
 
 					if (missingRanges.Length < 1) {
 						continue;
 					}
 
-					foreach (TimeRange t in missingRanges) {ö
+					foreach (TimeRange t in missingRanges) {
 
-						MeasurementResultRange results;
 						DateTime dynamicStartTime = t.StartTime;
+						DateTime dynamicEndTime = t.EndTime;
+						bool firstCheck = true;
 
 						do {
 							destroyCancellationToken.ThrowIfCancellationRequested();
-							results = await RequestHandler.GetMeasurementResults(md, FetchAmount, dynamicStartTime, t.EndTime);
-							md.AddMeasurementResultRange(results,
-								new TimeRange(dynamicStartTime, results.Count > 0 ? results.First().Timestamp : t.EndTime));
-							dynamicStartTime = results.Count > 0
-								? results.First().Timestamp + new TimeSpan(0, 0, md.MeasuringInterval / 10)
-								: t.EndTime;
-						} while (results.Count > 0 && dynamicStartTime < t.EndTime);
+
+							MeasurementResultRange results =
+								await RequestHandler.GetMeasurementResults(md, FetchAmount, dynamicStartTime, dynamicEndTime);
+
+							if (results.Count > 0 && results.Count < FetchAmount) {
+								md.AddMeasurementResultRange(results, new TimeRange(dynamicStartTime, dynamicEndTime));
+								dynamicEndTime = dynamicStartTime;
+								continue;
+							}
+
+							if (firstCheck) {
+								firstCheck = false;
+							}
+							else {
+								dynamicEndTime = results.Count > 0 ? results.First().Timestamp : dynamicEndTime;
+							}
+
+							dynamicStartTime = results.Count > 0 ? results.Last().Timestamp : dynamicStartTime;
+
+							md.AddMeasurementResultRange(results, new TimeRange(dynamicStartTime, dynamicEndTime));
+
+							dynamicStartTime = t.StartTime;
+							dynamicEndTime = results.Count > 0 ? results.Last().Timestamp - TimeSpan.FromSeconds(1)
+								: dynamicStartTime;
+
+						} while (dynamicEndTime > t.StartTime + TimeSpan.FromSeconds(1));
 
 					}
 
@@ -395,7 +418,7 @@ namespace Dataskop.Data {
 						Debug.Log(
 							$"from {m.GetTimeRange().StartTime} to {m.GetTimeRange().EndTime} with {m.Count} results");
 					}
-					Debug.Log(" ");
+					Debug.Log(" ----- ");
 
 				}
 

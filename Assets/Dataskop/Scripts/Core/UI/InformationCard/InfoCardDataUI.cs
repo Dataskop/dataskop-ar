@@ -95,7 +95,7 @@ namespace Dataskop.UI {
 			DeviceLabel.text = focusedResult.MeasurementDefinition.DeviceId;
 			TotalMeasurementsLabel.text = focusedResult.MeasurementDefinition.TotalMeasurements.ToString();
 			FirstMeasurementLabel.text = focusedResult.MeasurementDefinition.FirstMeasurementResult.GetDate();
-			MeasurementIntervalLabel.text = $"{focusedResult.MeasurementDefinition.MeasuringInterval / 10}s";
+			MeasurementIntervalLabel.text = $"{focusedResult.MeasurementDefinition.MeasuringInterval}s";
 
 			AuthorIcon.style.backgroundImage = !string.IsNullOrEmpty(focusedResult.Author)
 				? new StyleBackground(authorRepository.AuthorSprites[focusedResult.Author])

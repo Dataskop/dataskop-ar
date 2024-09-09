@@ -28,6 +28,8 @@ namespace Dataskop.Data {
 
 		public MeasurementResult FirstMeasurementResult { get; set; }
 
+		public MeasurementResult LatestMeasurementResult => GetLatestMeasurementResult();
+
 		private float GapThreshold => MeasuringInterval / 2f;
 
 		public MeasurementDefinition(int id, MeasurementDefinitionInformation information, string additionalProperties,
@@ -35,7 +37,7 @@ namespace Dataskop.Data {
 
 			ID = id;
 			MeasurementDefinitionInformation = information;
-			MeasuringInterval = measurementInterval;
+			MeasuringInterval = measurementInterval / 10;
 
 			MeasurementType = valueType switch {
 				0 => MeasurementType.Float,
@@ -65,6 +67,8 @@ namespace Dataskop.Data {
 				AttributeId = null;
 
 			}
+
+			Debug.Log($"{ID}: {AttributeId} mit Measuring Intervall von {MeasuringInterval} Sekunden.");
 
 		}
 
@@ -116,12 +120,14 @@ namespace Dataskop.Data {
 
 		public bool IsDataGap(MeasurementResult result1, MeasurementResult result2) {
 			TimeSpan timeDiff = result1.Timestamp - result2.Timestamp;
-			TimeSpan interval = new(0, 0, MeasuringInterval / 10);
+			TimeSpan interval = new(0, 0, MeasuringInterval);
 			return Math.Truncate(Math.Abs(timeDiff.TotalSeconds)) > interval.TotalSeconds + GapThreshold;
 		}
 
 		public void AddMeasurementResultRange(MeasurementResultRange newRange, TimeRange timeRange) {
 
+			Debug.Log(
+				$"TimeRange To Be Added for {AttributeId} with ID {ID}: {timeRange.StartTime} - {timeRange.EndTime}. Amount: {newRange.Count}");
 			List<MeasurementResultRange> currentRanges = MeasurementResults.ToList();
 			newRange.SetTimeRange(timeRange);
 			currentRanges.Add(newRange);
@@ -144,23 +150,27 @@ namespace Dataskop.Data {
 				MeasurementResultRange firstRange = mergedRanges[i];
 				MeasurementResultRange secondRange = mergedRanges[i + 1];
 
-				TimeSpan timeDifference = secondRange.GetTimeRange().EndTime - firstRange.GetTimeRange().StartTime;
+				TimeRange firstTime = firstRange.GetTimeRange();
+				TimeRange secondTime = secondRange.GetTimeRange();
 
-				if (Math.Abs(timeDifference.TotalSeconds) <= MeasuringInterval / 10f) {
+				TimeSpan timeDifference = secondTime.EndTime - firstTime.StartTime;
+				double totalSeconds = Math.Abs(timeDifference.TotalSeconds);
+				double diff = Math.Abs(totalSeconds - MeasuringInterval);
+
+				if (0 <= diff && diff <= MeasuringInterval) {
+
+					bool hasDuplicate = false;
 
 					if (firstRange.Any() && secondRange.Any()) {
 
 						if (firstRange.Last() == secondRange.First()) {
-							mergedRanges[i] = new(firstRange.SkipLast(1).Concat(secondRange));
+							hasDuplicate = true;
 						}
 
 					}
-					else {
-						mergedRanges[i] = new(firstRange.Concat(secondRange));
-					}
 
-					mergedRanges[i]
-						.SetTimeRange(new TimeRange(secondRange.GetTimeRange().StartTime, firstRange.GetTimeRange().EndTime));
+					mergedRanges[i] = new(hasDuplicate ? firstRange.SkipLast(1).Concat(secondRange) : firstRange.Concat(secondRange));
+					mergedRanges[i].SetTimeRange(new TimeRange(secondRange.GetTimeRange().StartTime, firstRange.GetTimeRange().EndTime));
 					mergedRanges.RemoveAt(i + 1);
 					i--;
 

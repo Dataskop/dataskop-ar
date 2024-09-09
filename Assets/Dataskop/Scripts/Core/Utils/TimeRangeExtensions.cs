@@ -24,16 +24,30 @@ namespace Dataskop {
 				}
 
 				if (IsInTimeRange(searchRange.EndTime, availableTimeRange)) {
-					missingTimeRanges.Add(new TimeRange(previousEndTime, availableTimeRange.StartTime));
+					TimeRange newTimeRange = new(previousEndTime, availableTimeRange.StartTime);
+					if (newTimeRange.EndTime - newTimeRange.StartTime > TimeSpan.FromSeconds(1)) {
+						missingTimeRanges.Add(newTimeRange);
+					}
 					break;
 				}
 
+				if (searchRange.StartTime >= availableTimeRange.StartTime) {
+					previousEndTime = availableTimeRange.EndTime;
+					continue;
+				}
+
 				if (searchRange.EndTime <= availableTimeRange.StartTime) {
-					missingTimeRanges.Add(new TimeRange(previousEndTime, searchRange.EndTime));
+					TimeRange newTimeRange = new(previousEndTime, searchRange.EndTime);
+					if (newTimeRange.EndTime - newTimeRange.StartTime > TimeSpan.FromSeconds(1)) {
+						missingTimeRanges.Add(newTimeRange);
+					}
 				}
 				else {
-					missingTimeRanges.Add(new TimeRange(previousEndTime, availableTimeRange.StartTime));
-					previousEndTime = availableTimeRange.EndTime;
+					TimeRange newTimeRange = new(previousEndTime, availableTimeRange.StartTime);
+					if (newTimeRange.EndTime - newTimeRange.StartTime > TimeSpan.FromSeconds(1)) {
+						missingTimeRanges.Add(newTimeRange);
+						previousEndTime = availableTimeRange.EndTime;
+					}
 				}
 
 			}
