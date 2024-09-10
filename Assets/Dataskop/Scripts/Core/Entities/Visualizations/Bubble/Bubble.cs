@@ -119,7 +119,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void OnFocusedIndexChanged(MeasurementDefinition def, int index) {
 
-			if (!AllowedMeasurementTypes.Contains(DataPoint.MeasurementDefinition.MeasurementType)) {
+			if (!AllowedMeasurementTypes.Contains(def.MeasurementType)) {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
 					Text = "Value Type not supported by this visualization.",
@@ -130,7 +130,7 @@ namespace Dataskop.Entities.Visualizations {
 
 			if (!HasHistoryEnabled) {
 
-				MeasurementResult focusedResult = def.GetMeasurementResult(index);
+				MeasurementResult focusedResult = def.MeasurementResults.First()[index];
 
 				if (DataPoint.FocusedIndex != PreviousIndex) {
 					VisObjects[DataPoint.FocusedIndex] = VisObjects[PreviousIndex];
@@ -157,7 +157,7 @@ namespace Dataskop.Entities.Visualizations {
 				// VisObjects above current result
 				for (int i = 1; i < VisObjects.Length - DataPoint.FocusedIndex; i++) {
 					int targetIndex = DataPoint.FocusedIndex + i;
-					MeasurementResult newResultToAssign = def.GetMeasurementResult(targetIndex);
+					MeasurementResult newResultToAssign = def.MeasurementResults.First()[targetIndex];
 					IVisObject targetObject = VisObjects[targetIndex];
 					UpdateVisObject(targetObject, targetIndex, newResultToAssign, false, false, VisObjectStyle.Styles[0].timeMaterial);
 				}
@@ -165,12 +165,12 @@ namespace Dataskop.Entities.Visualizations {
 				// VisObjects below current result
 				for (int i = 1; i <= DataPoint.FocusedIndex; i++) {
 					int targetIndex = DataPoint.FocusedIndex - i;
-					MeasurementResult newResultToAssign = def.GetMeasurementResult(targetIndex);
+					MeasurementResult newResultToAssign = def.MeasurementResults.First()[targetIndex];
 					IVisObject targetObject = VisObjects[targetIndex];
 					UpdateVisObject(targetObject, targetIndex, newResultToAssign, false, false, VisObjectStyle.Styles[0].timeMaterial);
 				}
 
-				MeasurementResult focusedResult = def.GetMeasurementResult(DataPoint.FocusedIndex);
+				MeasurementResult focusedResult = def.MeasurementResults.First()[DataPoint.FocusedIndex];
 				UpdateVisObject(VisObjects[DataPoint.FocusedIndex], DataPoint.FocusedIndex, focusedResult, true, true,
 					IsSelected ? VisObjectStyle.Styles[0].selectionMaterial : VisObjectStyle.Styles[0].defaultMaterial);
 				PreviousIndex = DataPoint.FocusedIndex;

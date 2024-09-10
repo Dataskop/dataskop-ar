@@ -112,7 +112,7 @@ namespace Dataskop.Entities {
 			}
 
 			//TODO: Temporary second condition because no loading of additional data is happening right now.
-			if (FocusedIndex == MeasurementDefinition.MeasurementResults.Count - 1 ||
+			if (FocusedIndex == MeasurementDefinition.MeasurementResults.First().Count - 1 ||
 			    FocusedIndex == Vis.VisHistoryConfiguration.visibleHistoryCount - 1) {
 				return;
 			}
@@ -146,7 +146,7 @@ namespace Dataskop.Entities {
 
 		public void SetIndex(int index) {
 			FocusedIndex = index;
-			FocusedMeasurement = MeasurementDefinition.GetMeasurementResult(FocusedIndex);
+			FocusedMeasurement = MeasurementDefinition.MeasurementResults.First()[index];
 			FocusedIndexChanged?.Invoke(MeasurementDefinition, FocusedIndex);
 		}
 
