@@ -143,10 +143,8 @@ namespace Dataskop.Data {
 				return;
 			}
 
-			if (!LoadingIndicator.IsLoading) {
-				LoadingIndicator.Show();
-				ShouldRefetch = false;
-			}
+			ShouldRefetch = false;
+			LoadingIndicator.Show();
 
 			SelectedProject = GetAvailableProjects(Companies).FirstOrDefault(project => project.ID == projectId);
 
@@ -170,10 +168,12 @@ namespace Dataskop.Data {
 					DisplayDuration = NotificationDuration.Medium
 				});
 
+				LoadingIndicator.Hide();
 				OnProjectDataLoaded(SelectedProject);
 				return;
 			}
 
+			LoadingIndicator.Hide();
 			await GetInitialProjectMeasurements();
 			OnProjectDataLoaded(SelectedProject);
 
@@ -292,8 +292,6 @@ namespace Dataskop.Data {
 			HasLoadedProjectData?.Invoke(selectedProject);
 			projectLoaded?.Invoke(selectedProject);
 
-			LoadingIndicator.Hide();
-
 			NotificationHandler.Add(new Notification {
 				Category = NotificationCategory.Check,
 				Text = "Project loaded!",
@@ -355,11 +353,11 @@ namespace Dataskop.Data {
 		}
 
 		private async Task FilterByDate(TimeRange timeRange) {
-			LoadingIndicator.Show();
 
 			await UpdateProjectMeasurements();
 
-			// Fetch data that is missing from the current MDs according to the user request
+			LoadingIndicator.Show();
+
 			foreach (Device d in SelectedProject.Devices) {
 
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
@@ -426,6 +424,7 @@ namespace Dataskop.Data {
 
 			//HasDateFiltered?.Invoke(timeRange);
 			LoadingIndicator.Hide();
+
 		}
 
 		private async void RefetchDataTimer() {

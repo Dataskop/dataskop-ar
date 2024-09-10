@@ -35,6 +35,7 @@ namespace Dataskop.UI {
 			IsLoading = true;
 			if (loadingIndicatorUiDocument != null) {
 				loadingIndicatorUiDocument.rootVisualElement.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
+				Debug.Log("LOADING STARTED!");
 			}
 		}
 
@@ -45,6 +46,7 @@ namespace Dataskop.UI {
 
 			if (loadingIndicatorUiDocument != null) {
 				loadingIndicatorUiDocument.rootVisualElement.style.visibility = new StyleEnum<Visibility>(Visibility.Hidden);
+				Debug.Log("LOADING FINISHED!");
 			}
 		}
 
