@@ -363,9 +363,12 @@ namespace Dataskop.Data {
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
 					DateTime clampedStartTime = timeRange.StartTime < md.FirstMeasurementResult.Timestamp
-						? md.FirstMeasurementResult.Timestamp : timeRange.StartTime;
+						? md.FirstMeasurementResult.Timestamp
+						: timeRange.StartTime;
+
 					DateTime clampedEndTime = timeRange.EndTime > md.LatestMeasurementResult.Timestamp
-						? md.LatestMeasurementResult.Timestamp : timeRange.EndTime;
+						? md.LatestMeasurementResult.Timestamp
+						: timeRange.EndTime;
 
 					TimeRange searchRange = new(clampedStartTime, clampedEndTime);
 					TimeRange[] missingRanges = TimeRangeExtensions.GetTimeRangeGaps(searchRange, md.GetAvailableTimeRanges());

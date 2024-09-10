@@ -144,7 +144,7 @@ namespace Dataskop.Entities.Visualizations {
 				// VisObjects above current result
 				for (int i = 1; i < VisObjects.Length - DataPoint.FocusedIndex; i++) {
 					int targetIndex = DataPoint.FocusedIndex + i;
-					MeasurementResult newResultToAssign =  def.MeasurementResults.First()[targetIndex];
+					MeasurementResult newResultToAssign = def.MeasurementResults.First()[targetIndex];
 					IVisObject targetObject = VisObjects[targetIndex];
 					UpdateVisObject(targetObject, targetIndex, newResultToAssign, false, false, style.Styles[0].timeMaterial,
 						style.historyFillMaterial);
@@ -153,7 +153,7 @@ namespace Dataskop.Entities.Visualizations {
 				// VisObjects below current result
 				for (int i = 1; i <= DataPoint.FocusedIndex; i++) {
 					int targetIndex = DataPoint.FocusedIndex - i;
-					MeasurementResult newResultToAssign =  def.MeasurementResults.First()[targetIndex];
+					MeasurementResult newResultToAssign = def.MeasurementResults.First()[targetIndex];
 					IVisObject targetObject = VisObjects[targetIndex];
 					UpdateVisObject(targetObject, targetIndex, newResultToAssign, false, false, style.Styles[0].timeMaterial,
 						style.historyFillMaterial);
