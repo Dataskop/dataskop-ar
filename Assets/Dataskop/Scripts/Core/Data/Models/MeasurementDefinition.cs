@@ -182,20 +182,9 @@ namespace Dataskop.Data {
 		}
 
 		public TimeRange[] GetAvailableTimeRanges() {
-
-			TimeRange[] availableRanges = Array.Empty<TimeRange>();
-
-			if (MeasurementResults != null) {
-				availableRanges = new TimeRange[MeasurementResults.Count];
-
-				for (int i = 0; i < availableRanges.Length; i++) {
-					var rangeTime = MeasurementResults[i].GetTimeRange();
-					availableRanges[i] = new TimeRange(rangeTime.StartTime, rangeTime.EndTime);
-				}
-
-			}
-
-			return availableRanges;
+			return MeasurementResults != null 
+				? MeasurementResults.Select(it => it.GetTimeRange()).ToArray() 
+				: Array.Empty<TimeRange>();
 		}
 
 		public IReadOnlyList<MeasurementResultRange> ReplaceMeasurementResultRange(int index, MeasurementResultRange newRange) {
