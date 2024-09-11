@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1886221045724959987}
   - component: {fileID: 2504724823092161608}
   m_Layer: 11
-  m_Name: MinimapIcon
+  m_Name: MapIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 1961250761813221214}
   - component: {fileID: 6685061376603004907}
   m_Layer: 11
-  m_Name: VisIcon
+  m_Name: MapIconVis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -235,7 +235,7 @@ GameObject:
   - component: {fileID: 101100148435399092}
   - component: {fileID: 4490306367903162614}
   m_Layer: 11
-  m_Name: MinimapIcon_Border
+  m_Name: MapIconBorder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
