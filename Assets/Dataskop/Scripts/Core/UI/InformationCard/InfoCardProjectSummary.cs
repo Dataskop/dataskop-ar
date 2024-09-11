@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using Dataskop.Data;
 using UnityEngine;
@@ -12,15 +9,21 @@ namespace Dataskop.UI {
 
 		[SerializeField] private UIDocument infoCardDoc;
 		[SerializeField] private DataPointsManager dataPointsManager;
-		
+
 		private VisualElement ProjectSummaryContainer { get; set; }
-		
+
 		private Label ProjectName { get; set; }
+
 		private Label ProjectDescription { get; set; }
+
 		private Label ProjectCreationDate { get; set; }
+
 		private Label ProjectTotalDevices { get; set; }
+
 		private Label ProjectDevicesNearbyLabel { get; set; }
+
 		private Label ProjectDevicesNearbyValue { get; set; }
+
 		private Label ProjectMeasurements { get; set; }
 
 		private void Awake() {
@@ -40,7 +43,7 @@ namespace Dataskop.UI {
 			ProjectCreationDate.text = project.Information.CreatedDate.ToShortDateString();
 			ProjectTotalDevices.text = project.Devices.Count.ToString("00");
 			ProjectDevicesNearbyLabel.text = "Devices near you (within " + dataPointsManager.NearbyDevicesDistance + "m radius):";
-			
+
 			string[] array = new string[project.Properties.Attributes.Count];
 			for (int i = 0; i < array.Length; i++) {
 				array[i] = project.Properties.Attributes.ToArray()[i].Label;

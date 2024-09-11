@@ -88,7 +88,7 @@ namespace Dataskop.Data {
 						x.GetTimeRange().StartTime <= timeRange.StartTime && x.GetTimeRange().EndTime >= timeRange.EndTime);
 
 				if (foundRange == null) {
-					Debug.Log($"Could not find MeasurementResults for given TimeRange.");
+					Debug.Log("Could not find MeasurementResults for given TimeRange.");
 				}
 
 				return foundRange;
@@ -169,7 +169,9 @@ namespace Dataskop.Data {
 
 					}
 
-					mergedRanges[i] = new(hasDuplicate ? firstRange.SkipLast(1).Concat(secondRange) : firstRange.Concat(secondRange));
+					mergedRanges[i] =
+						new MeasurementResultRange(hasDuplicate ? firstRange.SkipLast(1).Concat(secondRange)
+							: firstRange.Concat(secondRange));
 					mergedRanges[i].SetTimeRange(new TimeRange(secondRange.GetTimeRange().StartTime, firstRange.GetTimeRange().EndTime));
 					mergedRanges.RemoveAt(i + 1);
 					i--;
@@ -182,8 +184,8 @@ namespace Dataskop.Data {
 		}
 
 		public TimeRange[] GetAvailableTimeRanges() {
-			return MeasurementResults != null 
-				? MeasurementResults.Select(it => it.GetTimeRange()).ToArray() 
+			return MeasurementResults != null
+				? MeasurementResults.Select(it => it.GetTimeRange()).ToArray()
 				: Array.Empty<TimeRange>();
 		}
 

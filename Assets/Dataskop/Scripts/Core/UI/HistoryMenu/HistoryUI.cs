@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using Dataskop.Data;
 using Dataskop.Entities;
 using UnityEngine;
@@ -20,6 +18,9 @@ namespace Dataskop.UI {
 
 		[Header("References")]
 		[SerializeField] private UIDocument historyMenuDoc;
+		private string currentAttributeId;
+
+		private string currentDeviceId;
 
 		private VisualElement Root { get; set; }
 
@@ -52,9 +53,6 @@ namespace Dataskop.UI {
 		private Label StartRangeLabel { get; set; }
 
 		private DataPoint SelectedDataPoint { get; set; }
-
-		private string currentDeviceId;
-		private string currentAttributeId;
 
 		private void Start() {
 			SetVisibility(HistoryContainer, false);
@@ -316,13 +314,13 @@ namespace Dataskop.UI {
 				int numberDaysCurrentRect = timeRangeCurrentRect.Span.Days + (timeRangeCurrentRect.Span.Days == 0 ? 1 : 0);
 				int numberDaysCurrentRectRange = timeRangeAllDataEndTimeCurrentRange.Span.Days;
 
-				float calculatedWidth = ((600 - 20) / MinMaxSlider.highLimit) * numberDaysCurrentRect;
+				float calculatedWidth = (600 - 20) / MinMaxSlider.highLimit * numberDaysCurrentRect;
 
-				VisualElement rect = new VisualElement {
+				VisualElement rect = new() {
 					style = {
 						position = Position.Absolute,
 						left =
-							((600 - 10) / MinMaxSlider.highLimit) *
+							(600 - 10) / MinMaxSlider.highLimit *
 							(MinMaxSlider.highLimit -
 							 numberDaysCurrentRectRange) +
 							10, // calculate left position (because of transform) to be drawn from EndTime of currentRange up
@@ -333,8 +331,8 @@ namespace Dataskop.UI {
 						backgroundColor = new StyleColor(new Color32(219, 105, 11, 200))
 					}
 				};
-				rect.style.width = (rect.style.left.value.value + rect.style.width.value.value > 590 ? calculatedWidth - 10
-					: calculatedWidth);
+				rect.style.width = rect.style.left.value.value + rect.style.width.value.value > 590 ? calculatedWidth - 10
+					: calculatedWidth;
 				RectContainer.Add(rect);
 			}
 		}

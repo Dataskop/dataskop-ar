@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Dataskop.Entities;
@@ -32,9 +31,9 @@ namespace Dataskop.Data {
 		[Header("Values")]
 		[SerializeField] private float nearbyDevicesDistance;
 
-		public float NearbyDevicesDistance => nearbyDevicesDistance;
-
 		private bool hasHistoryEnabled;
+
+		public float NearbyDevicesDistance => nearbyDevicesDistance;
 
 		/// <summary>
 		///     List of currently placed markers in the AR world.

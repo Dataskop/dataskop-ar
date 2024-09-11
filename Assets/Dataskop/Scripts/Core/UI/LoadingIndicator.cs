@@ -31,23 +31,16 @@ namespace Dataskop.UI {
 
 		public void Show() {
 			if (indicator == null) return;
-
+			if (loadingIndicatorUiDocument == null) return;
 			IsLoading = true;
-			if (loadingIndicatorUiDocument != null) {
-				loadingIndicatorUiDocument.rootVisualElement.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
-				Debug.Log("LOADING STARTED!");
-			}
+			loadingIndicatorUiDocument.rootVisualElement.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
 		}
 
 		public void Hide() {
 			if (indicator == null) return;
-
+			if (loadingIndicatorUiDocument == null) return;
 			IsLoading = false;
-
-			if (loadingIndicatorUiDocument != null) {
-				loadingIndicatorUiDocument.rootVisualElement.style.visibility = new StyleEnum<Visibility>(Visibility.Hidden);
-				Debug.Log("LOADING FINISHED!");
-			}
+			loadingIndicatorUiDocument.rootVisualElement.style.visibility = new StyleEnum<Visibility>(Visibility.Hidden);
 		}
 
 	}
