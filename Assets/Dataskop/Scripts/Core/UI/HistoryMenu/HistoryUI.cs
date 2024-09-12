@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using Dataskop.Data;
 using Dataskop.Entities;
 using UnityEngine;
@@ -19,6 +18,9 @@ namespace Dataskop.UI {
 
 		[Header("References")]
 		[SerializeField] private UIDocument historyMenuDoc;
+		private string currentAttributeId;
+
+		private string currentDeviceId;
 
 		private VisualElement Root { get; set; }
 
@@ -51,9 +53,6 @@ namespace Dataskop.UI {
 		private Label StartRangeLabel { get; set; }
 
 		private DataPoint SelectedDataPoint { get; set; }
-
-		private string currentDeviceId;
-		private string currentAttributeId;
 
 		private void Start() {
 			SetVisibility(HistoryContainer, false);
@@ -175,9 +174,14 @@ namespace Dataskop.UI {
 			TimeRange overAllRange = new(firstResult.Timestamp, lastResult.Timestamp);
 			MinMaxSlider.highLimit = overAllRange.Span.Days;
 
+			DateTime clampedStartTime = new(def.GetLatestRange().GetTimeRange().StartTime.Year,
+				def.GetLatestRange().GetTimeRange().StartTime.Month, def.GetLatestRange().GetTimeRange().StartTime.Day);
+			DateTime clampedEndTime = new(lastResult.Timestamp.Year,
+				lastResult.Timestamp.Month, lastResult.Timestamp.Day);
+
 			MinMaxSlider.minValue = 0;
-			TimeRange cachedData = new(def.GetLatestRange().GetTimeRange().StartTime, lastResult.Timestamp);
-			MinMaxSlider.maxValue = (int)Math.Ceiling(cachedData.Span.TotalDays);
+			TimeRange cachedData = new(clampedStartTime, clampedEndTime);
+			MinMaxSlider.maxValue = cachedData.Span.Days;
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
@@ -298,31 +302,37 @@ namespace Dataskop.UI {
 			MeasurementResult firstResult = def.FirstMeasurementResult;
 
 			foreach (MeasurementResultRange measurementResultRange in def.MeasurementResults) {
-				TimeRange timeRangeCurrentRect = new(measurementResultRange.GetTimeRange().StartTime,
-					measurementResultRange.GetTimeRange().EndTime);
-				TimeRange timeRangeAllDataEndTimeCurrentRange = new(firstResult.Timestamp, measurementResultRange.GetTimeRange().EndTime);
+				DateTime clampedStartTime = new(measurementResultRange.GetTimeRange().StartTime.Year,
+					measurementResultRange.GetTimeRange().StartTime.Month, measurementResultRange.GetTimeRange().StartTime.Day);
+				DateTime clampedEndTime = new(measurementResultRange.GetTimeRange().EndTime.Year,
+					measurementResultRange.GetTimeRange().EndTime.Month, measurementResultRange.GetTimeRange().EndTime.Day);
+				TimeRange timeRangeCurrentRect = new(clampedStartTime,
+					clampedEndTime);
+				TimeRange timeRangeAllDataEndTimeCurrentRange =
+					new(new DateTime(firstResult.Timestamp.Year, firstResult.Timestamp.Month, firstResult.Timestamp.Day), clampedEndTime);
 
-				int numberDaysCurrentRect = (int)Math.Round(timeRangeCurrentRect.Span.TotalDays + 1);
+				int numberDaysCurrentRect = timeRangeCurrentRect.Span.Days + (timeRangeCurrentRect.Span.Days == 0 ? 1 : 0);
 				int numberDaysCurrentRectRange = timeRangeAllDataEndTimeCurrentRange.Span.Days;
 
-				Debug.Log(numberDaysCurrentRect);
-				int calculatedWidth = (int)Math.Ceiling((600 / (MinMaxSlider.highLimit + 1))) * numberDaysCurrentRect;
+				float calculatedWidth = (600 - 20) / MinMaxSlider.highLimit * numberDaysCurrentRect;
 
-				VisualElement rect = new VisualElement {
+				VisualElement rect = new() {
 					style = {
 						position = Position.Absolute,
 						left =
-							(600 / (MinMaxSlider.highLimit + 1)) *
+							(600 - 10) / MinMaxSlider.highLimit *
 							(MinMaxSlider.highLimit -
-							 numberDaysCurrentRectRange), // calculate left position (because of transform) to be drawn from EndTime of currentRange up
-						width =
-							calculatedWidth > 600 ? 600 : calculatedWidth, // calculate width (because of transform) to correspond to number of days
+							 numberDaysCurrentRectRange) +
+							10, // calculate left position (because of transform) to be drawn from EndTime of currentRange up
+						width = calculatedWidth, // calculate width (because of transform) to correspond to number of days
 						height = 10,
 						marginTop = -5,
 						marginLeft = 1,
-						backgroundColor = new StyleColor(new Color32(219,105,11, 200))
+						backgroundColor = new StyleColor(new Color32(219, 105, 11, 200))
 					}
 				};
+				rect.style.width = rect.style.left.value.value + rect.style.width.value.value > 590 ? calculatedWidth - 10
+					: calculatedWidth;
 				RectContainer.Add(rect);
 			}
 		}

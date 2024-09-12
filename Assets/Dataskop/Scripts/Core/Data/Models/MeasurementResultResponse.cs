@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Dataskop.Data {
 
 	public class MeasurementResultsResponse {

@@ -12,23 +12,19 @@ namespace Dataskop.UI {
 	public class DatePicker : MonoBehaviour {
 
 		public UnityEvent<TimeRange>? dateFilterButtonPressed;
+		private Button cancelButton = null!;
+		private readonly CultureInfo culture = AppOptions.DateCulture;
 
 		private bool dateFilterActive;
+		private Button dateFilterButton = null!;
+		private VisualElement dateFromContainer = null!;
+		private TextField dateFromInput = null!;
+		private VisualElement dateToContainer = null!;
+		private TextField dateToInput = null!;
+		private VisualElement dialogWindow = null!;
 		private DateTime? fromDate;
 		private DateTime? toDate;
-		private VisualElement dateFromContainer = null!;
-		private VisualElement dateToContainer = null!;
-		private TextField dateFromInput = null!;
-		private TextField dateToInput = null!;
-		private Button dateFilterButton = null!;
-		private CultureInfo culture = AppOptions.DateCulture;
-		private VisualElement dialogWindow = null!;
-		private Button cancelButton = null!;
 		private Button proceedButton = null!;
-
-		public void OnProjectLoaded() =>
-			GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("DatePicker")
-				.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
 
 		private void Awake() {
 			VisualElement root = GetComponent<UIDocument>().rootVisualElement;
@@ -43,6 +39,11 @@ namespace Dataskop.UI {
 			dialogWindow = root.Q<VisualElement>("Dialog");
 			cancelButton = dialogWindow.Q<Button>("CancelButton");
 			proceedButton = dialogWindow.Q<Button>("ProceedButton");
+		}
+
+		public void OnProjectLoaded() {
+			GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("DatePicker")
+				.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
 		}
 
 		private void OnDateInputFromChanged(ChangeEvent<string> e) {

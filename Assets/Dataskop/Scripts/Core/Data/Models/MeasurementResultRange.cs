@@ -14,6 +14,12 @@ namespace Dataskop {
 
 		private DateTime EndTime { get; set; }
 
+		public MeasurementResultRange(IEnumerable<MeasurementResult> newList) {
+			list = newList.ToList();
+		}
+
+#region IList<MeasurementResult> Members
+
 		public MeasurementResult this[int index] {
 			get => list[index];
 			set => list[index] = value;
@@ -22,19 +28,6 @@ namespace Dataskop {
 		public int Count => list.Count;
 
 		public bool IsReadOnly => list.IsReadOnly;
-
-		public TimeRange GetTimeRange() {
-			return new TimeRange(StartTime, EndTime);
-		}
-
-		public void SetTimeRange(TimeRange newRange) {
-			StartTime = newRange.StartTime;
-			EndTime = newRange.EndTime;
-		}
-
-		public MeasurementResultRange(IEnumerable<MeasurementResult> newList) {
-			list = newList.ToList();
-		}
 
 		public IEnumerator<MeasurementResult> GetEnumerator() {
 			return list.GetEnumerator();
@@ -74,6 +67,17 @@ namespace Dataskop {
 
 		public void RemoveAt(int index) {
 			list.RemoveAt(index);
+		}
+
+#endregion
+
+		public TimeRange GetTimeRange() {
+			return new TimeRange(StartTime, EndTime);
+		}
+
+		public void SetTimeRange(TimeRange newRange) {
+			StartTime = newRange.StartTime;
+			EndTime = newRange.EndTime;
 		}
 
 	}

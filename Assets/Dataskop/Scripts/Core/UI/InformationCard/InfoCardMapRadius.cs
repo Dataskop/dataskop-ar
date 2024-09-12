@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Dataskop.Data;
 using UnityEngine;
 
@@ -11,10 +9,10 @@ namespace Dataskop {
 		[SerializeField] private DataPointsManager dataPointsManager;
 
 		private float diameter;
-		
+
 		private void Awake() {
 			spriteRenderer.enabled = false;
-			
+
 			diameter = dataPointsManager.NearbyDevicesDistance * 2;
 		}
 
@@ -22,6 +20,7 @@ namespace Dataskop {
 			spriteRenderer.enabled = true;
 			spriteRenderer.transform.localScale = new Vector3(diameter, diameter, 1);
 		}
+
 	}
 
 }

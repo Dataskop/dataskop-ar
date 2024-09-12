@@ -41,6 +41,11 @@ namespace Dataskop.Data {
 
 		public bool ShouldRefetch { get; set; }
 
+		private void Awake() {
+			FetchAmount = PlayerPrefs.HasKey("fetchAmount") ? PlayerPrefs.GetInt("fetchAmount") : 2000;
+			fetchInterval = PlayerPrefs.HasKey("fetchInterval") ? PlayerPrefs.GetInt("fetchInterval") : 10000;
+		}
+
 		private void OnDisable() {
 			ShouldRefetch = false;
 			FetchTimer?.Stop();
@@ -64,11 +69,6 @@ namespace Dataskop.Data {
 		public event Action HasUpdatedMeasurementResults;
 
 		public event Action<TimeRange> HasDateFiltered;
-
-		private void Awake() {
-			FetchAmount = PlayerPrefs.HasKey("fetchAmount") ? PlayerPrefs.GetInt("fetchAmount") : 2000;
-			fetchInterval = PlayerPrefs.HasKey("fetchInterval") ? PlayerPrefs.GetInt("fetchInterval") : 10000;
-		}
 
 		public void Initialize() {
 
@@ -355,7 +355,6 @@ namespace Dataskop.Data {
 		private async Task FilterByDate(TimeRange timeRange) {
 
 			await UpdateProjectMeasurements();
-
 			LoadingIndicator.Show();
 
 			foreach (Device d in SelectedProject.Devices) {
@@ -414,18 +413,20 @@ namespace Dataskop.Data {
 
 					}
 
+					/*
 					Debug.Log($"Result Ranges in {md.DeviceId} - {md.AttributeId} ({md.ID}):");
 					foreach (var m in md.MeasurementResults) {
 						Debug.Log(
 							$"from {m.GetTimeRange().StartTime} to {m.GetTimeRange().EndTime} with {m.Count} results");
 					}
 					Debug.Log(" ----- ");
+					*/
 
 				}
 
 			}
 
-			//HasDateFiltered?.Invoke(timeRange);
+			HasDateFiltered?.Invoke(timeRange);
 			LoadingIndicator.Hide();
 
 		}
