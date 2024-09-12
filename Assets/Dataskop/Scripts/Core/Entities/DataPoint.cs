@@ -97,9 +97,9 @@ namespace Dataskop.Entities {
 
 		public void OnDateFiltered(TimeRange timeRange) {
 
-			if (MeasurementDefinition.GetMeasurementResults(timeRange) != null) {
-				MeasurementResult[] filteredResults = MeasurementDefinition.GetMeasurementResults(timeRange).ToArray();
-				Debug.Log(filteredResults.Length.ToString());
+			if (MeasurementDefinition.GetRange(timeRange) != null) {
+				MeasurementResultRange filteredRange = MeasurementDefinition.GetRange(timeRange);
+				Debug.Log(filteredRange.Count);
 			}
 
 		}

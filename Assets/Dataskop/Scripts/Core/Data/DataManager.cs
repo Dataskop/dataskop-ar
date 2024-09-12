@@ -7,6 +7,7 @@ using Dataskop.UI;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
+using Debug = UnityEngine.Debug;
 
 namespace Dataskop.Data {
 
@@ -425,7 +426,7 @@ namespace Dataskop.Data {
 
 			}
 
-			//HasDateFiltered?.Invoke(timeRange);
+			HasDateFiltered?.Invoke(timeRange);
 			LoadingIndicator.Hide();
 
 		}
