@@ -324,8 +324,10 @@ namespace Dataskop.UI {
 		}
 
 		private void CreateCacheRect(MeasurementDefinition def) {
+			// Clear the container for fresh data
 			RectContainer.Clear();
 			MeasurementResult firstResult = def.FirstMeasurementResult;
+			DateTime firstResultTimestampClamped = ClampTimeStamp(firstResult.Timestamp);
 
 			// Slider Data
 			float highLimit = MinMaxSlider.highLimit;
@@ -336,25 +338,23 @@ namespace Dataskop.UI {
 				DateTime clampedEndTime = ClampTimeStamp(measurementResultRange.GetTimeRange().EndTime);
 
 				TimeRange timeRangeCurrentRect = new(clampedStartTime, clampedEndTime);
-				TimeRange timeRangeAllDataEndTimeCurrentRange = new(ClampTimeStamp(firstResult.Timestamp), clampedEndTime);
+				TimeRange timeRangeAllDataEndTimeCurrentRange = new(firstResultTimestampClamped, clampedEndTime);
 
-				Debug.Log("Hours: " + timeRangeCurrentRect.Span.TotalHours);
+				// Calculate the number of time units (hours or days) for the current rect and full range
+				double totalUnitsCurrentRect = isHourly ? timeRangeCurrentRect.Span.TotalHours : timeRangeCurrentRect.Span.Days;
+				double totalUnitsCurrentRectRange = isHourly ? timeRangeAllDataEndTimeCurrentRange.Span.TotalHours
+					: timeRangeAllDataEndTimeCurrentRange.Span.Days;
 
-				int numberDaysCurrentRect = isHourly
-					? (int)timeRangeCurrentRect.Span.TotalHours + (timeRangeCurrentRect.Span.TotalHours == 0 ? 1 : 0)
-					: timeRangeCurrentRect.Span.Days + (timeRangeCurrentRect.Span.Days == 0 ? 1 : 0);
-				int numberDaysCurrentRectRange = isHourly ? (int)timeRangeAllDataEndTimeCurrentRange.Span.TotalHours : timeRangeAllDataEndTimeCurrentRange.Span.Days;
+				// Ensure minimum value of 1 for totalUnitsCurrentRect
+				int numberUnitsCurrentRect = (int)totalUnitsCurrentRect + (totalUnitsCurrentRect == 0 ? 1 : 0);
 
-				float calculatedWidth = (sliderHeight - 20) / highLimit * numberDaysCurrentRect;
+				float calculatedWidth = (sliderHeight - 20) / highLimit * numberUnitsCurrentRect;
+				StyleLength leftPosition = (StyleLength)((sliderHeight - 10) / highLimit * (highLimit - totalUnitsCurrentRectRange) + 10);
 
 				VisualElement rect = new() {
 					style = {
 						position = Position.Absolute,
-						left =
-							(sliderHeight - 10) / highLimit *
-							(highLimit -
-							 numberDaysCurrentRectRange) +
-							10, // calculate left position (because of transform) to be drawn from EndTime of currentRange up
+						left = leftPosition, // calculate left position (because of transform) to be drawn from EndTime of currentRange up
 						width = calculatedWidth, // calculate width (because of transform) to correspond to number of days
 						height = 10,
 						marginTop = -5,
