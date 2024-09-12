@@ -160,6 +160,10 @@ namespace Dataskop.UI {
 			CurrentTimeLabel.text = focusedResult.GetDate();
 		}
 
+		private DateTime ClampTimeStamp(DateTime timeStamp) {
+			return new(timeStamp.Year, timeStamp.Month, timeStamp.Day);
+		}
+
 		private void UpdateMinMaxSlider(MeasurementDefinition def) {
 			MeasurementResult firstResult = def.FirstMeasurementResult;
 			MeasurementResult lastResult = def.GetLatestMeasurementResult();
@@ -173,11 +177,9 @@ namespace Dataskop.UI {
 			MinMaxSlider.lowLimit = 0;
 			TimeRange overAllRange = new(firstResult.Timestamp, lastResult.Timestamp);
 			MinMaxSlider.highLimit = overAllRange.Span.Days;
-
-			DateTime clampedStartTime = new(def.GetLatestRange().GetTimeRange().StartTime.Year,
-				def.GetLatestRange().GetTimeRange().StartTime.Month, def.GetLatestRange().GetTimeRange().StartTime.Day);
-			DateTime clampedEndTime = new(lastResult.Timestamp.Year,
-				lastResult.Timestamp.Month, lastResult.Timestamp.Day);
+			
+			DateTime clampedStartTime = ClampTimeStamp(def.GetLatestRange().GetTimeRange().StartTime);
+			DateTime clampedEndTime = ClampTimeStamp(lastResult.Timestamp);
 
 			MinMaxSlider.minValue = 0;
 			TimeRange cachedData = new(clampedStartTime, clampedEndTime);
@@ -302,10 +304,10 @@ namespace Dataskop.UI {
 			MeasurementResult firstResult = def.FirstMeasurementResult;
 
 			foreach (MeasurementResultRange measurementResultRange in def.MeasurementResults) {
-				DateTime clampedStartTime = new(measurementResultRange.GetTimeRange().StartTime.Year,
-					measurementResultRange.GetTimeRange().StartTime.Month, measurementResultRange.GetTimeRange().StartTime.Day);
-				DateTime clampedEndTime = new(measurementResultRange.GetTimeRange().EndTime.Year,
-					measurementResultRange.GetTimeRange().EndTime.Month, measurementResultRange.GetTimeRange().EndTime.Day);
+				DateTime clampedStartTime = ClampTimeStamp(measurementResultRange.GetTimeRange().StartTime);
+				DateTime clampedEndTime = ClampTimeStamp(measurementResultRange.GetTimeRange().EndTime);
+				
+				
 				TimeRange timeRangeCurrentRect = new(clampedStartTime,
 					clampedEndTime);
 				TimeRange timeRangeAllDataEndTimeCurrentRange =
