@@ -54,6 +54,8 @@ namespace Dataskop.UI {
 
 		private DataPoint SelectedDataPoint { get; set; }
 
+		private bool isHourly = true;
+
 		private void Start() {
 			SetVisibility(HistoryContainer, false);
 			SetVisibility(RangeContainer, false);
@@ -161,7 +163,17 @@ namespace Dataskop.UI {
 		}
 
 		private DateTime ClampTimeStamp(DateTime timeStamp) {
+			if (isHourly) {
+				return new DateTime(timeStamp.Year, timeStamp.Month, timeStamp.Day, timeStamp.Hour, 0, 0);
+			}
 			return new(timeStamp.Year, timeStamp.Month, timeStamp.Day);
+		}
+
+		private string ShortTimeStamp(DateTime timeStamp) {
+			if (isHourly) {
+				return ClampTimeStamp(timeStamp).ToString("dd.MM. HH:mm");
+			}
+			return timeStamp.ToString(AppOptions.DateCulture).Remove(6, 13);
 		}
 
 		private void UpdateMinMaxSlider(MeasurementDefinition def) {
@@ -171,19 +183,19 @@ namespace Dataskop.UI {
 			UltimateStartTime.text = firstResult.GetShortDate();
 			UltimateEndTime.text = lastResult.GetShortDate();
 
-			StartRangeLabel.text = def.GetLatestRange().GetTimeRange().StartTime.ToString(AppOptions.DateCulture).Remove(6, 13);
-			EndRangeLabel.text = def.GetLatestRange().GetTimeRange().EndTime.ToString(AppOptions.DateCulture).Remove(6, 13);
+			StartRangeLabel.text = ShortTimeStamp(def.GetLatestRange().GetTimeRange().StartTime);
+			EndRangeLabel.text = ShortTimeStamp(def.GetLatestRange().GetTimeRange().EndTime);
 
 			MinMaxSlider.lowLimit = 0;
 			TimeRange overAllRange = new(firstResult.Timestamp, lastResult.Timestamp);
-			MinMaxSlider.highLimit = overAllRange.Span.Days;
+			MinMaxSlider.highLimit = isHourly ? (float)overAllRange.Span.TotalHours : overAllRange.Span.Days;
 
 			DateTime clampedStartTime = ClampTimeStamp(def.GetLatestRange().GetTimeRange().StartTime);
 			DateTime clampedEndTime = ClampTimeStamp(lastResult.Timestamp);
 
 			MinMaxSlider.minValue = 0;
 			TimeRange cachedData = new(clampedStartTime, clampedEndTime);
-			MinMaxSlider.maxValue = cachedData.Span.Days;
+			MinMaxSlider.maxValue = isHourly ? (float)cachedData.Span.TotalHours : cachedData.Span.Days;
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
@@ -220,11 +232,23 @@ namespace Dataskop.UI {
 		}
 
 		private void AdjustTopDateLabelPositions() {
-			StartRangeLabel.style.left = TopDragger.localBound.xMax - TopDragger.resolvedStyle.width - 25;
+			if (isHourly) {
+				StartRangeLabel.style.left = TopDragger.localBound.xMax - TopDragger.resolvedStyle.width - 50;
+				StartRangeLabel.style.top = 70;
+			}
+			else {
+				StartRangeLabel.style.left = TopDragger.localBound.xMax - TopDragger.resolvedStyle.width - 25;
+			}
 		}
 
 		private void AdjustBottomDateLabelPositions() {
-			EndRangeLabel.style.left = BottomDragger.localBound.xMax - BottomDragger.resolvedStyle.width - 25;
+			if (isHourly) {
+				EndRangeLabel.style.left = BottomDragger.localBound.xMax - BottomDragger.resolvedStyle.width - 50;
+				EndRangeLabel.style.top = 70;
+			}
+			else {
+				EndRangeLabel.style.left = BottomDragger.localBound.xMax - BottomDragger.resolvedStyle.width - 25;
+			}
 		}
 
 		private void SetVisibility(VisualElement element, bool isVisible) {
@@ -311,13 +335,15 @@ namespace Dataskop.UI {
 				DateTime clampedStartTime = ClampTimeStamp(measurementResultRange.GetTimeRange().StartTime);
 				DateTime clampedEndTime = ClampTimeStamp(measurementResultRange.GetTimeRange().EndTime);
 
-				TimeRange timeRangeCurrentRect = new(clampedStartTime,
-					clampedEndTime);
-				TimeRange timeRangeAllDataEndTimeCurrentRange =
-					new(new DateTime(firstResult.Timestamp.Year, firstResult.Timestamp.Month, firstResult.Timestamp.Day), clampedEndTime);
+				TimeRange timeRangeCurrentRect = new(clampedStartTime, clampedEndTime);
+				TimeRange timeRangeAllDataEndTimeCurrentRange = new(ClampTimeStamp(firstResult.Timestamp), clampedEndTime);
 
-				int numberDaysCurrentRect = timeRangeCurrentRect.Span.Days + (timeRangeCurrentRect.Span.Days == 0 ? 1 : 0);
-				int numberDaysCurrentRectRange = timeRangeAllDataEndTimeCurrentRange.Span.Days;
+				Debug.Log("Hours: " + timeRangeCurrentRect.Span.TotalHours);
+
+				int numberDaysCurrentRect = isHourly
+					? (int)timeRangeCurrentRect.Span.TotalHours + (timeRangeCurrentRect.Span.TotalHours == 0 ? 1 : 0)
+					: timeRangeCurrentRect.Span.Days + (timeRangeCurrentRect.Span.Days == 0 ? 1 : 0);
+				int numberDaysCurrentRectRange = isHourly ? (int)timeRangeAllDataEndTimeCurrentRange.Span.TotalHours : timeRangeAllDataEndTimeCurrentRange.Span.Days;
 
 				float calculatedWidth = (sliderHeight - 20) / highLimit * numberDaysCurrentRect;
 
