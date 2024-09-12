@@ -83,20 +83,6 @@ namespace Dataskop.Data {
 				x.GetTimeRange().StartTime >= timeRange.StartTime && x.GetTimeRange().EndTime <= timeRange.EndTime);
 		}
 
-		public MeasurementResult GetMeasurementResult(int index) {
-			return GetLatestMeasurementResult();
-		}
-
-		public int? GetIndexOfMeasurementResult(MeasurementResult mr) {
-
-			if (GetAllResults().Contains(mr)) {
-				return Array.IndexOf(MeasurementResults.ToArray(), mr);
-			}
-
-			return null;
-
-		}
-
 		public bool IsDataGap(MeasurementResult result1, MeasurementResult result2) {
 			TimeSpan timeDiff = result1.Timestamp - result2.Timestamp;
 			TimeSpan interval = new(0, 0, MeasuringInterval);
@@ -176,10 +162,6 @@ namespace Dataskop.Data {
 				.OrderByDescending(mrr => mrr.GetTimeRange().StartTime)
 				.ThenByDescending(mrr => mrr.GetTimeRange().EndTime)
 				.ToList();
-		}
-
-		private IEnumerable<MeasurementResult> GetAllResults() {
-			return MeasurementResults.SelectMany(x => x).ToArray();
 		}
 
 	}

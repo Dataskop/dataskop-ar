@@ -79,7 +79,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisualizationType Type { get; set; }
 
-		public void Initialize(DataPoint dp) {
+		public void Initialize(DataPoint dp, MeasurementResultRange resultRange) {
 
 			DataPoint = dp;
 			VisOrigin = transform;
@@ -280,6 +280,10 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public void OnMeasurementResultsUpdated(int newIndex) {
+			OnFocusedIndexChanged(DataPoint.MeasurementDefinition, newIndex);
+		}
+
+		public void SetMeasurementResultRange(MeasurementResultRange newRange) {
 			throw new NotImplementedException();
 		}
 

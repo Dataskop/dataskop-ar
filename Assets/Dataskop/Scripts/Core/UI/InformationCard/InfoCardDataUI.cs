@@ -58,7 +58,7 @@ namespace Dataskop.UI {
 		public void UpdateDataPointData(DataPoint dp) {
 
 			if (SelectedDataPoint != null) {
-				SelectedDataPoint.FocusedIndexChanged -= UpdateIndexTextElements;
+				SelectedDataPoint.FocusedMeasurementResultChanged -= UpdateIndexTextElements;
 			}
 
 			SelectedDataPoint = dp;
@@ -76,15 +76,13 @@ namespace Dataskop.UI {
 				AuthorIcon.style.backgroundImage = new StyleBackground();
 			}
 			else {
-				SelectedDataPoint.FocusedIndexChanged += UpdateIndexTextElements;
-				UpdateIndexTextElements(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.FocusedIndex);
+				SelectedDataPoint.FocusedMeasurementResultChanged += UpdateIndexTextElements;
+				UpdateIndexTextElements(SelectedDataPoint.FocusedMeasurement);
 			}
 
 		}
 
-		private void UpdateIndexTextElements(MeasurementDefinition def, int index) {
-
-			MeasurementResult focusedResult = def.GetMeasurementResult(index);
+		private void UpdateIndexTextElements(MeasurementResult focusedResult) {
 
 			IdLabel.text = focusedResult.MeasurementDefinition.ID.ToString();
 			MeasurementLabel.text =

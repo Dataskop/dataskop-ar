@@ -57,6 +57,8 @@ namespace Dataskop.Data {
 
 		private DataManager DataManager => dataManager;
 
+		private TimeRange TimeRangeFilter { get; set; }
+
 		private void Awake() {
 			DataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
 			DataManager.HasDateFiltered += OnDataFiltered;
@@ -88,7 +90,7 @@ namespace Dataskop.Data {
 
 				GameObject vis = VisualizationRepository.GetVisualization(visOpt.Type.FirstCharToUpper());
 				dp.RemoveVis();
-				dp.SetVis(vis);
+				dp.SetVis(vis, null);
 				dp.Vis.VisOption = visOpt;
 				dp.Vis.ApplyStyle(dp.Vis.VisOption.Style);
 
@@ -177,7 +179,7 @@ namespace Dataskop.Data {
 			}
 
 			DataPointsLocations = new Vector2d[projectData.Devices.Count];
-			SpawnDataPoints();
+			InitializeDataPoints();
 
 			HasLoadedDataPoints = true;
 			StartCoroutine(GetNearbyDevicesTask(5));
@@ -200,7 +202,7 @@ namespace Dataskop.Data {
 				ClearDataPoints();
 			}
 
-			SpawnDataPoints();
+			InitializeDataPoints();
 
 			if (hasHistoryEnabled) {
 				foreach (DataPoint dp in DataPoints) {
@@ -213,7 +215,7 @@ namespace Dataskop.Data {
 
 		}
 
-		private void SpawnDataPoints() {
+		private void InitializeDataPoints() {
 
 			DataPoints = new List<DataPoint>();
 
@@ -237,7 +239,7 @@ namespace Dataskop.Data {
 					dataPointInstance.Device = projectDevices[i];
 					dataPointInstance.AuthorRepository = AuthorRepository;
 					dataPointInstance.FocusedIndexChangedByTap += OnIndexChangeRequested;
-					dataPointInstance.FocusedMeasurement = definition.GetMeasurementResult(0);
+					dataPointInstance.FocusedMeasurement = definition.GetLatestMeasurementResult();
 
 					//Move the DataPoint to its location
 					if (AppOptions.DemoMode) {
@@ -317,8 +319,10 @@ namespace Dataskop.Data {
 				return;
 			}
 
+			TimeRangeFilter = timeRange;
+
 			foreach (DataPoint dp in DataPoints) {
-				dp.OnDateFiltered(timeRange);
+				dp.UpdateWithTimeRange(TimeRangeFilter);
 			}
 
 		}

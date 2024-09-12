@@ -21,6 +21,8 @@ namespace Dataskop.Entities {
 
 		public MeasurementDefinition MeasurementDefinition { get; set; }
 
+		public MeasurementResultRange CurrentMeasurementRange { get; private set; }
+
 		public int FocusedIndex { get; private set; }
 
 		public MeasurementResult FocusedMeasurement { get; set; }
@@ -39,6 +41,8 @@ namespace Dataskop.Entities {
 
 		public event Action<MeasurementDefinition, int> FocusedIndexChanged;
 
+		public event Action<MeasurementResult> FocusedMeasurementResultChanged;
+
 		public event Action<int> FocusedIndexChangedByTap;
 
 		public event Action<VisualizationType> VisualizationTypeChanged;
@@ -47,9 +51,19 @@ namespace Dataskop.Entities {
 		///     Sets and replaces the current visualization form with another.
 		/// </summary>
 		/// <param name="visPrefab">The visualization to be used for this data point.</param>
-		public void SetVis(GameObject visPrefab) {
+		/// <param name="timeRange">The time range of the data that should be visualized.</param>
+		public void SetVis(GameObject visPrefab, TimeRange? timeRange) {
+
 			Vis = Instantiate(visPrefab, transform).GetComponent<IVisualization>();
-			Vis.Initialize(this);
+
+			if (timeRange == null) {
+				CurrentMeasurementRange = MeasurementDefinition.GetLatestRange();
+			}
+			else {
+				CurrentMeasurementRange = MeasurementDefinition.GetRange(timeRange.Value);
+			}
+
+			Vis.Initialize(this, CurrentMeasurementRange);
 			FocusedIndexChanged += Vis.OnFocusedIndexChanged;
 			Vis.SwipedUp += DecreaseMeasurementIndex;
 			Vis.SwipedDown += IncreaseMeasurementIndex;
@@ -73,33 +87,24 @@ namespace Dataskop.Entities {
 
 		public void OnMeasurementResultsUpdated() {
 
-			int? indexOfPreviousResult = MeasurementDefinition.GetIndexOfMeasurementResult(FocusedMeasurement);
+			CurrentMeasurementRange = MeasurementDefinition.GetLatestRange();
 
-			if (indexOfPreviousResult == null) {
-				return;
-			}
+			int indexOfPreviousResult = CurrentMeasurementRange.IndexOf(FocusedMeasurement);
 
 			if (Vis.HasHistoryEnabled) {
-				SetIndex(indexOfPreviousResult.Value);
+				SetIndex(indexOfPreviousResult);
 			}
 			else {
-
-				if (FocusedIndex != 0) {
-					SetIndex(indexOfPreviousResult.Value);
-				}
-				else {
-					SetIndex(0);
-				}
-
+				SetIndex(FocusedIndex != 0 ? indexOfPreviousResult : 0);
 			}
 
 		}
 
-		public void OnDateFiltered(TimeRange timeRange) {
+		public void UpdateWithTimeRange(TimeRange timeRange) {
 
 			if (MeasurementDefinition.GetRange(timeRange) != null) {
 				MeasurementResultRange filteredRange = MeasurementDefinition.GetRange(timeRange);
-				Debug.Log(filteredRange.Count);
+				Vis.SetMeasurementResultRange(filteredRange);
 			}
 
 		}
@@ -110,9 +115,12 @@ namespace Dataskop.Entities {
 				return;
 			}
 
+			if (CurrentMeasurementRange.Count < 1) {
+				return;
+			}
+
 			//TODO: Temporary second condition because no loading of additional data is happening right now.
-			if (FocusedIndex == MeasurementDefinition.MeasurementResults.First().Count - 1 ||
-			    FocusedIndex == Vis.VisHistoryConfiguration.visibleHistoryCount - 1) {
+			if (FocusedIndex == CurrentMeasurementRange.Count - 1 || FocusedIndex == Vis.VisHistoryConfiguration.visibleHistoryCount - 1) {
 				return;
 			}
 
@@ -123,6 +131,10 @@ namespace Dataskop.Entities {
 		private void DecreaseMeasurementIndex() {
 
 			if (MeasurementDefinition.MeasurementResults == null) {
+				return;
+			}
+
+			if (CurrentMeasurementRange.Count < 1) {
 				return;
 			}
 
@@ -144,9 +156,15 @@ namespace Dataskop.Entities {
 		}
 
 		public void SetIndex(int index) {
+
+			if (CurrentMeasurementRange.Count < 0) {
+				return;
+			}
+
 			FocusedIndex = index;
 			FocusedMeasurement = MeasurementDefinition.MeasurementResults.First()[index];
 			FocusedIndexChanged?.Invoke(MeasurementDefinition, FocusedIndex);
+			FocusedMeasurementResultChanged?.Invoke(FocusedMeasurement);
 		}
 
 		/// <summary>

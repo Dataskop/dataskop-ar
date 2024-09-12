@@ -50,7 +50,7 @@ namespace Dataskop.Entities.Visualizations {
 		/// <summary>
 		///     Creates a Visualization for a given Data Point.
 		/// </summary>
-		public void Initialize(DataPoint dp);
+		public void Initialize(DataPoint dp, MeasurementResultRange resultRange);
 
 		public void OnTimeSeriesToggled(bool isActive);
 
@@ -59,6 +59,8 @@ namespace Dataskop.Entities.Visualizations {
 		public void OnSwipeInteraction(PointerInteraction pointerInteraction);
 
 		public void OnMeasurementResultsUpdated(int newIndex);
+
+		public void SetMeasurementResultRange(MeasurementResultRange newRange);
 
 		public void ApplyStyle(VisualizationStyle style);
 

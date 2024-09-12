@@ -74,7 +74,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisualizationType Type { get; set; }
 
-		public void Initialize(DataPoint dp) {
+		public void Initialize(DataPoint dp, MeasurementResultRange resultRange) {
 
 			DataPoint = dp;
 			VisOrigin = transform;
@@ -84,13 +84,11 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjectStyle = visObjectStyle;
 			Type = VisualizationType.Dot;
 
-			//TODO: Handle MeasurementResults being less than configured time series configuration visible history count.
-
 			VisOrigin.localScale *= Scale;
 			VisOrigin.root.localPosition = Offset;
 
-			VisObjects = DataPoint.MeasurementDefinition.MeasurementResults.First().Count < VisHistoryConfiguration.visibleHistoryCount
-				? new IVisObject[dp.MeasurementDefinition.MeasurementResults.First().Count]
+			VisObjects = resultRange.Count < VisHistoryConfiguration.visibleHistoryCount
+				? new IVisObject[resultRange.Count]
 				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
 
 			GameObject visObject = Instantiate(visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer);
@@ -284,6 +282,10 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void OnMeasurementResultsUpdated(int newIndex) {
 			OnFocusedIndexChanged(DataPoint.MeasurementDefinition, newIndex);
+		}
+
+		public void SetMeasurementResultRange(MeasurementResultRange newRange) {
+			throw new NotImplementedException();
 		}
 
 		public void ApplyStyle(VisualizationStyle style) {
