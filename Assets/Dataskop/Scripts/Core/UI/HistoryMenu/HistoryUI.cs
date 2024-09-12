@@ -36,6 +36,8 @@ namespace Dataskop.UI {
 
 		private VisualElement BottomDragger { get; set; }
 
+		private Button SwitchUnitsButton { get; set; }
+
 		private SliderInt HistorySlider { get; set; }
 
 		private MinMaxSlider MinMaxSlider { get; set; }
@@ -54,7 +56,7 @@ namespace Dataskop.UI {
 
 		private DataPoint SelectedDataPoint { get; set; }
 
-		private bool isHourly = true;
+		private bool isHourly;
 
 		private void Start() {
 			SetVisibility(HistoryContainer, false);
@@ -90,6 +92,9 @@ namespace Dataskop.UI {
 			BottomDragger.RegisterCallback<GeometryChangedEvent>(_ => AdjustBottomDateLabelPositions());
 
 			RectContainer = Root.Q<VisualElement>("RectContainer");
+
+			SwitchUnitsButton = Root.Q<Button>("UnitSwitch");
+			SwitchUnitsButton.RegisterCallback<ClickEvent>(_ => ToggleUnitSwitch(SelectedDataPoint));
 		}
 
 		private void OnDisable() {
@@ -238,6 +243,7 @@ namespace Dataskop.UI {
 			}
 			else {
 				StartRangeLabel.style.left = TopDragger.localBound.xMax - TopDragger.resolvedStyle.width - 25;
+				StartRangeLabel.style.top = 41;
 			}
 		}
 
@@ -248,6 +254,7 @@ namespace Dataskop.UI {
 			}
 			else {
 				EndRangeLabel.style.left = BottomDragger.localBound.xMax - BottomDragger.resolvedStyle.width - 25;
+				EndRangeLabel.style.top = 41;
 			}
 		}
 
@@ -366,6 +373,14 @@ namespace Dataskop.UI {
 					: calculatedWidth;
 				RectContainer.Add(rect);
 			}
+		}
+
+		private void ToggleUnitSwitch(DataPoint selectedDatapoint) {
+			isHourly = !isHourly;
+			UpdateMinMaxSlider(selectedDatapoint.MeasurementDefinition);
+			CreateCacheRect(selectedDatapoint.MeasurementDefinition);
+			AdjustTopDateLabelPositions();
+			AdjustBottomDateLabelPositions();
 		}
 
 	}
