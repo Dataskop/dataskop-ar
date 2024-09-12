@@ -177,7 +177,7 @@ namespace Dataskop.UI {
 			MinMaxSlider.lowLimit = 0;
 			TimeRange overAllRange = new(firstResult.Timestamp, lastResult.Timestamp);
 			MinMaxSlider.highLimit = overAllRange.Span.Days;
-			
+
 			DateTime clampedStartTime = ClampTimeStamp(def.GetLatestRange().GetTimeRange().StartTime);
 			DateTime clampedEndTime = ClampTimeStamp(lastResult.Timestamp);
 
@@ -303,11 +303,14 @@ namespace Dataskop.UI {
 			RectContainer.Clear();
 			MeasurementResult firstResult = def.FirstMeasurementResult;
 
+			// Slider Data
+			float highLimit = MinMaxSlider.highLimit;
+			int sliderHeight = 600;
+
 			foreach (MeasurementResultRange measurementResultRange in def.MeasurementResults) {
 				DateTime clampedStartTime = ClampTimeStamp(measurementResultRange.GetTimeRange().StartTime);
 				DateTime clampedEndTime = ClampTimeStamp(measurementResultRange.GetTimeRange().EndTime);
-				
-				
+
 				TimeRange timeRangeCurrentRect = new(clampedStartTime,
 					clampedEndTime);
 				TimeRange timeRangeAllDataEndTimeCurrentRange =
@@ -316,14 +319,14 @@ namespace Dataskop.UI {
 				int numberDaysCurrentRect = timeRangeCurrentRect.Span.Days + (timeRangeCurrentRect.Span.Days == 0 ? 1 : 0);
 				int numberDaysCurrentRectRange = timeRangeAllDataEndTimeCurrentRange.Span.Days;
 
-				float calculatedWidth = (600 - 20) / MinMaxSlider.highLimit * numberDaysCurrentRect;
+				float calculatedWidth = (sliderHeight - 20) / highLimit * numberDaysCurrentRect;
 
 				VisualElement rect = new() {
 					style = {
 						position = Position.Absolute,
 						left =
-							(600 - 10) / MinMaxSlider.highLimit *
-							(MinMaxSlider.highLimit -
+							(sliderHeight - 10) / highLimit *
+							(highLimit -
 							 numberDaysCurrentRectRange) +
 							10, // calculate left position (because of transform) to be drawn from EndTime of currentRange up
 						width = calculatedWidth, // calculate width (because of transform) to correspond to number of days
