@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44402185, g: 0.49316472, b: 0.57223153, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2431,6 +2431,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   historyMenuDoc: {fileID: 1345926184}
+  selectedIconColor: {r: 0.85882354, g: 0.4117647, b: 0.043137256, a: 1}
+  deselectedIconColor: {r: 0.14509805, g: 0.34901962, b: 0.6901961, a: 1}
 --- !u!114 &1345926186
 MonoBehaviour:
   m_ObjectHideFlags: 0

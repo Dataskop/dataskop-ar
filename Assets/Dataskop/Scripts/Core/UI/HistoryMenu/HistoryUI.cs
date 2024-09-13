@@ -19,8 +19,11 @@ namespace Dataskop.UI {
 		[Header("References")]
 		[SerializeField] private UIDocument historyMenuDoc;
 		private string currentAttributeId;
-
 		private string currentDeviceId;
+
+		[Header("Icons")]
+		[SerializeField] private Color selectedIconColor;
+		[SerializeField] private Color deselectedIconColor;
 
 		private VisualElement Root { get; set; }
 
@@ -35,6 +38,8 @@ namespace Dataskop.UI {
 		private VisualElement TopDragger { get; set; }
 
 		private VisualElement BottomDragger { get; set; }
+
+		private VisualElement SwitchUnitsIcon { get; set; }
 
 		private Button SwitchUnitsButton { get; set; }
 
@@ -95,6 +100,8 @@ namespace Dataskop.UI {
 
 			SwitchUnitsButton = Root.Q<Button>("UnitSwitch");
 			SwitchUnitsButton.RegisterCallback<ClickEvent>(_ => ToggleUnitSwitch(SelectedDataPoint));
+
+			SwitchUnitsIcon = SwitchUnitsButton.Q<VisualElement>("Icon");
 		}
 
 		private void OnDisable() {
@@ -200,7 +207,8 @@ namespace Dataskop.UI {
 
 			MinMaxSlider.minValue = 0;
 			TimeRange cachedData = new(clampedStartTime, clampedEndTime);
-			MinMaxSlider.maxValue = isHourly ? (int)cachedData.Span.TotalHours : (int)cachedData.Span.TotalDays + (cachedData.Span.TotalDays == 0 ? 1 : 0) ;
+			MinMaxSlider.maxValue = isHourly ? (int)cachedData.Span.TotalHours
+				: (int)cachedData.Span.TotalDays + (cachedData.Span.TotalDays == 0 ? 1 : 0);
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
@@ -377,6 +385,15 @@ namespace Dataskop.UI {
 
 		private void ToggleUnitSwitch(DataPoint selectedDatapoint) {
 			isHourly = !isHourly;
+
+			SwitchUnitsIcon.style.unityBackgroundImageTintColor =
+				new StyleColor(isHourly ? selectedIconColor : deselectedIconColor);
+
+			SwitchUnitsButton.style.borderBottomColor = isHourly ? selectedIconColor : deselectedIconColor;
+			SwitchUnitsButton.style.borderLeftColor = isHourly ? selectedIconColor : deselectedIconColor;
+			SwitchUnitsButton.style.borderRightColor = isHourly ? selectedIconColor : deselectedIconColor;
+			SwitchUnitsButton.style.borderTopColor = isHourly ? selectedIconColor : deselectedIconColor;
+
 			UpdateMinMaxSlider(selectedDatapoint.MeasurementDefinition);
 			CreateCacheRect(selectedDatapoint.MeasurementDefinition);
 			AdjustTopDateLabelPositions();
