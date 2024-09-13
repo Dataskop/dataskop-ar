@@ -192,15 +192,15 @@ namespace Dataskop.UI {
 			EndRangeLabel.text = ShortTimeStamp(def.GetLatestRange().GetTimeRange().EndTime);
 
 			MinMaxSlider.lowLimit = 0;
-			TimeRange overAllRange = new(firstResult.Timestamp, lastResult.Timestamp);
-			MinMaxSlider.highLimit = isHourly ? (float)overAllRange.Span.TotalHours : overAllRange.Span.Days;
+			TimeRange overAllRange = new(ClampTimeStamp(firstResult.Timestamp), ClampTimeStamp(lastResult.Timestamp));
+			MinMaxSlider.highLimit = isHourly ? (int)overAllRange.Span.TotalHours : (int)overAllRange.Span.TotalDays;
 
 			DateTime clampedStartTime = ClampTimeStamp(def.GetLatestRange().GetTimeRange().StartTime);
 			DateTime clampedEndTime = ClampTimeStamp(lastResult.Timestamp);
 
 			MinMaxSlider.minValue = 0;
 			TimeRange cachedData = new(clampedStartTime, clampedEndTime);
-			MinMaxSlider.maxValue = isHourly ? (float)cachedData.Span.TotalHours : cachedData.Span.Days;
+			MinMaxSlider.maxValue = isHourly ? (int)cachedData.Span.TotalHours : (int)cachedData.Span.TotalDays + (cachedData.Span.TotalDays == 0 ? 1 : 0) ;
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
