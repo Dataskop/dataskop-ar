@@ -57,7 +57,7 @@ namespace Dataskop.Data {
 
 		private DataManager DataManager => dataManager;
 
-		private TimeRange TimeRangeFilter { get; set; }
+		private TimeRange? TimeRangeFilter { get; set; } = null;
 
 		private void Awake() {
 			DataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
@@ -89,8 +89,8 @@ namespace Dataskop.Data {
 			if (VisualizationRepository.IsAvailable(visOpt.Type.FirstCharToUpper())) {
 
 				GameObject vis = VisualizationRepository.GetVisualization(visOpt.Type.FirstCharToUpper());
-				dp.RemoveVis();
-				dp.SetVis(vis, null);
+				dp.RemoveVisualization();
+				dp.Visualize(vis, TimeRangeFilter);
 				dp.Vis.VisOption = visOpt;
 				dp.Vis.ApplyStyle(dp.Vis.VisOption.Style);
 
@@ -322,7 +322,7 @@ namespace Dataskop.Data {
 			TimeRangeFilter = timeRange;
 
 			foreach (DataPoint dp in DataPoints) {
-				dp.UpdateWithTimeRange(TimeRangeFilter);
+				dp.UpdateWithTimeRange(TimeRangeFilter.Value);
 			}
 
 		}
@@ -333,7 +333,7 @@ namespace Dataskop.Data {
 
 			foreach (DataPoint dp in DataPoints) {
 				dp.FocusedIndexChangedByTap -= OnIndexChangeRequested;
-				dp.RemoveVis();
+				dp.RemoveVisualization();
 				Destroy(dp.gameObject);
 			}
 

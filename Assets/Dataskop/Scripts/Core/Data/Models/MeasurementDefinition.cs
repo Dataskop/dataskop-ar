@@ -71,7 +71,7 @@ namespace Dataskop.Data {
 		}
 
 		public MeasurementResult GetLatestMeasurementResult() {
-			return MeasurementResults.First()?.FirstOrDefault();
+			return GetLatestRange().FirstOrDefault();
 		}
 
 		public MeasurementResultRange GetLatestRange() {
@@ -79,8 +79,24 @@ namespace Dataskop.Data {
 		}
 
 		public MeasurementResultRange GetRange(TimeRange timeRange) {
-			return MeasurementResults.First(x =>
-				x.GetTimeRange().StartTime >= timeRange.StartTime && x.GetTimeRange().EndTime <= timeRange.EndTime);
+
+			MeasurementResultRange foundRange = new(Array.Empty<MeasurementResult>());
+
+			foreach (MeasurementResultRange availableRange in MeasurementResults) {
+
+				if (!TimeRangeExtensions.Contains(timeRange, availableRange.GetTimeRange())) {
+					continue;
+				}
+				foundRange = availableRange;
+				break;
+			}
+
+			MeasurementResultRange dataRange =
+				new(foundRange.Where(x => x.Timestamp >= timeRange.StartTime && x.Timestamp <= timeRange.EndTime)
+					.ToList());
+
+			dataRange.SetTimeRange(new TimeRange(timeRange.StartTime, timeRange.EndTime));
+			return dataRange;
 		}
 
 		public bool IsDataGap(MeasurementResult result1, MeasurementResult result2) {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Dataskop.Data;
 using Dataskop.Entities.Visualizations;
 using Dataskop.Interaction;
@@ -13,6 +12,7 @@ namespace Dataskop.Entities {
 		[SerializeField] private SpriteRenderer mapIconBorder;
 		[SerializeField] private SpriteRenderer visIcon;
 		[SerializeField] private Sprite[] visIcons;
+		[SerializeField] private GameObject noResultsIndicator;
 
 		[Header("Values")]
 		[SerializeField] private Color mapSelectionColor;
@@ -39,7 +39,7 @@ namespace Dataskop.Entities {
 			VisualizationTypeChanged += OnVisChanged;
 		}
 
-		public event Action<MeasurementDefinition, int> FocusedIndexChanged;
+		public event Action<int> FocusedIndexChanged;
 
 		public event Action<MeasurementResult> FocusedMeasurementResultChanged;
 
@@ -52,18 +52,21 @@ namespace Dataskop.Entities {
 		/// </summary>
 		/// <param name="visPrefab">The visualization to be used for this data point.</param>
 		/// <param name="timeRange">The time range of the data that should be visualized.</param>
-		public void SetVis(GameObject visPrefab, TimeRange? timeRange) {
+		public void Visualize(GameObject visPrefab, TimeRange? timeRange) {
 
 			Vis = Instantiate(visPrefab, transform).GetComponent<IVisualization>();
 
-			if (timeRange == null) {
-				CurrentMeasurementRange = MeasurementDefinition.GetLatestRange();
-			}
-			else {
-				CurrentMeasurementRange = MeasurementDefinition.GetRange(timeRange.Value);
+			CurrentMeasurementRange = timeRange == null
+				? MeasurementDefinition.GetLatestRange()
+				: MeasurementDefinition.GetRange(timeRange.Value);
+
+			Vis.Initialize(this);
+
+			if (CurrentMeasurementRange.Count < 1) {
+				Debug.Log("No Measurements Available - Displaying Indicator");
+				return;
 			}
 
-			Vis.Initialize(this, CurrentMeasurementRange);
 			FocusedIndexChanged += Vis.OnFocusedIndexChanged;
 			Vis.SwipedUp += DecreaseMeasurementIndex;
 			Vis.SwipedDown += IncreaseMeasurementIndex;
@@ -71,7 +74,7 @@ namespace Dataskop.Entities {
 			VisualizationTypeChanged?.Invoke(Vis.Type);
 		}
 
-		public void RemoveVis() {
+		public void RemoveVisualization() {
 
 			if (Vis == null) {
 				return;
@@ -102,10 +105,13 @@ namespace Dataskop.Entities {
 
 		public void UpdateWithTimeRange(TimeRange timeRange) {
 
-			if (MeasurementDefinition.GetRange(timeRange) != null) {
-				MeasurementResultRange filteredRange = MeasurementDefinition.GetRange(timeRange);
-				Vis.SetMeasurementResultRange(filteredRange);
+			if (MeasurementDefinition.GetRange(timeRange) == null) {
+				return;
 			}
+
+			CurrentMeasurementRange = MeasurementDefinition.GetRange(timeRange);
+			SetIndexWithoutNotify(0);
+			Vis.OnMeasurementResultRangeUpdated();
 
 		}
 
@@ -157,14 +163,24 @@ namespace Dataskop.Entities {
 
 		public void SetIndex(int index) {
 
-			if (CurrentMeasurementRange.Count < 0) {
+			if (CurrentMeasurementRange.Count < 1) {
 				return;
 			}
 
 			FocusedIndex = index;
-			FocusedMeasurement = MeasurementDefinition.MeasurementResults.First()[index];
-			FocusedIndexChanged?.Invoke(MeasurementDefinition, FocusedIndex);
+			FocusedMeasurement = CurrentMeasurementRange[index];
+			FocusedIndexChanged?.Invoke(FocusedIndex);
 			FocusedMeasurementResultChanged?.Invoke(FocusedMeasurement);
+		}
+
+		public void SetIndexWithoutNotify(int index) {
+
+			if (CurrentMeasurementRange.Count < 1) {
+				return;
+			}
+
+			FocusedIndex = index;
+			FocusedMeasurement = CurrentMeasurementRange[index];
 		}
 
 		/// <summary>

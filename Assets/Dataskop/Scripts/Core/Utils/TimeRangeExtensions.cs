@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Dataskop {
 
@@ -52,12 +53,22 @@ namespace Dataskop {
 
 			}
 
+			if (searchRange.EndTime > availableRanges.First().EndTime && previousEndTime >= availableRanges.First().EndTime) {
+				missingTimeRanges.Add(new TimeRange(previousEndTime, searchRange.EndTime));
+			}
+
 			return missingTimeRanges.ToArray();
 
 		}
 
 		public static bool IsInTimeRange(DateTime dateToCheck, TimeRange range) {
 			return dateToCheck >= range.StartTime && dateToCheck <= range.EndTime;
+		}
+
+		public static bool Contains(TimeRange rangeToCheck, TimeRange range) {
+			bool startInRange = IsInTimeRange(rangeToCheck.StartTime, range);
+			bool endInRange = IsInTimeRange(rangeToCheck.EndTime, range);
+			return startInRange && endInRange;
 		}
 
 	}
