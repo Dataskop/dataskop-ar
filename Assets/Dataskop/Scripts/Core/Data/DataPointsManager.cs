@@ -315,6 +315,8 @@ namespace Dataskop.Data {
 				dp.UpdateWithTimeRange(TimeRangeFilter.Value);
 			}
 
+			hasHistoryEnabled = true;
+
 		}
 
 		private void ClearDataPoints() {
