@@ -30,6 +30,7 @@ namespace Dataskop.Data {
 
 		[Header("Values")]
 		[SerializeField] private float nearbyDevicesDistance;
+		[SerializeField] private float nearbyDevicesScanInterval;
 
 		private bool hasHistoryEnabled;
 
@@ -111,18 +112,7 @@ namespace Dataskop.Data {
 			DataManager.ShouldRefetch = !enable;
 
 			foreach (DataPoint dp in DataPoints) {
-				ToggleTimeSeries(dp, enable);
-			}
-
-		}
-
-		private static void ToggleTimeSeries(DataPoint dp, bool enable) {
-
-			if (dp.Vis == null)
-				return;
-
-			if (dp.Vis.VisOption.Style.IsTimeSeries) {
-				dp.Vis.OnTimeSeriesToggled(enable);
+				dp.ToggleHistory(enable);
 			}
 
 		}
@@ -182,7 +172,7 @@ namespace Dataskop.Data {
 			InitializeDataPoints();
 
 			HasLoadedDataPoints = true;
-			StartCoroutine(GetNearbyDevicesTask(5));
+			StartCoroutine(GetNearbyDevicesTask(nearbyDevicesScanInterval));
 
 		}
 
@@ -206,12 +196,12 @@ namespace Dataskop.Data {
 
 			if (hasHistoryEnabled) {
 				foreach (DataPoint dp in DataPoints) {
-					ToggleTimeSeries(dp, true);
+					dp.ToggleHistory(true);
 				}
 			}
 
 			HasLoadedDataPoints = true;
-			StartCoroutine(GetNearbyDevicesTask(5));
+			StartCoroutine(GetNearbyDevicesTask(nearbyDevicesScanInterval));
 
 		}
 

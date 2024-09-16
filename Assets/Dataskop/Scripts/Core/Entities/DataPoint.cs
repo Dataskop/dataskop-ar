@@ -115,6 +115,12 @@ namespace Dataskop.Entities {
 
 		}
 
+		public void ToggleHistory(bool newState) {
+			if (Vis != null && Vis.VisOption.Style.IsTimeSeries) {
+				Vis.OnTimeSeriesToggled(newState);
+			}
+		}
+
 		private void IncreaseMeasurementIndex() {
 
 			if (MeasurementDefinition.MeasurementResults == null) {
