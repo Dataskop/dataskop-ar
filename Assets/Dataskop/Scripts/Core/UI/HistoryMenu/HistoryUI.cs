@@ -19,9 +19,12 @@ namespace Dataskop.UI {
 		[Header("References")]
 		[SerializeField] private UIDocument historyMenuDoc;
 		private string currentAttributeId;
-
 		private string currentDeviceId;
 
+		[Header("Icons")]
+		[SerializeField] private Sprite hourIcon;
+		[SerializeField] private Sprite daysIcon;
+		
 		private VisualElement Root { get; set; }
 
 		private VisualElement HistoryContainer { get; set; }
@@ -35,6 +38,10 @@ namespace Dataskop.UI {
 		private VisualElement TopDragger { get; set; }
 
 		private VisualElement BottomDragger { get; set; }
+
+		private VisualElement SwitchUnitsIcon { get; set; }
+
+		private Button SwitchUnitsButton { get; set; }
 
 		private SliderInt HistorySlider { get; set; }
 
@@ -53,6 +60,8 @@ namespace Dataskop.UI {
 		private Label StartRangeLabel { get; set; }
 
 		private DataPoint SelectedDataPoint { get; set; }
+
+		private bool isHourly;
 
 		private void Start() {
 			SetVisibility(HistoryContainer, false);
@@ -88,6 +97,11 @@ namespace Dataskop.UI {
 			BottomDragger.RegisterCallback<GeometryChangedEvent>(_ => AdjustBottomDateLabelPositions());
 
 			RectContainer = Root.Q<VisualElement>("RectContainer");
+
+			SwitchUnitsButton = Root.Q<Button>("UnitSwitch");
+			SwitchUnitsButton.RegisterCallback<ClickEvent>(_ => ToggleUnitSwitch(SelectedDataPoint));
+
+			SwitchUnitsIcon = SwitchUnitsButton.Q<VisualElement>("Icon");
 		}
 
 		private void OnDisable() {
@@ -160,6 +174,20 @@ namespace Dataskop.UI {
 			CurrentTimeLabel.text = focusedResult.GetDate();
 		}
 
+		private DateTime ClampTimeStamp(DateTime timeStamp) {
+			if (isHourly) {
+				return new DateTime(timeStamp.Year, timeStamp.Month, timeStamp.Day, timeStamp.Hour, 0, 0);
+			}
+			return new(timeStamp.Year, timeStamp.Month, timeStamp.Day);
+		}
+
+		private string ShortTimeStamp(DateTime timeStamp) {
+			if (isHourly) {
+				return ClampTimeStamp(timeStamp).ToString("dd.MM. HH:mm");
+			}
+			return timeStamp.ToString(AppOptions.DateCulture).Remove(6, 13);
+		}
+
 		private void UpdateMinMaxSlider(MeasurementDefinition def) {
 			MeasurementResult firstResult = def.FirstMeasurementResult;
 			MeasurementResult lastResult = def.GetLatestMeasurementResult();
@@ -167,21 +195,20 @@ namespace Dataskop.UI {
 			UltimateStartTime.text = firstResult.GetShortDate();
 			UltimateEndTime.text = lastResult.GetShortDate();
 
-			StartRangeLabel.text = def.GetLatestRange().GetTimeRange().StartTime.ToString(AppOptions.DateCulture).Remove(6, 13);
-			EndRangeLabel.text = def.GetLatestRange().GetTimeRange().EndTime.ToString(AppOptions.DateCulture).Remove(6, 13);
+			StartRangeLabel.text = ShortTimeStamp(def.GetLatestRange().GetTimeRange().StartTime);
+			EndRangeLabel.text = ShortTimeStamp(def.GetLatestRange().GetTimeRange().EndTime);
 
 			MinMaxSlider.lowLimit = 0;
-			TimeRange overAllRange = new(firstResult.Timestamp, lastResult.Timestamp);
-			MinMaxSlider.highLimit = overAllRange.Span.Days;
+			TimeRange overAllRange = new(ClampTimeStamp(firstResult.Timestamp), ClampTimeStamp(lastResult.Timestamp));
+			MinMaxSlider.highLimit = isHourly ? (int)overAllRange.Span.TotalHours : (int)overAllRange.Span.TotalDays;
 
-			DateTime clampedStartTime = new(def.GetLatestRange().GetTimeRange().StartTime.Year,
-				def.GetLatestRange().GetTimeRange().StartTime.Month, def.GetLatestRange().GetTimeRange().StartTime.Day);
-			DateTime clampedEndTime = new(lastResult.Timestamp.Year,
-				lastResult.Timestamp.Month, lastResult.Timestamp.Day);
+			DateTime clampedStartTime = ClampTimeStamp(def.GetLatestRange().GetTimeRange().StartTime);
+			DateTime clampedEndTime = ClampTimeStamp(lastResult.Timestamp);
 
 			MinMaxSlider.minValue = 0;
 			TimeRange cachedData = new(clampedStartTime, clampedEndTime);
-			MinMaxSlider.maxValue = cachedData.Span.Days;
+			MinMaxSlider.maxValue = isHourly ? (int)cachedData.Span.TotalHours
+				: (int)cachedData.Span.TotalDays + (cachedData.Span.TotalDays == 0 ? 1 : 0);
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
@@ -218,11 +245,25 @@ namespace Dataskop.UI {
 		}
 
 		private void AdjustTopDateLabelPositions() {
-			StartRangeLabel.style.left = TopDragger.localBound.xMax - TopDragger.resolvedStyle.width - 25;
+			if (isHourly) {
+				StartRangeLabel.style.left = TopDragger.localBound.xMax - TopDragger.resolvedStyle.width - 55;
+				StartRangeLabel.style.top = 70;
+			}
+			else {
+				StartRangeLabel.style.left = TopDragger.localBound.xMax - TopDragger.resolvedStyle.width - 25;
+				StartRangeLabel.style.top = 41;
+			}
 		}
 
 		private void AdjustBottomDateLabelPositions() {
-			EndRangeLabel.style.left = BottomDragger.localBound.xMax - BottomDragger.resolvedStyle.width - 25;
+			if (isHourly) {
+				EndRangeLabel.style.left = BottomDragger.localBound.xMax - BottomDragger.resolvedStyle.width - 55;
+				EndRangeLabel.style.top = 70;
+			}
+			else {
+				EndRangeLabel.style.left = BottomDragger.localBound.xMax - BottomDragger.resolvedStyle.width - 25;
+				EndRangeLabel.style.top = 41;
+			}
 		}
 
 		private void SetVisibility(VisualElement element, bool isVisible) {
@@ -298,32 +339,37 @@ namespace Dataskop.UI {
 		}
 
 		private void CreateCacheRect(MeasurementDefinition def) {
+			// Clear the container for fresh data
 			RectContainer.Clear();
 			MeasurementResult firstResult = def.FirstMeasurementResult;
+			DateTime firstResultTimestampClamped = ClampTimeStamp(firstResult.Timestamp);
+
+			// Slider Data
+			float highLimit = MinMaxSlider.highLimit;
+			int sliderHeight = 600;
 
 			foreach (MeasurementResultRange measurementResultRange in def.MeasurementResults) {
-				DateTime clampedStartTime = new(measurementResultRange.GetTimeRange().StartTime.Year,
-					measurementResultRange.GetTimeRange().StartTime.Month, measurementResultRange.GetTimeRange().StartTime.Day);
-				DateTime clampedEndTime = new(measurementResultRange.GetTimeRange().EndTime.Year,
-					measurementResultRange.GetTimeRange().EndTime.Month, measurementResultRange.GetTimeRange().EndTime.Day);
-				TimeRange timeRangeCurrentRect = new(clampedStartTime,
-					clampedEndTime);
-				TimeRange timeRangeAllDataEndTimeCurrentRange =
-					new(new DateTime(firstResult.Timestamp.Year, firstResult.Timestamp.Month, firstResult.Timestamp.Day), clampedEndTime);
+				DateTime clampedStartTime = ClampTimeStamp(measurementResultRange.GetTimeRange().StartTime);
+				DateTime clampedEndTime = ClampTimeStamp(measurementResultRange.GetTimeRange().EndTime);
 
-				int numberDaysCurrentRect = timeRangeCurrentRect.Span.Days + (timeRangeCurrentRect.Span.Days == 0 ? 1 : 0);
-				int numberDaysCurrentRectRange = timeRangeAllDataEndTimeCurrentRange.Span.Days;
+				TimeRange timeRangeCurrentRect = new(clampedStartTime, clampedEndTime);
+				TimeRange timeRangeAllDataEndTimeCurrentRange = new(firstResultTimestampClamped, clampedEndTime);
 
-				float calculatedWidth = (600 - 20) / MinMaxSlider.highLimit * numberDaysCurrentRect;
+				// Calculate the number of time units (hours or days) for the current rect and full range
+				double totalUnitsCurrentRect = isHourly ? timeRangeCurrentRect.Span.TotalHours : timeRangeCurrentRect.Span.Days;
+				double totalUnitsCurrentRectRange = isHourly ? timeRangeAllDataEndTimeCurrentRange.Span.TotalHours
+					: timeRangeAllDataEndTimeCurrentRange.Span.Days;
+
+				// Ensure minimum value of 1 for totalUnitsCurrentRect
+				int numberUnitsCurrentRect = (int)totalUnitsCurrentRect + (totalUnitsCurrentRect == 0 ? 1 : 0);
+
+				float calculatedWidth = (sliderHeight - 20) / highLimit * numberUnitsCurrentRect;
+				StyleLength leftPosition = (StyleLength)((sliderHeight - 10) / highLimit * (highLimit - totalUnitsCurrentRectRange) + 10);
 
 				VisualElement rect = new() {
 					style = {
 						position = Position.Absolute,
-						left =
-							(600 - 10) / MinMaxSlider.highLimit *
-							(MinMaxSlider.highLimit -
-							 numberDaysCurrentRectRange) +
-							10, // calculate left position (because of transform) to be drawn from EndTime of currentRange up
+						left = leftPosition, // calculate left position (because of transform) to be drawn from EndTime of currentRange up
 						width = calculatedWidth, // calculate width (because of transform) to correspond to number of days
 						height = 10,
 						marginTop = -5,
@@ -335,6 +381,17 @@ namespace Dataskop.UI {
 					: calculatedWidth;
 				RectContainer.Add(rect);
 			}
+		}
+
+		private void ToggleUnitSwitch(DataPoint selectedDatapoint) {
+			isHourly = !isHourly;
+			
+			SwitchUnitsIcon.style.backgroundImage = new StyleBackground(isHourly ? hourIcon : daysIcon);
+			
+			UpdateMinMaxSlider(selectedDatapoint.MeasurementDefinition);
+			CreateCacheRect(selectedDatapoint.MeasurementDefinition);
+			AdjustTopDateLabelPositions();
+			AdjustBottomDateLabelPositions();
 		}
 
 	}
