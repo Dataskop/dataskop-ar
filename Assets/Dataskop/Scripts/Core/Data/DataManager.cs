@@ -329,7 +329,7 @@ namespace Dataskop.Data {
 			foreach (Device d in SelectedProject.Devices) {
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
-					MeasurementResult latestResult = md.GetLatestMeasurementResult();
+					MeasurementResult latestResult = md.LatestMeasurementResult;
 
 					MeasurementResultRange newResults =
 						await RequestHandler.GetMeasurementResults(md, FetchAmount, latestResult.Timestamp, DateTime.Now);
@@ -408,14 +408,12 @@ namespace Dataskop.Data {
 
 					}
 
-					
 					Debug.Log($"Result Ranges in {md.DeviceId} - {md.AttributeId} ({md.ID}):");
 					foreach (var m in md.MeasurementResults) {
 						Debug.Log(
 							$"from {m.GetTimeRange().StartTime} to {m.GetTimeRange().EndTime} with {m.Count} results");
 					}
 					Debug.Log(" ----- ");
-					
 
 				}
 

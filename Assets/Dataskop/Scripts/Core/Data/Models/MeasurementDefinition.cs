@@ -70,7 +70,7 @@ namespace Dataskop.Data {
 
 		}
 
-		public MeasurementResult GetLatestMeasurementResult() {
+		private MeasurementResult GetLatestMeasurementResult() {
 			return GetLatestRange().FirstOrDefault();
 		}
 
@@ -78,6 +78,11 @@ namespace Dataskop.Data {
 			return MeasurementResults.First();
 		}
 
+		/// <summary>
+		/// Creates a new range from the available ranges with their data.
+		/// </summary>
+		/// <param name="timeRange">The given time range</param>
+		/// <returns>A MeasurementResultRange with the given time range and results.</returns>
 		public MeasurementResultRange GetRange(TimeRange timeRange) {
 
 			MeasurementResultRange foundRange = new(Array.Empty<MeasurementResult>());

@@ -161,7 +161,7 @@ namespace Dataskop.UI {
 
 		private void UpdateMinMaxSlider(MeasurementDefinition def) {
 			MeasurementResult firstResult = def.FirstMeasurementResult;
-			MeasurementResult lastResult = def.GetLatestMeasurementResult();
+			MeasurementResult lastResult = def.LatestMeasurementResult;
 
 			UltimateStartTime.text = firstResult.GetShortDate();
 			UltimateEndTime.text = lastResult.GetShortDate();

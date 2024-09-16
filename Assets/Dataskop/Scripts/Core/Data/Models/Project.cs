@@ -44,11 +44,11 @@ namespace Dataskop.Data {
 			foreach (Device d in Devices) {
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
-					if (md.GetLatestMeasurementResult() == null) {
+					if (md.LatestMeasurementResult == null) {
 						continue;
 					}
 
-					latestMeasurementTimes.Add(md.GetLatestMeasurementResult().Timestamp);
+					latestMeasurementTimes.Add(md.LatestMeasurementResult.Timestamp);
 				}
 			}
 

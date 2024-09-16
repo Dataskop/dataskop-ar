@@ -45,10 +45,10 @@ namespace Dataskop.Data {
 				return null;
 			}
 
-			MeasurementResult result = MeasurementDefinitions?.First().GetLatestMeasurementResult();
+			MeasurementResult result = MeasurementDefinitions?.First().LatestMeasurementResult;
 
 			if (result != null) {
-				return MeasurementDefinitions?.First().GetLatestMeasurementResult().Position;
+				return MeasurementDefinitions?.First().LatestMeasurementResult.Position;
 			}
 
 			NotificationHandler.Add(new Notification {
