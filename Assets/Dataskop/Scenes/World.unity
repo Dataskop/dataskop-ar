@@ -2433,6 +2433,8 @@ MonoBehaviour:
   historyMenuDoc: {fileID: 1345926184}
   selectedIconColor: {r: 0.85882354, g: 0.4117647, b: 0.043137256, a: 1}
   deselectedIconColor: {r: 0.14509805, g: 0.34901962, b: 0.6901961, a: 1}
+  hourIcon: {fileID: 21300000, guid: d1b3c954e934a2041a9fbea525d7f327, type: 3}
+  daysIcon: {fileID: 21300000, guid: 838c571e9e4eead44a0286449f633555, type: 3}
 --- !u!114 &1345926186
 MonoBehaviour:
   m_ObjectHideFlags: 0

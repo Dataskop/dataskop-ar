@@ -22,9 +22,9 @@ namespace Dataskop.UI {
 		private string currentDeviceId;
 
 		[Header("Icons")]
-		[SerializeField] private Color selectedIconColor;
-		[SerializeField] private Color deselectedIconColor;
-
+		[SerializeField] private Sprite hourIcon;
+		[SerializeField] private Sprite daysIcon;
+		
 		private VisualElement Root { get; set; }
 
 		private VisualElement HistoryContainer { get; set; }
@@ -246,7 +246,7 @@ namespace Dataskop.UI {
 
 		private void AdjustTopDateLabelPositions() {
 			if (isHourly) {
-				StartRangeLabel.style.left = TopDragger.localBound.xMax - TopDragger.resolvedStyle.width - 50;
+				StartRangeLabel.style.left = TopDragger.localBound.xMax - TopDragger.resolvedStyle.width - 55;
 				StartRangeLabel.style.top = 70;
 			}
 			else {
@@ -257,7 +257,7 @@ namespace Dataskop.UI {
 
 		private void AdjustBottomDateLabelPositions() {
 			if (isHourly) {
-				EndRangeLabel.style.left = BottomDragger.localBound.xMax - BottomDragger.resolvedStyle.width - 50;
+				EndRangeLabel.style.left = BottomDragger.localBound.xMax - BottomDragger.resolvedStyle.width - 55;
 				EndRangeLabel.style.top = 70;
 			}
 			else {
@@ -385,15 +385,9 @@ namespace Dataskop.UI {
 
 		private void ToggleUnitSwitch(DataPoint selectedDatapoint) {
 			isHourly = !isHourly;
-
-			SwitchUnitsIcon.style.unityBackgroundImageTintColor =
-				new StyleColor(isHourly ? selectedIconColor : deselectedIconColor);
-
-			SwitchUnitsButton.style.borderBottomColor = isHourly ? selectedIconColor : deselectedIconColor;
-			SwitchUnitsButton.style.borderLeftColor = isHourly ? selectedIconColor : deselectedIconColor;
-			SwitchUnitsButton.style.borderRightColor = isHourly ? selectedIconColor : deselectedIconColor;
-			SwitchUnitsButton.style.borderTopColor = isHourly ? selectedIconColor : deselectedIconColor;
-
+			
+			SwitchUnitsIcon.style.backgroundImage = new StyleBackground(isHourly ? hourIcon : daysIcon);
+			
 			UpdateMinMaxSlider(selectedDatapoint.MeasurementDefinition);
 			CreateCacheRect(selectedDatapoint.MeasurementDefinition);
 			AdjustTopDateLabelPositions();
