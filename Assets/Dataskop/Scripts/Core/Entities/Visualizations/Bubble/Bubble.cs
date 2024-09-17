@@ -91,16 +91,27 @@ namespace Dataskop.Entities.Visualizations {
 			VisHistoryConfiguration = visHistoryConfig;
 			VisObjectStyle = visObjectStyle;
 			Type = VisualizationType.Bubble;
+			VisOrigin.localScale *= Scale;
+			VisOrigin.root.localPosition = Offset;
+			PreviousIndex = DataPoint.FocusedIndex;
+
+			dropShadow.transform.localScale *= Scale;
+			dropShadow.transform.localPosition -= Offset;
+
+			groundLine.startWidth = 0.0075f;
+			groundLine.endWidth = 0.0075f;
+			groundLine.SetPosition(1, dropShadow.localPosition);
+
+			labelLine.startWidth = 0.0075f;
+			labelLine.endWidth = 0.0075f;
 
 			if (CurrentRange.Count < 1) {
 				noResultsIndicator.SetActive(true);
+				VisObjects = Array.Empty<IVisObject>();
 				return;
 			}
 
 			noResultsIndicator.SetActive(false);
-
-			VisOrigin.localScale *= Scale;
-			VisOrigin.root.localPosition = Offset;
 
 			VisObjects = CurrentRange.Count < VisHistoryConfiguration.visibleHistoryCount
 				? new IVisObject[CurrentRange.Count]
@@ -113,17 +124,6 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjects[DataPoint.FocusedIndex].HasDeselected += OnVisObjectDeselected;
 			VisObjects[DataPoint.FocusedIndex].VisCollider.enabled = true;
 
-			dropShadow.transform.localScale *= Scale;
-			dropShadow.transform.localPosition -= Offset;
-
-			groundLine.startWidth = 0.0075f;
-			groundLine.endWidth = 0.0075f;
-			groundLine.SetPosition(1, dropShadow.localPosition);
-
-			labelLine.startWidth = 0.0075f;
-			labelLine.endWidth = 0.0075f;
-
-			PreviousIndex = DataPoint.FocusedIndex;
 			OnFocusedIndexChanged(DataPoint.FocusedIndex);
 		}
 

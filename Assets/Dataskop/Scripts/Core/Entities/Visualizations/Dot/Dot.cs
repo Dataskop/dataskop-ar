@@ -87,19 +87,23 @@ namespace Dataskop.Entities.Visualizations {
 			VisHistoryConfiguration = visHistoryConfig;
 			VisObjectStyle = visObjectStyle;
 			Type = VisualizationType.Dot;
+			VisOrigin.localScale *= Scale;
+			VisOrigin.root.localPosition = Offset;
+			PreviousIndex = DataPoint.FocusedIndex;
+
+			groundLine.startWidth = 0.0075f;
+			groundLine.endWidth = 0.0075f;
+
+			dropShadow.transform.localScale *= Scale;
+			dropShadow.transform.localPosition -= Offset;
 
 			if (CurrentRange.Count < 1) {
 				noResultsIndicator.SetActive(true);
+				VisObjects = Array.Empty<IVisObject>();
 				return;
 			}
 
 			noResultsIndicator.SetActive(false);
-
-			VisOrigin.localScale *= Scale;
-			VisOrigin.root.localPosition = Offset;
-
-			dropShadow.transform.localScale *= Scale;
-			dropShadow.transform.localPosition -= Offset;
 
 			VisObjects = CurrentRange.Count < VisHistoryConfiguration.visibleHistoryCount
 				? new IVisObject[CurrentRange.Count]
@@ -120,10 +124,6 @@ namespace Dataskop.Entities.Visualizations {
 				dropShadow.localPosition);
 			*/
 
-			groundLine.startWidth = 0.0075f;
-			groundLine.endWidth = 0.0075f;
-
-			PreviousIndex = DataPoint.FocusedIndex;
 			OnFocusedIndexChanged(DataPoint.FocusedIndex);
 
 		}

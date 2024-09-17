@@ -86,16 +86,17 @@ namespace Dataskop.Entities.Visualizations {
 			VisHistoryConfiguration = visHistoryConfig;
 			VisObjectStyle = visObjectStyle;
 			Type = VisualizationType.Bar;
+			VisOrigin.localScale *= Scale;
+			VisOrigin.root.localPosition = Offset;
+			PreviousIndex = DataPoint.FocusedIndex;
 
 			if (CurrentRange.Count < 1) {
 				noResultsIndicator.SetActive(true);
+				VisObjects = Array.Empty<IVisObject>();
 				return;
 			}
 
 			noResultsIndicator.SetActive(false);
-
-			VisOrigin.localScale *= Scale;
-			VisOrigin.root.localPosition = Offset;
 
 			VisObjects = DataPoint.MeasurementDefinition.MeasurementResults.First().Count < VisHistoryConfiguration.visibleHistoryCount
 				? new IVisObject[dp.MeasurementDefinition.MeasurementResults.First().Count]
@@ -108,7 +109,6 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjects[DataPoint.FocusedIndex].HasDeselected += OnVisObjectDeselected;
 			VisObjects[DataPoint.FocusedIndex].VisCollider.enabled = true;
 
-			PreviousIndex = DataPoint.FocusedIndex;
 			OnFocusedIndexChanged(DataPoint.FocusedIndex);
 
 		}
