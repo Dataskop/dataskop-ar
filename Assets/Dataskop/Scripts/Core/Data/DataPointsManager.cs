@@ -86,6 +86,13 @@ namespace Dataskop.Data {
 
 		}
 
+		public void OnProjectSelected() {
+			if (HasLoadedDataPoints) {
+				ClearDataPoints();
+				hasHistoryEnabled = false;
+			}
+		}
+
 		public void OnHistoryViewChanged(bool enable) {
 
 			hasHistoryEnabled = enable;

@@ -399,6 +399,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1884349581}
+        m_TargetAssemblyTypeName: Dataskop.Data.DataPointsManager, Dataskop
+        m_MethodName: OnProjectSelected
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   settingsMenuUIDoc: {fileID: 213483610}
   groupOfProjectsTemplate: {fileID: 9197481963319205126, guid: ce448e44848ecaa4a93f07ac389ca500, type: 3}
   projectTemplate: {fileID: 9197481963319205126, guid: cf9349637b4d8ac409440dccba169214, type: 3}
