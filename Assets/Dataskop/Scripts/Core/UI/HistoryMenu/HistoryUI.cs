@@ -121,7 +121,7 @@ namespace Dataskop.UI {
 		public void OnDataPointSelectionChanged(DataPoint selectedDataPoint) {
 
 			if (SelectedDataPoint != null) {
-				SelectedDataPoint.FocusedIndexChanged -= UpdateTimeLabel;
+				SelectedDataPoint.FocusedMeasurementResultChanged -= UpdateTimeLabel;
 			}
 
 			SelectedDataPoint = selectedDataPoint;
@@ -133,7 +133,7 @@ namespace Dataskop.UI {
 				return;
 			}
 
-			SelectedDataPoint.FocusedIndexChanged += UpdateTimeLabel;
+			SelectedDataPoint.FocusedMeasurementResultChanged += UpdateTimeLabel;
 
 			if (!IsActive) {
 				return;
@@ -149,7 +149,7 @@ namespace Dataskop.UI {
 
 			StartCoroutine(GenerateTicks(newResultsCount));
 			CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
-			UpdateTimeLabel(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.FocusedIndex);
+			UpdateTimeLabel(SelectedDataPoint.FocusedMeasurement);
 
 			// check if we are still on the same device before updating time range
 			if (SelectedDataPoint == null) {
@@ -169,8 +169,7 @@ namespace Dataskop.UI {
 			return SelectedDataPoint.MeasurementDefinition.GetLatestRange().Count;
 		}
 
-		private void UpdateTimeLabel(MeasurementDefinition def, int index) {
-			MeasurementResult focusedResult = def.GetMeasurementResult(index);
+		private void UpdateTimeLabel(MeasurementResult focusedResult) {
 			CurrentTimeLabel.text = focusedResult.GetDate();
 		}
 
@@ -190,7 +189,7 @@ namespace Dataskop.UI {
 
 		private void UpdateMinMaxSlider(MeasurementDefinition def) {
 			MeasurementResult firstResult = def.FirstMeasurementResult;
-			MeasurementResult lastResult = def.GetLatestMeasurementResult();
+			MeasurementResult lastResult = def.LatestMeasurementResult;
 
 			UltimateStartTime.text = firstResult.GetShortDate();
 			UltimateEndTime.text = lastResult.GetShortDate();

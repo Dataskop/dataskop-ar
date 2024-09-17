@@ -324,14 +324,12 @@ namespace Dataskop.Data {
 
 		}
 
-		private async Task UpdateProjectMeasurements() {
-
-			LoadingIndicator.Show();
+		private async Task UpdateDeviceMeasurements() {
 
 			foreach (Device d in SelectedProject.Devices) {
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
-					MeasurementResult latestResult = md.GetLatestMeasurementResult();
+					MeasurementResult latestResult = md.LatestMeasurementResult;
 
 					MeasurementResultRange newResults =
 						await RequestHandler.GetMeasurementResults(md, FetchAmount, latestResult.Timestamp, DateTime.Now);
@@ -347,6 +345,12 @@ namespace Dataskop.Data {
 
 			}
 
+		}
+
+		private async Task UpdateProjectMeasurements() {
+
+			LoadingIndicator.Show();
+			await UpdateDeviceMeasurements();
 			HasUpdatedMeasurementResults?.Invoke();
 			LoadingIndicator.Hide();
 
@@ -354,23 +358,14 @@ namespace Dataskop.Data {
 
 		private async Task FilterByDate(TimeRange timeRange) {
 
-			await UpdateProjectMeasurements();
 			LoadingIndicator.Show();
+			await UpdateDeviceMeasurements();
 
 			foreach (Device d in SelectedProject.Devices) {
 
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
-					DateTime clampedStartTime = timeRange.StartTime < md.FirstMeasurementResult.Timestamp
-						? md.FirstMeasurementResult.Timestamp
-						: timeRange.StartTime;
-
-					DateTime clampedEndTime = timeRange.EndTime > md.LatestMeasurementResult.Timestamp
-						? md.LatestMeasurementResult.Timestamp
-						: timeRange.EndTime;
-
-					TimeRange searchRange = new(clampedStartTime, clampedEndTime);
-					TimeRange[] missingRanges = TimeRangeExtensions.GetTimeRangeGaps(searchRange, md.GetAvailableTimeRanges());
+					TimeRange[] missingRanges = TimeRangeExtensions.GetTimeRangeGaps(timeRange, md.GetAvailableTimeRanges());
 
 					if (missingRanges.Length < 1) {
 						continue;
@@ -413,14 +408,12 @@ namespace Dataskop.Data {
 
 					}
 
-					/*
 					Debug.Log($"Result Ranges in {md.DeviceId} - {md.AttributeId} ({md.ID}):");
 					foreach (var m in md.MeasurementResults) {
 						Debug.Log(
 							$"from {m.GetTimeRange().StartTime} to {m.GetTimeRange().EndTime} with {m.Count} results");
 					}
 					Debug.Log(" ----- ");
-					*/
 
 				}
 

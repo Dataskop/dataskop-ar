@@ -248,6 +248,16 @@ namespace Dataskop.UI {
 
 		}
 
+		public void OnDateFiltered() {
+			isHistorySliderActive = true;
+			HistoryIcon.style.unityBackgroundImageTintColor = new StyleColor(selectedIconColor);
+			HistoryButton.style.borderBottomColor = selectedIconColor;
+			HistoryButton.style.borderLeftColor = selectedIconColor;
+			HistoryButton.style.borderRightColor = selectedIconColor;
+			HistoryButton.style.borderTopColor = selectedIconColor;
+			historyButtonPressed?.Invoke();
+		}
+
 		public void HideSettings() {
 
 			if (IsOpen) {

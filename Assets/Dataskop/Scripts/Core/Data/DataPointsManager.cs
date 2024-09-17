@@ -30,6 +30,7 @@ namespace Dataskop.Data {
 
 		[Header("Values")]
 		[SerializeField] private float nearbyDevicesDistance;
+		[SerializeField] private float nearbyDevicesScanInterval;
 
 		private bool hasHistoryEnabled;
 
@@ -56,6 +57,8 @@ namespace Dataskop.Data {
 		private bool HasLoadedDataPoints { get; set; }
 
 		private DataManager DataManager => dataManager;
+
+		private TimeRange? TimeRangeFilter { get; set; } = null;
 
 		private void Awake() {
 			DataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
@@ -87,8 +90,8 @@ namespace Dataskop.Data {
 			if (VisualizationRepository.IsAvailable(visOpt.Type.FirstCharToUpper())) {
 
 				GameObject vis = VisualizationRepository.GetVisualization(visOpt.Type.FirstCharToUpper());
-				dp.RemoveVis();
-				dp.SetVis(vis);
+				dp.RemoveVisualization();
+				dp.Visualize(vis, TimeRangeFilter);
 				dp.Vis.VisOption = visOpt;
 				dp.Vis.ApplyStyle(dp.Vis.VisOption.Style);
 
@@ -109,18 +112,7 @@ namespace Dataskop.Data {
 			DataManager.ShouldRefetch = !enable;
 
 			foreach (DataPoint dp in DataPoints) {
-				ToggleTimeSeries(dp, enable);
-			}
-
-		}
-
-		private static void ToggleTimeSeries(DataPoint dp, bool enable) {
-
-			if (dp.Vis == null)
-				return;
-
-			if (dp.Vis.VisOption.Style.IsTimeSeries) {
-				dp.Vis.OnTimeSeriesToggled(enable);
+				dp.ToggleHistory(enable);
 			}
 
 		}
@@ -177,10 +169,10 @@ namespace Dataskop.Data {
 			}
 
 			DataPointsLocations = new Vector2d[projectData.Devices.Count];
-			SpawnDataPoints();
+			InitializeDataPoints();
 
 			HasLoadedDataPoints = true;
-			StartCoroutine(GetNearbyDevicesTask(5));
+			StartCoroutine(GetNearbyDevicesTask(nearbyDevicesScanInterval));
 
 		}
 
@@ -200,20 +192,20 @@ namespace Dataskop.Data {
 				ClearDataPoints();
 			}
 
-			SpawnDataPoints();
+			InitializeDataPoints();
 
 			if (hasHistoryEnabled) {
 				foreach (DataPoint dp in DataPoints) {
-					ToggleTimeSeries(dp, true);
+					dp.ToggleHistory(true);
 				}
 			}
 
 			HasLoadedDataPoints = true;
-			StartCoroutine(GetNearbyDevicesTask(5));
+			StartCoroutine(GetNearbyDevicesTask(nearbyDevicesScanInterval));
 
 		}
 
-		private void SpawnDataPoints() {
+		private void InitializeDataPoints() {
 
 			DataPoints = new List<DataPoint>();
 
@@ -237,7 +229,7 @@ namespace Dataskop.Data {
 					dataPointInstance.Device = projectDevices[i];
 					dataPointInstance.AuthorRepository = AuthorRepository;
 					dataPointInstance.FocusedIndexChangedByTap += OnIndexChangeRequested;
-					dataPointInstance.FocusedMeasurement = definition.GetMeasurementResult(0);
+					dataPointInstance.FocusedMeasurement = definition.LatestMeasurementResult;
 
 					//Move the DataPoint to its location
 					if (AppOptions.DemoMode) {
@@ -317,9 +309,13 @@ namespace Dataskop.Data {
 				return;
 			}
 
+			TimeRangeFilter = timeRange;
+
 			foreach (DataPoint dp in DataPoints) {
-				dp.OnDateFiltered(timeRange);
+				dp.UpdateWithTimeRange(TimeRangeFilter.Value);
 			}
+
+			hasHistoryEnabled = true;
 
 		}
 
@@ -329,7 +325,7 @@ namespace Dataskop.Data {
 
 			foreach (DataPoint dp in DataPoints) {
 				dp.FocusedIndexChangedByTap -= OnIndexChangeRequested;
-				dp.RemoveVis();
+				dp.RemoveVisualization();
 				Destroy(dp.gameObject);
 			}
 

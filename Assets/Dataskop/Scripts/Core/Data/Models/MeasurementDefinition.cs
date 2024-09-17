@@ -70,31 +70,38 @@ namespace Dataskop.Data {
 
 		}
 
-		public MeasurementResult GetLatestMeasurementResult() {
-			return MeasurementResults.First()?.FirstOrDefault();
+		private MeasurementResult GetLatestMeasurementResult() {
+			return GetLatestRange().FirstOrDefault();
 		}
 
 		public MeasurementResultRange GetLatestRange() {
 			return MeasurementResults.First();
 		}
 
+		/// <summary>
+		/// Creates a new range from the available ranges with their data.
+		/// </summary>
+		/// <param name="timeRange">The given time range</param>
+		/// <returns>A MeasurementResultRange with the given time range and results.</returns>
 		public MeasurementResultRange GetRange(TimeRange timeRange) {
-			return MeasurementResults.First(x =>
-				x.GetTimeRange().StartTime >= timeRange.StartTime && x.GetTimeRange().EndTime <= timeRange.EndTime);
-		}
 
-		public MeasurementResult GetMeasurementResult(int index) {
-			return GetLatestMeasurementResult();
-		}
+			MeasurementResultRange foundRange = new(Array.Empty<MeasurementResult>());
 
-		public int? GetIndexOfMeasurementResult(MeasurementResult mr) {
+			foreach (MeasurementResultRange availableRange in MeasurementResults) {
 
-			if (GetAllResults().Contains(mr)) {
-				return Array.IndexOf(MeasurementResults.ToArray(), mr);
+				if (!TimeRangeExtensions.Contains(timeRange, availableRange.GetTimeRange())) {
+					continue;
+				}
+				foundRange = availableRange;
+				break;
 			}
 
-			return null;
+			MeasurementResultRange dataRange =
+				new(foundRange.Where(x => x.Timestamp >= timeRange.StartTime && x.Timestamp <= timeRange.EndTime)
+					.ToList());
 
+			dataRange.SetTimeRange(new TimeRange(timeRange.StartTime, timeRange.EndTime));
+			return dataRange;
 		}
 
 		public bool IsDataGap(MeasurementResult result1, MeasurementResult result2) {
@@ -176,10 +183,6 @@ namespace Dataskop.Data {
 				.OrderByDescending(mrr => mrr.GetTimeRange().StartTime)
 				.ThenByDescending(mrr => mrr.GetTimeRange().EndTime)
 				.ToList();
-		}
-
-		private IEnumerable<MeasurementResult> GetAllResults() {
-			return MeasurementResults.SelectMany(x => x).ToArray();
 		}
 
 	}

@@ -17,6 +17,7 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private Transform dropShadow;
 		[SerializeField] private LineRenderer groundLine;
 		[SerializeField] private GameObject dataGapIndicatorPrefab;
+		[SerializeField] private GameObject noResultsIndicator;
 
 		[Header("Vis Values")]
 		[SerializeField] private Vector3 offset;
@@ -30,12 +31,15 @@ namespace Dataskop.Entities.Visualizations {
 
 		private Coroutine historyMove;
 		private Vector3 moveTarget = Vector3.zero;
+		private MeasurementResultRange currentRange;
 
 		private float Scale { get; set; }
 
 		private int PreviousIndex { get; set; }
 
 		private IVisObjectStyle VisObjectStyle { get; set; }
+
+		private MeasurementResultRange CurrentRange => DataPoint.CurrentMeasurementRange;
 
 		public bool HasHistoryEnabled { get; private set; }
 
@@ -84,13 +88,21 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjectStyle = visObjectStyle;
 			Type = VisualizationType.Dot;
 
-			//TODO: Handle MeasurementResults being less than configured time series configuration visible history count.
+			if (CurrentRange.Count < 1) {
+				noResultsIndicator.SetActive(true);
+				return;
+			}
+
+			noResultsIndicator.SetActive(false);
 
 			VisOrigin.localScale *= Scale;
 			VisOrigin.root.localPosition = Offset;
 
-			VisObjects = DataPoint.MeasurementDefinition.MeasurementResults.First().Count < VisHistoryConfiguration.visibleHistoryCount
-				? new IVisObject[dp.MeasurementDefinition.MeasurementResults.First().Count]
+			dropShadow.transform.localScale *= Scale;
+			dropShadow.transform.localPosition -= Offset;
+
+			VisObjects = CurrentRange.Count < VisHistoryConfiguration.visibleHistoryCount
+				? new IVisObject[CurrentRange.Count]
 				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
 
 			GameObject visObject = Instantiate(visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer);
@@ -99,9 +111,6 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjects[DataPoint.FocusedIndex].HasSelected += OnVisObjectSelected;
 			VisObjects[DataPoint.FocusedIndex].HasDeselected += OnVisObjectDeselected;
 			VisObjects[DataPoint.FocusedIndex].VisCollider.enabled = true;
-
-			dropShadow.transform.localScale *= Scale;
-			dropShadow.transform.localPosition -= Offset;
 
 			/*
 			SetLinePosition(groundLine,
@@ -115,13 +124,13 @@ namespace Dataskop.Entities.Visualizations {
 			groundLine.endWidth = 0.0075f;
 
 			PreviousIndex = DataPoint.FocusedIndex;
-			OnFocusedIndexChanged(DataPoint.MeasurementDefinition, DataPoint.FocusedIndex);
+			OnFocusedIndexChanged(DataPoint.FocusedIndex);
 
 		}
 
-		public void OnFocusedIndexChanged(MeasurementDefinition def, int index) {
+		public void OnFocusedIndexChanged(int index) {
 
-			if (!AllowedMeasurementTypes.Contains(def.MeasurementType)) {
+			if (!AllowedMeasurementTypes.Contains(DataPoint.MeasurementDefinition.MeasurementType)) {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
 					Text = $"Value Type not supported by {Type} visualization.",
@@ -132,7 +141,7 @@ namespace Dataskop.Entities.Visualizations {
 
 			if (!HasHistoryEnabled) {
 
-				MeasurementResult focusedResult = def.MeasurementResults.First()[index];
+				MeasurementResult focusedResult = CurrentRange[index];
 
 				if (DataPoint.FocusedIndex != PreviousIndex) {
 					VisObjects[DataPoint.FocusedIndex] = VisObjects[PreviousIndex];
@@ -159,7 +168,7 @@ namespace Dataskop.Entities.Visualizations {
 				// VisObjects above current result
 				for (int i = 1; i < VisObjects.Length - DataPoint.FocusedIndex; i++) {
 					int targetIndex = DataPoint.FocusedIndex + i;
-					MeasurementResult newResultToAssign = def.MeasurementResults.First()[targetIndex];
+					MeasurementResult newResultToAssign = CurrentRange[targetIndex];
 					IVisObject targetObject = VisObjects[targetIndex];
 					UpdateVisObject(targetObject, targetIndex, newResultToAssign, false, false, VisObjectStyle.Styles[0].timeMaterial);
 				}
@@ -167,12 +176,12 @@ namespace Dataskop.Entities.Visualizations {
 				// VisObjects below current result
 				for (int i = 1; i <= DataPoint.FocusedIndex; i++) {
 					int targetIndex = DataPoint.FocusedIndex - i;
-					MeasurementResult newResultToAssign = def.MeasurementResults.First()[targetIndex];
+					MeasurementResult newResultToAssign = CurrentRange[targetIndex];
 					IVisObject targetObject = VisObjects[targetIndex];
 					UpdateVisObject(targetObject, targetIndex, newResultToAssign, false, false, VisObjectStyle.Styles[0].timeMaterial);
 				}
 
-				MeasurementResult focusedResult = def.MeasurementResults.First()[DataPoint.FocusedIndex];
+				MeasurementResult focusedResult = CurrentRange[DataPoint.FocusedIndex];
 				UpdateVisObject(VisObjects[DataPoint.FocusedIndex], DataPoint.FocusedIndex, focusedResult, true, true,
 					IsSelected ? VisObjectStyle.Styles[0].selectionMaterial : VisObjectStyle.Styles[0].defaultMaterial);
 				PreviousIndex = DataPoint.FocusedIndex;
@@ -185,9 +194,13 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void OnTimeSeriesToggled(bool isActive) {
 
+			if (CurrentRange.Count < 1) {
+				return;
+			}
+
 			if (isActive) {
 
-				MeasurementResultRange currentResults = DataPoint.MeasurementDefinition.MeasurementResults.First();
+				MeasurementResultRange currentResults = DataPoint.CurrentMeasurementRange;
 				float distance = visHistoryConfig.elementDistance;
 
 				// VisObjects above current result
@@ -253,7 +266,6 @@ namespace Dataskop.Entities.Visualizations {
 				}
 
 				groundLine.enabled = false;
-				HasHistoryEnabled = true;
 
 			}
 			else {
@@ -264,8 +276,10 @@ namespace Dataskop.Entities.Visualizations {
 
 				ClearHistoryVisObjects();
 				groundLine.enabled = true;
-				HasHistoryEnabled = false;
+
 			}
+
+			HasHistoryEnabled = isActive;
 
 		}
 
@@ -282,8 +296,35 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
+		public void OnMeasurementResultRangeUpdated() {
+
+			ClearVisObjects();
+
+			if (CurrentRange.Count < 1) {
+
+				noResultsIndicator.SetActive(true);
+				return;
+			}
+
+			noResultsIndicator.SetActive(false);
+
+			VisObjects = CurrentRange.Count < VisHistoryConfiguration.visibleHistoryCount
+				? new IVisObject[CurrentRange.Count]
+				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
+
+			GameObject visObject = Instantiate(visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer);
+			VisObjects[DataPoint.FocusedIndex] = visObject.GetComponent<IVisObject>();
+			VisObjects[DataPoint.FocusedIndex].HasHovered += OnVisObjectHovered;
+			VisObjects[DataPoint.FocusedIndex].HasSelected += OnVisObjectSelected;
+			VisObjects[DataPoint.FocusedIndex].HasDeselected += OnVisObjectDeselected;
+			VisObjects[DataPoint.FocusedIndex].VisCollider.enabled = true;
+
+			OnTimeSeriesToggled(true);
+
+		}
+
 		public void OnMeasurementResultsUpdated(int newIndex) {
-			OnFocusedIndexChanged(DataPoint.MeasurementDefinition, newIndex);
+			OnFocusedIndexChanged(newIndex);
 		}
 
 		public void ApplyStyle(VisualizationStyle style) {
@@ -402,6 +443,10 @@ namespace Dataskop.Entities.Visualizations {
 				return;
 			}
 
+			if (historyMove != null) {
+				StopCoroutine(historyMove);
+			}
+
 			for (int i = 0; i < VisObjects.Length; i++) {
 
 				if (i == DataPoint.FocusedIndex) {
@@ -426,6 +471,10 @@ namespace Dataskop.Entities.Visualizations {
 
 		private void ClearVisObjects() {
 
+			if (historyMove != null) {
+				StopCoroutine(historyMove);
+			}
+
 			for (int i = 0; i < VisObjects.Length - 1; i++) {
 
 				if (VisObjects[i] == null) {
@@ -442,11 +491,6 @@ namespace Dataskop.Entities.Visualizations {
 
 			}
 
-		}
-
-		private void SetLinePosition(LineRenderer lr, Vector3 startPoint, Vector3 endPoint) {
-			lr.SetPosition(0, startPoint);
-			lr.SetPosition(1, endPoint);
 		}
 
 		private IEnumerator MoveHistory(Vector3 direction, int multiplier = 1) {
@@ -468,6 +512,11 @@ namespace Dataskop.Entities.Visualizations {
 			visObjectsContainer.transform.position = moveTarget;
 			historyMove = null;
 
+		}
+
+		private void SetLinePosition(LineRenderer lr, Vector3 startPoint, Vector3 endPoint) {
+			lr.SetPosition(0, startPoint);
+			lr.SetPosition(1, endPoint);
 		}
 
 		private IEnumerator MoveLinePointTo(int index, Vector3 target, float duration) {

@@ -15,6 +15,7 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private Transform visObjectsContainer;
 		[SerializeField] private BarVisObjectStyle visObjectStyle;
 		[SerializeField] private GameObject dataGapIndicatorPrefab;
+		[SerializeField] private GameObject noResultsIndicator;
 
 		[Header("Vis Values")]
 		[SerializeField] private Vector3 offset;
@@ -36,6 +37,8 @@ namespace Dataskop.Entities.Visualizations {
 		private int PreviousIndex { get; set; }
 
 		private IVisObjectStyle VisObjectStyle { get; set; }
+
+		private MeasurementResultRange CurrentRange => DataPoint.CurrentMeasurementRange;
 
 		public event Action SwipedDown;
 
@@ -84,6 +87,13 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjectStyle = visObjectStyle;
 			Type = VisualizationType.Bar;
 
+			if (CurrentRange.Count < 1) {
+				noResultsIndicator.SetActive(true);
+				return;
+			}
+
+			noResultsIndicator.SetActive(false);
+
 			VisOrigin.localScale *= Scale;
 			VisOrigin.root.localPosition = Offset;
 
@@ -99,13 +109,13 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjects[DataPoint.FocusedIndex].VisCollider.enabled = true;
 
 			PreviousIndex = DataPoint.FocusedIndex;
-			OnFocusedIndexChanged(DataPoint.MeasurementDefinition, DataPoint.FocusedIndex);
+			OnFocusedIndexChanged(DataPoint.FocusedIndex);
 
 		}
 
-		public void OnFocusedIndexChanged(MeasurementDefinition def, int index) {
+		public void OnFocusedIndexChanged(int index) {
 
-			if (!AllowedMeasurementTypes.Contains(def.MeasurementType)) {
+			if (!AllowedMeasurementTypes.Contains(DataPoint.MeasurementDefinition.MeasurementType)) {
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
 					Text = "Value Type not supported by this visualization.",
@@ -115,10 +125,10 @@ namespace Dataskop.Entities.Visualizations {
 			}
 
 			BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
-			MeasurementResult focusedResult = def.MeasurementResults.First()[DataPoint.FocusedIndex];
 
 			if (!HasHistoryEnabled) {
 
+				MeasurementResult focusedResult = CurrentRange[index];
 				if (DataPoint.FocusedIndex != PreviousIndex) {
 					VisObjects[DataPoint.FocusedIndex] = VisObjects[PreviousIndex];
 					VisObjects[PreviousIndex] = null;
@@ -144,7 +154,7 @@ namespace Dataskop.Entities.Visualizations {
 				// VisObjects above current result
 				for (int i = 1; i < VisObjects.Length - DataPoint.FocusedIndex; i++) {
 					int targetIndex = DataPoint.FocusedIndex + i;
-					MeasurementResult newResultToAssign = def.MeasurementResults.First()[targetIndex];
+					MeasurementResult newResultToAssign = CurrentRange[targetIndex];
 					IVisObject targetObject = VisObjects[targetIndex];
 					UpdateVisObject(targetObject, targetIndex, newResultToAssign, false, false, style.Styles[0].timeMaterial,
 						style.historyFillMaterial);
@@ -153,12 +163,13 @@ namespace Dataskop.Entities.Visualizations {
 				// VisObjects below current result
 				for (int i = 1; i <= DataPoint.FocusedIndex; i++) {
 					int targetIndex = DataPoint.FocusedIndex - i;
-					MeasurementResult newResultToAssign = def.MeasurementResults.First()[targetIndex];
+					MeasurementResult newResultToAssign = CurrentRange[targetIndex];
 					IVisObject targetObject = VisObjects[targetIndex];
 					UpdateVisObject(targetObject, targetIndex, newResultToAssign, false, false, style.Styles[0].timeMaterial,
 						style.historyFillMaterial);
 				}
 
+				MeasurementResult focusedResult = CurrentRange[DataPoint.FocusedIndex];
 				UpdateVisObject(VisObjects[DataPoint.FocusedIndex], DataPoint.FocusedIndex, focusedResult, true, true,
 					IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial, style.focusedFillMaterial);
 				PreviousIndex = DataPoint.FocusedIndex;
@@ -169,38 +180,21 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-		public void OnSwipeInteraction(PointerInteraction pointerInteraction) {
-
-			switch (pointerInteraction.Direction.y) {
-				case > 0.20f:
-					SwipedUp?.Invoke();
-					break;
-				case < -0.20f:
-					SwipedDown?.Invoke();
-					break;
-			}
-
-		}
-
-		public void OnMeasurementResultsUpdated(int newIndex) {
-			throw new NotImplementedException();
-		}
-
-		public void ApplyStyle(VisualizationStyle style) { }
-
-		public void Despawn() {
-			ClearVisObjects();
-			DataPoint = null;
-			Destroy(gameObject);
-		}
-
 		public void OnTimeSeriesToggled(bool isActive) {
 
+			if (CurrentRange.Count < 1) {
+				return;
+			}
+
 			BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
-			MeasurementResultRange currentResults = DataPoint.MeasurementDefinition.MeasurementResults.First();
 
 			if (isActive) {
 
+				if (HasHistoryEnabled) {
+					return;
+				}
+
+				MeasurementResultRange currentResults = DataPoint.CurrentMeasurementRange;
 				float distance = visHistoryConfig.elementDistance;
 
 				// VisObjects above current result
@@ -280,6 +274,7 @@ namespace Dataskop.Entities.Visualizations {
 				}
 
 				ClearHistoryVisObjects();
+				MeasurementResultRange currentResults = DataPoint.CurrentMeasurementRange;
 				UpdateVisObject(VisObjects[DataPoint.FocusedIndex], DataPoint.FocusedIndex, currentResults[DataPoint.FocusedIndex], true,
 					true,
 					IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial, style.focusedFillMaterial);
@@ -287,6 +282,58 @@ namespace Dataskop.Entities.Visualizations {
 				HasHistoryEnabled = false;
 			}
 
+		}
+
+		public void OnSwipeInteraction(PointerInteraction pointerInteraction) {
+
+			switch (pointerInteraction.Direction.y) {
+				case > 0.20f:
+					SwipedUp?.Invoke();
+					break;
+				case < -0.20f:
+					SwipedDown?.Invoke();
+					break;
+			}
+
+		}
+
+		public void OnMeasurementResultRangeUpdated() {
+
+			ClearVisObjects();
+
+			if (CurrentRange.Count < 1) {
+
+				noResultsIndicator.SetActive(true);
+				return;
+			}
+
+			noResultsIndicator.SetActive(false);
+
+			VisObjects = CurrentRange.Count < VisHistoryConfiguration.visibleHistoryCount
+				? new IVisObject[CurrentRange.Count]
+				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
+
+			GameObject visObject = Instantiate(visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer);
+			VisObjects[DataPoint.FocusedIndex] = visObject.GetComponent<IVisObject>();
+			VisObjects[DataPoint.FocusedIndex].HasHovered += OnVisObjectHovered;
+			VisObjects[DataPoint.FocusedIndex].HasSelected += OnVisObjectSelected;
+			VisObjects[DataPoint.FocusedIndex].HasDeselected += OnVisObjectDeselected;
+			VisObjects[DataPoint.FocusedIndex].VisCollider.enabled = true;
+
+			OnTimeSeriesToggled(true);
+
+		}
+
+		public void OnMeasurementResultsUpdated(int newIndex) {
+			OnFocusedIndexChanged(newIndex);
+		}
+
+		public void ApplyStyle(VisualizationStyle style) { }
+
+		public void Despawn() {
+			ClearVisObjects();
+			DataPoint = null;
+			Destroy(gameObject);
 		}
 
 		private void OnVisObjectHovered(int index) {
@@ -393,6 +440,10 @@ namespace Dataskop.Entities.Visualizations {
 				return;
 			}
 
+			if (historyMove != null) {
+				StopCoroutine(historyMove);
+			}
+
 			for (int i = 0; i < VisObjects.Length; i++) {
 
 				if (i == DataPoint.FocusedIndex) {
@@ -416,6 +467,10 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		private void ClearVisObjects() {
+
+			if (historyMove != null) {
+				StopCoroutine(historyMove);
+			}
 
 			for (int i = 0; i < VisObjects.Length - 1; i++) {
 

@@ -61,6 +61,11 @@ namespace Dataskop.UI {
 
 			if (DateTime.TryParse(e.newValue, culture, DateTimeStyles.None, out DateTime newDate)) {
 				toDate = newDate;
+
+				if (toDate.Value > DateTime.Now) {
+					toDate = DateTime.Now;
+				}
+				
 				return;
 			}
 

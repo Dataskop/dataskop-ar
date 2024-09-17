@@ -54,9 +54,11 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void OnTimeSeriesToggled(bool isActive);
 
-		public void OnFocusedIndexChanged(MeasurementDefinition def, int index);
+		public void OnFocusedIndexChanged(int index);
 
 		public void OnSwipeInteraction(PointerInteraction pointerInteraction);
+
+		public void OnMeasurementResultRangeUpdated();
 
 		public void OnMeasurementResultsUpdated(int newIndex);
 
