@@ -19,9 +19,20 @@ namespace Dataskop.Entities {
 		[SerializeField] private Color mapHoverColor;
 		[SerializeField] private Color mapDefaultColor;
 
+		private MeasurementResultRange currentMeasurementRange;
+
 		public MeasurementDefinition MeasurementDefinition { get; set; }
 
-		public MeasurementResultRange CurrentMeasurementRange { get; private set; }
+		public MeasurementResultRange CurrentMeasurementRange {
+
+			get => currentMeasurementRange;
+
+			private set {
+				currentMeasurementRange = value;
+				MeasurementRangeChanged?.Invoke();
+			}
+
+		}
 
 		public int FocusedIndex { get; private set; }
 
@@ -47,6 +58,8 @@ namespace Dataskop.Entities {
 
 		public event Action<VisualizationType> VisualizationTypeChanged;
 
+		public event Action MeasurementRangeChanged;
+
 		/// <summary>
 		///     Sets and replaces the current visualization form with another.
 		/// </summary>
@@ -63,7 +76,6 @@ namespace Dataskop.Entities {
 			Vis.Initialize(this);
 
 			if (CurrentMeasurementRange.Count < 1) {
-				Debug.Log("No Measurements Available - Displaying Indicator");
 				return;
 			}
 
