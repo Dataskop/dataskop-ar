@@ -292,8 +292,9 @@ namespace Dataskop.UI {
 				SetVisibility(CurrentTimeLabel, IsActive);
 				SetVisibility(RangeContainer, IsActive);
 				StartCoroutine(GenerateTicks(GetMeasurementCount()));
+							
+				CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
 			}
-			
 		}
 
 		private IEnumerator DelayToggle() {
