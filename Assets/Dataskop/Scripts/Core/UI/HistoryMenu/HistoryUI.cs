@@ -24,7 +24,7 @@ namespace Dataskop.UI {
 		[Header("Icons")]
 		[SerializeField] private Sprite hourIcon;
 		[SerializeField] private Sprite daysIcon;
-		
+
 		private VisualElement Root { get; set; }
 
 		private VisualElement HistoryContainer { get; set; }
@@ -269,9 +269,9 @@ namespace Dataskop.UI {
 			element.style.display = new StyleEnum<DisplayStyle>(isVisible ? DisplayStyle.Flex : DisplayStyle.None);
 		}
 
-		public void ToggleHistoryView() {
+		public void SetHistoryViewState(bool newState) {
 
-			IsActive = !IsActive;
+			IsActive = newState;
 
 			if (SelectedDataPoint) {
 				SetVisibility(HistoryContainer, IsActive);
@@ -282,6 +282,18 @@ namespace Dataskop.UI {
 
 			historyViewToggled?.Invoke(IsActive);
 
+		}
+
+		public void OnDateFiltered() {
+			IsActive = true;
+
+			if (SelectedDataPoint) {
+				SetVisibility(HistoryContainer, IsActive);
+				SetVisibility(CurrentTimeLabel, IsActive);
+				SetVisibility(RangeContainer, IsActive);
+				StartCoroutine(GenerateTicks(GetMeasurementCount()));
+			}
+			
 		}
 
 		private IEnumerator DelayToggle() {
@@ -384,9 +396,9 @@ namespace Dataskop.UI {
 
 		private void ToggleUnitSwitch(DataPoint selectedDatapoint) {
 			isHourly = !isHourly;
-			
+
 			SwitchUnitsIcon.style.backgroundImage = new StyleBackground(isHourly ? hourIcon : daysIcon);
-			
+
 			UpdateMinMaxSlider(selectedDatapoint.MeasurementDefinition);
 			CreateCacheRect(selectedDatapoint.MeasurementDefinition);
 			AdjustTopDateLabelPositions();

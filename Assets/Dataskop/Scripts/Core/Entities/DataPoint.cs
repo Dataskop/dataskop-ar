@@ -128,6 +128,7 @@ namespace Dataskop.Entities {
 		}
 
 		public void ToggleHistory(bool newState) {
+			
 			if (Vis != null && Vis.VisOption.Style.IsTimeSeries) {
 				Vis.OnTimeSeriesToggled(newState);
 			}

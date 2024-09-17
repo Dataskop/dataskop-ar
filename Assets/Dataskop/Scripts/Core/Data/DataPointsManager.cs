@@ -17,6 +17,7 @@ namespace Dataskop.Data {
 		public UnityEvent<VisualizationOption> onVisualizationChanged;
 		public UnityEvent<int> dataPointHistorySwiped;
 		public UnityEvent<int> nearbyDevicesUpdated;
+		public UnityEvent hasFilteredByDate;
 
 		[Header("References")]
 		[SerializeField] private DataManager dataManager;
@@ -85,27 +86,6 @@ namespace Dataskop.Data {
 
 		}
 
-		private void SetDataPointVisualization(DataPoint dp, VisualizationOption visOpt) {
-
-			if (VisualizationRepository.IsAvailable(visOpt.Type.FirstCharToUpper())) {
-
-				GameObject vis = VisualizationRepository.GetVisualization(visOpt.Type.FirstCharToUpper());
-				dp.RemoveVisualization();
-				dp.Visualize(vis, TimeRangeFilter);
-				dp.Vis.VisOption = visOpt;
-				dp.Vis.ApplyStyle(dp.Vis.VisOption.Style);
-
-			}
-			else {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Info,
-					Text = $"Could not find {visOpt.Type} Vis.",
-					DisplayDuration = NotificationDuration.Medium
-				});
-			}
-
-		}
-
 		public void OnHistoryViewChanged(bool enable) {
 
 			hasHistoryEnabled = enable;
@@ -114,36 +94,6 @@ namespace Dataskop.Data {
 			foreach (DataPoint dp in DataPoints) {
 				dp.ToggleHistory(enable);
 			}
-
-		}
-
-		private void OnSwiped(PointerInteraction pointerInteraction) {
-
-			if (!pointerInteraction.isSwipe) {
-				return;
-			}
-
-			if (pointerInteraction.startingGameObject == null) {
-				return;
-			}
-
-			if (!HasLoadedDataPoints) {
-				return;
-			}
-
-			if (DataPoints.Count < 1) {
-				return;
-			}
-
-			if (!pointerInteraction.startingGameObject.CompareTag("VisObject")) {
-				return;
-			}
-
-			foreach (DataPoint dp in DataPoints) {
-				dp.Vis.OnSwipeInteraction(pointerInteraction);
-			}
-
-			dataPointHistorySwiped?.Invoke(DataPoints[0].FocusedIndex);
 
 		}
 
@@ -158,7 +108,7 @@ namespace Dataskop.Data {
 
 		}
 
-		public void OnAttributesUpdated(Project projectData) {
+		public void OnAttributesInitialized(Project projectData) {
 
 			if (projectData.Devices == null) {
 				return;
@@ -257,7 +207,7 @@ namespace Dataskop.Data {
 
 		}
 
-		public void PlaceDataPoint(Vector2d newPosition, Transform dataPointTransform) {
+		private void PlaceDataPoint(Vector2d newPosition, Transform dataPointTransform) {
 			dataPointTransform.localPosition = map.GeoToWorldPosition(newPosition);
 		}
 
@@ -265,16 +215,38 @@ namespace Dataskop.Data {
 			dataPointTransform.localPosition = newPosition;
 		}
 
-		private IEnumerator GetNearbyDevicesTask(float seconds) {
-			while (HasLoadedDataPoints) {
-				int count = GetDevicesNearPosition(inputHandler.MainCamera.transform.position);
-				nearbyDevicesUpdated?.Invoke(count);
-				yield return new WaitForSeconds(seconds);
+		private void ClearDataPoints() {
+
+			HasLoadedDataPoints = false;
+
+			foreach (DataPoint dp in DataPoints) {
+				dp.FocusedIndexChangedByTap -= OnIndexChangeRequested;
+				dp.RemoveVisualization();
+				Destroy(dp.gameObject);
 			}
+
+			DataPoints.Clear();
 		}
 
-		private int GetDevicesNearPosition(Vector3 position) {
-			return DataPoints.Count(dp => Vector3.Distance(dp.transform.position, position) <= nearbyDevicesDistance);
+		private void SetDataPointVisualization(DataPoint dp, VisualizationOption visOpt) {
+
+			if (VisualizationRepository.IsAvailable(visOpt.Type.FirstCharToUpper())) {
+
+				GameObject vis = VisualizationRepository.GetVisualization(visOpt.Type.FirstCharToUpper());
+				dp.RemoveVisualization();
+				dp.Visualize(vis, TimeRangeFilter);
+				dp.Vis.VisOption = visOpt;
+				dp.Vis.ApplyStyle(dp.Vis.VisOption.Style);
+
+			}
+			else {
+				NotificationHandler.Add(new Notification {
+					Category = NotificationCategory.Info,
+					Text = $"Could not find {visOpt.Type} Vis.",
+					DisplayDuration = NotificationDuration.Medium
+				});
+			}
+
 		}
 
 		private void OnIndexChangeRequested(int index) {
@@ -316,20 +288,50 @@ namespace Dataskop.Data {
 			}
 
 			hasHistoryEnabled = true;
+			hasFilteredByDate?.Invoke();
 
 		}
 
-		private void ClearDataPoints() {
+		private void OnSwiped(PointerInteraction pointerInteraction) {
 
-			HasLoadedDataPoints = false;
-
-			foreach (DataPoint dp in DataPoints) {
-				dp.FocusedIndexChangedByTap -= OnIndexChangeRequested;
-				dp.RemoveVisualization();
-				Destroy(dp.gameObject);
+			if (!pointerInteraction.isSwipe) {
+				return;
 			}
 
-			DataPoints.Clear();
+			if (pointerInteraction.startingGameObject == null) {
+				return;
+			}
+
+			if (!HasLoadedDataPoints) {
+				return;
+			}
+
+			if (DataPoints.Count < 1) {
+				return;
+			}
+
+			if (!pointerInteraction.startingGameObject.CompareTag("VisObject")) {
+				return;
+			}
+
+			foreach (DataPoint dp in DataPoints) {
+				dp.Vis.OnSwipeInteraction(pointerInteraction);
+			}
+
+			dataPointHistorySwiped?.Invoke(DataPoints[0].FocusedIndex);
+
+		}
+
+		private IEnumerator GetNearbyDevicesTask(float seconds) {
+			while (HasLoadedDataPoints) {
+				int count = GetDevicesNearPosition(inputHandler.MainCamera.transform.position);
+				nearbyDevicesUpdated?.Invoke(count);
+				yield return new WaitForSeconds(seconds);
+			}
+		}
+
+		private int GetDevicesNearPosition(Vector3 position) {
+			return DataPoints.Count(dp => Vector3.Distance(dp.transform.position, position) <= nearbyDevicesDistance);
 		}
 
 	}

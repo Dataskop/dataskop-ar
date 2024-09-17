@@ -408,12 +408,14 @@ namespace Dataskop.Data {
 
 					}
 
+					/*
 					Debug.Log($"Result Ranges in {md.DeviceId} - {md.AttributeId} ({md.ID}):");
 					foreach (var m in md.MeasurementResults) {
 						Debug.Log(
 							$"from {m.GetTimeRange().StartTime} to {m.GetTimeRange().EndTime} with {m.Count} results");
 					}
 					Debug.Log(" ----- ");
+					*/
 
 				}
 

@@ -289,9 +289,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1345926185}
-        m_TargetAssemblyTypeName: DataSkopAR.UI.HistoryUI, DataSkopAR
-        m_MethodName: ToggleHistoryView
-        m_Mode: 1
+        m_TargetAssemblyTypeName: Dataskop.UI.HistoryUI, Dataskop
+        m_MethodName: SetHistoryViewState
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -477,6 +477,18 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 213483611}
         m_TargetAssemblyTypeName: Dataskop.UI.SettingsMenuUI, Dataskop
+        m_MethodName: OnDateFiltered
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1345926185}
+        m_TargetAssemblyTypeName: Dataskop.UI.HistoryUI, Dataskop
         m_MethodName: OnDateFiltered
         m_Mode: 1
         m_Arguments:
@@ -2443,8 +2455,6 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   historyMenuDoc: {fileID: 1345926184}
-  selectedIconColor: {r: 0.85882354, g: 0.4117647, b: 0.043137256, a: 1}
-  deselectedIconColor: {r: 0.14509805, g: 0.34901962, b: 0.6901961, a: 1}
   hourIcon: {fileID: 21300000, guid: d1b3c954e934a2041a9fbea525d7f327, type: 3}
   daysIcon: {fileID: 21300000, guid: 838c571e9e4eead44a0286449f633555, type: 3}
 --- !u!114 &1345926186
@@ -3876,7 +3886,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1884349581}
         m_TargetAssemblyTypeName: DataSkopAR.Data.DataPointsManager, DataSkopAR
-        m_MethodName: OnAttributesUpdated
+        m_MethodName: OnAttributesInitialized
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4004,6 +4014,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  hasFilteredByDate:
+    m_PersistentCalls:
+      m_Calls: []
   dataManager: {fileID: 284049158}
   inputHandler: {fileID: 1561813931}
   map: {fileID: 7949688664006150128}

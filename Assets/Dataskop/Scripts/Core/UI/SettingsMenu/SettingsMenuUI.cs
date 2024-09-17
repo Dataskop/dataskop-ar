@@ -20,7 +20,7 @@ namespace Dataskop.UI {
 		public UnityEvent onToggleMinimapButtonPressed;
 		public UnityEvent onResetCalibrationButtonPressed;
 		public UnityEvent onLogoutButtonPressed;
-		public UnityEvent historyButtonPressed;
+		public UnityEvent<bool> historyButtonPressed;
 		public UnityEvent sidePanelOpened;
 		public UnityEvent<int> amountInputChanged;
 		public UnityEvent<int> cooldownInputChanged;
@@ -237,7 +237,7 @@ namespace Dataskop.UI {
 		private void ToggleHistoryView() {
 
 			isHistorySliderActive = !isHistorySliderActive;
-			historyButtonPressed?.Invoke();
+			historyButtonPressed?.Invoke(isHistorySliderActive);
 			HistoryIcon.style.unityBackgroundImageTintColor =
 				new StyleColor(isHistorySliderActive ? selectedIconColor : deselectedIconColor);
 
@@ -255,7 +255,6 @@ namespace Dataskop.UI {
 			HistoryButton.style.borderLeftColor = selectedIconColor;
 			HistoryButton.style.borderRightColor = selectedIconColor;
 			HistoryButton.style.borderTopColor = selectedIconColor;
-			historyButtonPressed?.Invoke();
 		}
 
 		public void HideSettings() {

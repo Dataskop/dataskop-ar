@@ -195,6 +195,7 @@ namespace Dataskop.Entities.Visualizations {
 		public void OnTimeSeriesToggled(bool isActive) {
 
 			if (CurrentRange.Count < 1) {
+				HasHistoryEnabled = isActive;
 				return;
 			}
 
@@ -301,7 +302,6 @@ namespace Dataskop.Entities.Visualizations {
 			ClearVisObjects();
 
 			if (CurrentRange.Count < 1) {
-
 				noResultsIndicator.SetActive(true);
 				return;
 			}
