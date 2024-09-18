@@ -391,6 +391,9 @@ namespace Dataskop.UI {
 				};
 				rect.style.width = rect.style.left.value.value + rect.style.width.value.value > 590 ? calculatedWidth - 10
 					: calculatedWidth;
+				// influence the width  when the position of the rect + the width would mean the rect is out of bounds (590)
+				rect.style.width = Math.Clamp(calculatedWidth - 10, 0, 590 - rect.style.left.value.value);
+			
 				RectContainer.Add(rect);
 			}
 		}
