@@ -183,16 +183,13 @@ namespace Dataskop.Entities.Visualizations {
 		public void OnTimeSeriesToggled(bool isActive) {
 
 			if (CurrentRange.Count < 1) {
+				HasHistoryEnabled = isActive;
 				return;
 			}
 
 			BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
 
 			if (isActive) {
-
-				if (HasHistoryEnabled) {
-					return;
-				}
 
 				MeasurementResultRange currentResults = DataPoint.CurrentMeasurementRange;
 				float distance = visHistoryConfig.elementDistance;
@@ -302,23 +299,30 @@ namespace Dataskop.Entities.Visualizations {
 			ClearVisObjects();
 
 			if (CurrentRange.Count < 1) {
-
 				noResultsIndicator.SetActive(true);
 				return;
 			}
 
 			noResultsIndicator.SetActive(false);
+			PreviousIndex = DataPoint.FocusedIndex;
 
 			VisObjects = CurrentRange.Count < VisHistoryConfiguration.visibleHistoryCount
 				? new IVisObject[CurrentRange.Count]
 				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
 
-			GameObject visObject = Instantiate(visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer);
+			visObjectsContainer.localPosition = VisOrigin.position;
+
+			GameObject visObject = Instantiate(visObjectPrefab, VisOrigin.position, visObjectsContainer.localRotation,
+				visObjectsContainer);
 			VisObjects[DataPoint.FocusedIndex] = visObject.GetComponent<IVisObject>();
 			VisObjects[DataPoint.FocusedIndex].HasHovered += OnVisObjectHovered;
 			VisObjects[DataPoint.FocusedIndex].HasSelected += OnVisObjectSelected;
 			VisObjects[DataPoint.FocusedIndex].HasDeselected += OnVisObjectDeselected;
 			VisObjects[DataPoint.FocusedIndex].VisCollider.enabled = true;
+
+			BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
+			UpdateVisObject(VisObjects[DataPoint.FocusedIndex], DataPoint.FocusedIndex, CurrentRange[DataPoint.FocusedIndex], true, true,
+				IsSelected ? style.Styles[0].selectionMaterial : style.Styles[0].defaultMaterial, style.focusedFillMaterial);
 
 			OnTimeSeriesToggled(true);
 
