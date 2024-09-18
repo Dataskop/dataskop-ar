@@ -307,12 +307,16 @@ namespace Dataskop.Entities.Visualizations {
 			}
 
 			noResultsIndicator.SetActive(false);
+			PreviousIndex = DataPoint.FocusedIndex;
 
 			VisObjects = CurrentRange.Count < VisHistoryConfiguration.visibleHistoryCount
 				? new IVisObject[CurrentRange.Count]
 				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
 
-			GameObject visObject = Instantiate(visObjectPrefab, transform.position, visObjectsContainer.localRotation, visObjectsContainer);
+			visObjectsContainer.localPosition = VisOrigin.position;
+
+			GameObject visObject = Instantiate(visObjectPrefab, VisOrigin.position, visObjectsContainer.localRotation,
+				visObjectsContainer);
 			VisObjects[DataPoint.FocusedIndex] = visObject.GetComponent<IVisObject>();
 			VisObjects[DataPoint.FocusedIndex].HasHovered += OnVisObjectHovered;
 			VisObjects[DataPoint.FocusedIndex].HasSelected += OnVisObjectSelected;
@@ -498,21 +502,18 @@ namespace Dataskop.Entities.Visualizations {
 
 		private IEnumerator MoveHistory(Vector3 direction, int multiplier = 1) {
 
-			Vector3 startPosition = visObjectsContainer.transform.position;
-			moveTarget = visObjectsContainer.transform.position + direction * (visHistoryConfig.elementDistance * multiplier);
+			Vector3 startPosition = visObjectsContainer.position;
+			moveTarget = visObjectsContainer.position + direction * (visHistoryConfig.elementDistance * multiplier);
 			float moveDuration = visHistoryConfig.animationDuration;
 
 			float t = 0;
 			while (t < moveDuration) {
-
-				visObjectsContainer.transform.position = Vector3.Lerp(startPosition, moveTarget, t / moveDuration);
-
+				visObjectsContainer.position = Vector3.Lerp(startPosition, moveTarget, t / moveDuration);
 				t += Time.deltaTime;
 				yield return null;
-
 			}
 
-			visObjectsContainer.transform.position = moveTarget;
+			visObjectsContainer.position = moveTarget;
 			historyMove = null;
 
 		}
@@ -528,9 +529,7 @@ namespace Dataskop.Entities.Visualizations {
 			while (current <= duration) {
 				current += Time.deltaTime;
 				float currentPercentage = Mathf.Clamp01(current / duration);
-
 				groundLine.SetPosition(index, Vector3.LerpUnclamped(groundLine.GetPosition(index), target, currentPercentage));
-
 				yield return null;
 			}
 		}
