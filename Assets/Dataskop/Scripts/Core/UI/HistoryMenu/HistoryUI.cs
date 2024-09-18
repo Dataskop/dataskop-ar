@@ -99,7 +99,7 @@ namespace Dataskop.UI {
 			RectContainer = Root.Q<VisualElement>("RectContainer");
 
 			SwitchUnitsButton = Root.Q<Button>("UnitSwitch");
-			SwitchUnitsButton.RegisterCallback<ClickEvent>(_ => ToggleUnitSwitch(SelectedDataPoint));
+			SwitchUnitsButton.RegisterCallback<ClickEvent>(_ => ToggleUnitSwitch());
 
 			SwitchUnitsIcon = SwitchUnitsButton.Q<VisualElement>("Icon");
 		}
@@ -196,20 +196,23 @@ namespace Dataskop.UI {
 			UltimateStartTime.text = firstResult.GetShortDate();
 			UltimateEndTime.text = lastResult.GetShortDate();
 
-			StartRangeLabel.text = ShortTimeStamp(currentRange.GetTimeRange().StartTime);
-			EndRangeLabel.text = ShortTimeStamp(currentRange.GetTimeRange().EndTime);
-
+			StartRangeLabel.text = ShortTimeStamp(currentRange.GetTimeRange().StartTime < firstResult.Timestamp ? firstResult.Timestamp : currentRange.GetTimeRange().StartTime);
+			EndRangeLabel.text = ShortTimeStamp(currentRange.GetTimeRange().EndTime > lastResult.Timestamp ? lastResult.Timestamp : currentRange.GetTimeRange().EndTime);
+			
 			MinMaxSlider.lowLimit = 0;
 			TimeRange overAllRange = new(ClampTimeStamp(firstResult.Timestamp), ClampTimeStamp(lastResult.Timestamp));
 			MinMaxSlider.highLimit = isHourly ? (int)overAllRange.Span.TotalHours : (int)overAllRange.Span.TotalDays;
 
-			DateTime clampedStartTime = ClampTimeStamp(def.GetLatestRange().GetTimeRange().StartTime);
-			DateTime clampedEndTime = ClampTimeStamp(lastResult.Timestamp);
-
-			MinMaxSlider.minValue = 0;
-			TimeRange cachedData = new(clampedStartTime, clampedEndTime);
+			DateTime clampedStartTime = ClampTimeStamp(currentRange.GetTimeRange().StartTime);
+			DateTime clampedEndTime = ClampTimeStamp(currentRange.GetTimeRange().EndTime);
+			
+			TimeRange cachedData = new(ClampTimeStamp(lastResult.Timestamp), clampedStartTime);
 			MinMaxSlider.maxValue = isHourly ? (int)cachedData.Span.TotalHours
 				: (int)cachedData.Span.TotalDays + (cachedData.Span.TotalDays == 0 ? 1 : 0);
+			
+			TimeRange rangeToLatestResult = new(clampedEndTime, ClampTimeStamp(lastResult.Timestamp));
+			MinMaxSlider.minValue = isHourly ? (int)rangeToLatestResult.Span.TotalHours
+				: (int)rangeToLatestResult.Span.TotalDays;
 		}
 
 		public void OnDataPointHistorySwiped(int newCount) {
@@ -399,13 +402,13 @@ namespace Dataskop.UI {
 			}
 		}
 
-		private void ToggleUnitSwitch(DataPoint selectedDatapoint) {
+		private void ToggleUnitSwitch() {
 			isHourly = !isHourly;
 
 			SwitchUnitsIcon.style.backgroundImage = new StyleBackground(isHourly ? hourIcon : daysIcon);
 
-			UpdateMinMaxSlider(selectedDatapoint.MeasurementDefinition, SelectedDataPoint.CurrentMeasurementRange);
-			CreateCacheRect(selectedDatapoint.MeasurementDefinition);
+			UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.CurrentMeasurementRange);
+			CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
 			AdjustTopDateLabelPositions();
 			AdjustBottomDateLabelPositions();
 		}
@@ -413,8 +416,6 @@ namespace Dataskop.UI {
 		private void OnMeasurementRangeChanged() {
 			CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
 			UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.CurrentMeasurementRange);
-			AdjustTopDateLabelPositions();
-			AdjustBottomDateLabelPositions();
 		}
 
 	}
