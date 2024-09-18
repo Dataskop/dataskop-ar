@@ -359,6 +359,7 @@ namespace Dataskop.UI {
 			// Slider Data
 			float highLimit = MinMaxSlider.highLimit;
 			int sliderHeight = 600;
+			int maxHeight = sliderHeight - 20;
 
 			foreach (MeasurementResultRange measurementResultRange in def.MeasurementResults) {
 				DateTime clampedStartTime = ClampTimeStamp(measurementResultRange.GetTimeRange().StartTime);
@@ -375,7 +376,7 @@ namespace Dataskop.UI {
 				// Ensure minimum value of 1 for totalUnitsCurrentRect
 				int numberUnitsCurrentRect = (int)totalUnitsCurrentRect + (totalUnitsCurrentRect == 0 ? 1 : 0);
 
-				float calculatedWidth = (sliderHeight - 20) / highLimit * numberUnitsCurrentRect;
+				float calculatedWidth = maxHeight / highLimit * numberUnitsCurrentRect;
 				StyleLength leftPosition = (StyleLength)((sliderHeight - 10) / highLimit * (highLimit - totalUnitsCurrentRectRange) + 10);
 
 				VisualElement rect = new() {
@@ -391,6 +392,9 @@ namespace Dataskop.UI {
 				};
 				rect.style.width = rect.style.left.value.value + rect.style.width.value.value > 590 ? calculatedWidth - 10
 					: calculatedWidth;
+				// make sure the width and left position are within the slider bounds
+				rect.style.left = Math.Clamp(rect.style.left.value.value, 10, maxHeight);
+				rect.style.width = Math.Clamp(rect.style.width.value.value, 0, maxHeight - rect.style.left.value.value);
 				RectContainer.Add(rect);
 			}
 		}
