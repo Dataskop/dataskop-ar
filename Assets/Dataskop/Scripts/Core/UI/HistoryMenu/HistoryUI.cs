@@ -122,6 +122,7 @@ namespace Dataskop.UI {
 
 			if (SelectedDataPoint != null) {
 				SelectedDataPoint.FocusedMeasurementResultChanged -= UpdateTimeLabel;
+				SelectedDataPoint.MeasurementRangeChanged -= OnMeasurementRangeChanged;
 			}
 
 			SelectedDataPoint = selectedDataPoint;
@@ -134,6 +135,7 @@ namespace Dataskop.UI {
 			}
 
 			SelectedDataPoint.FocusedMeasurementResultChanged += UpdateTimeLabel;
+			SelectedDataPoint.MeasurementRangeChanged += OnMeasurementRangeChanged;
 
 			if (!IsActive) {
 				return;
@@ -155,7 +157,7 @@ namespace Dataskop.UI {
 			if (SelectedDataPoint == null) {
 				return;
 			}
-			UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition);
+			UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.CurrentMeasurementRange);
 			// draw cache rects
 			CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
 		}
@@ -187,15 +189,15 @@ namespace Dataskop.UI {
 			return timeStamp.ToString(AppOptions.DateCulture).Remove(6, 13);
 		}
 
-		private void UpdateMinMaxSlider(MeasurementDefinition def) {
+		private void UpdateMinMaxSlider(MeasurementDefinition def, MeasurementResultRange currentRange) {
 			MeasurementResult firstResult = def.FirstMeasurementResult;
 			MeasurementResult lastResult = def.LatestMeasurementResult;
 
 			UltimateStartTime.text = firstResult.GetShortDate();
 			UltimateEndTime.text = lastResult.GetShortDate();
 
-			StartRangeLabel.text = ShortTimeStamp(def.GetLatestRange().GetTimeRange().StartTime);
-			EndRangeLabel.text = ShortTimeStamp(def.GetLatestRange().GetTimeRange().EndTime);
+			StartRangeLabel.text = ShortTimeStamp(currentRange.GetTimeRange().StartTime);
+			EndRangeLabel.text = ShortTimeStamp(currentRange.GetTimeRange().EndTime);
 
 			MinMaxSlider.lowLimit = 0;
 			TimeRange overAllRange = new(ClampTimeStamp(firstResult.Timestamp), ClampTimeStamp(lastResult.Timestamp));
@@ -292,8 +294,6 @@ namespace Dataskop.UI {
 				SetVisibility(CurrentTimeLabel, IsActive);
 				SetVisibility(RangeContainer, IsActive);
 				StartCoroutine(GenerateTicks(GetMeasurementCount()));
-							
-				CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
 			}
 		}
 
@@ -393,8 +393,8 @@ namespace Dataskop.UI {
 				rect.style.width = rect.style.left.value.value + rect.style.width.value.value > 590 ? calculatedWidth - 10
 					: calculatedWidth;
 				// make sure the width and left position are within the slider bounds
-				rect.style.left = Math.Clamp(rect.style.left.value.value, 10, maxHeight);
-				rect.style.width = Math.Clamp(rect.style.width.value.value, 0, maxHeight - rect.style.left.value.value);
+				rect.style.left = Math.Clamp(rect.style.left.value.value, 10, 590);
+				rect.style.width = Math.Clamp(rect.style.width.value.value, 0, 590 - rect.style.left.value.value);
 				RectContainer.Add(rect);
 			}
 		}
@@ -404,8 +404,15 @@ namespace Dataskop.UI {
 
 			SwitchUnitsIcon.style.backgroundImage = new StyleBackground(isHourly ? hourIcon : daysIcon);
 
-			UpdateMinMaxSlider(selectedDatapoint.MeasurementDefinition);
+			UpdateMinMaxSlider(selectedDatapoint.MeasurementDefinition, SelectedDataPoint.CurrentMeasurementRange);
 			CreateCacheRect(selectedDatapoint.MeasurementDefinition);
+			AdjustTopDateLabelPositions();
+			AdjustBottomDateLabelPositions();
+		}
+
+		private void OnMeasurementRangeChanged() {
+			CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
+			UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.CurrentMeasurementRange);
 			AdjustTopDateLabelPositions();
 			AdjustBottomDateLabelPositions();
 		}
