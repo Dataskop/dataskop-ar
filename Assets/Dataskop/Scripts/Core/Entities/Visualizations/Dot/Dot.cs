@@ -312,12 +312,15 @@ namespace Dataskop.Entities.Visualizations {
 				? new IVisObject[CurrentRange.Count]
 				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
 
-			GameObject visObject = Instantiate(visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer);
+			GameObject visObject = Instantiate(visObjectPrefab, transform.position, visObjectsContainer.localRotation, visObjectsContainer);
 			VisObjects[DataPoint.FocusedIndex] = visObject.GetComponent<IVisObject>();
 			VisObjects[DataPoint.FocusedIndex].HasHovered += OnVisObjectHovered;
 			VisObjects[DataPoint.FocusedIndex].HasSelected += OnVisObjectSelected;
 			VisObjects[DataPoint.FocusedIndex].HasDeselected += OnVisObjectDeselected;
 			VisObjects[DataPoint.FocusedIndex].VisCollider.enabled = true;
+
+			UpdateVisObject(VisObjects[DataPoint.FocusedIndex], DataPoint.FocusedIndex, CurrentRange[DataPoint.FocusedIndex], true, true,
+				IsSelected ? VisObjectStyle.Styles[0].selectionMaterial : VisObjectStyle.Styles[0].defaultMaterial);
 
 			OnTimeSeriesToggled(true);
 
