@@ -331,6 +331,12 @@ namespace Dataskop.UI {
 		}
 
 		public void OnProjectLoaded() {
+			isHistorySliderActive = false;
+			HistoryIcon.style.unityBackgroundImageTintColor = new StyleColor(deselectedIconColor);
+			HistoryButton.style.borderBottomColor = deselectedIconColor;
+			HistoryButton.style.borderLeftColor = deselectedIconColor;
+			HistoryButton.style.borderRightColor = deselectedIconColor;
+			HistoryButton.style.borderTopColor = deselectedIconColor;
 			HistoryButton.visible = true;
 		}
 
