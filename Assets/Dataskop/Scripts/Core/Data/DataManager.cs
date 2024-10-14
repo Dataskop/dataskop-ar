@@ -376,14 +376,16 @@ namespace Dataskop.Data {
 						DateTime dynamicStartTime = t.StartTime;
 						DateTime dynamicEndTime = t.EndTime;
 						bool firstCheck = true;
+						int fetchingCount = FetchAmount < 200 ? 200 : FetchAmount;
 
 						do {
 							destroyCancellationToken.ThrowIfCancellationRequested();
 
 							MeasurementResultRange results =
-								await RequestHandler.GetMeasurementResults(md, FetchAmount, dynamicStartTime, dynamicEndTime);
+								await RequestHandler.GetMeasurementResults(md, fetchingCount, dynamicStartTime,
+									dynamicEndTime);
 
-							if (results.Count > 0 && results.Count < FetchAmount) {
+							if (results.Count > 0 && results.Count < fetchingCount) {
 								md.AddMeasurementResultRange(results, new TimeRange(dynamicStartTime, dynamicEndTime));
 								dynamicEndTime = dynamicStartTime;
 								continue;
@@ -408,14 +410,12 @@ namespace Dataskop.Data {
 
 					}
 
-					/*
 					Debug.Log($"Result Ranges in {md.DeviceId} - {md.AttributeId} ({md.ID}):");
 					foreach (var m in md.MeasurementResults) {
 						Debug.Log(
 							$"from {m.GetTimeRange().StartTime} to {m.GetTimeRange().EndTime} with {m.Count} results");
 					}
 					Debug.Log(" ----- ");
-					*/
 
 				}
 
