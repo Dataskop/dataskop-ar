@@ -164,12 +164,7 @@ namespace Dataskop.UI {
 		}
 
 		private int GetMeasurementCount() {
-
-			if (SelectedDataPoint == null) {
-				return 0;
-			}
-
-			return SelectedDataPoint.MeasurementDefinition.GetLatestRange().Count;
+			return SelectedDataPoint == null ? 0 : SelectedDataPoint.MeasurementDefinition.GetLatestRange().Count;
 		}
 
 		private void UpdateTimeLabel(MeasurementResult focusedResult) {
@@ -372,20 +367,20 @@ namespace Dataskop.UI {
 						backgroundColor = new StyleColor(new Color32(219, 105, 11, 200))
 					}
 				};
+
 				rect.style.width = rect.style.left.value.value + rect.style.width.value.value > 590 ? calculatedWidth - 10
 					: calculatedWidth;
 				// make sure the width and left position are within the slider bounds
 				rect.style.left = Math.Clamp(rect.style.left.value.value, 10, 590);
 				rect.style.width = Math.Clamp(rect.style.width.value.value, 0, 590 - rect.style.left.value.value);
 				RectContainer.Add(rect);
+
 			}
 		}
 
 		private void ToggleUnitSwitch() {
 			isHourly = !isHourly;
-
 			SwitchUnitsIcon.style.backgroundImage = new StyleBackground(isHourly ? hourIcon : daysIcon);
-
 			UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.CurrentMeasurementRange);
 			CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
 		}
