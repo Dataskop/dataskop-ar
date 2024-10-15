@@ -92,8 +92,8 @@
 .unity-min-max-slider__max-thumb {
     background-color: rgb(37, 89, 176);
     border-color: rgb(37, 89, 176);
-    margin-left: 10px;
-    width: auto;
+    margin-left: 0;
+    width: 10px;
     margin-right: 0;
     margin-bottom: 0;
     height: 40px;
@@ -106,13 +106,14 @@
     border-right-width: 0;
     border-bottom-width: 0;
     border-left-width: 0;
+    min-width: 10px;
 }
 
 .unity-min-max-slider__min-thumb {
     background-color: rgb(37, 89, 176);
     border-color: rgb(37, 89, 176);
-    margin-left: -10px;
-    width: auto;
+    margin-left: 0;
+    width: 10px;
     margin-right: 0;
     margin-bottom: 0;
     height: 40px;
@@ -125,6 +126,7 @@
     border-right-width: 0;
     border-bottom-width: 0;
     border-left-width: 0;
+    min-width: 10px;
 }
 
 .unity-min-max-slider__dragger {
