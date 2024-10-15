@@ -328,8 +328,8 @@ namespace Dataskop.UI {
 		private void CreateCacheRect(MeasurementDefinition def) {
 			// Clear the container for fresh data
 			RectContainer.Clear();
-			MeasurementResult firstResult = def.FirstMeasurementResult;
-			DateTime firstResultTimestampClamped = ClampTimeStamp(firstResult.Timestamp);
+			MeasurementResult latestResult = def.LatestMeasurementResult;
+			DateTime latestResultTimeStamp = ClampTimeStamp(latestResult.Timestamp);
 
 			// Slider Data
 			float highLimit = MinMaxSlider.highLimit;
@@ -340,25 +340,22 @@ namespace Dataskop.UI {
 				DateTime clampedEndTime = ClampTimeStamp(measurementResultRange.GetTimeRange().EndTime);
 
 				TimeRange timeRangeCurrentRect = new(clampedStartTime, clampedEndTime);
-				TimeRange timeRangeAllDataEndTimeCurrentRange = new(firstResultTimestampClamped, clampedEndTime);
+				TimeRange rangeToLatestResult = new(latestResultTimeStamp, clampedEndTime);
 
 				// Calculate the number of time units (hours or days) for the current rect and full range
-				double totalUnitsCurrentRect = isHourly ? timeRangeCurrentRect.Span.TotalHours : timeRangeCurrentRect.Span.Days + 1;
-				double totalUnitsCurrentRectRange = isHourly ? timeRangeAllDataEndTimeCurrentRange.Span.TotalHours
-					: timeRangeAllDataEndTimeCurrentRange.Span.Days + 1;
+				double rangeInUnits = isHourly ? timeRangeCurrentRect.Span.TotalHours : timeRangeCurrentRect.Span.Days + 1;
+				double unitsToLatestResult = isHourly ? rangeToLatestResult.Span.TotalHours
+					: rangeToLatestResult.Span.Days;
 
-				int numberUnitsCurrentRect = (int)Mathf.Clamp((int)totalUnitsCurrentRect, 1, highLimit);
+				int numberUnitsCurrentRect = (int)Mathf.Clamp((int)rangeInUnits, 1, highLimit);
 				float calculatedWidth = (sliderHeight / highLimit) * numberUnitsCurrentRect;
-				float startPosition = 0;
-
-				Debug.Log(numberUnitsCurrentRect);
-
-				StyleLength leftPosition = new ((float)((sliderHeight) / highLimit * (highLimit - totalUnitsCurrentRectRange)));
+				float startPosition = 10 + ((int)unitsToLatestResult > 0
+					? (sliderHeight / highLimit) : 0) + (sliderHeight / highLimit) * (int)unitsToLatestResult;
 
 				VisualElement rect = new() {
 					style = {
 						position = Position.Absolute,
-						left = new StyleLength(10 + startPosition),
+						left = new StyleLength(startPosition),
 						width = calculatedWidth,
 						height = 12,
 						marginTop = 0,
