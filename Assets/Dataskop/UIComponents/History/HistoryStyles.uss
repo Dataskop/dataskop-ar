@@ -1,127 +1,195 @@
 .history-button {
-	width: 80px;
-	height: 80px;
-	align-items: center;
-	justify-content: center;
-	background-color: rgba(255, 255, 255, 0.8);
-	border-top-left-radius: 12px;
-	border-bottom-left-radius: 12px;
-	border-top-right-radius: 12px;
-	border-bottom-right-radius: 12px;
-	border-left-width: 0;
-	border-right-width: 0;
-	border-top-width: 0;
-	border-bottom-width: 0;
+    width: 80px;
+    height: 80px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
 }
 
 .unity-base-slider__dragger {
-	width: 60px;
-	height: 20px;
-	border-radius: 3px;
-	background-color: rgb(255, 255, 255);
-	border-width: 0;
-	border-left-width: 0;
-	border-right-width: 0;
-	border-top-width: 0;
-	border-bottom-width: 0;
-	border-left-color: rgb(37, 89, 176);
-	border-right-color: rgb(37, 89, 176);
-	border-top-color: rgb(37, 89, 176);
-	border-bottom-color: rgb(37, 89, 176);
-	border-top-left-radius: 8px;
-	border-bottom-left-radius: 8px;
-	border-top-right-radius: 8px;
-	border-bottom-right-radius: 8px;
-	align-items: center;
-	justify-content: flex-end;
-	transition: transform 0.3s, box-shadow 0.3s;
-	align-self: center;
-	margin-left: 0;
-	margin-right: 0;
-	margin-top: 0;
-	margin-bottom: 0;
-	padding-left: 0;
-	padding-right: 0;
-	padding-top: 0;
-	padding-bottom: 0;
-	position: absolute;
-	left: 30px;
+    width: 60px;
+    height: 20px;
+    border-radius: 3px;
+    background-color: rgb(255, 255, 255);
+    border-width: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-left-color: rgb(37, 89, 176);
+    border-right-color: rgb(37, 89, 176);
+    border-top-color: rgb(37, 89, 176);
+    border-bottom-color: rgb(37, 89, 176);
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    align-items: center;
+    justify-content: flex-end;
+    transition: transform 0.3s, box-shadow 0.3s;
+    align-self: center;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    position: absolute;
+    left: 30px;
 }
 
 .unity-base-slider__dragger:hover {
-	background-color: rgb(230, 230, 250);
-	transition: transform 0.3s, box-shadow 0.3s;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    background-color: rgb(230, 230, 250);
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .unity-base-slider__dragger:active {
-	background-color: rgb(210, 210, 230);
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-	transition: transform 0.3s, box-shadow 0.3s;
+    background-color: rgb(210, 210, 230);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .history-slider-container {
-	align-items: auto;
-	flex-shrink: 0;
-	flex-grow: 0;
-	height: 100%;
-	justify-content: space-around;
-	width: 150px;
+    align-items: auto;
+    flex-shrink: 0;
+    flex-grow: 0;
+    height: 100%;
+    justify-content: space-around;
+    width: 150px;
 }
 
 .history-container {
-	flex-direction: row;
-	top: 180px;
+    flex-direction: row;
+    top: 180px;
 }
 
 .slider-tick {
-	position: absolute;
-	width: 2px;
-	height: 10px;
-	background-color: white;
+    position: absolute;
+    width: 2px;
+    height: 10px;
+    background-color: white;
+}
+
+.unity-min-max-slider__tracker {
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    height: 6px;
 }
 
 .unity-min-max-slider__max-thumb {
-	background-color: rgba(37, 89, 176, 1);
-	border-color: rgba(37, 89, 176, 1);
-	min-height: 44px;
-	margin-top: -1px;
+    background-color: rgb(37, 89, 176);
+    border-color: rgb(37, 89, 176);
+    margin-left: 0;
+    width: 10px;
+    margin-right: 0;
+    margin-bottom: 0;
+    height: 40px;
+    margin-top: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    min-width: 10px;
 }
 
 .unity-min-max-slider__min-thumb {
-	background-color: rgba(37, 89, 176, 1);
-	border-color: rgba(37, 89, 176, 1);
-	min-height: 44px;
-	margin-top: -1px;
-}
-
-.unity-min-max-slider__input {
-	margin-top: 24px;
-	min-height: 0;
-	max-height: 6px;
+    background-color: rgb(37, 89, 176);
+    border-color: rgb(37, 89, 176);
+    margin-left: 0;
+    width: 10px;
+    margin-right: 0;
+    margin-bottom: 0;
+    height: 40px;
+    margin-top: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    min-width: 10px;
 }
 
 .unity-min-max-slider__dragger {
-	background-color: rgb(37, 89, 176);
+    background-color: rgb(37, 89, 176);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    height: 10px;
+    top: 35px;
 }
 
 .white-label {
-	rotate: 90deg;
-	-unity-font-style: bold;
-	font-size: 16px;
-	-unity-font: url("project://database/Assets/Dataskop/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular");
-	color: rgb(255, 255, 255);
-	text-shadow: 1px 1px 0 rgb(0, 0, 0);
-	margin-top: 0;
-	margin-right: 0;
-	margin-bottom: 0;
-	margin-left: 0;
-	padding-top: 0;
-	padding-right: 0;
-	padding-bottom: 0;
-	padding-left: 0;
-	position: relative;
-	align-self: center;
-	top: 0;
-	left: 35px;
+    rotate: 90deg;
+    -unity-font-style: bold;
+    font-size: 16px;
+    -unity-font: url("project://database/Assets/Dataskop/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular");
+    color: rgb(255, 255, 255);
+    text-shadow: 1px 1px 0 rgb(0, 0, 0);
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    position: relative;
+    align-self: center;
+    top: 0;
+    left: 35px;
+}
+
+.min-max-label {
+    left: auto;
+    position: absolute;
+    top: 35px;
+    bottom: auto;
+    right: auto;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    background-color: rgb(37, 89, 176);
+    border-top-left-radius: 50px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 50px;
+    display: flex;
 }

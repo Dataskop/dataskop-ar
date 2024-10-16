@@ -24,15 +24,15 @@ namespace Dataskop.Data {
 		[SerializeField] private int fetchAmount;
 		[SerializeField] private int fetchInterval;
 
-		public readonly ApiRequestHandler RequestHandler = new();
+		private readonly ApiRequestHandler RequestHandler = new();
 
 		private IReadOnlyCollection<Company> Companies { get; set; }
 
 		public Project SelectedProject { get; private set; }
 
-		public int FetchAmount {
+		private int FetchAmount {
 			get => fetchAmount;
-			private set => fetchAmount = value;
+			set => fetchAmount = value;
 		}
 
 		private LoadingIndicator LoadingIndicator => loadingIndicator;
@@ -50,13 +50,6 @@ namespace Dataskop.Data {
 			ShouldRefetch = false;
 			FetchTimer?.Stop();
 		}
-
-		/// <summary>
-		///     Invoked when companies and their projects are loaded, without additional info on single projects.
-		/// </summary>
-#pragma warning disable CS0067 // Event is never used
-		public event Action<IReadOnlyCollection<Company>> HasLoadedProjectList;
-#pragma warning restore CS0067 // Event is never used
 
 		/// <summary>
 		///     Invoked once data for the selected project finished loading.
@@ -107,7 +100,6 @@ namespace Dataskop.Data {
 		private async void LoadAppData() {
 
 			LoadingIndicator.Show();
-
 			Companies = await RequestHandler.GetCompanies();
 
 			if (Companies == null || Companies.Count == 0) {
@@ -273,11 +265,9 @@ namespace Dataskop.Data {
 			List<Project> availableProjects = new();
 
 			foreach (Company c in userCompanies) {
-
 				if (c.Projects != null) {
 					availableProjects.AddRange(c.Projects);
 				}
-
 			}
 
 			return availableProjects;
