@@ -187,17 +187,22 @@ namespace Dataskop.UI {
 			UltimateStartTime.text = firstResult.GetShortDate();
 			UltimateEndTime.text = lastResult.GetShortDate();
 
-			StartRangeLabel.text = ShortTimeStamp(currentRange.GetTimeRange().StartTime < firstResult.Timestamp ? firstResult.Timestamp
-				: currentRange.GetTimeRange().StartTime);
-			EndRangeLabel.text = ShortTimeStamp(currentRange.GetTimeRange().EndTime > lastResult.Timestamp ? lastResult.Timestamp
-				: currentRange.GetTimeRange().EndTime);
-
 			MinMaxSlider.lowLimit = 1;
 			TimeRange overAllRange = new(ClampTimeStamp(firstResult.Timestamp), ClampTimeStamp(lastResult.Timestamp));
 			MinMaxSlider.highLimit = isHourly ? (int)overAllRange.Span.TotalHours : (int)overAllRange.Span.TotalDays + 1;
 
+			if (currentRange.GetTimeRange().EndTime < firstResult.Timestamp ||
+			    currentRange.GetTimeRange().StartTime > lastResult.Timestamp) {
+				return;
+			}
+
 			DateTime clampedStartTime = ClampTimeStamp(currentRange.GetTimeRange().StartTime);
 			DateTime clampedEndTime = ClampTimeStamp(currentRange.GetTimeRange().EndTime);
+
+			StartRangeLabel.text = ShortTimeStamp(currentRange.GetTimeRange().StartTime < firstResult.Timestamp ? firstResult.Timestamp
+				: currentRange.GetTimeRange().StartTime);
+			EndRangeLabel.text = ShortTimeStamp(currentRange.GetTimeRange().EndTime > lastResult.Timestamp ? lastResult.Timestamp
+				: currentRange.GetTimeRange().EndTime);
 
 			TimeRange cachedData = new(ClampTimeStamp(lastResult.Timestamp), clampedStartTime);
 			MinMaxSlider.maxValue = isHourly ? (int)cachedData.Span.TotalHours
@@ -336,6 +341,12 @@ namespace Dataskop.UI {
 			int sliderHeight = 580;
 
 			foreach (MeasurementResultRange measurementResultRange in def.MeasurementResults) {
+
+				if (measurementResultRange.GetTimeRange().EndTime < def.FirstMeasurementResult.Timestamp ||
+				    measurementResultRange.GetTimeRange().StartTime > latestResult.Timestamp) {
+					continue;
+				}
+
 				DateTime clampedStartTime = ClampTimeStamp(measurementResultRange.GetTimeRange().StartTime);
 				DateTime clampedEndTime = ClampTimeStamp(measurementResultRange.GetTimeRange().EndTime);
 
