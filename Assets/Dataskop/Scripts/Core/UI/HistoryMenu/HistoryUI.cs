@@ -33,7 +33,7 @@ namespace Dataskop.UI {
 
 		private VisualElement RangeContainer { get; set; }
 
-		private VisualElement RectContainer { get; set; }
+		private VisualElement CachedRangesDisplay { get; set; }
 
 		private VisualElement TopDragger { get; set; }
 
@@ -96,7 +96,7 @@ namespace Dataskop.UI {
 			TopDragger.hierarchy.Add(StartRangeLabel);
 			BottomDragger.hierarchy.Add(EndRangeLabel);
 
-			RectContainer = Root.Q<VisualElement>("RectContainer");
+			CachedRangesDisplay = Root.Q<VisualElement>("CachedRangesDisplay");
 
 			SwitchUnitsButton = Root.Q<Button>("UnitSwitch");
 			SwitchUnitsButton.RegisterCallback<ClickEvent>(_ => ToggleUnitSwitch());
@@ -332,7 +332,7 @@ namespace Dataskop.UI {
 
 		private void CreateCacheRect(MeasurementDefinition def) {
 			// Clear the container for fresh data
-			RectContainer.Clear();
+			CachedRangesDisplay.Clear();
 			MeasurementResult latestResult = def.LatestMeasurementResult;
 			DateTime latestResultTimeStamp = ClampTimeStamp(latestResult.Timestamp);
 
@@ -385,7 +385,7 @@ namespace Dataskop.UI {
 				// make sure the width and left position are within the slider bounds
 				rect.style.left = Math.Clamp(rect.style.left.value.value, 10, 590);
 				rect.style.width = Math.Clamp(rect.style.width.value.value, 0, 590 - rect.style.left.value.value);
-				RectContainer.Add(rect);
+				CachedRangesDisplay.Add(rect);
 
 			}
 		}
