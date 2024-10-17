@@ -178,81 +178,70 @@ namespace Dataskop.Data {
 		[UsedImplicitly]
 		public async void LoadProject(QrResult result) {
 
-			if (result.Code.Contains('@')) {
+			if (!result.Code.Contains('@')) {
+				return;
+			}
 
-				string[] splitResult = result.Code.Split('@', 2);
-				string projectName = splitResult[0];
+			string[] splitResult = result.Code.Split('@', 2);
+			string projectName = splitResult[0];
 
-				// If project is already selected do not load again.
-				if (SelectedProject?.Information.Name == projectName) {
-					return;
-				}
+			// If project is already selected do not load again.
+			if (SelectedProject?.Information.Name == projectName) {
+				return;
+			}
 
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Check,
-					Text = "Project Code scanned!",
-					DisplayDuration = NotificationDuration.Short
-				});
+			NotificationHandler.Add(new Notification {
+				Category = NotificationCategory.Check,
+				Text = "Project Code scanned!",
+				DisplayDuration = NotificationDuration.Flash
+			});
 
-				if (!LoadingIndicator.IsLoading) {
-					LoadingIndicator.Show();
-					ShouldRefetch = false;
-				}
+			if (!LoadingIndicator.IsLoading) {
+				LoadingIndicator.Show();
+				ShouldRefetch = false;
+			}
 
-				SelectedProject = GetAvailableProjects(Companies)
-					.FirstOrDefault(project => project.Information.Name == projectName);
+			SelectedProject = GetAvailableProjects(Companies)
+				.FirstOrDefault(project => project.Information.Name == projectName);
 
-				if (SelectedProject != null) {
-
-					if (!SelectedProject.Properties.IsDemo) {
-
-						NotificationHandler.Add(new Notification {
-							Category = NotificationCategory.Error,
-							Text = $"Can not load '{projectName}'! Project is not a demo project.",
-							DisplayDuration = NotificationDuration.Medium
-						});
-
-						LoadingIndicator.Hide();
-						return;
-
-					}
-
-				}
-				else {
+			if (SelectedProject != null) {
+				if (AppOptions.DemoMode && !SelectedProject.Properties.IsDemo) {
 					NotificationHandler.Add(new Notification {
 						Category = NotificationCategory.Error,
-						Text = $"No Project with name '{projectName}' found!",
+						Text = $"Can not load '{projectName}'! Project is not a demo project.",
 						DisplayDuration = NotificationDuration.Medium
 					});
-
 					LoadingIndicator.Hide();
 					return;
 				}
-
-				SelectedProject.Devices = await RequestHandler.GetDevices(SelectedProject);
-
-				if (SelectedProject.Devices?.Count == 0) {
-					NotificationHandler.Add(new Notification {
-						Category = NotificationCategory.Warning,
-						Text = $"No Devices found in Project {SelectedProject.ID}!",
-						DisplayDuration = NotificationDuration.Medium
-					});
-
-					OnProjectDataLoaded(SelectedProject);
-					return;
-				}
-
-				await GetInitialProjectMeasurements();
-				OnProjectDataLoaded(SelectedProject);
 			}
 			else {
-				LoadingIndicator.Hide();
 				NotificationHandler.Add(new Notification {
 					Category = NotificationCategory.Error,
-					Text = "Not a valid Project QR Code!",
+					Text = $"No Project with name '{projectName}' found!",
 					DisplayDuration = NotificationDuration.Medium
 				});
+
+				LoadingIndicator.Hide();
+				return;
 			}
+
+			SelectedProject.Devices = await RequestHandler.GetDevices(SelectedProject);
+
+			if (SelectedProject.Devices?.Count == 0) {
+				NotificationHandler.Add(new Notification {
+					Category = NotificationCategory.Warning,
+					Text = $"No Devices found in Project {SelectedProject.ID}!",
+					DisplayDuration = NotificationDuration.Medium
+				});
+
+				OnProjectDataLoaded(SelectedProject);
+				return;
+			}
+
+			await GetInitialProjectMeasurements();
+			OnProjectDataLoaded(SelectedProject);
+
 		}
 
 		/// <summary>

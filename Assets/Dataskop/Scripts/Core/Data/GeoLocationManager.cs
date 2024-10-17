@@ -1,3 +1,4 @@
+using System;
 using Mapbox.Unity.Location;
 using Mapbox.Unity.Utilities;
 using UnityEngine;
@@ -87,29 +88,29 @@ namespace Dataskop.Data {
 		/// </summary>
 		public void OnQRMarkerTracking(QrResult qrResult) {
 
-			if (!qrResult.Code.Contains('@')) {
-				return;
-			}
-
 			if (AppOptions.DemoMode) {
 				return;
 			}
 
-			string[] splitResult = qrResult.Code.Split('@', 2);
-			string dataPointLocation = splitResult[1];
+			string dataPointLocation;
+
+			if (qrResult.Code.Contains('@')) {
+				string[] splitResult = qrResult.Code.Split('@', 2);
+				dataPointLocation = splitResult[1];
+			}
+			else {
+				dataPointLocation = qrResult.Code;
+			}
 
 			locationProvider.mapManager.UpdateMap(Conversions.StringToLatLon(dataPointLocation));
 			BestAccuracy = 0;
 
-#if UNITY_ANDROID
-			Handheld.Vibrate();
-#endif
 			HasUsedFixedPositioning = true;
 
 			NotificationHandler.Add(new Notification {
 				Category = NotificationCategory.Check,
 				Text = "Location Code scanned!",
-				DisplayDuration = NotificationDuration.Short
+				DisplayDuration = NotificationDuration.Flash
 			});
 
 		}
