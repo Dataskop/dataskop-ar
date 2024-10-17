@@ -48,16 +48,16 @@ namespace Dataskop.Interaction {
 			if (HasReadQrCode)
 				return;
 
-			if (Time.frameCount % 30 == 0) {
-
-				if (!arCamManager.TryAcquireLatestCpuImage(out XRCpuImage image)) {
-					return;
-				}
-
-				StartCoroutine(ProcessImage(image));
-				image.Dispose();
-
+			if (Time.frameCount % 60 != 0) {
+				return;
 			}
+
+			if (!arCamManager.TryAcquireLatestCpuImage(out XRCpuImage image)) {
+				return;
+			}
+
+			StartCoroutine(ProcessImage(image));
+			image.Dispose();
 
 		}
 
@@ -65,7 +65,7 @@ namespace Dataskop.Interaction {
 
 			XRCpuImage.AsyncConversion request = image.ConvertAsync(new XRCpuImage.ConversionParams {
 				inputRect = new RectInt(0, 0, image.width, image.height),
-				outputDimensions = new Vector2Int(image.width / 2, image.height / 2), //downsample by 2 to go fast
+				outputDimensions = new Vector2Int(image.width / 2, image.height / 2), //downsample by 2 to save resources
 				outputFormat = TextureFormat.RGB24,
 				transformation = XRCpuImage.Transformation.MirrorY
 			});
