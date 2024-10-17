@@ -355,11 +355,9 @@ namespace Dataskop.UI {
 
 				// Calculate the number of time units (hours or days) for the current rect and full range
 				double rangeInUnits = isHourly ? timeRangeCurrentRect.Span.TotalHours : timeRangeCurrentRect.Span.Days + 1;
-				double unitsToLatestResult = isHourly ? rangeToLatestResult.Span.TotalHours
-					: rangeToLatestResult.Span.Days;
-
+				double unitsToLatestResult = isHourly ? rangeToLatestResult.Span.TotalHours : rangeToLatestResult.Span.Days;
 				int numberUnitsCurrentRect = (int)Mathf.Clamp((int)rangeInUnits, 1, highLimit);
-				float calculatedWidth = (sliderHeight / highLimit) * numberUnitsCurrentRect;
+				float calculatedWidth = Mathf.Round((sliderHeight / highLimit) * numberUnitsCurrentRect);
 				float startPosition = 10 + ((int)unitsToLatestResult > 0
 					? (sliderHeight / highLimit) : 0) + (sliderHeight / highLimit) * (int)unitsToLatestResult;
 
