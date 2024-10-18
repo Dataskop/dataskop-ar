@@ -16,7 +16,7 @@ namespace Dataskop.Interaction {
 		[SerializeField] private Camera cam = null!;
 		[SerializeField] private Vector3 screenRayPosition = Vector3.zero;
 		[SerializeField] private InputHandler inputHandler = null!;
-
+		
 		[Header("Events")]
 		public UnityEvent<DataPoint?>? onDataPointSelected;
 		public UnityEvent<DataPoint?>? onDataPointSoftSelected;

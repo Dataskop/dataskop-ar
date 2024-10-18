@@ -10,7 +10,7 @@ using Position = UnityEngine.UIElements.Position;
 
 namespace Dataskop.UI {
 
-	public class HistoryUI : MonoBehaviour {
+	public class HistorySliderUI : MonoBehaviour {
 
 		[Header("Events")]
 		public UnityEvent<int, int> sliderChanged;
@@ -20,88 +20,31 @@ namespace Dataskop.UI {
 		[SerializeField] private UIDocument historyMenuDoc;
 		private string currentAttributeId;
 		private string currentDeviceId;
+		private VisualElement historyContainer;
+		private VisualElement dragger;
 
-		[Header("Icons")]
-		[SerializeField] private Sprite hourIcon;
-		[SerializeField] private Sprite daysIcon;
-
-		private VisualElement Root { get; set; }
-
-		private VisualElement HistoryContainer { get; set; }
-
-		private VisualElement Dragger { get; set; }
-
-		private VisualElement RangeContainer { get; set; }
-
-		private VisualElement CachedRangesDisplay { get; set; }
-
-		private VisualElement TopDragger { get; set; }
-
-		private VisualElement BottomDragger { get; set; }
-
-		private VisualElement SwitchUnitsIcon { get; set; }
-
-		private Button SwitchUnitsButton { get; set; }
-
+	
 		private SliderInt HistorySlider { get; set; }
-
-		private MinMaxSlider MinMaxSlider { get; set; }
 
 		private bool IsActive { get; set; }
 
 		private Label CurrentTimeLabel { get; set; }
-
-		private Label UltimateEndTime { get; set; }
-
-		private Label UltimateStartTime { get; set; }
-
-		private Label EndRangeLabel { get; set; }
-
-		private Label StartRangeLabel { get; set; }
-
+		
 		private DataPoint SelectedDataPoint { get; set; }
 
 		private bool isHourly;
 
 		private void Start() {
-			SetVisibility(HistoryContainer, false);
-			SetVisibility(RangeContainer, false);
+			SetVisibility(historyContainer, false);
 		}
 
 		private void OnEnable() {
-
-			Root = historyMenuDoc.rootVisualElement;
-			HistoryContainer = Root.Q<VisualElement>("HistoryContainer");
-
-			HistorySlider = HistoryContainer.Q<SliderInt>("Slider");
+			historyContainer = historyMenuDoc.rootVisualElement.Q<VisualElement>("HistoryContainer");
+			HistorySlider = historyContainer.Q<SliderInt>("Slider");
 			HistorySlider.RegisterCallback<ChangeEvent<int>>(SliderValueChanged);
-
-			CurrentTimeLabel = HistoryContainer.Q<Label>("CurrentTime");
-			Dragger = HistorySlider.Q<VisualElement>("unity-dragger");
-			Dragger.RegisterCallback<GeometryChangedEvent>(_ => AdjustTimeLabelPosition());
-
-			RangeContainer = Root.Q<VisualElement>("RangeContainer");
-
-			UltimateEndTime = RangeContainer.Q<Label>("LabelMinDate");
-			UltimateStartTime = RangeContainer.Q<Label>("LabelMaxDate");
-
-			EndRangeLabel = RangeContainer.Q<Label>("LabelMinValue");
-			StartRangeLabel = RangeContainer.Q<Label>("LabelMaxValue");
-
-			MinMaxSlider = RangeContainer.Q<MinMaxSlider>("MinMaxSlider");
-
-			TopDragger = RangeContainer.Q<VisualElement>("unity-thumb-max");
-			BottomDragger = RangeContainer.Q<VisualElement>("unity-thumb-min");
-
-			TopDragger.hierarchy.Add(StartRangeLabel);
-			BottomDragger.hierarchy.Add(EndRangeLabel);
-
-			CachedRangesDisplay = Root.Q<VisualElement>("CachedRangesDisplay");
-
-			SwitchUnitsButton = Root.Q<Button>("UnitSwitch");
-			SwitchUnitsButton.RegisterCallback<ClickEvent>(_ => ToggleUnitSwitch());
-
-			SwitchUnitsIcon = SwitchUnitsButton.Q<VisualElement>("Icon");
+			CurrentTimeLabel = historyContainer.Q<Label>("CurrentTime");
+			dragger = HistorySlider.Q<VisualElement>("unity-dragger");
+			dragger.RegisterCallback<GeometryChangedEvent>(_ => AdjustTimeLabelPosition());
 		}
 
 		private void OnDisable() {
@@ -129,8 +72,8 @@ namespace Dataskop.UI {
 
 			if (SelectedDataPoint == null) {
 				CurrentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Hidden);
-				SetVisibility(HistoryContainer, false);
-				SetVisibility(RangeContainer, false);
+				SetVisibility(historyContainer, false);
+				//SetVisibility(RangeContainer, false);
 				return;
 			}
 
@@ -141,8 +84,8 @@ namespace Dataskop.UI {
 				return;
 			}
 
-			SetVisibility(HistoryContainer, true);
-			SetVisibility(RangeContainer, true);
+			SetVisibility(historyContainer, true);
+			//SetVisibility(RangeContainer, true);
 
 			int newResultsCount = GetMeasurementCount();
 
@@ -229,14 +172,14 @@ namespace Dataskop.UI {
 				}
 
 				SetVisibility(Root, currentVisOption.Style.IsTimeSeries);
-				SetVisibility(HistoryContainer, false);
+				SetVisibility(historyContainer, false);
 				SetVisibility(RangeContainer, false);
 				IsActive = false;
 
 			}
 			else {
 				SetVisibility(Root, currentVisOption.Style.IsTimeSeries);
-				SetVisibility(HistoryContainer, false);
+				SetVisibility(historyContainer, false);
 				SetVisibility(RangeContainer, false);
 				IsActive = false;
 			}
@@ -244,7 +187,7 @@ namespace Dataskop.UI {
 		}
 
 		private void AdjustTimeLabelPosition() {
-			CurrentTimeLabel.style.top = Dragger.localBound.yMax - Dragger.resolvedStyle.height;
+			CurrentTimeLabel.style.top = dragger.localBound.yMax - dragger.resolvedStyle.height;
 		}
 
 		private void SetVisibility(VisualElement element, bool isVisible) {
@@ -256,7 +199,7 @@ namespace Dataskop.UI {
 			IsActive = newState;
 
 			if (SelectedDataPoint) {
-				SetVisibility(HistoryContainer, IsActive);
+				SetVisibility(historyContainer, IsActive);
 				SetVisibility(CurrentTimeLabel, IsActive);
 				SetVisibility(RangeContainer, IsActive);
 				StartCoroutine(GenerateTicks(GetMeasurementCount()));
@@ -264,17 +207,6 @@ namespace Dataskop.UI {
 
 			historyViewToggled?.Invoke(IsActive);
 
-		}
-
-		public void OnDateFiltered() {
-			IsActive = true;
-
-			if (SelectedDataPoint) {
-				SetVisibility(HistoryContainer, IsActive);
-				SetVisibility(CurrentTimeLabel, IsActive);
-				SetVisibility(RangeContainer, IsActive);
-				StartCoroutine(GenerateTicks(GetMeasurementCount()));
-			}
 		}
 
 		private IEnumerator DelayToggle() {
@@ -312,7 +244,7 @@ namespace Dataskop.UI {
 
 				// The position is calculated from the bottom (sliderTrackHeight - position - half height of tick)
 				// to correctly align with the vertical slider's orientation
-				tick.style.top = sliderTrackHeight - tickPosition + tick.style.height.value.value / 2 - Dragger.resolvedStyle.height / 2;
+				tick.style.top = sliderTrackHeight - tickPosition + tick.style.height.value.value / 2 - dragger.resolvedStyle.height / 2;
 				tick.style.left = 50;
 
 				// Add the tick to the slider container
