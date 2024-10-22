@@ -102,11 +102,11 @@ namespace Dataskop.Data {
 
 		}
 
-		public string GetShortDate() {
+		public string GetShortDateText() {
 			return Timestamp.ToShortDateString();
 		}
 
-		public string GetDate() {
+		public string GetDateText() {
 			return Timestamp.ToString(AppOptions.DateCulture);
 		}
 

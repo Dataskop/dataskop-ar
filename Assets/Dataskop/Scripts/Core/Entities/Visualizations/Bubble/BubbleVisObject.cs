@@ -58,7 +58,7 @@ namespace Dataskop.Entities.Visualizations {
 					boolIconRenderer.enabled = false;
 					valueTextMesh.alpha = 1;
 					valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) + $" {displayData.Attribute.Unit}";
-					dateTextMesh.text = displayData.Result.GetDate();
+					dateTextMesh.text = displayData.Result.GetDateText();
 					OnMeasurementResultUpdated(receivedValue, displayData.Attribute.Minimum, displayData.Attribute.Maximum);
 					break;
 				}
@@ -69,7 +69,7 @@ namespace Dataskop.Entities.Visualizations {
 					valueTextMesh.text = displayData.Result.ReadAsBool().ToString();
 					boolIconRenderer.color = displayData.Result.ReadAsBool() ? boolTrueColor : boolFalseColor;
 					boolIconRenderer.sprite = receivedValue == 0 ? boolIcons[0] : boolIcons[1];
-					dateTextMesh.text = displayData.Result.GetDate();
+					dateTextMesh.text = displayData.Result.GetDateText();
 					OnMeasurementResultUpdated(receivedValue, displayData.Attribute.Minimum, displayData.Attribute.Maximum);
 					break;
 				}

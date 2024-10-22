@@ -1,16 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Dataskop.Data;
-using Dataskop.Entities;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Dataskop.UI {
 
-	public class HistorySliderUI : MonoBehaviour {
+	public class HistorySliderUI {
 
-		public Action<int, int> sliderValueChanged;
+		public event Action<int, int> SliderValueChanged;
 
 		private VisualElement historyContainer;
 		private VisualElement dragger;
@@ -19,112 +16,41 @@ namespace Dataskop.UI {
 		private string currentAttributeId;
 		private string currentDeviceId;
 
-		private bool IsActive { get; set; }
-
-		/// <summary>
-		/// Initializes the UI Element by finding its elements based on the given root element.
-		/// </summary>
-		/// <param name="container">The root element.</param>
-		public void Init(VisualElement container) {
+		public HistorySliderUI(VisualElement container) {
 			historyContainer = container;
 			historySlider = historyContainer.Q<SliderInt>("Slider");
-			historySlider.RegisterCallback<ChangeEvent<int>>(SliderValueChanged);
+			historySlider.RegisterCallback<ChangeEvent<int>>(SliderChanged);
 			currentTimeLabel = historyContainer.Q<Label>("CurrentTime");
 			dragger = historySlider.Q<VisualElement>("unity-dragger");
 		}
 
 		public void Show() {
 			historyContainer.visible = true;
-			StartCoroutine(GenerateTicks(GetMeasurementCount()));
 		}
 
 		public void Hide() {
 			historyContainer.visible = false;
 		}
 
-		private void SliderValueChanged(ChangeEvent<int> e) {
-			sliderValueChanged?.Invoke(e.newValue, e.previousValue);
-		}
-
 		public void SetValue(int val) {
 			historySlider.SetValueWithoutNotify(val);
 		}
 
-		public void OnDataPointSelected(DataPoint selectedDataPoint) { }
-
-		public void OnDataPointDeselected() { }
-
-		public void OnDataPointSelectionChanged(DataPoint selectedDataPoint) {
-
-			if (SelectedDataPoint != null) {
-				SelectedDataPoint.FocusedMeasurementResultChanged -= UpdateTimeLabel;
-				SelectedDataPoint.MeasurementRangeChanged -= OnMeasurementRangeChanged;
-			}
-
-			SelectedDataPoint = selectedDataPoint;
-
-			if (SelectedDataPoint == null) {
-				currentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Hidden);
-				SetVisibility(historyContainer, false);
-				SetVisibility(RangeContainer, false);
-				return;
-			}
-
-			SelectedDataPoint.FocusedMeasurementResultChanged += UpdateTimeLabel;
-			SelectedDataPoint.MeasurementRangeChanged += OnMeasurementRangeChanged;
-
-			if (!IsActive) {
-				return;
-			}
-
-			SetVisibility(historyContainer, true);
-			SetVisibility(RangeContainer, true);
-
-			int newResultsCount = GetMeasurementCount();
-
-			historySlider.highValue = newResultsCount - 1;
-			historySlider.SetValueWithoutNotify(SelectedDataPoint.FocusedIndex);
-
-			StartCoroutine(GenerateTicks(newResultsCount));
-			currentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
-			UpdateTimeLabel(SelectedDataPoint.FocusedMeasurement);
-
-			// check if we are still on the same device before updating time range
-			if (SelectedDataPoint == null) {
-				return;
-			}
-
-			UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.CurrentMeasurementRange);
-			CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
-
+		public void UpdateTicks(int count) {
+			GenerateTicks(count);
 		}
 
-		private void UpdateTimeLabel(MeasurementResult focusedResult) {
-			currentTimeLabel.text = focusedResult.GetDate();
+		public void UpdateTimeLabel(string text) {
+			currentTimeLabel.text = text;
 		}
 
-		private void SetVisibility(VisualElement element, bool isVisible) {
-			element.style.display = new StyleEnum<DisplayStyle>(isVisible ? DisplayStyle.Flex : DisplayStyle.None);
+		public void SetLimits(int low, int high) {
+			historySlider.lowValue = low;
+			historySlider.highValue = high;
 		}
 
-		public void SetHistoryViewState(bool newState) {
-
-			IsActive = newState;
-
-			if (SelectedDataPoint) {
-				SetVisibility(historyContainer, IsActive);
-				SetVisibility(currentTimeLabel, IsActive);
-				SetVisibility(rangeContainer, IsActive);
-				StartCoroutine(GenerateTicks(GetMeasurementCount()));
-			}
-
-			historyViewToggled?.Invoke(IsActive);
-
-		}
-
-		private void OnMeasurementRangeChanged() {
-			CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
-			UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.CurrentMeasurementRange);
+		private void SliderChanged(ChangeEvent<int> e) {
+			SliderValueChanged?.Invoke(e.newValue, e.previousValue);
 		}
 
 		private void ClearTicks() {
@@ -135,16 +61,9 @@ namespace Dataskop.UI {
 			}
 		}
 
-		private IEnumerator DelayToggle() {
-			yield return new WaitForEndOfFrame();
-			historyViewToggled?.Invoke(IsActive);
-		}
-
-		private IEnumerator GenerateTicks(int dataPointsCount) {
+		private void GenerateTicks(int dataPointsCount) {
 			// Clear existing ticks
 			ClearTicks();
-
-			yield return new WaitForEndOfFrame();
 
 			// Get the total height of the slider track where ticks will be placed
 			float sliderTrackHeight = historySlider.resolvedStyle.height;

@@ -23,6 +23,9 @@ namespace Dataskop.Entities {
 
 		public MeasurementDefinition MeasurementDefinition { get; set; }
 
+		/// <summary>
+		/// The Measurement Range currently selected.
+		/// </summary>
 		public MeasurementResultRange CurrentMeasurementRange {
 
 			get => currentMeasurementRange;
@@ -34,16 +37,31 @@ namespace Dataskop.Entities {
 
 		}
 
+		/// <summary>
+		/// The Index of the focused Measurement in the current Measurement Range.
+		/// </summary>
 		public int FocusedIndex { get; private set; }
-		
-		public int MeasurementCount => 
 
+		/// <summary>
+		/// The amount of measurements in the currently selected Measurement Range.
+		/// </summary>
+		public int MeasurementCount => CurrentMeasurementRange.Count;
+
+		/// <summary>
+		/// The currently focused Measurement in the current Measurement Range.
+		/// </summary>
 		public MeasurementResult FocusedMeasurement { get; set; }
 
 		public DataAttribute Attribute { get; set; }
 
+		/// <summary>
+		/// The active Visualization.
+		/// </summary>
 		public IVisualization Vis { get; private set; }
 
+		/// <summary>
+		/// The device the data point belongs to.
+		/// </summary>
 		public Device Device { get; set; }
 
 		public AuthorRepository AuthorRepository { get; set; }
@@ -130,7 +148,7 @@ namespace Dataskop.Entities {
 		}
 
 		public void ToggleHistory(bool newState) {
-			
+
 			if (Vis != null && Vis.VisOption.Style.IsTimeSeries) {
 				Vis.OnTimeSeriesToggled(newState);
 			}

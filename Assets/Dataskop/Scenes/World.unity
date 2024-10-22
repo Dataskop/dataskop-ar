@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44402185, g: 0.49316472, b: 0.57223153, a: 1}
+  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -288,9 +288,21 @@ MonoBehaviour:
   historyButtonPressed:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1345926185}
-        m_TargetAssemblyTypeName: Dataskop.UI.HistoryUI, Dataskop
-        m_MethodName: SetHistoryViewState
+      - m_Target: {fileID: 1345926188}
+        m_TargetAssemblyTypeName: Dataskop.UI.HistoryControllerUI, Dataskop
+        m_MethodName: OnHistoryButtonPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1884349581}
+        m_TargetAssemblyTypeName: Dataskop.Data.DataPointsManager, Dataskop
+        m_MethodName: OnHistoryViewChanged
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -499,8 +511,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1345926185}
-        m_TargetAssemblyTypeName: Dataskop.UI.HistoryUI, Dataskop
+      - m_Target: {fileID: 1345926188}
+        m_TargetAssemblyTypeName: Dataskop.UI.HistoryControllerUI, Dataskop
         m_MethodName: OnDateFiltered
         m_Mode: 1
         m_Arguments:
@@ -630,7 +642,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1345926185}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Dataskop.UI.HistoryUI, Dataskop
         m_MethodName: SetHistoryViewState
         m_Mode: 6
@@ -2396,7 +2408,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1345926183}
   - component: {fileID: 1345926184}
-  - component: {fileID: 1345926185}
+  - component: {fileID: 1345926188}
+  - component: {fileID: 1345926187}
   - component: {fileID: 1345926186}
   m_Layer: 5
   m_Name: HistoryCanvas
@@ -2436,51 +2449,6 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 2930adaeeb1ae664cb2bf67361a80093, type: 3}
   m_SortingOrder: 4
---- !u!114 &1345926185
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345926182}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba3182a4a66e78a40b4eec2a0ece5165, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sliderChanged:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1884349581}
-        m_TargetAssemblyTypeName: DataSkopAR.Data.DataPointsManager, DataSkopAR
-        m_MethodName: OnHistorySliderMoved
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  historyViewToggled:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1884349581}
-        m_TargetAssemblyTypeName: DataSkopAR.Data.DataPointsManager, DataSkopAR
-        m_MethodName: OnHistoryViewChanged
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  historyMenuDoc: {fileID: 1345926184}
-  hourIcon: {fileID: 21300000, guid: d1b3c954e934a2041a9fbea525d7f327, type: 3}
-  daysIcon: {fileID: 21300000, guid: 838c571e9e4eead44a0286449f633555, type: 3}
 --- !u!114 &1345926186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2524,6 +2492,35 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   section: 3
+--- !u!114 &1345926187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345926182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 416691f03deeff94fa3be1ffbca27c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  historyMenuDoc: {fileID: 1345926184}
+  hourIcon: {fileID: 21300000, guid: 838c571e9e4eead44a0286449f633555, type: 3}
+  daysIcon: {fileID: 21300000, guid: 838c571e9e4eead44a0286449f633555, type: 3}
+--- !u!114 &1345926188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345926182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d612c7775c64e438fa21371ec372ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  historyUIDocument: {fileID: 1345926184}
+  cachedDataDisplay: {fileID: 1345926187}
 --- !u!1 &1395224430
 GameObject:
   m_ObjectHideFlags: 0
@@ -3182,8 +3179,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1345926185}
-        m_TargetAssemblyTypeName: DataSkopAR.UI.HistoryUI, DataSkopAR
+      - m_Target: {fileID: 1345926188}
+        m_TargetAssemblyTypeName: Dataskop.UI.HistoryControllerUI, Dataskop
         m_MethodName: OnDataPointSelectionChanged
         m_Mode: 0
         m_Arguments:
@@ -3996,8 +3993,8 @@ MonoBehaviour:
   onVisualizationChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1345926185}
-        m_TargetAssemblyTypeName: DataSkopAR.UI.HistoryUI, DataSkopAR
+      - m_Target: {fileID: 1345926188}
+        m_TargetAssemblyTypeName: Dataskop.UI.HistoryControllerUI, Dataskop
         m_MethodName: OnVisualizationOptionChanged
         m_Mode: 0
         m_Arguments:
@@ -4011,9 +4008,9 @@ MonoBehaviour:
   dataPointHistorySwiped:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1345926185}
-        m_TargetAssemblyTypeName: DataSkopAR.UI.HistoryUI, DataSkopAR
-        m_MethodName: OnDataPointHistorySwiped
+      - m_Target: {fileID: 1345926188}
+        m_TargetAssemblyTypeName: Dataskop.UI.HistoryControllerUI, Dataskop
+        m_MethodName: OnHistorySwiped
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

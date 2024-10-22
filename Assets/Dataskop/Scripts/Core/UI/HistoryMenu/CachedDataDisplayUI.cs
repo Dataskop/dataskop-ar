@@ -31,7 +31,6 @@ namespace Dataskop.UI {
 
 		public void Init(VisualElement container) {
 			cachedRangeContainer = container;
-			cachedRangeContainer = historyMenuDoc.rootVisualElement.Q<VisualElement>("RangeContainer");
 
 			totalEndTimeLabel = cachedRangeContainer.Q<Label>("LabelMinDate");
 			totalStartTimeLabel = cachedRangeContainer.Q<Label>("LabelMaxDate");
@@ -63,12 +62,12 @@ namespace Dataskop.UI {
 			cachedRangeContainer.visible = false;
 		}
 
-		private void UpdateMinMaxSlider(MeasurementDefinition def, MeasurementResultRange currentRange) {
+		public void UpdateMinMaxSlider(MeasurementDefinition def, MeasurementResultRange currentRange) {
 			MeasurementResult firstResult = def.FirstMeasurementResult;
 			MeasurementResult lastResult = def.LatestMeasurementResult;
 
-			totalStartTimeLabel.text = firstResult.GetShortDate();
-			totalEndTimeLabel.text = lastResult.GetShortDate();
+			totalStartTimeLabel.text = firstResult.GetShortDateText();
+			totalEndTimeLabel.text = lastResult.GetShortDateText();
 
 			slider.lowLimit = 1;
 			TimeRange overAllRange = new(ClampTimeStamp(firstResult.Timestamp), ClampTimeStamp(lastResult.Timestamp));
@@ -98,7 +97,7 @@ namespace Dataskop.UI {
 
 		}
 
-		private void CreateCacheRect(MeasurementDefinition def) {
+		public void CreateCacheRect(MeasurementDefinition def) {
 			// Clear the container for fresh data
 			cachedRangesDisplay.Clear();
 			MeasurementResult latestResult = def.LatestMeasurementResult;
@@ -157,8 +156,6 @@ namespace Dataskop.UI {
 		private void ToggleUnitSwitch() {
 			isHourly = !isHourly;
 			switchUnitsIcon.style.backgroundImage = new StyleBackground(isHourly ? hourIcon : daysIcon);
-			UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.CurrentMeasurementRange);
-			CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
 		}
 
 		private DateTime ClampTimeStamp(DateTime timeStamp) {

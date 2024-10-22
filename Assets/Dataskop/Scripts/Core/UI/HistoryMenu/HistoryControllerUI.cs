@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using Dataskop.Data;
 using Dataskop.Entities;
 using UnityEngine;
@@ -9,8 +9,9 @@ namespace Dataskop.UI {
 	public class HistoryControllerUI : MonoBehaviour {
 
 		[SerializeField] private UIDocument historyUIDocument;
-		[SerializeField] private HistorySliderUI historySlider;
 		[SerializeField] private CachedDataDisplayUI cachedDataDisplay;
+
+		private HistorySliderUI historySlider;
 
 		public bool IsActive { get; set; }
 
@@ -18,21 +19,35 @@ namespace Dataskop.UI {
 
 		private void OnEnable() {
 			IsActive = false;
-			historySlider.Init(historyUIDocument.rootVisualElement.Q<VisualElement>("HistoryContainer"));
+			historySlider = new HistorySliderUI(historyUIDocument.rootVisualElement.Q<VisualElement>("HistoryContainer"));
 			cachedDataDisplay.Init(historyUIDocument.rootVisualElement.Q<VisualElement>("CachedDataDisplay"));
+
+			//TODO: Subscribe to the relevant events for the history slider and the cached data.
+		}
+
+		private void Start() {
 			historySlider.Hide();
 			cachedDataDisplay.Hide();
 			historyUIDocument.rootVisualElement.visible = false;
-			
-			//TODO: Subscribe to the relevant events for the history slider and the cached data.
+		}
+
+		public void OnHistoryButtonPressed() {
+			if (IsActive) {
+				HideHistory();
+			}
+			else {
+				ShowHistory();
+			}
 		}
 
 		public void ShowHistory() {
 			historySlider.Show();
 			cachedDataDisplay.Show();
+			IsActive = true;
 		}
 
 		public void HideHistory() {
+			IsActive = false;
 			historySlider.Hide();
 			cachedDataDisplay.Hide();
 		}
@@ -44,12 +59,12 @@ namespace Dataskop.UI {
 			if (SelectedDataPoint) {
 				ShowHistory();
 			}
+			//TODO: If no DataPoint is selected and Date is filtered, what to do?
 
 		}
 
 		public void OnHistorySwiped(int newCount) {
-			historySlider.SetValueWithoutNotify(newCount);
-			AdjustTimeLabelPosition();
+			historySlider.SetValue(newCount);
 		}
 
 		public void OnVisualizationOptionChanged(VisualizationOption currentVisOption) {
@@ -57,24 +72,15 @@ namespace Dataskop.UI {
 			if (IsActive) {
 
 				if (currentVisOption.Style.IsTimeSeries) {
-					StartCoroutine(DelayToggle());
+					StartCoroutine(DelayShow());
 					return;
 				}
 
-				if (currentVisOption.Style.IsTimeSeries) {
-					SetVisibility(Root, currentVisOption.Style.IsTimeSeries);
-					SetVisibility(historyContainer, false);
-					SetVisibility(RangeContainer, false);
+				if (!currentVisOption.Style.IsTimeSeries) {
+					HideHistory();
+					IsActive = false;
 				}
-				
-				IsActive = false;
 
-			}
-			else {
-				SetVisibility(Root, currentVisOption.Style.IsTimeSeries);
-				SetVisibility(historyContainer, false);
-				SetVisibility(RangeContainer, false);
-				IsActive = false;
 			}
 
 		}
@@ -82,46 +88,57 @@ namespace Dataskop.UI {
 		public void OnDataPointSelectionChanged(DataPoint selectedDataPoint) {
 
 			if (SelectedDataPoint != null) {
-				SelectedDataPoint.FocusedMeasurementResultChanged -= UpdateTimeLabel;
+				SelectedDataPoint.FocusedMeasurementResultChanged -= OnFocusedResultChanged;
 				SelectedDataPoint.MeasurementRangeChanged -= OnMeasurementRangeChanged;
 			}
 
 			SelectedDataPoint = selectedDataPoint;
 
 			if (SelectedDataPoint == null) {
-				currentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Hidden);
-				SetVisibility(historyContainer, false);
-				SetVisibility(RangeContainer, false);
+				
+				//TODO: New functions to display empty Sliders.
+				
 				return;
 			}
 
-			SelectedDataPoint.FocusedMeasurementResultChanged += UpdateTimeLabel;
+			SelectedDataPoint.FocusedMeasurementResultChanged += OnFocusedResultChanged;
 			SelectedDataPoint.MeasurementRangeChanged += OnMeasurementRangeChanged;
 
 			if (!IsActive) {
 				return;
 			}
 
-			SetVisibility(historyContainer, true);
-			SetVisibility(RangeContainer, true);
+			ShowHistory();
 
-			int newResultsCount = GetMeasurementCount();
+			int newResultsCount = SelectedDataPoint.MeasurementCount;
 
-			historySlider.highValue = newResultsCount - 1;
-			historySlider.SetValueWithoutNotify(SelectedDataPoint.FocusedIndex);
-
-			StartCoroutine(GenerateTicks(newResultsCount));
-			currentTimeLabel.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
-			UpdateTimeLabel(SelectedDataPoint.FocusedMeasurement);
+			historySlider.SetLimits(0, newResultsCount - 1);
+			historySlider.SetValue(SelectedDataPoint.FocusedIndex);
+			historySlider.UpdateTicks(newResultsCount);
+			historySlider.UpdateTimeLabel(SelectedDataPoint.FocusedMeasurement.GetDateText());
 
 			// check if we are still on the same device before updating time range
 			if (SelectedDataPoint == null) {
 				return;
 			}
 
-			UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.CurrentMeasurementRange);
-			CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
+			cachedDataDisplay.UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.CurrentMeasurementRange);
+			cachedDataDisplay.CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
 
+		}
+
+		private void OnFocusedResultChanged(MeasurementResult result) {
+			historySlider.UpdateTimeLabel(result.GetDateText());
+		}
+
+		private void OnMeasurementRangeChanged() {
+			cachedDataDisplay.CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
+			cachedDataDisplay.UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.CurrentMeasurementRange);
+		}
+
+		private IEnumerator DelayShow() {
+			yield return new WaitForEndOfFrame();
+			ShowHistory();
 		}
 
 	}
