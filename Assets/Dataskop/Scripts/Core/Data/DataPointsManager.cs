@@ -38,14 +38,14 @@ namespace Dataskop.Data {
 		public float NearbyDevicesDistance => nearbyDevicesDistance;
 
 		/// <summary>
-		///     List of currently placed markers in the AR world.
+		/// List of currently placed markers in the AR world.
 		/// </summary>
 		public IList<DataPoint> DataPoints { get; private set; }
 
 		public Dictionary<Device, Vector3> LastKnownDevicePositions { get; private set; }
 
 		/// <summary>
-		///     Array of precise marker locations in the AR world.
+		/// Array of precise marker locations in the AR world.
 		/// </summary>
 		private Vector2d[] DataPointsLocations { get; set; }
 
@@ -59,7 +59,7 @@ namespace Dataskop.Data {
 
 		private DataManager DataManager => dataManager;
 
-		private TimeRange? TimeRangeFilter { get; set; } = null;
+		private TimeRange? TimeRangeFilter { get; set; }
 
 		private void Awake() {
 			DataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
@@ -87,10 +87,13 @@ namespace Dataskop.Data {
 		}
 
 		public void OnProjectSelected() {
-			if (HasLoadedDataPoints) {
-				ClearDataPoints();
-				hasHistoryEnabled = false;
+
+			if (!HasLoadedDataPoints) {
+				return;
 			}
+
+			ClearDataPoints();
+			hasHistoryEnabled = false;
 		}
 
 		public void OnHistoryViewChanged(bool enable) {
@@ -137,6 +140,7 @@ namespace Dataskop.Data {
 
 			foreach (DataPoint dp in DataPoints) {
 				SetDataPointVisualization(dp, visOpt);
+				dp.ToggleHistory(hasHistoryEnabled);
 			}
 
 			onVisualizationChanged?.Invoke(visOpt);

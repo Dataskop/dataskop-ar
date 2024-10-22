@@ -81,7 +81,7 @@ namespace Dataskop.Entities {
 		public event Action MeasurementRangeChanged;
 
 		/// <summary>
-		///     Sets and replaces the current visualization form with another.
+		/// Sets and replaces the current visualization form with another.
 		/// </summary>
 		/// <param name="visPrefab">The visualization to be used for this data point.</param>
 		/// <param name="timeRange">The time range of the data that should be visualized.</param>
@@ -223,7 +223,7 @@ namespace Dataskop.Entities {
 		}
 
 		/// <summary>
-		///     Sets the selection status of the data point.
+		/// Sets the selection status of the data point.
 		/// </summary>
 		public void SetSelectionStatus(SelectionState state) {
 

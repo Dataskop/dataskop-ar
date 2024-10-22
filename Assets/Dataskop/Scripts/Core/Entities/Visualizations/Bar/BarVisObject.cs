@@ -114,7 +114,7 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		/// <summary>
-		///     Applies materials to the vis object.
+		/// Applies materials to the vis object.
 		/// </summary>
 		/// <param name="materials"><br />[0] Bar Frame<br />[1] Bar Fill</param>
 		public void SetMaterials(params Material[] materials) {

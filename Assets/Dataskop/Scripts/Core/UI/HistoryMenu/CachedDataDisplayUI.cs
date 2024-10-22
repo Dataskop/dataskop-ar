@@ -14,20 +14,21 @@ namespace Dataskop.UI {
 		[Header("Icons")]
 		[SerializeField] private Sprite hourIcon;
 		[SerializeField] private Sprite daysIcon;
+		private VisualElement bottomDragger;
 
 		private VisualElement cachedRangeContainer;
-		private VisualElement topDragger;
-		private VisualElement bottomDragger;
-		private VisualElement rangeContainer;
 		private VisualElement cachedRangesDisplay;
-		private VisualElement switchUnitsIcon;
-		private Button switchUnitsButton;
-		private Label totalEndTimeLabel;
-		private Label totalStartTimeLabel;
 		private Label currentEndRangeLabel;
 		private Label currentStartRangeLabel;
-		private MinMaxSlider slider;
 		private bool isHourly;
+		private VisualElement rangeContainer;
+		private MinMaxSlider slider;
+		private int sliderHeight;
+		private Button switchUnitsButton;
+		private VisualElement switchUnitsIcon;
+		private VisualElement topDragger;
+		private Label totalEndTimeLabel;
+		private Label totalStartTimeLabel;
 
 		public void Init(VisualElement container) {
 			cachedRangeContainer = container;
@@ -52,6 +53,8 @@ namespace Dataskop.UI {
 			switchUnitsButton.RegisterCallback<ClickEvent>(_ => ToggleUnitSwitch());
 
 			switchUnitsIcon = switchUnitsButton.Q<VisualElement>("Icon");
+
+			sliderHeight = (int)slider.style.height.value.value - (int)bottomDragger.style.width.value.value * 2;
 		}
 
 		public void Show() {
@@ -60,6 +63,16 @@ namespace Dataskop.UI {
 
 		public void Hide() {
 			cachedRangeContainer.visible = false;
+		}
+
+		public void ClearData() {
+			cachedRangesDisplay.Clear();
+			totalStartTimeLabel.text = "";
+			totalEndTimeLabel.text = "";
+			currentStartRangeLabel.text = "";
+			currentEndRangeLabel.text = "";
+			slider.minValue = slider.lowLimit;
+			slider.maxValue = slider.lowLimit;
 		}
 
 		public void UpdateMinMaxSlider(MeasurementDefinition def, MeasurementResultRange currentRange) {
@@ -105,7 +118,6 @@ namespace Dataskop.UI {
 
 			// Slider Data
 			float highLimit = slider.highLimit;
-			int sliderHeight = 580;
 
 			foreach (MeasurementResultRange measurementResultRange in def.MeasurementResults) {
 
@@ -124,9 +136,9 @@ namespace Dataskop.UI {
 				double rangeInUnits = isHourly ? timeRangeCurrentRect.Span.TotalHours : timeRangeCurrentRect.Span.Days + 1;
 				double unitsToLatestResult = isHourly ? rangeToLatestResult.Span.TotalHours : rangeToLatestResult.Span.Days;
 				int numberUnitsCurrentRect = (int)Mathf.Clamp((int)rangeInUnits, 1, highLimit);
-				float calculatedWidth = Mathf.Round((sliderHeight / highLimit) * numberUnitsCurrentRect);
+				float calculatedWidth = Mathf.Round(sliderHeight / highLimit * numberUnitsCurrentRect);
 				float startPosition = 10 + ((int)unitsToLatestResult > 0
-					? (sliderHeight / highLimit) : 0) + (sliderHeight / highLimit) * (int)unitsToLatestResult;
+					? sliderHeight / highLimit : 0) + sliderHeight / highLimit * (int)unitsToLatestResult;
 
 				VisualElement rect = new() {
 					style = {

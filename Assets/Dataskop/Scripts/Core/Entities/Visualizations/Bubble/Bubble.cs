@@ -112,10 +112,7 @@ namespace Dataskop.Entities.Visualizations {
 			}
 
 			noResultsIndicator.SetActive(false);
-
-			VisObjects = CurrentRange.Count < VisHistoryConfiguration.visibleHistoryCount
-				? new IVisObject[CurrentRange.Count]
-				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
+			VisObjects = new IVisObject[CurrentRange.Count];
 
 			GameObject visObject = Instantiate(visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer);
 			VisObjects[DataPoint.FocusedIndex] = visObject.GetComponent<IVisObject>();
@@ -198,7 +195,7 @@ namespace Dataskop.Entities.Visualizations {
 			}
 
 			if (isActive) {
-				
+
 				MeasurementResultRange currentResults = DataPoint.CurrentMeasurementRange;
 				float distance = visHistoryConfig.elementDistance;
 

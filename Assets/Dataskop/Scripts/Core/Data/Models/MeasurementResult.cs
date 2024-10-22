@@ -23,7 +23,7 @@ namespace Dataskop.Data {
 		public string Author { get; }
 
 		/// <summary>
-		///     Creates and returns a MeasurementResult from a given DTO.
+		/// Creates and returns a MeasurementResult from a given DTO.
 		/// </summary>
 		public MeasurementResult(string value, int valueType, string timeStamp, Position location, MeasurementDefinition md,
 			string additionalProperties) {
@@ -50,7 +50,7 @@ namespace Dataskop.Data {
 		}
 
 		/// <summary>
-		///     Returns the measurement result's value as a double (if suitable).
+		/// Returns the measurement result's value as a double (if suitable).
 		/// </summary>
 		public double ReadAsDouble() {
 
@@ -62,7 +62,7 @@ namespace Dataskop.Data {
 		}
 
 		/// <summary>
-		///     Returns the measurement result's value as a float (if suitable).
+		/// Returns the measurement result's value as a float (if suitable).
 		/// </summary>
 		public float ReadAsFloat() {
 
@@ -79,7 +79,7 @@ namespace Dataskop.Data {
 		}
 
 		/// <summary>
-		///     Returns the measurement result's value as a string (if suitable).
+		/// Returns the measurement result's value as a string (if suitable).
 		/// </summary>
 		public string ReadAsString() {
 
@@ -91,7 +91,7 @@ namespace Dataskop.Data {
 		}
 
 		/// <summary>
-		///     Returns the measurement result's value as a bool (if suitable).
+		/// Returns the measurement result's value as a bool (if suitable).
 		/// </summary>
 		public bool ReadAsBool() {
 
@@ -111,7 +111,7 @@ namespace Dataskop.Data {
 		}
 
 		/// <summary>
-		///     Returns an interpolated value for a given timestamp.
+		/// Returns an interpolated value for a given timestamp.
 		/// </summary>
 		public static float GetValueAtTime(List<MeasurementResult> mResults, DateTime time, string strategy) {
 			List<string> validStrategies = new() {

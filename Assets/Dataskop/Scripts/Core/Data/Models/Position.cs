@@ -11,7 +11,7 @@ namespace Dataskop.Data {
 		public double Altitude { get; }
 
 		/// <summary>
-		///     Creates and returns a position object.
+		/// Creates and returns a position object.
 		/// </summary>
 		public Position(double latitude, double longitude, double altitude) {
 			Latitude = latitude;
@@ -20,7 +20,7 @@ namespace Dataskop.Data {
 		}
 
 		/// <summary>
-		///     Returns a latitude and longitude string.
+		/// Returns a latitude and longitude string.
 		/// </summary>
 		public string GetLatLong() {
 			return

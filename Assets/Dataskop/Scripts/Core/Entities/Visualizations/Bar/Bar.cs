@@ -98,9 +98,7 @@ namespace Dataskop.Entities.Visualizations {
 
 			noResultsIndicator.SetActive(false);
 
-			VisObjects = DataPoint.MeasurementDefinition.MeasurementResults.First().Count < VisHistoryConfiguration.visibleHistoryCount
-				? new IVisObject[dp.MeasurementDefinition.MeasurementResults.First().Count]
-				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
+			VisObjects = new IVisObject[CurrentRange.Count];
 
 			GameObject visObject = Instantiate(visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer);
 			VisObjects[DataPoint.FocusedIndex] = visObject.GetComponent<IVisObject>();

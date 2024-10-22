@@ -113,7 +113,7 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		/// <summary>
-		///     No Effect.
+		/// No Effect.
 		/// </summary>
 		/// <param name="active"></param>
 		public void OnHistoryToggle(bool active) { }

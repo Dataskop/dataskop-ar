@@ -2,11 +2,14 @@ using System.Collections;
 using Dataskop.Data;
 using Dataskop.Entities;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UIElements;
 
 namespace Dataskop.UI {
 
 	public class HistoryControllerUI : MonoBehaviour {
+
+		public UnityEvent<int, int> historySliderValueChanged;
 
 		[SerializeField] private UIDocument historyUIDocument;
 		[SerializeField] private CachedDataDisplayUI cachedDataDisplay;
@@ -17,18 +20,18 @@ namespace Dataskop.UI {
 
 		private DataPoint SelectedDataPoint { get; set; }
 
-		private void OnEnable() {
-			IsActive = false;
-			historySlider = new HistorySliderUI(historyUIDocument.rootVisualElement.Q<VisualElement>("HistoryContainer"));
-			cachedDataDisplay.Init(historyUIDocument.rootVisualElement.Q<VisualElement>("CachedDataDisplay"));
-
-			//TODO: Subscribe to the relevant events for the history slider and the cached data.
-		}
-
 		private void Start() {
 			historySlider.Hide();
 			cachedDataDisplay.Hide();
 			historyUIDocument.rootVisualElement.visible = false;
+		}
+
+		private void OnEnable() {
+			IsActive = false;
+			historySlider = new HistorySliderUI(historyUIDocument.rootVisualElement.Q<VisualElement>("HistoryContainer"));
+			cachedDataDisplay.Init(historyUIDocument.rootVisualElement.Q<VisualElement>("CachedDataDisplay"));
+			historySlider.SliderValueChanged += OnHistorySliderMoved;
+			//TODO: Subscribe to the relevant events for the history slider and the cached data.
 		}
 
 		public void OnHistoryButtonPressed() {
@@ -53,12 +56,8 @@ namespace Dataskop.UI {
 		}
 
 		public void OnDateFiltered() {
+			ShowHistory();
 
-			IsActive = true;
-
-			if (SelectedDataPoint) {
-				ShowHistory();
-			}
 			//TODO: If no DataPoint is selected and Date is filtered, what to do?
 
 		}
@@ -69,18 +68,13 @@ namespace Dataskop.UI {
 
 		public void OnVisualizationOptionChanged(VisualizationOption currentVisOption) {
 
-			if (IsActive) {
+			if (currentVisOption.Style.IsTimeSeries) {
+				StartCoroutine(DelayShow());
+				return;
+			}
 
-				if (currentVisOption.Style.IsTimeSeries) {
-					StartCoroutine(DelayShow());
-					return;
-				}
-
-				if (!currentVisOption.Style.IsTimeSeries) {
-					HideHistory();
-					IsActive = false;
-				}
-
+			if (!currentVisOption.Style.IsTimeSeries) {
+				HideHistory();
 			}
 
 		}
@@ -95,9 +89,9 @@ namespace Dataskop.UI {
 			SelectedDataPoint = selectedDataPoint;
 
 			if (SelectedDataPoint == null) {
-				
 				//TODO: New functions to display empty Sliders.
-				
+				historySlider.ClearData();
+				cachedDataDisplay.ClearData();
 				return;
 			}
 
@@ -125,6 +119,10 @@ namespace Dataskop.UI {
 			cachedDataDisplay.UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.CurrentMeasurementRange);
 			cachedDataDisplay.CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
 
+		}
+
+		private void OnHistorySliderMoved(int newCount, int prevCount) {
+			historySliderValueChanged?.Invoke(newCount, prevCount);
 		}
 
 		private void OnFocusedResultChanged(MeasurementResult result) {

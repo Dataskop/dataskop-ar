@@ -7,12 +7,12 @@ namespace Dataskop.UI {
 
 	public class HistorySliderUI {
 
-		public event Action<int, int> SliderValueChanged;
+		private readonly Label currentTimeLabel;
+		private readonly VisualElement dragger;
 
-		private VisualElement historyContainer;
-		private VisualElement dragger;
-		private SliderInt historySlider;
-		private Label currentTimeLabel;
+		private readonly VisualElement historyContainer;
+		private readonly SliderInt historySlider;
+
 		private string currentAttributeId;
 		private string currentDeviceId;
 
@@ -23,6 +23,8 @@ namespace Dataskop.UI {
 			currentTimeLabel = historyContainer.Q<Label>("CurrentTime");
 			dragger = historySlider.Q<VisualElement>("unity-dragger");
 		}
+
+		public event Action<int, int> SliderValueChanged;
 
 		public void Show() {
 			historyContainer.visible = true;
@@ -47,6 +49,11 @@ namespace Dataskop.UI {
 		public void SetLimits(int low, int high) {
 			historySlider.lowValue = low;
 			historySlider.highValue = high;
+		}
+
+		public void ClearData() {
+			ClearTicks();
+			currentTimeLabel.text = "";
 		}
 
 		private void SliderChanged(ChangeEvent<int> e) {

@@ -7,36 +7,19 @@ namespace Dataskop.EditMode.Tests {
 	[TestFixture] [Category("Dataskop")]
 	public class TimeRangeTests {
 
-		private static readonly DateTime NOW = new DateTime(2024, 8, 12);
-
-		[Test]
-		public void No_Missing_Time_Range_When_Search_Range_Is_Inside_Available_Time_Range() {
-
-			// Arrange
-			TimeRange[] available = {
-				new TimeRange(new DateTime(2024, 8, 10), NOW)
-			};
-			TimeRange searchRange = new TimeRange(new DateTime(2024, 8, 11), NOW);
-
-			// Act
-			TimeRange[] foundGaps = TimeRangeExtensions.GetTimeRangeGaps(searchRange, available);
-
-			// Assert
-			Assert.That(foundGaps.Length, Is.EqualTo(0));
-
-		}
+		private static readonly DateTime NOW = new(2024, 8, 12);
 
 		[Test]
 		public void End_Time_Of_Gap_Is_Smaller_Or_Equal_Than_Start_Of_Overlapping_Range() {
 
 			// Arrange
 			TimeRange[] available = {
-				new TimeRange(
+				new(
 					new DateTime(2024, 8, 10),
 					new DateTime(2024, 8, 12)
 				)
 			};
-			TimeRange searchRange = new TimeRange(
+			TimeRange searchRange = new(
 				new DateTime(2024, 8, 09),
 				new DateTime(2024, 8, 11)
 			);
@@ -55,17 +38,17 @@ namespace Dataskop.EditMode.Tests {
 
 			// Arrange
 			TimeRange[] available = {
-				new TimeRange(
+				new(
 					new DateTime(2024, 8, 10),
 					new DateTime(2024, 8, 12)
 				),
-				new TimeRange(
+				new(
 					new DateTime(2024, 8, 03),
 					new DateTime(2024, 8, 05)
 				)
 			};
 
-			TimeRange searchRange = new TimeRange(
+			TimeRange searchRange = new(
 				new DateTime(2024, 8, 06),
 				new DateTime(2024, 8, 08)
 			);
@@ -85,25 +68,25 @@ namespace Dataskop.EditMode.Tests {
 
 			// Arrange
 			TimeRange[] available = {
-				new TimeRange(
+				new(
 					new DateTime(2024, 8, 23),
 					new DateTime(2024, 8, 25)
 				),
-				new TimeRange(
+				new(
 					new DateTime(2024, 8, 18),
 					new DateTime(2024, 8, 20)
 				),
-				new TimeRange(
+				new(
 					new DateTime(2024, 8, 09),
 					new DateTime(2024, 8, 15)
 				),
-				new TimeRange(
+				new(
 					new DateTime(2024, 8, 04),
 					new DateTime(2024, 8, 05)
 				)
 			};
 
-			TimeRange searchRange = new TimeRange(
+			TimeRange searchRange = new(
 				new DateTime(2024, 8, 01),
 				new DateTime(2024, 8, 24)
 			);
@@ -121,21 +104,21 @@ namespace Dataskop.EditMode.Tests {
 
 			// Arrange
 			TimeRange[] available = {
-				new TimeRange(
+				new(
 					new DateTime(2024, 8, 23),
 					new DateTime(2024, 8, 25)
 				),
-				new TimeRange(
+				new(
 					new DateTime(2024, 8, 18),
 					new DateTime(2024, 8, 20)
 				),
-				new TimeRange(
+				new(
 					new DateTime(2024, 8, 09),
 					new DateTime(2024, 8, 15)
 				)
 			};
 
-			TimeRange searchRange = new TimeRange(
+			TimeRange searchRange = new(
 				new DateTime(2024, 8, 01),
 				new DateTime(2024, 8, 24)
 			);
@@ -143,10 +126,27 @@ namespace Dataskop.EditMode.Tests {
 			// Act
 			TimeRange[] foundGaps = TimeRangeExtensions.GetTimeRangeGaps(searchRange, available);
 			bool hasOverlap = foundGaps.Any(gap => available.Any(avail =>
-				(gap.StartTime < avail.EndTime && gap.EndTime > avail.StartTime)));
+				gap.StartTime < avail.EndTime && gap.EndTime > avail.StartTime));
 
 			// Assert
 			Assert.That(hasOverlap, Is.False);
+
+		}
+
+		[Test]
+		public void No_Missing_Time_Range_When_Search_Range_Is_Inside_Available_Time_Range() {
+
+			// Arrange
+			TimeRange[] available = {
+				new(new DateTime(2024, 8, 10), NOW)
+			};
+			TimeRange searchRange = new(new DateTime(2024, 8, 11), NOW);
+
+			// Act
+			TimeRange[] foundGaps = TimeRangeExtensions.GetTimeRangeGaps(searchRange, available);
+
+			// Assert
+			Assert.That(foundGaps.Length, Is.EqualTo(0));
 
 		}
 

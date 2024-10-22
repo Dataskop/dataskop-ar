@@ -12,7 +12,7 @@ namespace Dataskop.Entities.Visualizations {
 		public IVisObject FocusedVisObject { get; }
 
 		/// <summary>
-		///     The DataPoint this visualization belongs to.
+		/// The DataPoint this visualization belongs to.
 		/// </summary>
 		public DataPoint DataPoint { get; }
 
@@ -25,7 +25,7 @@ namespace Dataskop.Entities.Visualizations {
 		public bool HasHistoryEnabled { get; }
 
 		/// <summary>
-		///     The Transform of the whole Visualization.
+		/// The Transform of the whole Visualization.
 		/// </summary>
 		public Transform VisOrigin { get; set; }
 
@@ -48,7 +48,7 @@ namespace Dataskop.Entities.Visualizations {
 		public event Action<IVisObject> FocusedVisObjectChanged;
 
 		/// <summary>
-		///     Creates a Visualization for a given Data Point.
+		/// Creates a Visualization for a given Data Point.
 		/// </summary>
 		public void Initialize(DataPoint dp);
 
@@ -65,7 +65,7 @@ namespace Dataskop.Entities.Visualizations {
 		public void ApplyStyle(VisualizationStyle style);
 
 		/// <summary>
-		///     Destroys and cleans up this Visualization.
+		/// Destroys and cleans up this Visualization.
 		/// </summary>
 		public void Despawn();
 

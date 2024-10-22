@@ -8,7 +8,7 @@ using UnityEngine.Events;
 namespace Dataskop.Data {
 
 	/// <summary>
-	///     Responsible for tracking if the user is in a predefined location area.
+	/// Responsible for tracking if the user is in a predefined location area.
 	/// </summary>
 	public class LocationAreaManager : MonoBehaviour {
 

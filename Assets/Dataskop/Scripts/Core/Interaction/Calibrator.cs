@@ -28,7 +28,7 @@ namespace Dataskop.Interaction {
 		[CanBeNull] public ICalibration ActiveCalibration { get; private set; }
 
 		/// <summary>
-		///     The current Calibration Phase.
+		/// The current Calibration Phase.
 		/// </summary>
 		public CalibratorPhase CurrentPhase {
 			get => currentPhase;

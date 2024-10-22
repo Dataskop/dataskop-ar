@@ -4,12 +4,12 @@ using UnityEngine.XR.ARFoundation;
 namespace Dataskop {
 
 	/// <summary>
-	///     Manages Scenes and their functions across the app.
+	/// Manages Scenes and their functions across the app.
 	/// </summary>
 	public static class SceneHandler {
 
 		/// <summary>
-		///     Loads and switches to a scene.
+		/// Loads and switches to a scene.
 		/// </summary>
 		/// <param name="sceneId">The scene ID</param>
 		public static void LoadScene(int sceneId) {
@@ -19,7 +19,7 @@ namespace Dataskop {
 		}
 
 		/// <summary>
-		///     Loads and switches to a scene.
+		/// Loads and switches to a scene.
 		/// </summary>
 		/// <param name="sceneName">The scene name</param>
 		public static void LoadScene(string sceneName) {
@@ -27,7 +27,7 @@ namespace Dataskop {
 		}
 
 		/// <summary>
-		///     Returns the currently active scene.
+		/// Returns the currently active scene.
 		/// </summary>
 		/// <returns>Int Index in the build menu</returns>
 		public static int GetCurrentScene() {
