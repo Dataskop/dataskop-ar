@@ -35,6 +35,8 @@ namespace Dataskop.Entities {
 		}
 
 		public int FocusedIndex { get; private set; }
+		
+		public int MeasurementCount => 
 
 		public MeasurementResult FocusedMeasurement { get; set; }
 
