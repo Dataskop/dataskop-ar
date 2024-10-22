@@ -22,6 +22,7 @@ namespace Dataskop.UI {
 			historySlider.RegisterCallback<ChangeEvent<int>>(SliderChanged);
 			currentTimeLabel = historyContainer.Q<Label>("CurrentTime");
 			dragger = historySlider.Q<VisualElement>("unity-dragger");
+			dragger.hierarchy.Add(currentTimeLabel);
 		}
 
 		public event Action<int, int> SliderValueChanged;
@@ -92,7 +93,7 @@ namespace Dataskop.UI {
 				tick.style.height = 2; // The height of the tick mark
 
 				// Calculate the vertical position of the tick
-				float tickPosition = tickSpacing * ((float)i / tickInterval);
+				float tickPosition = -9 + tickSpacing * ((float)i / tickInterval);
 
 				// The position is calculated from the bottom (sliderTrackHeight - position - half height of tick)
 				// to correctly align with the vertical slider's orientation

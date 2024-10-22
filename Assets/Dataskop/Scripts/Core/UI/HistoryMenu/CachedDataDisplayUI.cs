@@ -2,20 +2,16 @@ using System;
 using Dataskop.Data;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Position = UnityEngine.UIElements.Position;
 
 namespace Dataskop.UI {
 
 	public class CachedDataDisplayUI : MonoBehaviour {
 
-		[Header("References")]
-		[SerializeField] private UIDocument historyMenuDoc;
-
 		[Header("Icons")]
 		[SerializeField] private Sprite hourIcon;
 		[SerializeField] private Sprite daysIcon;
-		private VisualElement bottomDragger;
 
+		private VisualElement bottomDragger;
 		private VisualElement cachedRangeContainer;
 		private VisualElement cachedRangesDisplay;
 		private Label currentEndRangeLabel;
@@ -54,11 +50,11 @@ namespace Dataskop.UI {
 
 			switchUnitsIcon = switchUnitsButton.Q<VisualElement>("Icon");
 
-			sliderHeight = (int)slider.style.height.value.value - (int)bottomDragger.style.width.value.value * 2;
 		}
 
 		public void Show() {
 			cachedRangeContainer.visible = true;
+			sliderHeight = 580;
 		}
 
 		public void Hide() {
@@ -142,7 +138,7 @@ namespace Dataskop.UI {
 
 				VisualElement rect = new() {
 					style = {
-						position = Position.Absolute,
+						position = UnityEngine.UIElements.Position.Absolute,
 						left = new StyleLength(startPosition),
 						width = calculatedWidth,
 						height = 12,

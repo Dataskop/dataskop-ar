@@ -23,6 +23,8 @@ namespace Dataskop.UI {
 		private void Start() {
 			historySlider.Hide();
 			cachedDataDisplay.Hide();
+			historySlider.ClearData();
+			cachedDataDisplay.ClearData();
 			historyUIDocument.rootVisualElement.visible = false;
 		}
 
@@ -31,7 +33,6 @@ namespace Dataskop.UI {
 			historySlider = new HistorySliderUI(historyUIDocument.rootVisualElement.Q<VisualElement>("HistoryContainer"));
 			cachedDataDisplay.Init(historyUIDocument.rootVisualElement.Q<VisualElement>("CachedDataDisplay"));
 			historySlider.SliderValueChanged += OnHistorySliderMoved;
-			//TODO: Subscribe to the relevant events for the history slider and the cached data.
 		}
 
 		public void OnHistoryButtonPressed() {
@@ -56,9 +57,21 @@ namespace Dataskop.UI {
 		}
 
 		public void OnDateFiltered() {
-			ShowHistory();
 
-			//TODO: If no DataPoint is selected and Date is filtered, what to do?
+			ShowHistory();
+			historySlider.SetValue(0);
+
+			if (SelectedDataPoint) {
+				cachedDataDisplay.UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.CurrentMeasurementRange);
+				cachedDataDisplay.CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
+				historySlider.UpdateTicks(SelectedDataPoint.MeasurementCount);
+				historySlider.SetLimits(0, SelectedDataPoint.MeasurementCount - 1);
+				historySlider.UpdateTimeLabel(SelectedDataPoint.FocusedMeasurement.GetDateText());
+			}
+			else {
+				cachedDataDisplay.ClearData();
+				historySlider.ClearData();
+			}
 
 		}
 
@@ -79,6 +92,11 @@ namespace Dataskop.UI {
 
 		}
 
+		public void OnAttributeChanged(DataAttribute newAttribute) {
+			historySlider.ClearData();
+			cachedDataDisplay.ClearData();
+		}
+
 		public void OnDataPointSelectionChanged(DataPoint selectedDataPoint) {
 
 			if (SelectedDataPoint != null) {
@@ -89,7 +107,6 @@ namespace Dataskop.UI {
 			SelectedDataPoint = selectedDataPoint;
 
 			if (SelectedDataPoint == null) {
-				//TODO: New functions to display empty Sliders.
 				historySlider.ClearData();
 				cachedDataDisplay.ClearData();
 				return;
@@ -98,24 +115,12 @@ namespace Dataskop.UI {
 			SelectedDataPoint.FocusedMeasurementResultChanged += OnFocusedResultChanged;
 			SelectedDataPoint.MeasurementRangeChanged += OnMeasurementRangeChanged;
 
-			if (!IsActive) {
-				return;
-			}
-
-			ShowHistory();
-
 			int newResultsCount = SelectedDataPoint.MeasurementCount;
 
 			historySlider.SetLimits(0, newResultsCount - 1);
 			historySlider.SetValue(SelectedDataPoint.FocusedIndex);
 			historySlider.UpdateTicks(newResultsCount);
 			historySlider.UpdateTimeLabel(SelectedDataPoint.FocusedMeasurement.GetDateText());
-
-			// check if we are still on the same device before updating time range
-			if (SelectedDataPoint == null) {
-				return;
-			}
-
 			cachedDataDisplay.UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.CurrentMeasurementRange);
 			cachedDataDisplay.CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
 
