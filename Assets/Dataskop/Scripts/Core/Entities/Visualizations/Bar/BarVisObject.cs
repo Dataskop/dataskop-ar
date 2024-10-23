@@ -58,7 +58,7 @@ namespace Dataskop.Entities.Visualizations {
 					SetPillarHeight(receivedValue, displayData.Attribute.Minimum, displayData.Attribute.Maximum, 0.01f,
 						barFrame.localScale.y);
 					valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) + $" {displayData.Attribute?.Unit}";
-					dateTextMesh.text = displayData.Result.GetDate();
+					dateTextMesh.text = displayData.Result.GetDateText();
 					break;
 				}
 				case MeasurementType.Float: {
@@ -70,7 +70,7 @@ namespace Dataskop.Entities.Visualizations {
 					                        $" {displayData.Attribute?.Unit}";
 					maxValueTextMesh.text = displayData.Attribute?.Maximum.ToString("00.00", CultureInfo.InvariantCulture) +
 					                        $" {displayData.Attribute?.Unit}";
-					dateTextMesh.text = displayData.Result.GetDate();
+					dateTextMesh.text = displayData.Result.GetDateText();
 					break;
 				}
 			}
@@ -114,7 +114,7 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		/// <summary>
-		///     Applies materials to the vis object.
+		/// Applies materials to the vis object.
 		/// </summary>
 		/// <param name="materials"><br />[0] Bar Frame<br />[1] Bar Fill</param>
 		public void SetMaterials(params Material[] materials) {

@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 namespace Dataskop.Interaction {
 
 	/// <summary>
-	///     Responsible for aligning the AR Worlds forward axis to North of earth.
+	/// Responsible for aligning the AR Worlds forward axis to North of earth.
 	/// </summary>
 	public class NorthAlignmentCalibrator : MonoBehaviour, ICalibration {
 

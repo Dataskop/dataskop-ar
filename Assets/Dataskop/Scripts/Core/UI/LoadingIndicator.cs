@@ -22,6 +22,9 @@ namespace Dataskop.UI {
 		}
 
 		private void FixedUpdate() {
+
+			if (!IsLoading) return;
+
 			rotation += rotationSpeed * Time.fixedDeltaTime;
 
 			if (rotation >= 360) rotation = 0;

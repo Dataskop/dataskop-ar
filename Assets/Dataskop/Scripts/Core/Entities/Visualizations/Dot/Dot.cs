@@ -28,10 +28,10 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private Color selectColor;
 		[SerializeField] private Color historyColor;
 		private readonly List<GameObject> dataGapIndicators = new();
+		private MeasurementResultRange currentRange;
 
 		private Coroutine historyMove;
 		private Vector3 moveTarget = Vector3.zero;
-		private MeasurementResultRange currentRange;
 
 		private float Scale { get; set; }
 
@@ -105,9 +105,7 @@ namespace Dataskop.Entities.Visualizations {
 
 			noResultsIndicator.SetActive(false);
 
-			VisObjects = CurrentRange.Count < VisHistoryConfiguration.visibleHistoryCount
-				? new IVisObject[CurrentRange.Count]
-				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
+			VisObjects = new IVisObject[CurrentRange.Count];
 
 			GameObject visObject = Instantiate(visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer);
 			VisObjects[DataPoint.FocusedIndex] = visObject.GetComponent<IVisObject>();
@@ -309,9 +307,7 @@ namespace Dataskop.Entities.Visualizations {
 			noResultsIndicator.SetActive(false);
 			PreviousIndex = DataPoint.FocusedIndex;
 
-			VisObjects = CurrentRange.Count < VisHistoryConfiguration.visibleHistoryCount
-				? new IVisObject[CurrentRange.Count]
-				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
+			VisObjects = new IVisObject[CurrentRange.Count];
 
 			visObjectsContainer.localPosition = VisOrigin.position;
 
@@ -482,7 +478,7 @@ namespace Dataskop.Entities.Visualizations {
 				StopCoroutine(historyMove);
 			}
 
-			for (int i = 0; i < VisObjects.Length - 1; i++) {
+			for (int i = 0; i < VisObjects.Length; i++) {
 
 				if (VisObjects[i] == null) {
 					continue;

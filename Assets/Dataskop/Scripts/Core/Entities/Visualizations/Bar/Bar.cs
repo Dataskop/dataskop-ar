@@ -98,9 +98,7 @@ namespace Dataskop.Entities.Visualizations {
 
 			noResultsIndicator.SetActive(false);
 
-			VisObjects = DataPoint.MeasurementDefinition.MeasurementResults.First().Count < VisHistoryConfiguration.visibleHistoryCount
-				? new IVisObject[dp.MeasurementDefinition.MeasurementResults.First().Count]
-				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
+			VisObjects = new IVisObject[CurrentRange.Count];
 
 			GameObject visObject = Instantiate(visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer);
 			VisObjects[DataPoint.FocusedIndex] = visObject.GetComponent<IVisObject>();
@@ -306,9 +304,7 @@ namespace Dataskop.Entities.Visualizations {
 			noResultsIndicator.SetActive(false);
 			PreviousIndex = DataPoint.FocusedIndex;
 
-			VisObjects = CurrentRange.Count < VisHistoryConfiguration.visibleHistoryCount
-				? new IVisObject[CurrentRange.Count]
-				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
+			VisObjects = new IVisObject[CurrentRange.Count];
 
 			visObjectsContainer.localPosition = VisOrigin.position;
 
@@ -476,7 +472,7 @@ namespace Dataskop.Entities.Visualizations {
 				StopCoroutine(historyMove);
 			}
 
-			for (int i = 0; i < VisObjects.Length - 1; i++) {
+			for (int i = 0; i < VisObjects.Length; i++) {
 
 				if (VisObjects[i] == null) {
 					continue;

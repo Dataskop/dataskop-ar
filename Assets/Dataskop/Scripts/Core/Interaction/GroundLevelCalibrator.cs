@@ -6,7 +6,7 @@ using UnityEngine.XR.ARFoundation;
 namespace Dataskop.Interaction {
 
 	/// <summary>
-	///     Responsible for aligning the AR Worlds y-Axis to the real worlds ground level.
+	/// Responsible for aligning the AR Worlds y-Axis to the real worlds ground level.
 	/// </summary>
 	public class GroundLevelCalibrator : MonoBehaviour, ICalibration {
 

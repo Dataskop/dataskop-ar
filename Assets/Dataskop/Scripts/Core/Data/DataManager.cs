@@ -52,12 +52,12 @@ namespace Dataskop.Data {
 		}
 
 		/// <summary>
-		///     Invoked once data for the selected project finished loading.
+		/// Invoked once data for the selected project finished loading.
 		/// </summary>
 		public event Action<Project> HasLoadedProjectData;
 
 		/// <summary>
-		///     Invoked when measurement results has been updated.
+		/// Invoked when measurement results has been updated.
 		/// </summary>
 		public event Action HasUpdatedMeasurementResults;
 
@@ -95,7 +95,7 @@ namespace Dataskop.Data {
 		}
 
 		/// <summary>
-		///     Starts process of loading data for the application.
+		/// Starts process of loading data for the application.
 		/// </summary>
 		private async void LoadAppData() {
 
@@ -125,7 +125,7 @@ namespace Dataskop.Data {
 		}
 
 		/// <summary>
-		///     Loads a project based on its ID.
+		/// Loads a project based on its ID.
 		/// </summary>
 		/// <param name="projectId">The ID of the project to be loaded.</param>
 		public async void LoadProject(int projectId) {
@@ -172,7 +172,7 @@ namespace Dataskop.Data {
 		}
 
 		/// <summary>
-		///     Loads a project based on a given QR-Code-Result
+		/// Loads a project based on a given QR-Code-Result
 		/// </summary>
 		/// <param name="result">A QrResult</param>
 		[UsedImplicitly]
@@ -245,7 +245,7 @@ namespace Dataskop.Data {
 		}
 
 		/// <summary>
-		///     Gets available Projects from a set of Companies.
+		/// Gets available Projects from a set of Companies.
 		/// </summary>
 		/// <param name="userCompanies">A collection of companies</param>
 		/// <returns>A collection of available projects for the given companies.</returns>
@@ -263,7 +263,7 @@ namespace Dataskop.Data {
 		}
 
 		/// <summary>
-		///     Triggers events when loading of the project is done.
+		/// Triggers events when loading of the project is done.
 		/// </summary>
 		/// <param name="selectedProject">The whole project to be sent in the event when done loading.</param>
 		private void OnProjectDataLoaded(Project selectedProject) {
@@ -390,7 +390,7 @@ namespace Dataskop.Data {
 					}
 
 					Debug.Log($"Result Ranges in {md.DeviceId} - {md.AttributeId} ({md.ID}):");
-					foreach (var m in md.MeasurementResults) {
+					foreach (MeasurementResultRange m in md.MeasurementResults) {
 						Debug.Log(
 							$"from {m.GetTimeRange().StartTime} to {m.GetTimeRange().EndTime} with {m.Count} results");
 					}

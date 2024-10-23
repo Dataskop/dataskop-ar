@@ -25,7 +25,7 @@ namespace Dataskop.Interaction {
 		private DataPoint? selectedDataPoint;
 
 		/// <summary>
-		///     The DataPoint which got selected with a tap.
+		/// The DataPoint which got selected with a tap.
 		/// </summary>
 		private DataPoint? SelectedDataPoint {
 			get => selectedDataPoint;
@@ -38,7 +38,7 @@ namespace Dataskop.Interaction {
 		private DataPoint? PreviouslySelectedDataPoint { get; set; }
 
 		/// <summary>
-		///     The DataPoint which got selected with the reticule.
+		/// The DataPoint which got selected with the reticule.
 		/// </summary>
 		private DataPoint? HoveredDataPoint {
 			get => hoveredDataPoint;

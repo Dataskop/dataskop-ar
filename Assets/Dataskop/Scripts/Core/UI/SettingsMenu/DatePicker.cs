@@ -12,8 +12,8 @@ namespace Dataskop.UI {
 	public class DatePicker : MonoBehaviour {
 
 		public UnityEvent<TimeRange>? dateFilterButtonPressed;
-		private Button cancelButton = null!;
 		private readonly CultureInfo culture = AppOptions.DateCulture;
+		private Button cancelButton = null!;
 
 		private bool dateFilterActive;
 		private Button dateFilterButton = null!;
@@ -23,8 +23,8 @@ namespace Dataskop.UI {
 		private TextField dateToInput = null!;
 		private VisualElement dialogWindow = null!;
 		private DateTime? fromDate;
-		private DateTime? toDate;
 		private Button proceedButton = null!;
+		private DateTime? toDate;
 
 		private void Awake() {
 			VisualElement root = GetComponent<UIDocument>().rootVisualElement;
@@ -65,7 +65,7 @@ namespace Dataskop.UI {
 				if (toDate.Value > DateTime.Now) {
 					toDate = DateTime.Now;
 				}
-				
+
 				return;
 			}
 

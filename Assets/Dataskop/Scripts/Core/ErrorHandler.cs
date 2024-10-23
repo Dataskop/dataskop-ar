@@ -5,7 +5,8 @@ using System.Text;
 namespace Dataskop {
 
 	/// <summary>
-	///     Class for receiving Error Codes, keeping track of received errors and sending out an event when receiving Errors.
+	/// Class for receiving Error Codes, keeping track of received errors and sending out an event when
+	/// receiving Errors.
 	/// </summary>
 	public static class ErrorHandler {
 
@@ -61,14 +62,14 @@ namespace Dataskop {
 		};
 
 		/// <summary>
-		///     Collected Errors
+		/// Collected Errors
 		/// </summary>
 		public static Queue<Error> ErrorQueue { get; } = new();
 
 		public static event EventHandler<ErrorReceivedEventArgs> OnErrorReceived;
 
 		/// <summary>
-		///     Throws an error with the given error code.
+		/// Throws an error with the given error code.
 		/// </summary>
 		/// <param name="errorCode">The error code for the error to be thrown.</param>
 		/// <param name="sender">The object of the cause of the error.</param>
@@ -82,7 +83,7 @@ namespace Dataskop {
 		}
 
 		/// <summary>
-		///     Throws an error with the given error code and an additional value.
+		/// Throws an error with the given error code and an additional value.
 		/// </summary>
 		/// <param name="errorCode">The error code for the error to be thrown.</param>
 		/// <param name="value">An additional value as float.</param>
@@ -98,7 +99,8 @@ namespace Dataskop {
 		}
 
 		/// <summary>
-		///     Gets the error for the given error code. Returns an "Error Not Found"-Error when wrong error code was entered.
+		/// Gets the error for the given error code. Returns an "Error Not Found"-Error when wrong error
+		/// code was entered.
 		/// </summary>
 		/// <param name="errorCode">The error code used to retrieve the corresponding error.</param>
 		/// <returns>The <see cref="Error" /> with the given error code.</returns>
