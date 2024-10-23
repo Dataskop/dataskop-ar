@@ -472,7 +472,7 @@ namespace Dataskop.Entities.Visualizations {
 				StopCoroutine(historyMove);
 			}
 
-			for (int i = 0; i < VisObjects.Length - 1; i++) {
+			for (int i = 0; i < VisObjects.Length; i++) {
 
 				if (VisObjects[i] == null) {
 					continue;
