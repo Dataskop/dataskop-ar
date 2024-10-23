@@ -164,8 +164,8 @@ namespace Dataskop.Entities {
 				return;
 			}
 
-			//TODO: Temporary second condition because no loading of additional data is happening right now.
-			if (FocusedIndex == CurrentMeasurementRange.Count - 1 || FocusedIndex == Vis.VisHistoryConfiguration.visibleHistoryCount - 1) {
+			//TODO: Temporary condition because no loading of additional data is happening right now.
+			if (FocusedIndex == CurrentMeasurementRange.Count - 1) {
 				return;
 			}
 

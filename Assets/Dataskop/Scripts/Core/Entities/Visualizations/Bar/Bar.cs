@@ -304,9 +304,7 @@ namespace Dataskop.Entities.Visualizations {
 			noResultsIndicator.SetActive(false);
 			PreviousIndex = DataPoint.FocusedIndex;
 
-			VisObjects = CurrentRange.Count < VisHistoryConfiguration.visibleHistoryCount
-				? new IVisObject[CurrentRange.Count]
-				: new IVisObject[VisHistoryConfiguration.visibleHistoryCount];
+			VisObjects = new IVisObject[CurrentRange.Count];
 
 			visObjectsContainer.localPosition = VisOrigin.position;
 
