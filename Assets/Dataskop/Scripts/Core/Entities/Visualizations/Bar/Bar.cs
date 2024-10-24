@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Dataskop.Entities.Visualizations {
 
-	public class Bar : MonoBehaviour, IVisualization {
+	public class Bar : MonoBehaviour {
 
 		[Header("References")]
 		[SerializeField] private GameObject visObjectPrefab;
@@ -77,6 +77,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisualizationType Type { get; set; }
 
+		/*
 		public void Initialize(DataPoint dp) {
 
 			DataPoint = dp;
@@ -345,7 +346,7 @@ namespace Dataskop.Entities.Visualizations {
 					}
 
 					BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
-					VisObjects[index].SetMaterials(style.Styles[0].hoverMaterial, style.focusedFillMaterial);
+					VisObjects[index].SetState(style.Styles[0].hoverMaterial, style.focusedFillMaterial);
 				}
 			}
 			else {
@@ -359,7 +360,7 @@ namespace Dataskop.Entities.Visualizations {
 
 			if (index == DataPoint.FocusedIndex) {
 				BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
-				VisObjects[index].SetMaterials(style.Styles[0].selectionMaterial, style.focusedFillMaterial);
+				VisObjects[index].SetState(style.Styles[0].selectionMaterial, style.focusedFillMaterial);
 			}
 
 			IsSelected = true;
@@ -375,7 +376,7 @@ namespace Dataskop.Entities.Visualizations {
 				}
 
 				BarVisObjectStyle style = (BarVisObjectStyle)VisObjectStyle;
-				VisObjects[index].SetMaterials(style.Styles[0].defaultMaterial, style.focusedFillMaterial);
+				VisObjects[index].SetState(style.Styles[0].defaultMaterial, style.focusedFillMaterial);
 
 				if (IsSelected) {
 					IsSelected = false;
@@ -430,7 +431,7 @@ namespace Dataskop.Entities.Visualizations {
 				target.HideDisplay();
 			}
 
-			target.SetMaterials(materials);
+			target.SetState(materials);
 
 		}
 
@@ -511,6 +512,7 @@ namespace Dataskop.Entities.Visualizations {
 			historyMove = null;
 
 		}
+		*/
 
 	}
 

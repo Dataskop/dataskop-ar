@@ -1,16 +1,17 @@
+using Dataskop.Data;
 using UnityEngine;
 
-namespace Dataskop.Data {
+namespace Dataskop.Entities.Visualizations {
 
-	public struct VisualizationResultDisplayData {
+	public struct VisObjectData {
 
 		public MeasurementResult Result { get; set; }
 
 		public MeasurementType Type { get; set; }
 
-		public Sprite AuthorSprite { get; set; }
-
 		public DataAttribute Attribute { get; set; }
+
+		public Sprite AuthorSprite { get; set; }
 
 	}
 

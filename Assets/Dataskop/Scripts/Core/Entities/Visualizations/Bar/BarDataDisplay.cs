@@ -1,15 +1,13 @@
-using System;
 using System.Globalization;
 using Dataskop.Data;
-using Dataskop.Interaction;
-using Dataskop.Utils;
+using Dataskop.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Dataskop.Entities.Visualizations {
 
-	public class BarVisObject : MonoBehaviour {
+	public class BarDataDisplay : MonoBehaviour {
 
 		[Header("References")]
 		[SerializeField] private CanvasGroup dataDisplay;
@@ -22,50 +20,24 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private Image boolIconRenderer;
 		[SerializeField] private Sprite[] boolIcons;
 		[SerializeField] private Image authorIconImageRenderer;
-		[SerializeField] private BoxCollider visCollider;
-		[SerializeField] private MeshRenderer barFillMeshRenderer;
-		[SerializeField] private MeshRenderer barFrameMeshRenderer;
-		[SerializeField] private Transform barFill;
-		[SerializeField] private Transform barFrame;
 
 		[Header("Values")]
 		[SerializeField] private Color32 boolTrueColor;
 		[SerializeField] private Color32 boolFalseColor;
 
-		private Vector3 animationTarget;
-		private bool isSelected;
-
-		public int Index { get; set; }
-
-		public bool IsFocused { get; set; }
-
-		public Collider VisCollider => visCollider;
-
-		public Transform VisObjectTransform => transform;
-
-		public event Action<int> HasHovered;
-
-		public event Action<int> HasSelected;
-
-		public event Action<int> HasDeselected;
-/*
-		public void SetDisplayData(VisualizationResultDisplayData displayData) {
+		public void SetDisplayData(VisObjectData displayData) {
 
 			idTextMesh.text = displayData.Result.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper();
 
 			switch (displayData.Type) {
 				case MeasurementType.Bool: {
 					float receivedValue = displayData.Result.ReadAsBool() ? 1 : 0;
-					SetPillarHeight(receivedValue, displayData.Attribute.Minimum, displayData.Attribute.Maximum, 0.01f,
-						barFrame.localScale.y);
 					valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) + $" {displayData.Attribute?.Unit}";
 					dateTextMesh.text = displayData.Result.GetDateText();
 					break;
 				}
 				case MeasurementType.Float: {
 					float receivedValue = displayData.Result.ReadAsFloat();
-					SetPillarHeight(receivedValue, displayData.Attribute.Minimum, displayData.Attribute.Maximum, 0.01f,
-						barFrame.localScale.y);
 					valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) + $" {displayData.Attribute?.Unit}";
 					minValueTextMesh.text = displayData.Attribute?.Minimum.ToString("00.00", CultureInfo.InvariantCulture) +
 					                        $" {displayData.Attribute?.Unit}";
@@ -85,53 +57,6 @@ namespace Dataskop.Entities.Visualizations {
 			}
 
 		}
-		*/
-
-		public void OnHover() {
-			HasHovered?.Invoke(Index);
-		}
-
-		public void OnSelect() {
-			isSelected = true;
-			HasSelected?.Invoke(Index);
-		}
-
-		public void OnDeselect() {
-			if (isSelected) {
-				isSelected = false;
-			}
-			HasDeselected?.Invoke(Index);
-		}
-
-		public void ShowDisplay() {
-			dataDisplay.alpha = 1;
-		}
-
-		public void HideDisplay() {
-			dataDisplay.alpha = 0;
-		}
-
-		public void OnHistoryToggle(bool active) {
-			Rotate(active);
-		}
-
-		/// <summary>
-		/// Applies materials to the vis object.
-		/// </summary>
-		/// <param name="materials"><br />[0] Bar Frame<br />[1] Bar Fill</param>
-		public void SetState(params Material[] materials) {
-
-			if (materials.Length < 2) return;
-
-			barFrameMeshRenderer.material = materials[0];
-			barFillMeshRenderer.material = materials[1];
-			valueTextMesh.color = materials[0].GetColor("_Color");
-
-		}
-
-		public void Delete() {
-			Destroy(gameObject);
-		}
 
 		private void Rotate(bool isRotated) {
 
@@ -146,15 +71,18 @@ namespace Dataskop.Entities.Visualizations {
 				transform.localRotation = Quaternion.Euler(0, 0, 0);
 			}
 
-			dataDisplay.GetComponent<RectTransform>().sizeDelta = new Vector2(
+			/*dataDisplay.GetComponent<RectTransform>().sizeDelta = new Vector2(
 				isRotated ? barFrame.localScale.y * 100 : barFrame.localScale.x * 100,
 				isRotated ? barFrame.localScale.x * 100 : barFrame.localScale.y * 100
 			);
+			*/
 
+			/*
 			authorDisplay.GetComponent<RectTransform>().sizeDelta = new Vector2(
 				isRotated ? barFrame.localScale.y * 100 : barFrame.localScale.x * 100,
 				isRotated ? barFrame.localScale.x * 100 : barFrame.localScale.y * 100
 			);
+			*/
 
 			RectTransform maxValueTransform = maxValueTextMesh.GetComponent<RectTransform>();
 			maxValueTransform.anchorMin = isRotated ? new Vector2(1, 0) : new Vector2(0, 1);
@@ -182,13 +110,8 @@ namespace Dataskop.Entities.Visualizations {
 			minValueTextMesh.alignment = isRotated ? TextAlignmentOptions.Left : TextAlignmentOptions.Center;
 		}
 
-		public void SetPillarHeight(float heightValue, float minValue, float maxValue, float minBarHeight, float maxBarHeight) {
-			heightValue = Mathf.Clamp(heightValue, minValue, maxValue);
-			float barHeight = MathExtensions.Map(heightValue, minValue, maxValue, minBarHeight, maxBarHeight);
-			Vector3 localScale = barFill.localScale;
-			Vector3 barFillScale = new(localScale.x, barHeight, localScale.z);
-			localScale = barFillScale;
-			barFill.localScale = localScale;
+		public void MoveTo(Vector3 position) {
+			transform.position = position;
 		}
 
 	}
