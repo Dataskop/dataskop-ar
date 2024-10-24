@@ -1,6 +1,5 @@
 using System.Globalization;
 using Dataskop.Data;
-using Dataskop.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,39 +10,35 @@ namespace Dataskop.Entities.Visualizations {
 
 		[Header("References")]
 		[SerializeField] private CanvasGroup dataDisplay;
-		[SerializeField] private CanvasGroup authorDisplay;
 		[SerializeField] private TextMeshProUGUI idTextMesh;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
 		[SerializeField] private TextMeshProUGUI dateTextMesh;
 		[SerializeField] private TextMeshProUGUI maxValueTextMesh;
 		[SerializeField] private TextMeshProUGUI minValueTextMesh;
-		[SerializeField] private Image boolIconRenderer;
-		[SerializeField] private Sprite[] boolIcons;
 		[SerializeField] private Image authorIconImageRenderer;
-
-		[Header("Values")]
-		[SerializeField] private Color32 boolTrueColor;
-		[SerializeField] private Color32 boolFalseColor;
 
 		public void SetDisplayData(VisObjectData displayData) {
 
 			idTextMesh.text = displayData.Result.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper();
 
 			switch (displayData.Type) {
-				case MeasurementType.Bool: {
-					float receivedValue = displayData.Result.ReadAsBool() ? 1 : 0;
-					valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) + $" {displayData.Attribute?.Unit}";
-					dateTextMesh.text = displayData.Result.GetDateText();
-					break;
-				}
 				case MeasurementType.Float: {
 					float receivedValue = displayData.Result.ReadAsFloat();
-					valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) + $" {displayData.Attribute?.Unit}";
-					minValueTextMesh.text = displayData.Attribute?.Minimum.ToString("00.00", CultureInfo.InvariantCulture) +
-					                        $" {displayData.Attribute?.Unit}";
-					maxValueTextMesh.text = displayData.Attribute?.Maximum.ToString("00.00", CultureInfo.InvariantCulture) +
-					                        $" {displayData.Attribute?.Unit}";
+					valueTextMesh.alpha = 1;
+					valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) + $" {displayData.Attribute.Unit}";
 					dateTextMesh.text = displayData.Result.GetDateText();
+					minValueTextMesh.text = displayData.Attribute.Minimum.ToString("00.00", CultureInfo.InvariantCulture) +
+					                        $" {displayData.Attribute.Unit}";
+					maxValueTextMesh.text = displayData.Attribute.Maximum.ToString("00.00", CultureInfo.InvariantCulture) +
+					                        $" {displayData.Attribute.Unit}";
+					break;
+				}
+				case MeasurementType.Bool: {
+					valueTextMesh.alpha = 1;
+					valueTextMesh.text = displayData.Result.ReadAsBool().ToString();
+					dateTextMesh.text = displayData.Result.GetDateText();
+					minValueTextMesh.text = "";
+					maxValueTextMesh.text = "";
 					break;
 				}
 			}
@@ -58,31 +53,40 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-		private void Rotate(bool isRotated) {
+		public void Select() {
+			valueTextMesh.color = Colors.Selected;
+		}
 
-			if (isRotated) {
-				transform.localRotation = Quaternion.Euler(0, 0, -90);
-				dataDisplay.transform.localRotation = Quaternion.Euler(0, 0, 90);
-				authorDisplay.transform.localRotation = Quaternion.Euler(0, 0, 90);
-			}
-			else {
-				dataDisplay.transform.localRotation = Quaternion.Euler(0, 0, 0);
-				authorDisplay.transform.localRotation = Quaternion.Euler(0, 0, 0);
-				transform.localRotation = Quaternion.Euler(0, 0, 0);
-			}
+		public void Deselect(bool isFocused) {
+			valueTextMesh.color = isFocused ? Colors.Deselected : Colors.Historic;
+		}
 
-			/*dataDisplay.GetComponent<RectTransform>().sizeDelta = new Vector2(
-				isRotated ? barFrame.localScale.y * 100 : barFrame.localScale.x * 100,
-				isRotated ? barFrame.localScale.x * 100 : barFrame.localScale.y * 100
+		public void Hover(bool isFocused) {
+			valueTextMesh.color = isFocused ? Colors.Hovered : Colors.Historic;
+		}
+
+		public void MoveTo(Vector3 position) {
+			transform.position = new Vector3(position.x, position.y, position.z);
+		}
+
+		public void Show() {
+			dataDisplay.alpha = 1;
+		}
+
+		public void Hide() {
+			dataDisplay.alpha = 0;
+		}
+
+		public void Rotate(bool isRotated, float frameYScale, float frameXScale) {
+
+			dataDisplay.transform.localRotation = Quaternion.Euler(0, 0, isRotated ? 90 : 0);
+			//authorIconImageRenderer.transform.localRotation = Quaternion.Euler(0, 0, 90);
+
+			//authorIconImageRenderer.transform.localRotation = Quaternion.Euler(0, 0, 0);
+			dataDisplay.GetComponent<RectTransform>().sizeDelta = new Vector2(
+				isRotated ? frameYScale * 100 : frameXScale * 100,
+				isRotated ? frameXScale * 100 : frameYScale * 100
 			);
-			*/
-
-			/*
-			authorDisplay.GetComponent<RectTransform>().sizeDelta = new Vector2(
-				isRotated ? barFrame.localScale.y * 100 : barFrame.localScale.x * 100,
-				isRotated ? barFrame.localScale.x * 100 : barFrame.localScale.y * 100
-			);
-			*/
 
 			RectTransform maxValueTransform = maxValueTextMesh.GetComponent<RectTransform>();
 			maxValueTransform.anchorMin = isRotated ? new Vector2(1, 0) : new Vector2(0, 1);
@@ -108,10 +112,6 @@ namespace Dataskop.Entities.Visualizations {
 
 			maxValueTextMesh.alignment = isRotated ? TextAlignmentOptions.Right : TextAlignmentOptions.Center;
 			minValueTextMesh.alignment = isRotated ? TextAlignmentOptions.Left : TextAlignmentOptions.Center;
-		}
-
-		public void MoveTo(Vector3 position) {
-			transform.position = position;
 		}
 
 	}

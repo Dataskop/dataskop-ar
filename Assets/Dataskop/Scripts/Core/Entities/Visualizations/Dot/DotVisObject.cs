@@ -27,17 +27,17 @@ namespace Dataskop.Entities.Visualizations {
 
 		public Transform VisObjectTransform => transform;
 
-		public event Action<int> HasHovered;
-
-		public event Action<int> HasSelected;
-
-		public event Action<int> HasDeselected;
-
 		public int Index { get; set; }
 
 		public bool IsFocused { get; set; }
 
 		public Collider VisCollider => visCollider;
+
+		public event Action<int> HasHovered;
+
+		public event Action<int> HasSelected;
+
+		public event Action<int> HasDeselected;
 
 		public void OnHover() => HasHovered?.Invoke(Index);
 
@@ -61,7 +61,7 @@ namespace Dataskop.Entities.Visualizations {
 					visRenderer.sprite = IsFocused ? defaultSprite : historicSprite;
 					break;
 				case VisObjectState.Hovered:
-					
+
 					if (isSelected && IsFocused) {
 						return;
 					}
