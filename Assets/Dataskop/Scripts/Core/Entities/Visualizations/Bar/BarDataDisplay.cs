@@ -58,11 +58,11 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public void Deselect(bool isFocused) {
-			valueTextMesh.color = isFocused ? Colors.Deselected : Colors.Historic;
+			valueTextMesh.color = isFocused ? Colors.Deselected : Colors.HistoricLight;
 		}
 
 		public void Hover(bool isFocused) {
-			valueTextMesh.color = isFocused ? Colors.Hovered : Colors.Historic;
+			valueTextMesh.color = isFocused ? Colors.Hovered : Colors.HistoricLight;
 		}
 
 		public void MoveTo(Vector3 position) {
@@ -79,10 +79,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void Rotate(bool isRotated, float frameYScale, float frameXScale) {
 
-			dataDisplay.transform.localRotation = Quaternion.Euler(0, 0, isRotated ? 90 : 0);
-			//authorIconImageRenderer.transform.localRotation = Quaternion.Euler(0, 0, 90);
-
-			//authorIconImageRenderer.transform.localRotation = Quaternion.Euler(0, 0, 0);
 			dataDisplay.GetComponent<RectTransform>().sizeDelta = new Vector2(
 				isRotated ? frameYScale * 100 : frameXScale * 100,
 				isRotated ? frameXScale * 100 : frameYScale * 100

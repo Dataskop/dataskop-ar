@@ -274,6 +274,7 @@ namespace Dataskop.Entities.Visualizations {
 
 				ClearHistoryVisObjects();
 				groundLine.enabled = true;
+				hoverDataDisplay.Hide();
 
 			}
 

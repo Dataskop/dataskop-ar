@@ -181,11 +181,6 @@ namespace Dataskop.Entities.Visualizations {
 				return;
 			}
 
-			BarVisObject barVis = (BarVisObject)VisObjects[DataPoint.FocusedIndex];
-			focusedDataDisplay.Rotate(isActive, barVis.GetCurrentScale().x, barVis.GetCurrentScale().y);
-			hoverDataDisplay.Rotate(isActive, barVis.GetCurrentScale().x, barVis.GetCurrentScale().y);
-			VisObjects[DataPoint.FocusedIndex].OnHistoryToggle(isActive);
-
 			if (isActive) {
 
 				MeasurementResultRange currentResults = DataPoint.CurrentMeasurementRange;
@@ -255,6 +250,11 @@ namespace Dataskop.Entities.Visualizations {
 
 				}
 
+				BarVisObject barVis = (BarVisObject)VisObjects[DataPoint.FocusedIndex];
+				focusedDataDisplay.Rotate(true, barVis.GetCurrentScale().y, barVis.GetCurrentScale().x);
+				hoverDataDisplay.Rotate(true, barVis.GetCurrentScale().y, barVis.GetCurrentScale().x);
+				VisObjects[DataPoint.FocusedIndex].OnHistoryToggle(true);
+
 			}
 			else {
 
@@ -263,6 +263,11 @@ namespace Dataskop.Entities.Visualizations {
 				}
 
 				ClearHistoryVisObjects();
+				BarVisObject barVis = (BarVisObject)VisObjects[DataPoint.FocusedIndex];
+				focusedDataDisplay.Rotate(false, barVis.GetCurrentScale().y, barVis.GetCurrentScale().x);
+				hoverDataDisplay.Rotate(false, barVis.GetCurrentScale().y, barVis.GetCurrentScale().x);
+				VisObjects[DataPoint.FocusedIndex].OnHistoryToggle(false);
+				hoverDataDisplay.Hide();
 
 			}
 

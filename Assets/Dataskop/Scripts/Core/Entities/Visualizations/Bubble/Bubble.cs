@@ -270,6 +270,7 @@ namespace Dataskop.Entities.Visualizations {
 				}
 
 				ClearHistoryVisObjects();
+				hoverDataDisplay.Hide();
 
 			}
 
