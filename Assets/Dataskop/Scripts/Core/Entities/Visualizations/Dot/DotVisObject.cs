@@ -31,6 +31,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public bool IsFocused { get; set; }
 
+		public VisObjectData CurrentData { get; private set; }
+
 		public Collider VisCollider => visCollider;
 
 		public event Action<int> HasHovered;
@@ -78,7 +80,7 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public void ApplyData(VisObjectData data) {
-			// Intentionally empty body
+			CurrentData = data;
 		}
 
 		public void SetFocus(bool isFocused) {

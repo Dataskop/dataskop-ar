@@ -364,17 +364,7 @@ namespace Dataskop.Entities.Visualizations {
 
 				visObject.ChangeState(VisObjectState.Hovered);
 				hoverDataDisplay.Show();
-				MeasurementResult result = CurrentRange[index];
-
-				hoverDataDisplay.SetDisplayData(new VisObjectData {
-					Result = result,
-					Type = result.MeasurementDefinition.MeasurementType,
-					Attribute = DataPoint.Attribute,
-					AuthorSprite = result.Author != string.Empty
-						? DataPoint.AuthorRepository.AuthorSprites[result.Author]
-						: null
-				});
-
+				hoverDataDisplay.SetDisplayData(VisObjects[index].CurrentData);
 				hoverDataDisplay.MoveTo(VisObjects[index].VisObjectTransform.position);
 				hoverDataDisplay.Hover(false);
 
@@ -390,19 +380,8 @@ namespace Dataskop.Entities.Visualizations {
 			hoverDataDisplay.Hide();
 
 			if (index == DataPoint.FocusedIndex) {
-
-				MeasurementResult result = CurrentRange[index];
 				focusedDataDisplay.Select();
-
-				focusedDataDisplay.SetDisplayData(new VisObjectData {
-					Result = result,
-					Type = result.MeasurementDefinition.MeasurementType,
-					Attribute = DataPoint.Attribute,
-					AuthorSprite = result.Author != string.Empty
-						? DataPoint.AuthorRepository.AuthorSprites[result.Author]
-						: null
-				});
-
+				focusedDataDisplay.SetDisplayData(VisObjects[index].CurrentData);
 				VisObjects[index].ChangeState(VisObjectState.Selected);
 			}
 
@@ -468,7 +447,10 @@ namespace Dataskop.Entities.Visualizations {
 					: null
 			};
 
-			target.ApplyData(data);
+			if (target.CurrentData.Result != result) {
+				target.ApplyData(data);
+			}
+
 			target.ChangeState(state);
 
 			if (target.IsFocused) {

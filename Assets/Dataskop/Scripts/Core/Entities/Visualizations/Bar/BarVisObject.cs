@@ -25,6 +25,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public Transform VisObjectTransform => transform;
 
+		public VisObjectData CurrentData { get; private set; }
+
 		public int Index { get; set; }
 
 		public bool IsFocused { get; set; }
@@ -81,14 +83,17 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void ApplyData(VisObjectData data) {
 
+			CurrentData = data;
+
 			switch (data.Type) {
 				case MeasurementType.Float: {
-					SetPillarHeight(data.Result.ReadAsFloat(), data.Attribute.Minimum, data.Attribute.Maximum, 0.01f,
+					SetPillarHeight(CurrentData.Result.ReadAsFloat(), CurrentData.Attribute.Minimum, CurrentData.Attribute.Maximum, 0.01f,
 						barFrame.localScale.y);
 					break;
 				}
 				case MeasurementType.Bool: {
-					SetPillarHeight(data.Result.ReadAsBool() ? 1 : 0, data.Attribute.Minimum, data.Attribute.Maximum, 0.01f,
+					SetPillarHeight(CurrentData.Result.ReadAsBool() ? 1 : 0, CurrentData.Attribute.Minimum, CurrentData.Attribute.Maximum,
+						0.01f,
 						barFrame.localScale.y);
 					break;
 				}

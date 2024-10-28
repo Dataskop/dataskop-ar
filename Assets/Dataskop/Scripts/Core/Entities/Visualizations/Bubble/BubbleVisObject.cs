@@ -27,6 +27,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public Transform VisObjectTransform => transform;
 
+		public VisObjectData CurrentData { get; private set; }
+
 		public event Action<int> HasHovered;
 
 		public event Action<int> HasSelected;
@@ -88,7 +90,8 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public void ApplyData(VisObjectData data) {
-			SetBubbleSize(data.Result.ReadAsFloat(), data.Attribute.Minimum, data.Attribute.Maximum);
+			CurrentData = data;
+			SetBubbleSize(CurrentData.Result.ReadAsFloat(), CurrentData.Attribute.Minimum, CurrentData.Attribute.Maximum);
 		}
 
 		public void SetFocus(bool isFocused) {

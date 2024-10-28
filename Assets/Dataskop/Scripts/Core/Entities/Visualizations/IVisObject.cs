@@ -13,6 +13,8 @@ namespace Dataskop.Entities.Visualizations {
 		public Collider VisCollider { get; }
 
 		public Transform VisObjectTransform { get; }
+		
+		public VisObjectData CurrentData { get; }
 
 		public event Action<int> HasHovered;
 
