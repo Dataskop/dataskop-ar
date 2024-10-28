@@ -1,28 +1,19 @@
 using System;
-using System.Globalization;
-using Dataskop.Data;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Dataskop.Entities.Visualizations {
 
 	public class DotVisObject : MonoBehaviour, IVisObject {
 
 		[Header("References")]
-		[SerializeField] private SphereCollider visCollider;
-		[SerializeField] private CanvasGroup dataDisplay;
-		[SerializeField] private TextMeshProUGUI idTextMesh;
-		[SerializeField] private TextMeshProUGUI valueTextMesh;
-		[SerializeField] private TextMeshProUGUI dateTextMesh;
-		[SerializeField] private Image visRenderer;
-		[SerializeField] private Image boolIconRenderer;
-		[SerializeField] private Sprite[] boolIcons;
-		[SerializeField] private Image authorIconImageRenderer;
+		[SerializeField] private SpriteRenderer visRenderer;
+		[SerializeField] private Collider visCollider;
+		[SerializeField] private Sprite defaultSprite;
+		[SerializeField] private Sprite hoveredSprite;
+		[SerializeField] private Sprite selectedSprite;
+		[SerializeField] private Sprite historicSprite;
 
 		[Header("Values")]
-		[SerializeField] private Color32 boolTrueColor;
-		[SerializeField] private Color32 boolFalseColor;
 		[SerializeField] private AnimationCurve animationCurveSelect;
 		[SerializeField] private AnimationCurve animationCurveDeselect;
 		[SerializeField] private float animationTimeOnSelect;
@@ -36,88 +27,72 @@ namespace Dataskop.Entities.Visualizations {
 
 		public Transform VisObjectTransform => transform;
 
+		public int Index { get; set; }
+
+		public bool IsFocused { get; set; }
+
+		public VisObjectData CurrentData { get; private set; }
+
+		public Collider VisCollider => visCollider;
+
 		public event Action<int> HasHovered;
 
 		public event Action<int> HasSelected;
 
 		public event Action<int> HasDeselected;
 
-		public int Index { get; set; }
+		public void OnHover() => HasHovered?.Invoke(Index);
 
-		public bool IsFocused { get; set; }
+		public void OnSelect() => HasSelected?.Invoke(Index);
 
-		public Collider VisCollider => visCollider;
+		public void OnDeselect() => HasDeselected?.Invoke(Index);
 
-		public void SetDisplayData(VisualizationResultDisplayData displayData) {
+		public void OnHistoryToggle(bool active) {
+			// Intentionally empty body
+		}
 
-			idTextMesh.text = displayData.Result.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper();
+		public void ChangeState(VisObjectState newState) {
+			switch (newState) {
 
-			switch (displayData.Type) {
-				case MeasurementType.Float: {
-					float receivedValue = displayData.Result.ReadAsFloat();
-					boolIconRenderer.enabled = false;
-					valueTextMesh.alpha = 1;
-					valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) + $" {displayData.Attribute.Unit}";
-					dateTextMesh.text = displayData.Result.GetDateText();
+				case VisObjectState.Deselected:
+					if (isSelected) {
+						PlayDeselectionAnimation();
+						isSelected = false;
+					}
+
+					visRenderer.sprite = IsFocused ? defaultSprite : historicSprite;
 					break;
-				}
-				case MeasurementType.Bool: {
-					valueTextMesh.alpha = 1;
-					boolIconRenderer.enabled = false;
-					valueTextMesh.text = displayData.Result.ReadAsBool().ToString();
-					int boolValue = displayData.Result.ReadAsBool() ? 1 : 0;
-					boolIconRenderer.color = displayData.Result.ReadAsBool() ? boolTrueColor : boolFalseColor;
-					boolIconRenderer.sprite = boolValue == 0 ? boolIcons[0] : boolIcons[1];
-					dateTextMesh.text = displayData.Result.GetDateText();
+				case VisObjectState.Hovered:
+
+					if (isSelected && IsFocused) {
+						return;
+					}
+					visRenderer.sprite = IsFocused ? hoveredSprite : historicSprite;
 					break;
-				}
+				case VisObjectState.Selected:
+					PlaySelectionAnimation();
+					isSelected = true;
+					visRenderer.sprite = selectedSprite;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
 			}
+		}
 
-			if (displayData.Result.Author != string.Empty) {
-				authorIconImageRenderer.sprite = displayData.AuthorSprite;
-				authorIconImageRenderer.enabled = true;
+		public void ApplyData(VisObjectData data) {
+			CurrentData = data;
+		}
+
+		public void SetFocus(bool isFocused) {
+			IsFocused = isFocused;
+
+			if (isSelected) {
+				visRenderer.sprite = IsFocused ? selectedSprite : historicSprite;
 			}
 			else {
-				authorIconImageRenderer.enabled = false;
+				visRenderer.sprite = IsFocused ? defaultSprite : historicSprite;
 			}
 
-		}
-
-		public void OnHover() {
-			HasHovered?.Invoke(Index);
-		}
-
-		public void OnSelect() {
-			PlaySelectionAnimation();
-			isSelected = true;
-			HasSelected?.Invoke(Index);
-		}
-
-		public void OnDeselect() {
-			if (isSelected) {
-				PlayDeselectionAnimation();
-				isSelected = false;
-			}
-			HasDeselected?.Invoke(Index);
-		}
-
-		public void ShowDisplay() {
-			dataDisplay.alpha = 1;
-		}
-
-		public void HideDisplay() {
-			dataDisplay.alpha = 0;
-		}
-
-		/// <summary>
-		/// No Effect.
-		/// </summary>
-		/// <param name="active"></param>
-		public void OnHistoryToggle(bool active) { }
-
-		public void SetMaterials(params Material[] materials) {
-			visRenderer.material = materials[0];
-			valueTextMesh.color = materials[0].color;
 		}
 
 		public void Delete() {

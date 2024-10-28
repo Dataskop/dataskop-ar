@@ -1,37 +1,33 @@
 using System;
-using System.Globalization;
-using Dataskop.Data;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Dataskop.Entities.Visualizations {
 
 	public class BubbleVisObject : MonoBehaviour, IVisObject {
 
 		[Header("References")]
+		[SerializeField] private SpriteRenderer visRenderer;
 		[SerializeField] private SphereCollider visCollider;
-		[SerializeField] private CanvasGroup dataDisplay;
-		[SerializeField] private TextMeshProUGUI idTextMesh;
-		[SerializeField] private TextMeshProUGUI valueTextMesh;
-		[SerializeField] private TextMeshProUGUI dateTextMesh;
-		[SerializeField] private Image visRenderer;
-		[SerializeField] private Image boolIconRenderer;
-		[SerializeField] private Sprite[] boolIcons;
-		[SerializeField] private Image authorIconImageRenderer;
+		[SerializeField] private Sprite defaultSprite;
+		[SerializeField] private Sprite hoveredSprite;
+		[SerializeField] private Sprite selectedSprite;
+		[SerializeField] private Sprite historicSprite;
 
 		[Header("Values")]
-		[SerializeField] private Color32 boolTrueColor;
-		[SerializeField] private Color32 boolFalseColor;
 		[SerializeField] private AnimationCurve scaleCurve;
-		[SerializeField] public float minScale;
-		[SerializeField] public float maxScale;
+		[SerializeField] public float minScale; // 1
+		[SerializeField] public float maxScale; // 2.2
+
 		private Coroutine animationCoroutine;
 		private Vector3 animationTarget;
 		private bool isSelected;
 		private Coroutine moveLineCoroutine;
 
 		private Coroutine scaleRoutine;
+
+		public Transform VisObjectTransform => transform;
+
+		public VisObjectData CurrentData { get; private set; }
 
 		public event Action<int> HasHovered;
 
@@ -44,47 +40,6 @@ namespace Dataskop.Entities.Visualizations {
 		public bool IsFocused { get; set; }
 
 		public Collider VisCollider => visCollider;
-
-		public Transform VisObjectTransform => transform;
-
-		public void SetDisplayData(VisualizationResultDisplayData displayData) {
-
-			idTextMesh.text = displayData.Result.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper();
-
-			switch (displayData.Type) {
-
-				case MeasurementType.Float: {
-					float receivedValue = displayData.Result.ReadAsFloat();
-					boolIconRenderer.enabled = false;
-					valueTextMesh.alpha = 1;
-					valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) + $" {displayData.Attribute.Unit}";
-					dateTextMesh.text = displayData.Result.GetDateText();
-					OnMeasurementResultUpdated(receivedValue, displayData.Attribute.Minimum, displayData.Attribute.Maximum);
-					break;
-				}
-				case MeasurementType.Bool: {
-					float receivedValue = displayData.Result.ReadAsBool() ? 1 : 0;
-					valueTextMesh.alpha = 1;
-					boolIconRenderer.enabled = false;
-					valueTextMesh.text = displayData.Result.ReadAsBool().ToString();
-					boolIconRenderer.color = displayData.Result.ReadAsBool() ? boolTrueColor : boolFalseColor;
-					boolIconRenderer.sprite = receivedValue == 0 ? boolIcons[0] : boolIcons[1];
-					dateTextMesh.text = displayData.Result.GetDateText();
-					OnMeasurementResultUpdated(receivedValue, displayData.Attribute.Minimum, displayData.Attribute.Maximum);
-					break;
-				}
-
-			}
-
-			if (displayData.Result.Author != string.Empty) {
-				authorIconImageRenderer.sprite = displayData.AuthorSprite;
-				authorIconImageRenderer.enabled = true;
-			}
-			else {
-				authorIconImageRenderer.enabled = false;
-			}
-
-		}
 
 		public void OnHover() {
 			HasHovered?.Invoke(Index);
@@ -104,30 +59,57 @@ namespace Dataskop.Entities.Visualizations {
 			HasDeselected?.Invoke(Index);
 		}
 
-		public void ShowDisplay() {
-			dataDisplay.alpha = 1;
+		public void OnHistoryToggle(bool active) {
+			// Intentionally empty body
 		}
 
-		public void HideDisplay() {
-			dataDisplay.alpha = 0;
+		public void ChangeState(VisObjectState newState) {
+			switch (newState) {
+
+				case VisObjectState.Deselected:
+					if (isSelected) {
+						isSelected = false;
+					}
+
+					visRenderer.sprite = IsFocused ? defaultSprite : historicSprite;
+					break;
+				case VisObjectState.Hovered:
+
+					if (isSelected && IsFocused) {
+						return;
+					}
+					visRenderer.sprite = IsFocused ? hoveredSprite : historicSprite;
+					break;
+				case VisObjectState.Selected:
+					isSelected = true;
+					visRenderer.sprite = selectedSprite;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+			}
 		}
 
-		/// <summary>
-		/// No Effect.
-		/// </summary>
-		/// <param name="active"></param>
-		public void OnHistoryToggle(bool active) { }
+		public void ApplyData(VisObjectData data) {
+			CurrentData = data;
+			SetBubbleSize(CurrentData.Result.ReadAsFloat(), CurrentData.Attribute.Minimum, CurrentData.Attribute.Maximum);
+		}
 
-		public void SetMaterials(params Material[] materials) {
-			visRenderer.material = materials[0];
-			valueTextMesh.color = materials[0].color;
+		public void SetFocus(bool isFocused) {
+			IsFocused = isFocused;
+
+			if (isSelected) {
+				visRenderer.sprite = IsFocused ? selectedSprite : historicSprite;
+			}
+			else {
+				visRenderer.sprite = IsFocused ? defaultSprite : historicSprite;
+			}
 		}
 
 		public void Delete() {
 			Destroy(gameObject);
 		}
 
-		private void OnMeasurementResultUpdated(float value, float minAttributeValue, float maxAttributeValue) {
+		private void SetBubbleSize(float value, float minAttributeValue, float maxAttributeValue) {
 
 			float newSize = BubbleUtils.CalculateRadius(value, minAttributeValue, maxAttributeValue, minScale, maxScale);
 			Vector3 newBubbleScale = new(newSize, newSize, newSize);
@@ -140,7 +122,6 @@ namespace Dataskop.Entities.Visualizations {
 
 			scaleRoutine = StartCoroutine(Lerper.TransformLerpOnCurve(visTransform, TransformValue.Scale, visTransform.localScale,
 				newBubbleScale, 0.12f, scaleCurve, null));
-			visCollider.radius = newSize / 2f;
 
 		}
 

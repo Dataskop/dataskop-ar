@@ -8,11 +8,13 @@ namespace Dataskop.Entities.Visualizations {
 
 		public int Index { get; set; }
 
-		public bool IsFocused { get; set; }
+		public bool IsFocused { get; }
 
 		public Collider VisCollider { get; }
 
 		public Transform VisObjectTransform { get; }
+		
+		public VisObjectData CurrentData { get; }
 
 		public event Action<int> HasHovered;
 
@@ -20,21 +22,23 @@ namespace Dataskop.Entities.Visualizations {
 
 		public event Action<int> HasDeselected;
 
-		public void SetDisplayData(VisualizationResultDisplayData displayData);
-
 		public void OnHover();
 
 		public void OnSelect();
 
 		public void OnDeselect();
 
-		public void ShowDisplay();
-
-		public void HideDisplay();
-
 		public void OnHistoryToggle(bool active);
 
-		public void SetMaterials(params Material[] materials);
+		public void ChangeState(VisObjectState newState);
+
+		/// <summary>
+		/// Apply changes to the visualizations based on the data.
+		/// </summary>
+		/// <param name="data">The data used for the vis object.</param>
+		public void ApplyData(VisObjectData data);
+
+		public void SetFocus(bool isFocused);
 
 		public void Delete();
 
