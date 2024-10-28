@@ -1,22 +1,25 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Dataskop.Entities.Visualizations;
 using UnityEngine;
 
 namespace Dataskop.Entities.Visualizations {
 
 	public class RadialBarVisObject : MonoBehaviour, IVisObject {
 
+		[Header("References")]
+		[SerializeField] private SpriteRenderer visRenderer;
+		[SerializeField] private Collider visCollider;
+
+		private bool isSelected;
+
 		public int Index { get; set; }
 
-		public bool IsFocused { get; }
+		public bool IsFocused { get; private set; }
 
-		public Collider VisCollider { get; }
+		public Collider VisCollider => visCollider;
 
-		public Transform VisObjectTransform { get; }
+		public Transform VisObjectTransform => transform;
 
-		public VisObjectData CurrentData { get; }
+		public VisObjectData CurrentData { get; private set; }
 
 		public event Action<int> HasHovered;
 
@@ -24,36 +27,46 @@ namespace Dataskop.Entities.Visualizations {
 
 		public event Action<int> HasDeselected;
 
-		public void OnHover() {
-			throw new NotImplementedException();
-		}
+		public void OnHover() => HasHovered?.Invoke(Index);
 
-		public void OnSelect() {
-			throw new NotImplementedException();
-		}
+		public void OnSelect() => HasSelected?.Invoke(Index);
 
-		public void OnDeselect() {
-			throw new NotImplementedException();
-		}
+		public void OnDeselect() => HasDeselected?.Invoke(Index);
 
 		public void OnHistoryToggle(bool active) {
-			throw new NotImplementedException();
+			// Intentionally empty body
 		}
 
 		public void ChangeState(VisObjectState newState) {
-			throw new NotImplementedException();
+			switch (newState) {
+				case VisObjectState.Deselected:
+					if (isSelected) {
+						isSelected = false;
+					}
+					break;
+				case VisObjectState.Hovered:
+					if (isSelected && IsFocused) {
+						return;
+					}
+					break;
+				case VisObjectState.Selected:
+					isSelected = true;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+			}
 		}
 
 		public void ApplyData(params VisObjectData[] data) {
-			throw new NotImplementedException();
+			Debug.Log(data);
 		}
 
 		public void SetFocus(bool isFocused) {
-			throw new NotImplementedException();
+			IsFocused = isFocused;
 		}
 
 		public void Delete() {
-			throw new NotImplementedException();
+			Destroy(gameObject);
 		}
 
 	}

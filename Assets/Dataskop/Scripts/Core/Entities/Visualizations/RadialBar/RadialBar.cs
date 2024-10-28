@@ -17,8 +17,6 @@ namespace Dataskop {
 		[SerializeField] private Transform visObjectsContainer;
 		[SerializeField] private GameObject noResultsIndicator;
 		[SerializeField] private RadialBarDataDisplay focusedDataDisplay;
-		[SerializeField] private RadialBarDataDisplay hoverDataDisplay;
-
 		[Header("Vis Values")]
 		[SerializeField] private Vector3 offset;
 		[SerializeField] private float scaleFactor;
@@ -99,33 +97,63 @@ namespace Dataskop {
 			VisObjects[DataPoint.FocusedIndex].HasHovered += OnVisObjectHovered;
 			VisObjects[DataPoint.FocusedIndex].HasSelected += OnVisObjectSelected;
 			VisObjects[DataPoint.FocusedIndex].HasDeselected += OnVisObjectDeselected;
-			VisObjects[DataPoint.FocusedIndex].VisCollider.enabled = true;
-
-			/*
-			SetLinePosition(groundLine,
-				new Vector3(VisOrigin.localPosition.x,
-					VisOrigin.localPosition.y - VisObjects[DataPoint.FocusedIndex].VisRenderer.sprite.bounds.size.y * 0.75f,
-					VisOrigin.localPosition.z),
-				dropShadow.localPosition);
-			*/
+			//VisObjects[DataPoint.FocusedIndex].VisCollider.enabled = true;
 
 			OnFocusedIndexChanged(DataPoint.FocusedIndex);
 		}
 
 		public void OnTimeSeriesToggled(bool isActive) {
+			// This visualization currently does not support Time Series at all.
 			return;
 		}
 
 		public void OnFocusedIndexChanged(int index) {
-			return;
+
+			index = 0;
+			MeasurementResult[] focusedResult = CurrentRanges.Select(mrr => mrr.First()).ToArray();
+
+			UpdateVisObject(VisObjects[index], index, focusedResult, true,
+				IsSelected ? VisObjectState.Selected : VisObjectState.Deselected);
 		}
 
 		public void OnSwipeInteraction(PointerInteraction pointerInteraction) {
+			// Currently nothing happens on swipe.
 			return;
 		}
 
 		public void OnMeasurementResultRangeUpdated() {
-			throw new NotImplementedException();
+			ClearVisObjects();
+
+			if (CurrentRanges.Length == 0) {
+				return;
+			}
+
+			if (!CurrentRanges.All(x => x.Count > 0)) {
+				noResultsIndicator.SetActive(true);
+				VisObjects = Array.Empty<IVisObject>();
+				return;
+			}
+
+			noResultsIndicator.SetActive(false);
+
+			VisObjects = new IVisObject[1];
+
+			visObjectsContainer.localPosition = VisOrigin.position;
+
+			GameObject visObject = Instantiate(visObjectPrefab, VisOrigin.position, visObjectsContainer.localRotation,
+				visObjectsContainer);
+			VisObjects[DataPoint.FocusedIndex] = visObject.GetComponent<IVisObject>();
+			VisObjects[DataPoint.FocusedIndex].HasHovered += OnVisObjectHovered;
+			VisObjects[DataPoint.FocusedIndex].HasSelected += OnVisObjectSelected;
+			VisObjects[DataPoint.FocusedIndex].HasDeselected += OnVisObjectDeselected;
+			VisObjects[DataPoint.FocusedIndex].VisCollider.enabled = true;
+
+			UpdateVisObject(VisObjects[DataPoint.FocusedIndex], DataPoint.FocusedIndex,
+				CurrentRanges.Select(mrr => mrr.First()).ToArray(),
+				true,
+				IsSelected ? VisObjectState.Selected : VisObjectState.Deselected);
+
+			OnTimeSeriesToggled(true);
 		}
 
 		public void OnMeasurementResultsUpdated(int newIndex) {
@@ -144,11 +172,10 @@ namespace Dataskop {
 
 		private void OnVisObjectHovered(int index) {
 
+			index = 0;
 			IVisObject visObject = VisObjects[index];
 
 			if (index == DataPoint.FocusedIndex) {
-
-				hoverDataDisplay.Hide();
 
 				if (!IsSelected) {
 
@@ -164,10 +191,6 @@ namespace Dataskop {
 			else {
 
 				visObject.ChangeState(VisObjectState.Hovered);
-				hoverDataDisplay.Show();
-				hoverDataDisplay.SetDisplayData(VisObjects[index].CurrentData);
-				hoverDataDisplay.MoveTo(VisObjects[index].VisObjectTransform.position);
-				hoverDataDisplay.Hover(false);
 
 			}
 
@@ -176,10 +199,9 @@ namespace Dataskop {
 		}
 
 		private void OnVisObjectSelected(int index) {
-
+			index = 0;
 			IsSelected = true;
-			hoverDataDisplay.Hide();
-
+			
 			if (index == DataPoint.FocusedIndex) {
 				focusedDataDisplay.Select();
 				focusedDataDisplay.SetDisplayData(VisObjects[index].CurrentData);
@@ -191,7 +213,8 @@ namespace Dataskop {
 		}
 
 		private void OnVisObjectDeselected(int index) {
-
+			index = 0;
+			
 			if (index == DataPoint?.FocusedIndex) {
 
 				if (VisObjects[index] == null) {
@@ -206,21 +229,18 @@ namespace Dataskop {
 				focusedDataDisplay.Deselect(true);
 
 			}
-			else {
-				hoverDataDisplay.Hide();
-			}
 
 			VisObjectDeselected?.Invoke(index);
 
 		}
 
-		private IVisObject SpawnVisObject(int index, Vector3 pos, MeasurementResult result,
+		private IVisObject SpawnVisObject(int index, Vector3 pos, MeasurementResult[] results,
 			bool focused, VisObjectState state) {
 
 			GameObject newVis = Instantiate(visObjectPrefab, pos, visObjectsContainer.localRotation, visObjectsContainer);
 			IVisObject visObject = newVis.GetComponent<IVisObject>();
 
-			UpdateVisObject(visObject, index, result, focused, state);
+			UpdateVisObject(visObject, index, results, focused, state);
 			visObject.HasHovered += OnVisObjectHovered;
 			visObject.HasSelected += OnVisObjectSelected;
 			visObject.HasDeselected += OnVisObjectDeselected;
@@ -230,7 +250,7 @@ namespace Dataskop {
 
 		}
 
-		private void UpdateVisObject(IVisObject target, int index, MeasurementResult result, bool focused, VisObjectState state) {
+		private void UpdateVisObject(IVisObject target, int index, MeasurementResult[] results, bool focused, VisObjectState state) {
 
 			if (target == null) {
 				return;
@@ -239,24 +259,21 @@ namespace Dataskop {
 			target.Index = index;
 			target.SetFocus(focused);
 
-			VisObjectData data = new() {
-				Result = result,
-				Type = result.MeasurementDefinition.MeasurementType,
-				Attribute = DataPoint.Attribute,
-				AuthorSprite = result.Author != string.Empty
-					? DataPoint.AuthorRepository.AuthorSprites[result.Author]
-					: null
-			};
+			VisObjectData[] dataSet = new VisObjectData[results.Length];
 
-			if (target.CurrentData.Result != result) {
-				target.ApplyData(data);
+			for (int i = 0; i < results.Length; i++) {
+				dataSet[i].Result = results[i];
+				dataSet[i].Type = MeasurementType.Float;
+				dataSet[i].Attribute = DataPoint.Attribute;
+				dataSet[i].AuthorSprite = null;
 			}
 
+			target.ApplyData(dataSet);
 			target.ChangeState(state);
 
 			if (target.IsFocused) {
 
-				focusedDataDisplay.SetDisplayData(data);
+				focusedDataDisplay.SetDisplayData(dataSet);
 
 				if (IsSelected) {
 					focusedDataDisplay.Select();
@@ -264,32 +281,6 @@ namespace Dataskop {
 				else {
 					focusedDataDisplay.Deselect(true);
 				}
-
-			}
-
-		}
-
-		private void ClearHistoryVisObjects() {
-
-			if (!HasHistoryEnabled) {
-				return;
-			}
-
-			for (int i = 0; i < VisObjects.Length; i++) {
-
-				if (i == DataPoint.FocusedIndex) {
-					continue;
-				}
-
-				if (VisObjects[i] == null) {
-					continue;
-				}
-
-				VisObjects[i].HasHovered -= OnVisObjectHovered;
-				VisObjects[i].HasSelected -= OnVisObjectSelected;
-				VisObjects[i].HasDeselected -= OnVisObjectDeselected;
-				VisObjects[i].Delete();
-				VisObjects[i] = null;
 
 			}
 

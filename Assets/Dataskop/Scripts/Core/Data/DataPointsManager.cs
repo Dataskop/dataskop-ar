@@ -177,20 +177,16 @@ namespace Dataskop.Data {
 				if (projectDevices[i].Position == null)
 					continue;
 
-				foreach (MeasurementDefinition definition in projectDevices[i].MeasurementDefinitions) {
-
-					//Check if the definition in the device has the same attribute as the currently selected attribute
-					if (definition.AttributeId != DataAttributeManager.SelectedAttribute.ID)
-						continue;
+				if (DataAttributeManager.SelectedAttribute.ID == "all") {
 
 					//If it is the same, create a datapoint instance
 					DataPoint dataPointInstance = Instantiate(dataPointPrefab, dataPointsContainer).GetComponent<DataPoint>();
 					dataPointInstance.Attribute = DataAttributeManager.SelectedAttribute;
-					dataPointInstance.MeasurementDefinition = definition;
+					dataPointInstance.MeasurementDefinition = projectDevices[i].MeasurementDefinitions.First();
 					dataPointInstance.Device = projectDevices[i];
 					dataPointInstance.AuthorRepository = AuthorRepository;
 					dataPointInstance.FocusedIndexChangedByTap += OnIndexChangeRequested;
-					dataPointInstance.FocusedMeasurement = definition.LatestMeasurementResult;
+					dataPointInstance.FocusedMeasurement = dataPointInstance.MeasurementDefinition.LatestMeasurementResult;
 
 					//Move the DataPoint to its location
 					if (AppOptions.DemoMode) {
@@ -212,6 +208,47 @@ namespace Dataskop.Data {
 
 					DataPoints.Add(dataPointInstance);
 					SetDataPointVisualization(dataPointInstance, DataAttributeManager.SelectedAttribute.VisOptions.First());
+
+				}
+				else {
+
+					foreach (MeasurementDefinition definition in projectDevices[i].MeasurementDefinitions) {
+
+						//Check if the definition in the device has the same attribute as the currently selected attribute
+						if (definition.AttributeId != DataAttributeManager.SelectedAttribute.ID) {
+							continue;
+						}
+
+						//If it is the same, create a datapoint instance
+						DataPoint dataPointInstance = Instantiate(dataPointPrefab, dataPointsContainer).GetComponent<DataPoint>();
+						dataPointInstance.Attribute = DataAttributeManager.SelectedAttribute;
+						dataPointInstance.MeasurementDefinition = definition;
+						dataPointInstance.Device = projectDevices[i];
+						dataPointInstance.AuthorRepository = AuthorRepository;
+						dataPointInstance.FocusedIndexChangedByTap += OnIndexChangeRequested;
+						dataPointInstance.FocusedMeasurement = definition.LatestMeasurementResult;
+
+						//Move the DataPoint to its location
+						if (AppOptions.DemoMode) {
+
+							Vector3 GetLastKnownDevicePosition(Device device) {
+								return LastKnownDevicePositions.TryGetValue(device, out Vector3 position) ? position
+									: new Vector3(-1000, -1000, -1000);
+							}
+
+							// Subtract Offset to place the Vis on top of the found images
+							PlaceDataPoint(GetLastKnownDevicePosition(projectDevices[i]) - dataPointInstance.Vis.Offset,
+								dataPointInstance.transform);
+
+						}
+						else {
+							DataPointsLocations[i] = Conversions.StringToLatLon(projectDevices[i].Position.GetLatLong());
+							PlaceDataPoint(DataPointsLocations[i], dataPointInstance.transform);
+						}
+
+						DataPoints.Add(dataPointInstance);
+						SetDataPointVisualization(dataPointInstance, DataAttributeManager.SelectedAttribute.VisOptions.First());
+					}
 				}
 
 			}

@@ -2,7 +2,6 @@ using System.Globalization;
 using Dataskop.Data;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Dataskop.Entities.Visualizations {
 
