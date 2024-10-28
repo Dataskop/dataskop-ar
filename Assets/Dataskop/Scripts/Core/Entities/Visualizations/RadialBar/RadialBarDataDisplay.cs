@@ -2,20 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Dataskop
-{
-    public class RadialBarDataDisplay : MonoBehaviour
-    {
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
+namespace Dataskop.Entities.Visualizations {
 
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
-    }
+	public class RadialBarDataDisplay : MonoBehaviour { }
+
 }

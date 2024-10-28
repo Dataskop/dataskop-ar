@@ -15,6 +15,12 @@ namespace Dataskop {
 		[SerializeField] private GameObject visObjectPrefab;
 		[SerializeField] private Transform visObjectsContainer;
 
+		[Header("Vis Values")]
+		[SerializeField] private Vector3 offset;
+		[SerializeField] private float scaleFactor;
+
+		private float Scale { get; set; }
+
 		public IVisObject[] VisObjects { get; set; }
 
 		public IVisObject FocusedVisObject { get; }

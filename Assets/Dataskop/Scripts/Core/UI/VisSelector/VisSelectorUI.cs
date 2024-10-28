@@ -79,7 +79,9 @@ namespace Dataskop.UI {
 				AttributeButtons.Add(newAttributeButton);
 			}
 
-			if (AttributeButtons.Count > 0) SelectAttributeButton(AttributeButtons[0]);
+			if (AvailableAttributes.Count > 0) {
+				SelectAttributeButton(AttributeButtons[1]);
+			}
 		}
 
 		private Button CreateAttributeElement(string attributeId, string attributeLabel) {

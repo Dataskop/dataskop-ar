@@ -1,5 +1,4 @@
 using System;
-using Dataskop.Data;
 using UnityEngine;
 
 namespace Dataskop.Entities.Visualizations {
@@ -36,7 +35,7 @@ namespace Dataskop.Entities.Visualizations {
 		/// Apply changes to the visualizations based on the data.
 		/// </summary>
 		/// <param name="data">The data used for the vis object.</param>
-		public void ApplyData(VisObjectData data);
+		public void ApplyData(params VisObjectData[] data);
 
 		public void SetFocus(bool isFocused);
 

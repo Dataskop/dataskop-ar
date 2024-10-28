@@ -17,7 +17,7 @@ namespace Dataskop.Data {
 				"dot",
 				"bubble",
 				"bar",
-				"box"
+				"radialBar"
 			};
 
 			if (!acceptedTypes.Contains(type)) {

@@ -10,6 +10,7 @@ namespace Dataskop.Data {
 		[SerializeField] private GameObject dotVis;
 		[SerializeField] private GameObject bubbleVis;
 		[SerializeField] private GameObject barVis;
+		[SerializeField] private GameObject radialBarVis;
 		private readonly List<string> availableVisTypes = new();
 		private readonly Dictionary<VisualizationType, GameObject> visTypeDict = new();
 
@@ -18,6 +19,7 @@ namespace Dataskop.Data {
 			visTypeDict.Add(VisualizationType.Dot, dotVis);
 			visTypeDict.Add(VisualizationType.Bubble, bubbleVis);
 			visTypeDict.Add(VisualizationType.Bar, barVis);
+			visTypeDict.Add(VisualizationType.RadialBar, radialBarVis);
 
 			foreach (VisualizationType visType in visTypeDict.Keys.ToList()) {
 				availableVisTypes.Add(visType.ToString());

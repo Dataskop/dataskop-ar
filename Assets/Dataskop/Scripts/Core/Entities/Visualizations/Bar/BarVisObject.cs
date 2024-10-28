@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using Dataskop.Data;
 using Dataskop.Utils;
 using UnityEngine;
@@ -81,11 +80,11 @@ namespace Dataskop.Entities.Visualizations {
 			}
 		}
 
-		public void ApplyData(VisObjectData data) {
+		public void ApplyData(params VisObjectData[] data) {
 
-			CurrentData = data;
+			CurrentData = data[0];
 
-			switch (data.Type) {
+			switch (CurrentData.Type) {
 				case MeasurementType.Float: {
 					SetPillarHeight(CurrentData.Result.ReadAsFloat(), CurrentData.Attribute.Minimum, CurrentData.Attribute.Maximum, 0.01f,
 						barFrame.localScale.y);

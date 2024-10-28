@@ -27,7 +27,6 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private VisHistoryConfiguration visHistoryConfig;
 
 		private readonly List<GameObject> dataGapIndicators = new();
-		private MeasurementResultRange currentRange;
 		private Coroutine historyMove;
 		private Vector3 moveTarget = Vector3.zero;
 

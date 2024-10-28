@@ -165,6 +165,15 @@ namespace Dataskop.Data {
 				return;
 			}
 
+			//TODO: This currently creates a fake DataAttribute for the "All" Variant.
+			List<DataAttribute> availableAttributes = SelectedProject.Properties.Attributes.ToList();
+			availableAttributes.Insert(0,
+				new DataAttribute("all", "All", "", "continuous", "", "",
+					new[] {
+						new VisualizationOption("radialBar", new VisualizationStyle(false, false, false))
+					}));
+			SelectedProject.Properties = new AdditionalProperties(availableAttributes, SelectedProject.Properties.IsDemo);
+
 			LoadingIndicator.Hide();
 			await GetInitialProjectMeasurements();
 			OnProjectDataLoaded(SelectedProject);

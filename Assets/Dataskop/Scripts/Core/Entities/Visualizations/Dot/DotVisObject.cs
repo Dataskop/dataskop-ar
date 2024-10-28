@@ -79,8 +79,8 @@ namespace Dataskop.Entities.Visualizations {
 			}
 		}
 
-		public void ApplyData(VisObjectData data) {
-			CurrentData = data;
+		public void ApplyData(params VisObjectData[] data) {
+			CurrentData = data[0];
 		}
 
 		public void SetFocus(bool isFocused) {
