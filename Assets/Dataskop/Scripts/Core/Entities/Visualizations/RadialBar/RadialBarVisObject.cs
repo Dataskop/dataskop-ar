@@ -1,5 +1,7 @@
 using System;
+using Dataskop.Utils;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Dataskop.Entities.Visualizations {
 
@@ -8,6 +10,7 @@ namespace Dataskop.Entities.Visualizations {
 		[Header("References")]
 		[SerializeField] private SpriteRenderer visRenderer;
 		[SerializeField] private Collider visCollider;
+		[SerializeField] private GameObject radialSegmentPrefab;
 
 		private bool isSelected;
 
@@ -20,6 +23,8 @@ namespace Dataskop.Entities.Visualizations {
 		public Transform VisObjectTransform => transform;
 
 		public VisObjectData CurrentData { get; private set; }
+
+		private GameObject[] RadialSegments { get; set; }
 
 		public event Action<int> HasHovered;
 
@@ -35,6 +40,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void OnHistoryToggle(bool active) {
 			// Intentionally empty body
+			return;
 		}
 
 		public void ChangeState(VisObjectState newState) {
@@ -58,7 +64,25 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public void ApplyData(params VisObjectData[] data) {
-			Debug.Log(data);
+
+			if (RadialSegments?.Length > 0) {
+				foreach (GameObject r in RadialSegments) {
+					Destroy(r);
+				}
+			}
+
+			RadialSegments = new GameObject[data.Length];
+
+			for (int i = 0; i < RadialSegments.Length; i++) {
+				RadialSegments[i] = Instantiate(radialSegmentPrefab, transform.position, Quaternion.identity, transform);
+				RadialSegments[i].transform.localScale = new Vector2(1 + 0.1f * (i + 1), 1 + 0.1f * (i + 1));
+				SpriteRenderer sr = RadialSegments[i].GetComponent<SpriteRenderer>();
+				sr.color = data[i].Color;
+				sr.sortingOrder = (i + 1) * -1;
+				int angle = GetMappedAngle(data[i].Result.ReadAsFloat(), data[i].Attribute.Minimum, data[i].Attribute.Maximum);
+				sr.material.SetInt("_Arc2", angle);
+			}
+
 		}
 
 		public void SetFocus(bool isFocused) {
@@ -67,6 +91,10 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void Delete() {
 			Destroy(gameObject);
+		}
+
+		private int GetMappedAngle(float value, float min, float max) {
+			return 360 - (int)MathExtensions.Map(value, min, max, 0, 360);
 		}
 
 	}

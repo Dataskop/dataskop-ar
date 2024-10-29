@@ -11,6 +11,8 @@ namespace Dataskop.Data {
 
 		public ICollection<MeasurementDefinition> MeasurementDefinitions { get; set; }
 
+		public DataAttribute[] Attributes { get; set; }
+
 		/// <summary>
 		/// Gets the position of a device on the earth.
 		/// </summary>

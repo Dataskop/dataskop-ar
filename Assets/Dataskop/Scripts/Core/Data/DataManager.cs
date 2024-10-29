@@ -167,6 +167,11 @@ namespace Dataskop.Data {
 
 			//TODO: This currently creates a fake DataAttribute for the "All" Variant.
 			List<DataAttribute> availableAttributes = SelectedProject.Properties.Attributes.ToList();
+
+			foreach (Device device in SelectedProject.Devices) {
+				device.Attributes = SelectedProject.Properties.Attributes.ToArray();
+			}
+
 			availableAttributes.Insert(0,
 				new DataAttribute("all", "All", "", "continuous", "", "",
 					new[] {
@@ -398,12 +403,14 @@ namespace Dataskop.Data {
 
 					}
 
+					/*
 					Debug.Log($"Result Ranges in {md.DeviceId} - {md.AttributeId} ({md.ID}):");
 					foreach (MeasurementResultRange m in md.MeasurementResults) {
 						Debug.Log(
 							$"from {m.GetTimeRange().StartTime} to {m.GetTimeRange().EndTime} with {m.Count} results");
 					}
 					Debug.Log(" ----- ");
+					*/
 
 				}
 

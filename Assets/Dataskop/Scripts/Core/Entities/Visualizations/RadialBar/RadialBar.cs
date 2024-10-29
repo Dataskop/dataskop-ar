@@ -20,6 +20,7 @@ namespace Dataskop {
 		[Header("Vis Values")]
 		[SerializeField] private Vector3 offset;
 		[SerializeField] private float scaleFactor;
+		[SerializeField] private Color32[] availableColors;
 
 		public event Action SwipedDown;
 
@@ -89,7 +90,7 @@ namespace Dataskop {
 
 			noResultsIndicator.SetActive(false);
 
-			// Only display the latest value, thus only one VisObject is needed.
+			// Only display the latest values, only one VisObject is needed.
 			VisObjects = new IVisObject[1];
 
 			GameObject visObject = Instantiate(visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer);
@@ -201,7 +202,7 @@ namespace Dataskop {
 		private void OnVisObjectSelected(int index) {
 			index = 0;
 			IsSelected = true;
-			
+
 			if (index == DataPoint.FocusedIndex) {
 				focusedDataDisplay.Select();
 				focusedDataDisplay.SetDisplayData(VisObjects[index].CurrentData);
@@ -214,7 +215,7 @@ namespace Dataskop {
 
 		private void OnVisObjectDeselected(int index) {
 			index = 0;
-			
+
 			if (index == DataPoint?.FocusedIndex) {
 
 				if (VisObjects[index] == null) {
@@ -264,8 +265,9 @@ namespace Dataskop {
 			for (int i = 0; i < results.Length; i++) {
 				dataSet[i].Result = results[i];
 				dataSet[i].Type = MeasurementType.Float;
-				dataSet[i].Attribute = DataPoint.Attribute;
+				dataSet[i].Attribute = DataPoint.Device.Attributes.First(x => x.ID == results[i].MeasurementDefinition.AttributeId);
 				dataSet[i].AuthorSprite = null;
+				dataSet[i].Color = availableColors[i];
 			}
 
 			target.ApplyData(dataSet);
