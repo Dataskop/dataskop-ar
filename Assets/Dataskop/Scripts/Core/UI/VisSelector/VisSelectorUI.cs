@@ -80,7 +80,7 @@ namespace Dataskop.UI {
 			}
 
 			if (AvailableAttributes.Count > 0) {
-				SelectAttributeButton(AttributeButtons[1]);
+				SelectAttributeButton(AttributeButtons[0]);
 			}
 		}
 

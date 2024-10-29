@@ -59,7 +59,7 @@ namespace Dataskop.Data {
 			List<DataAttribute> attributes = selectedProject.Properties.Attributes.ToList();
 			ProjectAttributes = attributes;
 			// Select the first one that is not ALL
-			SetDefaultAttribute(ProjectAttributes.First(att => att.ID != "all").ID);
+			SetDefaultAttribute(ProjectAttributes.First().ID);
 			onAvailableAttributesUpdated?.Invoke(selectedProject);
 
 		}
