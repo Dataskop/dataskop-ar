@@ -75,7 +75,7 @@ namespace Dataskop {
 			HasHistoryEnabled = false;
 
 			CurrentRanges = DataPoint.Device.MeasurementDefinitions
-				.SelectMany(md => md.MeasurementResults)
+				.Select(md => md.MeasurementResults.First())
 				.ToArray();
 
 			if (CurrentRanges.Length == 0) {
@@ -257,22 +257,6 @@ namespace Dataskop {
 
 			VisObjectDeselected?.Invoke(index);
 			*/
-
-		}
-
-		private IVisObject SpawnVisObject(int index, Vector3 pos, MeasurementResult[] results,
-			bool focused, VisObjectState state) {
-
-			GameObject newVis = Instantiate(visObjectPrefab, pos, visObjectsContainer.localRotation, visObjectsContainer);
-			IVisObject visObject = newVis.GetComponent<IVisObject>();
-
-			UpdateVisObject(visObject, index, results, focused, state);
-			visObject.HasHovered += OnVisObjectHovered;
-			visObject.HasSelected += OnVisObjectSelected;
-			visObject.HasDeselected += OnVisObjectDeselected;
-			visObject.VisCollider.enabled = true;
-
-			return visObject;
 
 		}
 
