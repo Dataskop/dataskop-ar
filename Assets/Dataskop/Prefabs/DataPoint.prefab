@@ -138,6 +138,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4c74a81bd135803479253037f7998f34, type: 3}
   - {fileID: 21300000, guid: 22b8e0f1d8230bb4788cf2c22991de48, type: 3}
   - {fileID: 21300000, guid: cff9b42db42055840986e32f0590ca79, type: 3}
+  - {fileID: 21300000, guid: 2f5ece51553709e44847940c5cc7144e, type: 3}
   noResultsIndicator: {fileID: 7381409397617708857}
   mapSelectionColor: {r: 0.8584906, g: 0.41105816, b: 0.044544328, a: 1}
   mapHoverColor: {r: 0.8584906, g: 0.31990921, b: 0.66226315, a: 1}
@@ -215,15 +216,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 2f5ece51553709e44847940c5cc7144e, type: 3}
   m_Color: {r: 0.34212914, g: 0.33641866, b: 0.3773585, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 40.319996, y: 40.319996}
+  m_Size: {x: 10.24, y: 10.24}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &4339002171442156733

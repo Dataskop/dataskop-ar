@@ -69,7 +69,7 @@ namespace Dataskop {
 			Scale = scaleFactor;
 			Offset = offset;
 			VisHistoryConfiguration = new VisHistoryConfiguration(0, 0, false);
-			Type = VisualizationType.Dot;
+			Type = VisualizationType.RadialBar;
 			VisOrigin.localScale *= Scale;
 			VisOrigin.root.localPosition = Offset;
 			HasHistoryEnabled = false;

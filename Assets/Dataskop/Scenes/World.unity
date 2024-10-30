@@ -2097,7 +2097,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 1.211e-42, w: 0.0000000032914933}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: -5.80963e+21}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -4562,7 +4562,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4c74a81bd135803479253037f7998f34, type: 3}
   - {fileID: 21300000, guid: 22b8e0f1d8230bb4788cf2c22991de48, type: 3}
   - {fileID: 21300000, guid: cff9b42db42055840986e32f0590ca79, type: 3}
-  - {fileID: 21300000, guid: dfe0e9c37dac4a24cb029eb49c3a81f9, type: 3}
+  - {fileID: 21300000, guid: 2f5ece51553709e44847940c5cc7144e, type: 3}
   selectedIconColor: {r: 0.8584906, g: 0.41105816, b: 0.044544328, a: 1}
   deselectedIconColor: {r: 0.14618193, g: 0.3496184, b: 0.6886792, a: 1}
   visRepo: {fileID: 341186874}
