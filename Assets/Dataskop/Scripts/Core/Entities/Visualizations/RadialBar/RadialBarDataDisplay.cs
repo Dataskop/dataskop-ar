@@ -10,7 +10,9 @@ namespace Dataskop.Entities.Visualizations {
 		[Header("References")]
 		[SerializeField] private CanvasGroup dataDisplay;
 		[SerializeField] private TextMeshProUGUI valueTextMesh;
+		[SerializeField] private TextMeshProUGUI idTextMesh;
 		[SerializeField] private TextMeshProUGUI dateTextMesh;
+		[SerializeField] private TextMeshProUGUI minMaxTextMesh;
 		[SerializeField] private Image legendDots;
 
 		private int currentDataIndex = 0;
@@ -39,19 +41,19 @@ namespace Dataskop.Entities.Visualizations {
 		public void OnSwipe(Vector2 direction) {
 
 			if (direction.y > 0) {
-				
+
 				if (currentDataIndex == DataSet.Length - 1) {
 					return;
 				}
-				
+
 				currentDataIndex++;
 			}
 			else {
-				
+
 				if (currentDataIndex == 0) {
 					return;
 				}
-				
+
 				currentDataIndex--;
 			}
 
@@ -65,6 +67,8 @@ namespace Dataskop.Entities.Visualizations {
 			valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) + $" {data.Attribute.Unit}";
 			dateTextMesh.text = data.Result.GetDateText();
 			legendDots.color = data.Color;
+			minMaxTextMesh.text = $"{data.Attribute.Minimum} {data.Attribute.Unit} - {data.Attribute.Maximum} {data.Attribute.Unit}";
+			idTextMesh.text = data.Result.MeasurementDefinition.MeasurementDefinitionInformation.Name;
 		}
 
 	}
