@@ -9,36 +9,24 @@ namespace Dataskop.Entities.Visualizations {
 
 		[Header("References")]
 		[SerializeField] private CanvasGroup dataDisplay;
-		[SerializeField] private TextMeshProUGUI[] valueTextMesh;
-		[SerializeField] private TextMeshProUGUI[] dateTextMesh;
-		[SerializeField] private Image[] legendDots;
+		[SerializeField] private TextMeshProUGUI valueTextMesh;
+		[SerializeField] private TextMeshProUGUI dateTextMesh;
+		[SerializeField] private Image legendDots;
+
+		private int currentDataIndex = 0;
+
+		private VisObjectData[] DataSet { get; set; }
 
 		public void SetDisplayData(params VisObjectData[] data) {
-
-			for (int i = 0; i < data.Length; i++) {
-				float receivedValue = data[i].Result.ReadAsFloat();
-				valueTextMesh[i].text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) + $" {data[i].Attribute.Unit}";
-				dateTextMesh[i].text = data[i].Result.GetDateText();
-				legendDots[i].color = data[i].Color;
-			}
-
+			DataSet = data;
+			ApplyData(currentDataIndex);
 		}
 
-		public void Select() {
-			//valueTextMesh.color = Colors.Selected;
-		}
+		public void Select() { }
 
-		public void Deselect(bool isFocused) {
-			//valueTextMesh.color = isFocused ? Colors.Deselected : Colors.Historic;
-		}
+		public void Deselect(bool isFocused) { }
 
-		public void Hover(bool isFocused) {
-			//valueTextMesh.color = isFocused ? Colors.Hovered : Colors.Historic;
-		}
-
-		public void MoveTo(Vector3 position) {
-			transform.position = new Vector3(position.x, position.y, position.z);
-		}
+		public void Hover(bool isFocused) { }
 
 		public void Show() {
 			dataDisplay.alpha = 1;
@@ -46,6 +34,37 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void Hide() {
 			dataDisplay.alpha = 0;
+		}
+
+		public void OnSwipe(Vector2 direction) {
+
+			if (direction.y > 0) {
+				
+				if (currentDataIndex == DataSet.Length - 1) {
+					return;
+				}
+				
+				currentDataIndex++;
+			}
+			else {
+				
+				if (currentDataIndex == 0) {
+					return;
+				}
+				
+				currentDataIndex--;
+			}
+
+			ApplyData(currentDataIndex);
+
+		}
+
+		private void ApplyData(int index) {
+			VisObjectData data = DataSet[index];
+			float receivedValue = data.Result.ReadAsFloat();
+			valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) + $" {data.Attribute.Unit}";
+			dateTextMesh.text = data.Result.GetDateText();
+			legendDots.color = data.Color;
 		}
 
 	}

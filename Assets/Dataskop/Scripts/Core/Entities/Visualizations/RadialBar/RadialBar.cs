@@ -118,8 +118,23 @@ namespace Dataskop {
 		}
 
 		public void OnSwipeInteraction(PointerInteraction pointerInteraction) {
-			// Currently nothing happens on swipe.
-			return;
+
+			if (pointerInteraction.startingGameObject != null) {
+				if (!VisObjects.Contains(pointerInteraction.startingGameObject.GetComponent<IVisObject>())) {
+					return;
+				}
+
+			}
+
+			switch (pointerInteraction.Direction.y) {
+				case > 0.20f:
+					focusedDataDisplay.OnSwipe(Vector2.up);
+					break;
+				case < -0.20f:
+					focusedDataDisplay.OnSwipe(Vector2.down);
+					break;
+			}
+
 		}
 
 		public void OnMeasurementResultRangeUpdated() {
@@ -173,6 +188,8 @@ namespace Dataskop {
 
 		private void OnVisObjectHovered(int index) {
 
+			/*
+
 			index = 0;
 			IVisObject visObject = VisObjects[index];
 
@@ -197,9 +214,13 @@ namespace Dataskop {
 
 			VisObjectHovered?.Invoke(index);
 
+			*/
+
 		}
 
 		private void OnVisObjectSelected(int index) {
+
+			/*
 			index = 0;
 			IsSelected = true;
 
@@ -210,10 +231,13 @@ namespace Dataskop {
 			}
 
 			VisObjectSelected?.Invoke(index);
+			*/
 
 		}
 
 		private void OnVisObjectDeselected(int index) {
+
+			/*
 			index = 0;
 
 			if (index == DataPoint?.FocusedIndex) {
@@ -232,6 +256,7 @@ namespace Dataskop {
 			}
 
 			VisObjectDeselected?.Invoke(index);
+			*/
 
 		}
 
@@ -272,19 +297,7 @@ namespace Dataskop {
 
 			target.ApplyData(dataSet);
 			target.ChangeState(state);
-
-			if (target.IsFocused) {
-
-				focusedDataDisplay.SetDisplayData(dataSet);
-
-				if (IsSelected) {
-					focusedDataDisplay.Select();
-				}
-				else {
-					focusedDataDisplay.Deselect(true);
-				}
-
-			}
+			focusedDataDisplay.SetDisplayData(dataSet);
 
 		}
 

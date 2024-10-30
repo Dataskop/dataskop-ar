@@ -1,7 +1,6 @@
 using System;
 using Dataskop.Utils;
 using UnityEngine;
-using Random = System.Random;
 
 namespace Dataskop.Entities.Visualizations {
 

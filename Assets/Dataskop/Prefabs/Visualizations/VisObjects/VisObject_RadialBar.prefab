@@ -50,13 +50,6 @@ MonoBehaviour:
   visRenderer: {fileID: 5583245377080150628}
   visCollider: {fileID: 982522895779388725}
   radialSegmentPrefab: {fileID: 1485807055806656404, guid: 184618dbeeaae99448ded49df5de1653, type: 3}
-  availableColors:
-  - serializedVersion: 2
-    rgba: 4284612511
-  - serializedVersion: 2
-    rgba: 4294954345
-  - serializedVersion: 2
-    rgba: 4294915240
 --- !u!135 &982522895779388725
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -74,7 +67,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
