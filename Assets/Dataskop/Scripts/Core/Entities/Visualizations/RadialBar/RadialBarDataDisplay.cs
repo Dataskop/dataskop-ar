@@ -13,7 +13,12 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private TextMeshProUGUI idTextMesh;
 		[SerializeField] private TextMeshProUGUI dateTextMesh;
 		[SerializeField] private TextMeshProUGUI minMaxTextMesh;
+		[SerializeField] private TextMeshProUGUI unitSymbol;
 		[SerializeField] private Image legendDots;
+		[SerializeField] private Image upArrow;
+		[SerializeField] private Image downArrow;
+		[SerializeField] private Image downArrowShadow;
+		[SerializeField] private Image upArrowShadow;
 
 		private int currentDataIndex = 0;
 
@@ -64,11 +69,28 @@ namespace Dataskop.Entities.Visualizations {
 		private void ApplyData(int index) {
 			VisObjectData data = DataSet[index];
 			float receivedValue = data.Result.ReadAsFloat();
-			valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) + $" {data.Attribute.Unit}";
+			valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture);
+			unitSymbol.text = data.Attribute.Unit;
 			dateTextMesh.text = data.Result.GetDateText();
 			legendDots.color = data.Color;
 			minMaxTextMesh.text = $"{data.Attribute.Minimum} {data.Attribute.Unit} - {data.Attribute.Maximum} {data.Attribute.Unit}";
 			idTextMesh.text = data.Result.MeasurementDefinition.MeasurementDefinitionInformation.Name;
+			SetArrowState();
+		}
+
+		private void SetArrowState() {
+
+			downArrow.color = currentDataIndex == 0 ?
+				new Color32(255, 200, 100, 125) :
+				new Color32(255, 200, 100, 255);
+
+			upArrow.color = currentDataIndex == DataSet.Length - 1 ?
+				new Color32(255, 200, 100, 125) :
+				new Color32(255, 200, 100, 255);
+
+			downArrowShadow.enabled = currentDataIndex != 0;
+			upArrowShadow.enabled = currentDataIndex != DataSet.Length - 1;
+
 		}
 
 	}
