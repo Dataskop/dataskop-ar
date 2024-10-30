@@ -81,15 +81,14 @@ namespace Dataskop.UI {
 
 		public void OnVisualizationOptionChanged(VisualizationOption currentVisOption) {
 
+			if (!currentVisOption.Style.IsTimeSeries) {
+				HideHistory();
+			}
+
 			if (!IsActive) return;
 
 			if (currentVisOption.Style.IsTimeSeries) {
 				StartCoroutine(DelayShow());
-				return;
-			}
-
-			if (!currentVisOption.Style.IsTimeSeries) {
-				HideHistory();
 			}
 
 		}

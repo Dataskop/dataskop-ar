@@ -13,6 +13,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public Sprite AuthorSprite { get; set; }
 
+		public Color32 Color { get; set; }
+
 	}
 
 }

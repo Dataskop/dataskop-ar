@@ -4,7 +4,8 @@ namespace Dataskop {
 
 		Dot,
 		Bubble,
-		Bar
+		Bar,
+		RadialBar
 
 	}
 

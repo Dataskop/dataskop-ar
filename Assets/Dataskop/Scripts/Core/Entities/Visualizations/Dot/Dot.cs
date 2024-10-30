@@ -27,19 +27,8 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private VisHistoryConfiguration visHistoryConfig;
 
 		private readonly List<GameObject> dataGapIndicators = new();
-		private MeasurementResultRange currentRange;
 		private Coroutine historyMove;
 		private Vector3 moveTarget = Vector3.zero;
-
-		private float Scale { get; set; }
-
-		private int PreviousIndex { get; set; }
-
-		private IVisObjectStyle VisObjectStyle { get; set; }
-
-		private MeasurementResultRange CurrentRange => DataPoint.CurrentMeasurementRange;
-
-		public bool HasHistoryEnabled { get; private set; }
 
 		public event Action SwipedDown;
 
@@ -54,6 +43,8 @@ namespace Dataskop.Entities.Visualizations {
 		public event Action<IVisObject> FocusedVisObjectChanged;
 
 		public DataPoint DataPoint { get; private set; }
+
+		public bool HasHistoryEnabled { get; private set; }
 
 		public IVisObject[] VisObjects { get; set; }
 
@@ -75,6 +66,14 @@ namespace Dataskop.Entities.Visualizations {
 		public Vector3 Offset { get; private set; }
 
 		public VisualizationType Type { get; set; }
+
+		private float Scale { get; set; }
+
+		private int PreviousIndex { get; set; }
+
+		private IVisObjectStyle VisObjectStyle { get; set; }
+
+		private MeasurementResultRange CurrentRange => DataPoint.CurrentMeasurementRange;
 
 		public void Initialize(DataPoint dp) {
 

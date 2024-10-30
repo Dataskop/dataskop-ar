@@ -259,6 +259,7 @@ namespace Dataskop.Entities {
 				VisualizationType.Dot => visIcons[0],
 				VisualizationType.Bubble => visIcons[1],
 				VisualizationType.Bar => visIcons[2],
+				VisualizationType.RadialBar => visIcons[3],
 				_ => throw new ArgumentOutOfRangeException(nameof(visType), visType, null)
 			};
 

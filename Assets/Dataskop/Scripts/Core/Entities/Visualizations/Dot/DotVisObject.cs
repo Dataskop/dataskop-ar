@@ -23,13 +23,12 @@ namespace Dataskop.Entities.Visualizations {
 		private Coroutine animationCoroutine;
 		private Vector3 animationTarget;
 		private bool isSelected;
-		private Coroutine moveLineCoroutine;
 
 		public Transform VisObjectTransform => transform;
 
 		public int Index { get; set; }
 
-		public bool IsFocused { get; set; }
+		public bool IsFocused { get; private set; }
 
 		public VisObjectData CurrentData { get; private set; }
 
@@ -79,8 +78,8 @@ namespace Dataskop.Entities.Visualizations {
 			}
 		}
 
-		public void ApplyData(VisObjectData data) {
-			CurrentData = data;
+		public void ApplyData(params VisObjectData[] data) {
+			CurrentData = data[0];
 		}
 
 		public void SetFocus(bool isFocused) {

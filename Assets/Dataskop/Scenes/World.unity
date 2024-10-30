@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44402185, g: 0.49316472, b: 0.57223153, a: 1}
+  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -796,6 +796,7 @@ MonoBehaviour:
   dotVis: {fileID: 4044058376309783487, guid: a74f12afcae8d254b9f3c1fa4b26c746, type: 3}
   bubbleVis: {fileID: 4044058376309783487, guid: 72bb690265fe34a48af6e56f47dc3027, type: 3}
   barVis: {fileID: 4622183919543581581, guid: a9246838b84c7a04695da1e224219c34, type: 3}
+  radialBarVis: {fileID: 5753564800152858086, guid: 621fce385973c684984a6536e2a2ccb4, type: 3}
 --- !u!4 &341186875
 Transform:
   m_ObjectHideFlags: 0
@@ -2096,7 +2097,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 2.2227777e-38, y: 9.1858e-41, z: -2.4405384e-30, w: 1.83716e-40}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: -5.80963e+21}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -4561,6 +4562,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4c74a81bd135803479253037f7998f34, type: 3}
   - {fileID: 21300000, guid: 22b8e0f1d8230bb4788cf2c22991de48, type: 3}
   - {fileID: 21300000, guid: cff9b42db42055840986e32f0590ca79, type: 3}
+  - {fileID: 21300000, guid: 2f5ece51553709e44847940c5cc7144e, type: 3}
   selectedIconColor: {r: 0.8584906, g: 0.41105816, b: 0.044544328, a: 1}
   deselectedIconColor: {r: 0.14618193, g: 0.3496184, b: 0.6886792, a: 1}
   visRepo: {fileID: 341186874}
