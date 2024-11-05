@@ -92,7 +92,7 @@ namespace Dataskop.UI {
 
 		}
 
-		private void RequestConfirmation(TimeRange range) {
+		public void RequestConfirmation(TimeRange range) {
 			dialogWindow.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
 			proceedButton.RegisterCallback<ClickEvent, TimeRange>(OnConfirm, range);
 			cancelButton.RegisterCallback<ClickEvent>(OnCancel);

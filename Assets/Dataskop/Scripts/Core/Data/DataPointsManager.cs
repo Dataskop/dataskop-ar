@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Dataskop.Entities;
@@ -261,6 +262,40 @@ namespace Dataskop.Data {
 
 		public void PlaceDataPoint(Vector3 newPosition, Transform dataPointTransform) {
 			dataPointTransform.localPosition = newPosition;
+		}
+
+		public MeasurementResult GetLatestResult() {
+
+			MeasurementResult latestResult = null;
+			DateTime latestDate = new(1900, 1, 1);
+
+			foreach (var dp in DataPoints) {
+				foreach (var md in dp.Device.MeasurementDefinitions) {
+					if (md.LatestMeasurementResult.Timestamp > latestDate) {
+						latestDate = md.LatestMeasurementResult.Timestamp;
+						latestResult = md.LatestMeasurementResult;
+					}
+				}
+			}
+
+			return latestResult;
+		}
+
+		public MeasurementResult GetEarliestResult() {
+
+			MeasurementResult earliestResult = null;
+			DateTime earliestDate = DateTime.Now;
+
+			foreach (var dp in DataPoints) {
+				foreach (var md in dp.Device.MeasurementDefinitions) {
+					if (md.LatestMeasurementResult.Timestamp < earliestDate) {
+						earliestDate = md.FirstMeasurementResult.Timestamp;
+						earliestResult = md.FirstMeasurementResult;
+					}
+				}
+			}
+
+			return earliestResult;
 		}
 
 		private void ClearDataPoints() {

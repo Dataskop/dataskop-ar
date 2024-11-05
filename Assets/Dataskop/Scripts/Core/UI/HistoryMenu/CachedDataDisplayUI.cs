@@ -1,5 +1,4 @@
 using System;
-using Dataskop.Data;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -7,24 +6,25 @@ namespace Dataskop.UI {
 
 	public class CachedDataDisplayUI : MonoBehaviour {
 
-		[Header("Icons")]
-		[SerializeField] private Sprite hourIcon;
-		[SerializeField] private Sprite daysIcon;
+		public event Action<TimeRange> OnFilterRequested;
+
+		private const int sliderHeight = 580;
 
 		private VisualElement bottomDragger;
 		private VisualElement cachedRangeContainer;
 		private VisualElement cachedRangesDisplay;
 		private Label currentEndRangeLabel;
 		private Label currentStartRangeLabel;
-		private bool isHourly;
 		private VisualElement rangeContainer;
 		private MinMaxSlider slider;
-		private int sliderHeight;
-		private Button switchUnitsButton;
-		private VisualElement switchUnitsIcon;
+		private Button confirmFilterButton;
 		private VisualElement topDragger;
 		private Label totalEndTimeLabel;
 		private Label totalStartTimeLabel;
+
+		private DateTime earliestDate;
+		private DateTime latestDate;
+		private TimeRange currentFilterRange;
 
 		public void Init(VisualElement container) {
 			cachedRangeContainer = container;
@@ -40,21 +40,22 @@ namespace Dataskop.UI {
 			topDragger = cachedRangeContainer.Q<VisualElement>("unity-thumb-max");
 			bottomDragger = cachedRangeContainer.Q<VisualElement>("unity-thumb-min");
 
+			slider.RegisterCallback<ChangeEvent<Vector2>>(e => {
+				currentFilterRange = GetTimeRangeOfFilter(e.newValue);
+				SetFilterLabelTexts(currentFilterRange.StartTime.ToShortDateString(), currentFilterRange.EndTime.ToShortDateString());
+			});
+
 			topDragger.hierarchy.Add(currentStartRangeLabel);
 			bottomDragger.hierarchy.Add(currentEndRangeLabel);
 
 			cachedRangesDisplay = cachedRangeContainer.Q<VisualElement>("CachedRangesDisplay");
 
-			switchUnitsButton = cachedRangeContainer.Q<Button>("UnitSwitch");
-			switchUnitsButton.RegisterCallback<ClickEvent>(_ => ToggleUnitSwitch());
-
-			switchUnitsIcon = switchUnitsButton.Q<VisualElement>("Icon");
-
+			confirmFilterButton = cachedRangeContainer.Q<Button>("UnitSwitch");
+			confirmFilterButton.RegisterCallback<ClickEvent>(_ => OnFilterRequested?.Invoke(currentFilterRange));
 		}
 
 		public void Show() {
 			cachedRangeContainer.visible = true;
-			sliderHeight = 580;
 		}
 
 		public void Hide() {
@@ -71,108 +72,95 @@ namespace Dataskop.UI {
 			slider.maxValue = slider.lowLimit;
 		}
 
-		public void UpdateMinMaxSlider(MeasurementDefinition def, MeasurementResultRange currentRange) {
-			MeasurementResult firstResult = def.FirstMeasurementResult;
-			MeasurementResult lastResult = def.LatestMeasurementResult;
-
-			totalStartTimeLabel.text = firstResult.GetShortDateText();
-			totalEndTimeLabel.text = lastResult.GetShortDateText();
-
+		public void UpdateMinMaxSlider(DateTime latestResultTime, DateTime firstResultTime) {
 			slider.lowLimit = 1;
-			TimeRange overAllRange = new(ClampTimeStamp(firstResult.Timestamp), ClampTimeStamp(lastResult.Timestamp));
-			slider.highLimit = isHourly ? (int)overAllRange.Span.TotalHours : (int)overAllRange.Span.TotalDays + 1;
+			TimeRange overAllRange = new(ClampTimeStamp(firstResultTime), ClampTimeStamp(latestResultTime));
+			slider.highLimit = (int)overAllRange.Span.TotalDays + 1;
+			earliestDate = firstResultTime;
+			latestDate = latestResultTime;
+		}
 
-			if (currentRange.GetTimeRange().EndTime < firstResult.Timestamp ||
-			    currentRange.GetTimeRange().StartTime > lastResult.Timestamp) {
+		public void SetLabelPositionsForRange(DateTime rangeStartTime, DateTime rangeEndTime, DateTime latestResultTime,
+			DateTime firstResultTime) {
+
+			if (rangeEndTime < firstResultTime || rangeStartTime > latestResultTime) {
 				return;
 			}
 
-			DateTime clampedStartTime = ClampTimeStamp(currentRange.GetTimeRange().StartTime);
-			DateTime clampedEndTime = ClampTimeStamp(currentRange.GetTimeRange().EndTime);
-
-			currentStartRangeLabel.text = ShortTimeStamp(currentRange.GetTimeRange().StartTime < firstResult.Timestamp
-				? firstResult.Timestamp
-				: currentRange.GetTimeRange().StartTime);
-			currentEndRangeLabel.text = ShortTimeStamp(currentRange.GetTimeRange().EndTime > lastResult.Timestamp ? lastResult.Timestamp
-				: currentRange.GetTimeRange().EndTime);
-
-			TimeRange cachedData = new(ClampTimeStamp(lastResult.Timestamp), clampedStartTime);
-			slider.maxValue = isHourly ? (int)cachedData.Span.TotalHours
-				: 1 + (int)cachedData.Span.TotalDays + 1;
-
-			TimeRange rangeToLatestResult = new(clampedEndTime, ClampTimeStamp(lastResult.Timestamp));
-			slider.minValue = isHourly ? (int)rangeToLatestResult.Span.TotalHours
-				: 1 + (int)rangeToLatestResult.Span.TotalDays;
+			DateTime clampedStartTime = ClampTimeStamp(rangeStartTime);
+			DateTime clampedEndTime = ClampTimeStamp(rangeEndTime);
+			TimeRange cachedData = new(ClampTimeStamp(latestResultTime), clampedStartTime);
+			slider.maxValue = 1 + (int)cachedData.Span.TotalDays + 1;
+			TimeRange rangeToLatestResult = new(clampedEndTime, ClampTimeStamp(latestResultTime));
+			slider.minValue = 1 + (int)rangeToLatestResult.Span.TotalDays;
 
 		}
 
-		public void CreateCacheRect(MeasurementDefinition def) {
-			// Clear the container for fresh data
-			cachedRangesDisplay.Clear();
-			MeasurementResult latestResult = def.LatestMeasurementResult;
-			DateTime latestResultTimeStamp = ClampTimeStamp(latestResult.Timestamp);
+		public void SetGlobalTimeLabels(string first, string latest) {
+			totalStartTimeLabel.text = first;
+			totalEndTimeLabel.text = latest;
+		}
 
-			// Slider Data
+		public void SetFilterLabelTexts(string startLabel, string endLabel) {
+			currentStartRangeLabel.text = startLabel;
+			currentEndRangeLabel.text = endLabel;
+		}
+
+		public void ClearCacheDisplay() {
+			cachedRangesDisplay.Clear();
+		}
+
+		public void CreateCacheRect(DateTime rangeStartTime, DateTime rangeEndTime, DateTime latestResultTime) {
+
 			float highLimit = slider.highLimit;
 
-			foreach (MeasurementResultRange measurementResultRange in def.MeasurementResults) {
+			DateTime clampedStartTime = ClampTimeStamp(rangeStartTime);
+			DateTime clampedEndTime = ClampTimeStamp(rangeEndTime);
 
-				if (measurementResultRange.GetTimeRange().EndTime < def.FirstMeasurementResult.Timestamp ||
-				    measurementResultRange.GetTimeRange().StartTime > latestResult.Timestamp) {
-					continue;
+			DateTime latestResultTimeStamp = ClampTimeStamp(latestResultTime);
+
+			TimeRange timeRangeCurrentRect = new(clampedStartTime, clampedEndTime);
+			TimeRange rangeToLatestResult = new(latestResultTimeStamp, clampedEndTime);
+
+			double rangeInUnits = timeRangeCurrentRect.Span.Days + 1;
+			double unitsToLatestResult = rangeToLatestResult.Span.Days;
+			int numberUnitsCurrentRect = (int)Mathf.Clamp((int)rangeInUnits, 1, highLimit);
+			float calculatedWidth = Mathf.Round(sliderHeight / highLimit * numberUnitsCurrentRect);
+			float startPosition = 10 + ((int)unitsToLatestResult > 0 ? sliderHeight / highLimit : 0) +
+			                      sliderHeight / highLimit * (int)unitsToLatestResult;
+
+			VisualElement rect = new() {
+				style = {
+					position = Position.Absolute,
+					left = new StyleLength(startPosition),
+					width = calculatedWidth,
+					height = 12,
+					marginTop = 0,
+					marginLeft = 0,
+					marginBottom = 0,
+					marginRight = 0,
+					paddingBottom = 0,
+					paddingLeft = 0,
+					paddingRight = 0,
+					paddingTop = 0,
+					backgroundColor = new StyleColor(new Color32(219, 105, 11, 200))
 				}
+			};
 
-				DateTime clampedStartTime = ClampTimeStamp(measurementResultRange.GetTimeRange().StartTime);
-				DateTime clampedEndTime = ClampTimeStamp(measurementResultRange.GetTimeRange().EndTime);
+			rect.style.left = Math.Clamp(rect.style.left.value.value, 10, 590);
+			rect.style.width = Math.Clamp(rect.style.width.value.value, 0, 590 - rect.style.left.value.value);
+			cachedRangesDisplay.Add(rect);
 
-				TimeRange timeRangeCurrentRect = new(clampedStartTime, clampedEndTime);
-				TimeRange rangeToLatestResult = new(latestResultTimeStamp, clampedEndTime);
-
-				// Calculate the number of time units (hours or days) for the current rect and full range
-				double rangeInUnits = isHourly ? timeRangeCurrentRect.Span.TotalHours : timeRangeCurrentRect.Span.Days + 1;
-				double unitsToLatestResult = isHourly ? rangeToLatestResult.Span.TotalHours : rangeToLatestResult.Span.Days;
-				int numberUnitsCurrentRect = (int)Mathf.Clamp((int)rangeInUnits, 1, highLimit);
-				float calculatedWidth = Mathf.Round(sliderHeight / highLimit * numberUnitsCurrentRect);
-				float startPosition = 10 + ((int)unitsToLatestResult > 0
-					? sliderHeight / highLimit : 0) + sliderHeight / highLimit * (int)unitsToLatestResult;
-
-				VisualElement rect = new() {
-					style = {
-						position = UnityEngine.UIElements.Position.Absolute,
-						left = new StyleLength(startPosition),
-						width = calculatedWidth,
-						height = 12,
-						marginTop = 0,
-						marginLeft = 0,
-						marginBottom = 0,
-						marginRight = 0,
-						paddingBottom = 0,
-						paddingLeft = 0,
-						paddingRight = 0,
-						paddingTop = 0,
-						backgroundColor = new StyleColor(new Color32(219, 105, 11, 200))
-					}
-				};
-
-				rect.style.left = Math.Clamp(rect.style.left.value.value, 10, 590);
-				rect.style.width = Math.Clamp(rect.style.width.value.value, 0, 590 - rect.style.left.value.value);
-				cachedRangesDisplay.Add(rect);
-
-			}
 		}
 
-		private void ToggleUnitSwitch() {
-			isHourly = !isHourly;
-			switchUnitsIcon.style.backgroundImage = new StyleBackground(isHourly ? hourIcon : daysIcon);
+		private TimeRange GetTimeRangeOfFilter(Vector2 newValue) {
+			DateTime topDate = earliestDate.Add(new TimeSpan((int)slider.highLimit - (int)newValue.y, 0, 0, 0));
+			DateTime bottomDate = latestDate.Subtract(new TimeSpan((int)newValue.x, 0, 0, 0));
+			return new TimeRange(topDate, bottomDate);
 		}
 
 		private DateTime ClampTimeStamp(DateTime timeStamp) {
-			return isHourly ? new DateTime(timeStamp.Year, timeStamp.Month, timeStamp.Day, timeStamp.Hour, 0, 0)
-				: new DateTime(timeStamp.Year, timeStamp.Month, timeStamp.Day);
-		}
-
-		private string ShortTimeStamp(DateTime timeStamp) {
-			return isHourly ? ClampTimeStamp(timeStamp).ToString("dd.MM. HH:mm") : timeStamp.ToString(AppOptions.DateCulture).Remove(6, 13);
+			return new DateTime(timeStamp.Year, timeStamp.Month, timeStamp.Day);
 		}
 
 	}

@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Linq;
 using Dataskop.Data;
 using Dataskop.Entities;
 using UnityEngine;
@@ -10,13 +12,15 @@ namespace Dataskop.UI {
 	public class HistoryControllerUI : MonoBehaviour {
 
 		public UnityEvent<int, int> historySliderValueChanged;
+		public UnityEvent<TimeRange> dateFilterRequested;
 
 		[SerializeField] private UIDocument historyUIDocument;
 		[SerializeField] private CachedDataDisplayUI cachedDataDisplay;
+		[SerializeField] private DataPointsManager dataPointsManager;
 
 		private HistorySliderUI historySlider;
 
-		public bool IsActive { get; set; }
+		private bool IsActive { get; set; }
 
 		private DataPoint SelectedDataPoint { get; set; }
 
@@ -24,7 +28,7 @@ namespace Dataskop.UI {
 			historySlider.Hide();
 			cachedDataDisplay.Hide();
 			historySlider.ClearData();
-			cachedDataDisplay.ClearData();
+			historySlider.ClearData();
 			historyUIDocument.rootVisualElement.visible = false;
 		}
 
@@ -33,6 +37,7 @@ namespace Dataskop.UI {
 			historySlider = new HistorySliderUI(historyUIDocument.rootVisualElement.Q<VisualElement>("HistoryContainer"));
 			cachedDataDisplay.Init(historyUIDocument.rootVisualElement.Q<VisualElement>("CachedDataDisplay"));
 			historySlider.SliderValueChanged += OnHistorySliderMoved;
+			cachedDataDisplay.OnFilterRequested += OnFilterRequestSent;
 		}
 
 		public void OnHistoryButtonPressed() {
@@ -45,9 +50,21 @@ namespace Dataskop.UI {
 		}
 
 		public void ShowHistory() {
+
+			if (SelectedDataPoint == null) {
+				MeasurementResult earliest = dataPointsManager.GetEarliestResult();
+				MeasurementResult latest = dataPointsManager.GetLatestResult();
+				cachedDataDisplay.SetGlobalTimeLabels(earliest.Timestamp.ToShortDateString(), latest.Timestamp.ToShortDateString());
+				cachedDataDisplay.SetFilterLabelTexts(earliest.Timestamp.ToShortDateString(), latest.Timestamp.ToShortDateString());
+				cachedDataDisplay.UpdateMinMaxSlider(latest.Timestamp, earliest.Timestamp);
+				cachedDataDisplay.SetLabelPositionsForRange(earliest.Timestamp, latest.Timestamp, latest.Timestamp, earliest.Timestamp);
+				cachedDataDisplay.ClearCacheDisplay();
+			}
+
 			historySlider.Show();
 			cachedDataDisplay.Show();
 			IsActive = true;
+
 		}
 
 		public void HideHistory() {
@@ -62,13 +79,19 @@ namespace Dataskop.UI {
 			historySlider.SetValue(0);
 
 			if (SelectedDataPoint) {
-				cachedDataDisplay.UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.CurrentMeasurementRange);
-				cachedDataDisplay.CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
+				UpdateCachedDataDisplay();
 				historySlider.UpdateTicks(SelectedDataPoint.MeasurementCount);
 				historySlider.SetLimits(0, SelectedDataPoint.MeasurementCount - 1);
 				historySlider.UpdateTimeLabel(SelectedDataPoint.FocusedMeasurement.GetDateText());
 			}
 			else {
+				MeasurementResult earliest = dataPointsManager.GetEarliestResult();
+				MeasurementResult latest = dataPointsManager.GetLatestResult();
+				cachedDataDisplay.SetGlobalTimeLabels(earliest.Timestamp.ToShortDateString(), latest.Timestamp.ToShortDateString());
+				cachedDataDisplay.SetFilterLabelTexts(earliest.Timestamp.ToShortDateString(), latest.Timestamp.ToShortDateString());
+				cachedDataDisplay.UpdateMinMaxSlider(latest.Timestamp, earliest.Timestamp);
+				cachedDataDisplay.SetLabelPositionsForRange(earliest.Timestamp, latest.Timestamp, latest.Timestamp, earliest.Timestamp);
+				cachedDataDisplay.ClearCacheDisplay();
 				cachedDataDisplay.ClearData();
 				historySlider.ClearData();
 			}
@@ -97,6 +120,12 @@ namespace Dataskop.UI {
 
 			if (!IsActive) return;
 
+			if (newAttribute.ID == "all") {
+				IsActive = false;
+				HideHistory();
+				return;
+			}
+
 			historySlider.ClearData();
 			cachedDataDisplay.ClearData();
 		}
@@ -111,8 +140,14 @@ namespace Dataskop.UI {
 			SelectedDataPoint = selectedDataPoint;
 
 			if (SelectedDataPoint == null) {
+				MeasurementResult earliest = dataPointsManager.GetEarliestResult();
+				MeasurementResult latest = dataPointsManager.GetLatestResult();
+				cachedDataDisplay.SetGlobalTimeLabels(earliest.Timestamp.ToShortDateString(), latest.Timestamp.ToShortDateString());
+				cachedDataDisplay.SetFilterLabelTexts(earliest.Timestamp.ToShortDateString(), latest.Timestamp.ToShortDateString());
+				cachedDataDisplay.UpdateMinMaxSlider(latest.Timestamp, earliest.Timestamp);
+				cachedDataDisplay.SetLabelPositionsForRange(earliest.Timestamp, latest.Timestamp, latest.Timestamp, earliest.Timestamp);
+				cachedDataDisplay.ClearCacheDisplay();
 				historySlider.ClearData();
-				cachedDataDisplay.ClearData();
 				return;
 			}
 
@@ -125,8 +160,41 @@ namespace Dataskop.UI {
 			historySlider.SetValue(SelectedDataPoint.FocusedIndex);
 			historySlider.UpdateTicks(newResultsCount);
 			historySlider.UpdateTimeLabel(SelectedDataPoint.FocusedMeasurement.GetDateText());
-			cachedDataDisplay.UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.CurrentMeasurementRange);
-			cachedDataDisplay.CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
+
+			UpdateCachedDataDisplay();
+
+		}
+
+		private void OnFilterRequestSent(TimeRange filter) {
+			dateFilterRequested?.Invoke(filter);
+		}
+
+		private void UpdateCachedDataDisplay() {
+
+			MeasurementResultRange currentRange = SelectedDataPoint.CurrentMeasurementRange;
+			DateTime rangeStartTime = currentRange.GetTimeRange().StartTime;
+			DateTime rangeEndTime = currentRange.GetTimeRange().EndTime;
+			DateTime latestResultTime = SelectedDataPoint.MeasurementDefinition.LatestMeasurementResult.Timestamp;
+			DateTime firstResultTime = SelectedDataPoint.MeasurementDefinition.FirstMeasurementResult.Timestamp;
+
+			cachedDataDisplay.UpdateMinMaxSlider(latestResultTime, firstResultTime);
+			cachedDataDisplay.SetLabelPositionsForRange(rangeStartTime, rangeEndTime, latestResultTime, firstResultTime);
+
+			string startTimeText = ShortTimeStamp(rangeStartTime < firstResultTime ? firstResultTime : rangeStartTime);
+			string endTimeText = ShortTimeStamp(rangeEndTime > latestResultTime ? latestResultTime : rangeEndTime);
+			cachedDataDisplay.SetFilterLabelTexts(startTimeText, endTimeText);
+
+			cachedDataDisplay.SetGlobalTimeLabels(
+				SelectedDataPoint.MeasurementDefinition.FirstMeasurementResult.GetShortDateText(),
+				SelectedDataPoint.MeasurementDefinition.MeasurementResults.First().GetTimeRange().EndTime.ToShortDateString()
+			);
+
+			cachedDataDisplay.ClearCacheDisplay();
+
+			foreach (MeasurementResultRange mrr in SelectedDataPoint.MeasurementDefinition.MeasurementResults) {
+				TimeRange tr = mrr.GetTimeRange();
+				cachedDataDisplay.CreateCacheRect(tr.StartTime, tr.EndTime, latestResultTime);
+			}
 
 		}
 
@@ -139,13 +207,16 @@ namespace Dataskop.UI {
 		}
 
 		private void OnMeasurementRangeChanged() {
-			cachedDataDisplay.CreateCacheRect(SelectedDataPoint.MeasurementDefinition);
-			cachedDataDisplay.UpdateMinMaxSlider(SelectedDataPoint.MeasurementDefinition, SelectedDataPoint.CurrentMeasurementRange);
+			UpdateCachedDataDisplay();
 		}
 
 		private IEnumerator DelayShow() {
 			yield return new WaitForEndOfFrame();
 			ShowHistory();
+		}
+
+		private string ShortTimeStamp(DateTime timeStamp) {
+			return timeStamp.ToString(AppOptions.DateCulture).Remove(6, 13);
 		}
 
 	}
