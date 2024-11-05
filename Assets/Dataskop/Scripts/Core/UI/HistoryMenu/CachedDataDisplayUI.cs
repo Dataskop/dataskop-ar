@@ -6,9 +6,9 @@ namespace Dataskop.UI {
 
 	public class CachedDataDisplayUI : MonoBehaviour {
 
-		[Header("Icons")]
-		[SerializeField] private Sprite hourIcon;
-		[SerializeField] private Sprite daysIcon;
+		public event Action<TimeRange> OnFilterRequested;
+
+		private const int sliderHeight = 580;
 
 		private VisualElement bottomDragger;
 		private VisualElement cachedRangeContainer;
@@ -17,11 +17,14 @@ namespace Dataskop.UI {
 		private Label currentStartRangeLabel;
 		private VisualElement rangeContainer;
 		private MinMaxSlider slider;
-		private int sliderHeight = 580;
 		private Button confirmFilterButton;
 		private VisualElement topDragger;
 		private Label totalEndTimeLabel;
 		private Label totalStartTimeLabel;
+
+		private DateTime earliestDate;
+		private DateTime latestDate;
+		private TimeRange currentFilterRange;
 
 		public void Init(VisualElement container) {
 			cachedRangeContainer = container;
@@ -37,14 +40,18 @@ namespace Dataskop.UI {
 			topDragger = cachedRangeContainer.Q<VisualElement>("unity-thumb-max");
 			bottomDragger = cachedRangeContainer.Q<VisualElement>("unity-thumb-min");
 
+			slider.RegisterCallback<ChangeEvent<Vector2>>(e => {
+				currentFilterRange = GetTimeRangeOfFilter(e.newValue);
+				SetFilterLabelTexts(currentFilterRange.StartTime.ToShortDateString(), currentFilterRange.EndTime.ToShortDateString());
+			});
+
 			topDragger.hierarchy.Add(currentStartRangeLabel);
 			bottomDragger.hierarchy.Add(currentEndRangeLabel);
 
 			cachedRangesDisplay = cachedRangeContainer.Q<VisualElement>("CachedRangesDisplay");
 
 			confirmFilterButton = cachedRangeContainer.Q<Button>("UnitSwitch");
-			confirmFilterButton.RegisterCallback<ClickEvent>(_ => Debug.Log("Pressed Confirm Filter Button"));
-
+			confirmFilterButton.RegisterCallback<ClickEvent>(_ => OnFilterRequested?.Invoke(currentFilterRange));
 		}
 
 		public void Show() {
@@ -66,11 +73,11 @@ namespace Dataskop.UI {
 		}
 
 		public void UpdateMinMaxSlider(DateTime latestResultTime, DateTime firstResultTime) {
-
 			slider.lowLimit = 1;
 			TimeRange overAllRange = new(ClampTimeStamp(firstResultTime), ClampTimeStamp(latestResultTime));
 			slider.highLimit = (int)overAllRange.Span.TotalDays + 1;
-
+			earliestDate = firstResultTime;
+			latestDate = latestResultTime;
 		}
 
 		public void SetLabelPositionsForRange(DateTime rangeStartTime, DateTime rangeEndTime, DateTime latestResultTime,
@@ -82,10 +89,8 @@ namespace Dataskop.UI {
 
 			DateTime clampedStartTime = ClampTimeStamp(rangeStartTime);
 			DateTime clampedEndTime = ClampTimeStamp(rangeEndTime);
-
 			TimeRange cachedData = new(ClampTimeStamp(latestResultTime), clampedStartTime);
 			slider.maxValue = 1 + (int)cachedData.Span.TotalDays + 1;
-
 			TimeRange rangeToLatestResult = new(clampedEndTime, ClampTimeStamp(latestResultTime));
 			slider.minValue = 1 + (int)rangeToLatestResult.Span.TotalDays;
 
@@ -117,7 +122,6 @@ namespace Dataskop.UI {
 			TimeRange timeRangeCurrentRect = new(clampedStartTime, clampedEndTime);
 			TimeRange rangeToLatestResult = new(latestResultTimeStamp, clampedEndTime);
 
-			// Calculate the number of time units (hours or days) for the current rect and full range
 			double rangeInUnits = timeRangeCurrentRect.Span.Days + 1;
 			double unitsToLatestResult = rangeToLatestResult.Span.Days;
 			int numberUnitsCurrentRect = (int)Mathf.Clamp((int)rangeInUnits, 1, highLimit);
@@ -147,6 +151,12 @@ namespace Dataskop.UI {
 			rect.style.width = Math.Clamp(rect.style.width.value.value, 0, 590 - rect.style.left.value.value);
 			cachedRangesDisplay.Add(rect);
 
+		}
+
+		private TimeRange GetTimeRangeOfFilter(Vector2 newValue) {
+			DateTime topDate = earliestDate.Add(new TimeSpan((int)slider.highLimit - (int)newValue.y, 0, 0, 0));
+			DateTime bottomDate = latestDate.Subtract(new TimeSpan((int)newValue.x, 0, 0, 0));
+			return new TimeRange(topDate, bottomDate);
 		}
 
 		private DateTime ClampTimeStamp(DateTime timeStamp) {
