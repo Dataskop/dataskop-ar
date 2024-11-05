@@ -16,12 +16,10 @@ namespace Dataskop.UI {
 		private VisualElement cachedRangesDisplay;
 		private Label currentEndRangeLabel;
 		private Label currentStartRangeLabel;
-		private bool isHourly;
 		private VisualElement rangeContainer;
 		private MinMaxSlider slider;
-		private int sliderHeight;
-		private Button switchUnitsButton;
-		private VisualElement switchUnitsIcon;
+		private int sliderHeight = 580;
+		private Button confirmFilterButton;
 		private VisualElement topDragger;
 		private Label totalEndTimeLabel;
 		private Label totalStartTimeLabel;
@@ -45,16 +43,13 @@ namespace Dataskop.UI {
 
 			cachedRangesDisplay = cachedRangeContainer.Q<VisualElement>("CachedRangesDisplay");
 
-			switchUnitsButton = cachedRangeContainer.Q<Button>("UnitSwitch");
-			switchUnitsButton.RegisterCallback<ClickEvent>(_ => ToggleUnitSwitch());
-
-			switchUnitsIcon = switchUnitsButton.Q<VisualElement>("Icon");
+			confirmFilterButton = cachedRangeContainer.Q<Button>("UnitSwitch");
+			confirmFilterButton.RegisterCallback<ClickEvent>(_ => Debug.Log("Pressed Confirm Filter Button"));
 
 		}
 
 		public void Show() {
 			cachedRangeContainer.visible = true;
-			sliderHeight = 580;
 		}
 
 		public void Hide() {
@@ -71,6 +66,7 @@ namespace Dataskop.UI {
 			slider.maxValue = slider.lowLimit;
 		}
 
+		//TODO: Make it Dataskop Agnostic!
 		public void UpdateMinMaxSlider(MeasurementDefinition def, MeasurementResultRange currentRange) {
 			MeasurementResult firstResult = def.FirstMeasurementResult;
 			MeasurementResult lastResult = def.LatestMeasurementResult;
@@ -80,7 +76,7 @@ namespace Dataskop.UI {
 
 			slider.lowLimit = 1;
 			TimeRange overAllRange = new(ClampTimeStamp(firstResult.Timestamp), ClampTimeStamp(lastResult.Timestamp));
-			slider.highLimit = isHourly ? (int)overAllRange.Span.TotalHours : (int)overAllRange.Span.TotalDays + 1;
+			slider.highLimit = (int)overAllRange.Span.TotalDays + 1;
 
 			if (currentRange.GetTimeRange().EndTime < firstResult.Timestamp ||
 			    currentRange.GetTimeRange().StartTime > lastResult.Timestamp) {
@@ -97,12 +93,10 @@ namespace Dataskop.UI {
 				: currentRange.GetTimeRange().EndTime);
 
 			TimeRange cachedData = new(ClampTimeStamp(lastResult.Timestamp), clampedStartTime);
-			slider.maxValue = isHourly ? (int)cachedData.Span.TotalHours
-				: 1 + (int)cachedData.Span.TotalDays + 1;
+			slider.maxValue = 1 + (int)cachedData.Span.TotalDays + 1;
 
 			TimeRange rangeToLatestResult = new(clampedEndTime, ClampTimeStamp(lastResult.Timestamp));
-			slider.minValue = isHourly ? (int)rangeToLatestResult.Span.TotalHours
-				: 1 + (int)rangeToLatestResult.Span.TotalDays;
+			slider.minValue = 1 + (int)rangeToLatestResult.Span.TotalDays;
 
 		}
 
@@ -129,8 +123,8 @@ namespace Dataskop.UI {
 				TimeRange rangeToLatestResult = new(latestResultTimeStamp, clampedEndTime);
 
 				// Calculate the number of time units (hours or days) for the current rect and full range
-				double rangeInUnits = isHourly ? timeRangeCurrentRect.Span.TotalHours : timeRangeCurrentRect.Span.Days + 1;
-				double unitsToLatestResult = isHourly ? rangeToLatestResult.Span.TotalHours : rangeToLatestResult.Span.Days;
+				double rangeInUnits = timeRangeCurrentRect.Span.Days + 1;
+				double unitsToLatestResult = rangeToLatestResult.Span.Days;
 				int numberUnitsCurrentRect = (int)Mathf.Clamp((int)rangeInUnits, 1, highLimit);
 				float calculatedWidth = Mathf.Round(sliderHeight / highLimit * numberUnitsCurrentRect);
 				float startPosition = 10 + ((int)unitsToLatestResult > 0
@@ -161,18 +155,12 @@ namespace Dataskop.UI {
 			}
 		}
 
-		private void ToggleUnitSwitch() {
-			isHourly = !isHourly;
-			switchUnitsIcon.style.backgroundImage = new StyleBackground(isHourly ? hourIcon : daysIcon);
-		}
-
 		private DateTime ClampTimeStamp(DateTime timeStamp) {
-			return isHourly ? new DateTime(timeStamp.Year, timeStamp.Month, timeStamp.Day, timeStamp.Hour, 0, 0)
-				: new DateTime(timeStamp.Year, timeStamp.Month, timeStamp.Day);
+			return new DateTime(timeStamp.Year, timeStamp.Month, timeStamp.Day);
 		}
 
 		private string ShortTimeStamp(DateTime timeStamp) {
-			return isHourly ? ClampTimeStamp(timeStamp).ToString("dd.MM. HH:mm") : timeStamp.ToString(AppOptions.DateCulture).Remove(6, 13);
+			return timeStamp.ToString(AppOptions.DateCulture).Remove(6, 13);
 		}
 
 	}

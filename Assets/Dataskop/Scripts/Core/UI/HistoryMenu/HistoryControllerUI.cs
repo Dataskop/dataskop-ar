@@ -13,6 +13,7 @@ namespace Dataskop.UI {
 
 		[SerializeField] private UIDocument historyUIDocument;
 		[SerializeField] private CachedDataDisplayUI cachedDataDisplay;
+		[SerializeField] private DataPointsManager dataPointsManager;
 
 		private HistorySliderUI historySlider;
 
@@ -97,6 +98,12 @@ namespace Dataskop.UI {
 
 			if (!IsActive) return;
 
+			if (newAttribute.ID == "all") {
+				IsActive = false;
+				HideHistory();
+				return;
+			}
+
 			historySlider.ClearData();
 			cachedDataDisplay.ClearData();
 		}
@@ -111,6 +118,11 @@ namespace Dataskop.UI {
 			SelectedDataPoint = selectedDataPoint;
 
 			if (SelectedDataPoint == null) {
+
+				//TODO: Get somehow the data of all the MDs and display that.
+				
+				
+				
 				historySlider.ClearData();
 				cachedDataDisplay.ClearData();
 				return;
