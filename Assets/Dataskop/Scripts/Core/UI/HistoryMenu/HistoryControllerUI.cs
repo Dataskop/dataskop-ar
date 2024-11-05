@@ -12,6 +12,7 @@ namespace Dataskop.UI {
 	public class HistoryControllerUI : MonoBehaviour {
 
 		public UnityEvent<int, int> historySliderValueChanged;
+		public UnityEvent<TimeRange> dateFilterRequested;
 
 		[SerializeField] private UIDocument historyUIDocument;
 		[SerializeField] private CachedDataDisplayUI cachedDataDisplay;
@@ -36,6 +37,7 @@ namespace Dataskop.UI {
 			historySlider = new HistorySliderUI(historyUIDocument.rootVisualElement.Q<VisualElement>("HistoryContainer"));
 			cachedDataDisplay.Init(historyUIDocument.rootVisualElement.Q<VisualElement>("CachedDataDisplay"));
 			historySlider.SliderValueChanged += OnHistorySliderMoved;
+			cachedDataDisplay.OnFilterRequested += OnFilterRequestSent;
 		}
 
 		public void OnHistoryButtonPressed() {
@@ -161,6 +163,10 @@ namespace Dataskop.UI {
 
 			UpdateCachedDataDisplay();
 
+		}
+
+		private void OnFilterRequestSent(TimeRange filter) {
+			dateFilterRequested?.Invoke(filter);
 		}
 
 		private void UpdateCachedDataDisplay() {
