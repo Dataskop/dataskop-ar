@@ -1,32 +1,39 @@
-namespace Mapbox.Unity.MeshGeneration.Filters
-{
-	using UnityEngine;
-	using Mapbox.Unity.MeshGeneration.Data;
+namespace Mapbox.Unity.MeshGeneration.Filters {
 
-	public class HeightFilter : FilterBase
-	{
-		public enum HeightFilterOptions
-		{
+	using UnityEngine;
+	using Data;
+
+	public class HeightFilter : FilterBase {
+
+		public enum HeightFilterOptions {
+
 			Above,
 			Below
+
 		}
 
-		public override string Key { get { return "height"; } }
+		public override string Key => "height";
+
 		[SerializeField]
 		private float _height;
 		[SerializeField]
 		private HeightFilterOptions _type;
 
-		public override bool Try(VectorFeatureUnity feature)
-		{
-			var hg = System.Convert.ToSingle(feature.Properties[Key]);
-			if (_type == HeightFilterOptions.Above && hg > _height)
+		public override bool Try(VectorFeatureUnity feature) {
+			float hg = System.Convert.ToSingle(feature.Properties[Key]);
+
+			if (_type == HeightFilterOptions.Above && hg > _height) {
 				return true;
-			if (_type == HeightFilterOptions.Below && hg < _height)
+			}
+
+			if (_type == HeightFilterOptions.Below && hg < _height) {
 				return true;
+			}
 
 			return false;
 
 		}
+
 	}
+
 }

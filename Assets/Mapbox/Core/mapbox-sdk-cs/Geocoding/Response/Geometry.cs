@@ -5,17 +5,19 @@
 //-----------------------------------------------------------------------
 
 namespace Mapbox.Geocoding {
-    using System;
-    using Mapbox.Json;
-    using Mapbox.Utils;
-    using Mapbox.Utils.JsonConverters;
 
-    /// <summary> Point geometry representing location of geocode result. </summary>
+	using System;
+	using Json;
+	using Utils;
+	using Utils.JsonConverters;
+
+	/// <summary> Point geometry representing location of geocode result. </summary>
 #if !WINDOWS_UWP
-    //http://stackoverflow.com/a/12903628
-    [Serializable]
+	//http://stackoverflow.com/a/12903628
+	[Serializable]
 #endif
 	public class Geometry {
+
 		/// <summary>
 		///     Gets or sets type. Geocode results will always be type: point.
 		/// </summary>
@@ -30,5 +32,7 @@ namespace Mapbox.Geocoding {
 		[JsonConverter(typeof(LonLatToVector2dConverter))]
 		[JsonProperty("coordinates")]
 		public Vector2d Coordinates { get; set; }
+
 	}
+
 }

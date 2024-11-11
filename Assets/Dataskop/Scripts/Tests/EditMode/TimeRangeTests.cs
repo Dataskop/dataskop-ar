@@ -125,8 +125,12 @@ namespace Dataskop.EditMode.Tests {
 
 			// Act
 			TimeRange[] foundGaps = TimeRangeExtensions.GetTimeRangeGaps(searchRange, available);
-			bool hasOverlap = foundGaps.Any(gap => available.Any(avail =>
-				gap.StartTime < avail.EndTime && gap.EndTime > avail.StartTime));
+			bool hasOverlap = foundGaps.Any(
+				gap => available.Any(
+					avail =>
+						gap.StartTime < avail.EndTime && gap.EndTime > avail.StartTime
+				)
+			);
 
 			// Assert
 			Assert.That(hasOverlap, Is.False);

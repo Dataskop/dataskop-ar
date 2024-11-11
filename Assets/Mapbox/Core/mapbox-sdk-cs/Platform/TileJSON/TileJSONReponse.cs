@@ -1,13 +1,10 @@
-﻿namespace Mapbox.Platform.TilesetTileJSON
-{
+﻿namespace Mapbox.Platform.TilesetTileJSON {
 
-	using Mapbox.Json;
-	using Mapbox.Utils;
+	using Json;
+	using Utils;
 	using System;
 
-	public class TileJSONResponse
-	{
-
+	public class TileJSONResponse {
 
 		[JsonProperty("attribution")]
 		public string Attribution { get; set; }
@@ -18,10 +15,11 @@
 
 
 		private double[] _bounds;
+
 		[JsonProperty("bounds")]
 		public double[] Bounds
 		{
-			get { return _bounds; }
+			get => _bounds;
 			set
 			{
 				_bounds = value;
@@ -38,10 +36,11 @@
 
 
 		private double[] _center;
+
 		[JsonProperty("center")]
 		public double[] Center
 		{
-			get { return _center; }
+			get => _center;
 			set
 			{
 				_center = value;
@@ -54,20 +53,20 @@
 
 
 		private long? _created;
+
 		/// <summary>Concatenated tilesets don't have a created property </summary>
 		[JsonProperty("created")]
 		public long? Created
 		{
-			get { return _created; }
+			get => _created;
 			set
 			{
 				_created = value;
-				if (_created.HasValue)
-				{
+
+				if (_created.HasValue) {
 					CreatedUtc = UnixTimestampUtils.From(_created.Value);
 				}
-				else
-				{
+				else {
 					CreatedUtc = null;
 				}
 			}
@@ -102,20 +101,20 @@
 
 
 		private long? _modified;
+
 		/// <summary>Unmodified tilesets don't have a modfied property </summary>
 		[JsonProperty("modified")]
 		public long? Modified
 		{
-			get { return _modified; }
+			get => _modified;
 			set
 			{
 				_modified = value;
-				if (_modified.HasValue)
-				{
+
+				if (_modified.HasValue) {
 					ModifiedUtc = UnixTimestampUtils.From(_modified.Value);
 				}
-				else
-				{
+				else {
 					ModifiedUtc = null;
 				}
 			}
@@ -160,6 +159,6 @@
 		[JsonProperty("webpage")]
 		public string WebPage { get; set; }
 
-
 	}
+
 }

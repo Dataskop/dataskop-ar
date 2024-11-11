@@ -1,6 +1,4 @@
-﻿namespace Mapbox.VectorTile.Geometry
-{
-
+﻿namespace Mapbox.VectorTile.Geometry {
 
 	using System;
 
@@ -17,6 +15,5 @@
 		}
 	}
 #endif
-
 
 }

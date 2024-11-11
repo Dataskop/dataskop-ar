@@ -42,11 +42,13 @@ namespace Dataskop.Interaction {
 
 		private void GetImageAsync(ARCameraFrameEventArgs e) {
 
-			if (!ShouldLookForQrCode)
+			if (!ShouldLookForQrCode) {
 				return;
+			}
 
-			if (HasReadQrCode)
+			if (HasReadQrCode) {
 				return;
+			}
 
 			if (Time.frameCount % 60 != 0) {
 				return;
@@ -63,12 +65,15 @@ namespace Dataskop.Interaction {
 
 		private IEnumerator ProcessImage(XRCpuImage image) {
 
-			XRCpuImage.AsyncConversion request = image.ConvertAsync(new XRCpuImage.ConversionParams {
-				inputRect = new RectInt(0, 0, image.width, image.height),
-				outputDimensions = new Vector2Int(image.width / 2, image.height / 2), //downsample by 2 to save resources
-				outputFormat = TextureFormat.RGB24,
-				transformation = XRCpuImage.Transformation.MirrorY
-			});
+			XRCpuImage.AsyncConversion request = image.ConvertAsync(
+				new XRCpuImage.ConversionParams {
+					inputRect = new RectInt(0, 0, image.width, image.height),
+					outputDimensions =
+						new Vector2Int(image.width / 2, image.height / 2), //downsample by 2 to save resources
+					outputFormat = TextureFormat.RGB24,
+					transformation = XRCpuImage.Transformation.MirrorY
+				}
+			);
 
 			while (!request.status.IsDone())
 				yield return null;
@@ -82,15 +87,18 @@ namespace Dataskop.Interaction {
 			// get image data to apply it to the 2D Texture
 			NativeArray<byte> rawData = request.GetData<byte>();
 
-			if (ReadTexture == null)
-				ReadTexture = new Texture2D(request.conversionParams.outputDimensions.x, request.conversionParams.outputDimensions.y,
-					request.conversionParams.outputFormat, false);
+			if (ReadTexture == null) {
+				ReadTexture = new Texture2D(
+					request.conversionParams.outputDimensions.x, request.conversionParams.outputDimensions.y,
+					request.conversionParams.outputFormat, false
+				);
+			}
 
 			ReadTexture.LoadRawTextureData(rawData);
 			ReadTexture.Apply();
 
 			// don't care for the qr code if one has already been read during the wait for the async calls
-			if (!HasReadQrCode)
+			if (!HasReadQrCode) {
 				try {
 					Result result = QrReader.Decode(ReadTexture.GetPixels32(), ReadTexture.width, ReadTexture.height);
 
@@ -105,6 +113,7 @@ namespace Dataskop.Interaction {
 				catch (Exception exception) {
 					Debug.LogError(exception.Message);
 				}
+			}
 
 			request.Dispose();
 

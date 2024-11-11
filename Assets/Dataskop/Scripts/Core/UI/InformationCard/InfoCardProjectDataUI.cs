@@ -30,7 +30,8 @@ namespace Dataskop.UI {
 		internal void UpdateLastUpdatedDisplay(DateTime lastUpdateTime) {
 			lastUpdateTime = lastUpdateTime.ToLocalTime();
 			Label lastUpdatedLabel = ComponentRoot.Q<Label>("LastUpdated");
-			lastUpdatedLabel.text = $"Last Updated: {lastUpdateTime.ToShortDateString()} {lastUpdateTime.ToLongTimeString()}";
+			lastUpdatedLabel.text =
+				$"Last Updated: {lastUpdateTime.ToShortDateString()} {lastUpdateTime.ToLongTimeString()}";
 		}
 
 		internal void UpdateVisibility() {

@@ -1,17 +1,15 @@
-﻿namespace Mapbox.Unity.Map
-{
+﻿namespace Mapbox.Unity.Map {
+
 	using System;
 
-	public static class MapboxDefaultElevation
-	{
-		public static Style GetParameters(ElevationSourceType defaultElevation)
-		{
-			Style defaultStyle = new Style();
-			switch (defaultElevation)
-			{
+	public static class MapboxDefaultElevation {
+
+		public static Style GetParameters(ElevationSourceType defaultElevation) {
+			Style defaultStyle = new();
+
+			switch (defaultElevation) {
 				case ElevationSourceType.MapboxTerrain:
-					defaultStyle = new Style
-					{
+					defaultStyle = new Style {
 						Id = "mapbox.terrain-rgb",
 						Name = "Mapbox Terrain"
 					};
@@ -25,5 +23,7 @@
 
 			return defaultStyle;
 		}
+
 	}
+
 }

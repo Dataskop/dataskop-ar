@@ -97,12 +97,16 @@ namespace Dataskop.UI {
 					ProjectButtons.Add(button);
 					button.text = project.Information.Name;
 
-					button.RegisterCallback<ClickEvent>(_ => {
-						onProjectSelected?.Invoke();
-						dataManager.LoadProject(project.ID);
-					});
+					button.RegisterCallback<ClickEvent>(
+						_ =>
+						{
+							onProjectSelected?.Invoke();
+							dataManager.LoadProject(project.ID);
+						}
+					);
 
-					VisualElement companyProjectsBox = groupOfProjectsTemplateContainer.Q<VisualElement>("company-projects-box");
+					VisualElement companyProjectsBox =
+						groupOfProjectsTemplateContainer.Q<VisualElement>("company-projects-box");
 					companyProjectsBox.Add(projectTemplateContainer);
 				}
 

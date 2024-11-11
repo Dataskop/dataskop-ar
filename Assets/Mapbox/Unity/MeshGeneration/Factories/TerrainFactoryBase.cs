@@ -9,58 +9,48 @@ using Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies;
 using System;
 using System.Collections.Generic;
 
-namespace Mapbox.Unity.MeshGeneration.Factories
-{
-	public class TerrainFactoryBase : AbstractTileFactory
-	{
+namespace Mapbox.Unity.MeshGeneration.Factories {
+
+	public class TerrainFactoryBase : AbstractTileFactory {
+
 		public TerrainStrategy Strategy;
 		[SerializeField]
-		protected ElevationLayerProperties _elevationOptions = new ElevationLayerProperties();
+		protected ElevationLayerProperties _elevationOptions = new();
 		protected TerrainDataFetcher DataFetcher;
 
-		public TerrainDataFetcher GetFetcher()
-		{
+		public TerrainDataFetcher GetFetcher() {
 			return DataFetcher;
 		}
 
-		public ElevationLayerProperties Properties
-		{
-			get
-			{
-				return _elevationOptions;
-			}
-		}
+		public ElevationLayerProperties Properties => _elevationOptions;
 
 		#region UnityMethods
-		private void OnDestroy()
-		{
-			if (DataFetcher != null)
-			{
+
+		private void OnDestroy() {
+			if (DataFetcher != null) {
 				DataFetcher.DataRecieved -= OnTerrainRecieved;
 				DataFetcher.FetchingError -= OnDataError;
 			}
 		}
+
 		#endregion
 
 		#region AbstractFactoryOverrides
-		protected override void OnInitialized()
-		{
+
+		protected override void OnInitialized() {
 			Strategy.Initialize(_elevationOptions);
-			DataFetcher = ScriptableObject.CreateInstance<TerrainDataFetcher>();
+			DataFetcher = CreateInstance<TerrainDataFetcher>();
 			DataFetcher.DataRecieved += OnTerrainRecieved;
 			DataFetcher.FetchingError += OnDataError;
 		}
 
-		public override void SetOptions(LayerProperties options)
-		{
+		public override void SetOptions(LayerProperties options) {
 			_elevationOptions = (ElevationLayerProperties)options;
 			Strategy.Initialize(_elevationOptions);
 		}
 
-		protected override void OnRegistered(UnityTile tile)
-		{
-			if (Properties.sourceType == ElevationSourceType.None)
-			{
+		protected override void OnRegistered(UnityTile tile) {
+			if (Properties.sourceType == ElevationSourceType.None) {
 				tile.SetHeightData(null);
 				tile.MeshFilter.sharedMesh.Clear();
 				tile.ElevationType = TileTerrainType.None;
@@ -68,19 +58,16 @@ namespace Mapbox.Unity.MeshGeneration.Factories
 				return;
 			}
 
-			if (Strategy is IElevationBasedTerrainStrategy)
-			{
+			if (Strategy is IElevationBasedTerrainStrategy) {
 				tile.HeightDataState = TilePropertyState.Loading;
-				TerrainDataFetcherParameters parameters = new TerrainDataFetcherParameters()
-				{
+				TerrainDataFetcherParameters parameters = new() {
 					canonicalTileId = tile.CanonicalTileId,
 					tilesetId = _elevationOptions.sourceOptions.Id,
 					tile = tile
 				};
 				DataFetcher.FetchData(parameters);
 			}
-			else
-			{
+			else {
 				//reseting height data
 				tile.SetHeightData(null);
 				Strategy.RegisterTile(tile);
@@ -88,66 +75,64 @@ namespace Mapbox.Unity.MeshGeneration.Factories
 			}
 		}
 
-		protected override void OnUnregistered(UnityTile tile)
-		{
-			if (_tilesWaitingResponse != null && _tilesWaitingResponse.Contains(tile))
-			{
+		protected override void OnUnregistered(UnityTile tile) {
+			if (_tilesWaitingResponse != null && _tilesWaitingResponse.Contains(tile)) {
 				_tilesWaitingResponse.Remove(tile);
 			}
+
 			Strategy.UnregisterTile(tile);
 		}
 
-		public override void Clear()
-		{
+		public override void Clear() {
 			DestroyImmediate(DataFetcher);
 		}
 
-		protected override void OnPostProcess(UnityTile tile)
-		{
+		protected override void OnPostProcess(UnityTile tile) {
 			Strategy.PostProcessTile(tile);
 		}
 
-		public override void UnbindEvents()
-		{
+		public override void UnbindEvents() {
 			base.UnbindEvents();
 		}
 
-		protected override void OnUnbindEvents()
-		{
+		protected override void OnUnbindEvents() {
 		}
+
 		#endregion
 
 		#region DataFetcherEvents
-		private void OnTerrainRecieved(UnityTile tile, RawPngRasterTile pngRasterTile)
-		{
-			if (tile != null)
-			{
+
+		private void OnTerrainRecieved(UnityTile tile, RawPngRasterTile pngRasterTile) {
+			if (tile != null) {
 				_tilesWaitingResponse.Remove(tile);
 
-				if (tile.HeightDataState != TilePropertyState.Unregistered)
-				{
-					tile.SetHeightData(pngRasterTile.Data, _elevationOptions.requiredOptions.exaggerationFactor, _elevationOptions.modificationOptions.useRelativeHeight, _elevationOptions.colliderOptions.addCollider);
+				if (tile.HeightDataState != TilePropertyState.Unregistered) {
+					tile.SetHeightData(
+						pngRasterTile.Data, _elevationOptions.requiredOptions.exaggerationFactor,
+						_elevationOptions.modificationOptions.useRelativeHeight,
+						_elevationOptions.colliderOptions.addCollider
+					);
 					Strategy.RegisterTile(tile);
 				}
-
 
 			}
 		}
 
-		private void OnDataError(UnityTile tile, RawPngRasterTile rawTile, TileErrorEventArgs e)
-		{
+		private void OnDataError(UnityTile tile, RawPngRasterTile rawTile, TileErrorEventArgs e) {
 			base.OnErrorOccurred(tile, e);
-			if (tile != null)
-			{
+
+			if (tile != null) {
 				_tilesWaitingResponse.Remove(tile);
-				if (tile.HeightDataState != TilePropertyState.Unregistered)
-				{
+
+				if (tile.HeightDataState != TilePropertyState.Unregistered) {
 					Strategy.DataErrorOccurred(tile, e);
 					tile.HeightDataState = TilePropertyState.Error;
 				}
 			}
 		}
+
 		#endregion
 
 	}
+
 }

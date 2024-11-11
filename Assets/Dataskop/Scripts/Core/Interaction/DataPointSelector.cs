@@ -27,9 +27,11 @@ namespace Dataskop.Interaction {
 		/// <summary>
 		/// The DataPoint which got selected with a tap.
 		/// </summary>
-		private DataPoint? SelectedDataPoint {
+		private DataPoint? SelectedDataPoint
+		{
 			get => selectedDataPoint;
-			set {
+			set
+			{
 				selectedDataPoint = value;
 				onDataPointSelected?.Invoke(SelectedDataPoint);
 			}
@@ -40,9 +42,11 @@ namespace Dataskop.Interaction {
 		/// <summary>
 		/// The DataPoint which got selected with the reticule.
 		/// </summary>
-		private DataPoint? HoveredDataPoint {
+		private DataPoint? HoveredDataPoint
+		{
 			get => hoveredDataPoint;
-			set {
+			set
+			{
 				hoveredDataPoint = value;
 
 				if (SelectedDataPoint == null) {

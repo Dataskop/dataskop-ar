@@ -1,9 +1,7 @@
-﻿namespace Mapbox.Unity.Map
-{
-	public interface ISubLayerFantasyStyle : ISubLayerStyle
-	{
+﻿namespace Mapbox.Unity.Map {
+
+	public interface ISubLayerFantasyStyle : ISubLayerStyle {
+
 	}
 
 }
-
-

@@ -47,9 +47,7 @@ namespace Dataskop.UI {
 
 			CalibratorButton = CalibratorRoot.Q<Button>("CalibratorButton");
 
-			CalibratorButton.RegisterCallback<ClickEvent>(e => {
-				Calibrator.OnCalibratorContinued();
-			});
+			CalibratorButton.RegisterCallback<ClickEvent>(e => { Calibrator.OnCalibratorContinued(); });
 
 			ProgressIndicatorContainer = CalibratorRoot.Q<VisualElement>("ProgressIndicatorContainer");
 
@@ -61,13 +59,12 @@ namespace Dataskop.UI {
 		}
 
 		private void OnDisable() {
-			CalibratorButton.UnregisterCallback<ClickEvent>(e => {
-				Calibrator.OnCalibratorContinued();
-			});
+			CalibratorButton.UnregisterCallback<ClickEvent>(e => { Calibrator.OnCalibratorContinued(); });
 		}
 
 		public void SetVisibility(bool isVisible) {
-			CalibratorRoot.style.visibility = new StyleEnum<Visibility>(isVisible ? Visibility.Visible : Visibility.Hidden);
+			CalibratorRoot.style.visibility =
+				new StyleEnum<Visibility>(isVisible ? Visibility.Visible : Visibility.Hidden);
 		}
 
 		public void OnCalibratorPhaseChanged(CalibratorPhase currentPhase) {
@@ -146,12 +143,14 @@ namespace Dataskop.UI {
 
 		public void SetButtonEnabledStatus(bool isEnabled) {
 			CalibratorButton.visible = isEnabled;
-			CalibratorButton.style.display = new StyleEnum<DisplayStyle>(isEnabled ? DisplayStyle.Flex : DisplayStyle.None);
+			CalibratorButton.style.display =
+				new StyleEnum<DisplayStyle>(isEnabled ? DisplayStyle.Flex : DisplayStyle.None);
 		}
 
 		private void SetProgressIndicatorStatus(bool isEnabled) {
 			ProgressIndicatorContainer.visible = isEnabled;
-			ProgressIndicatorContainer.style.display = new StyleEnum<DisplayStyle>(isEnabled ? DisplayStyle.Flex : DisplayStyle.None);
+			ProgressIndicatorContainer.style.display =
+				new StyleEnum<DisplayStyle>(isEnabled ? DisplayStyle.Flex : DisplayStyle.None);
 		}
 
 		private void SetPhaseText(CalibratorPhase phase) {
@@ -169,7 +168,8 @@ namespace Dataskop.UI {
 		}
 
 		public void OnNorthRotationSampleReceived(int currentSamples, int maxSamples) {
-			NorthAlignmentProgressBar.style.scale = new Scale(new Vector2(MathExtensions.Map01(currentSamples, 0, maxSamples), 1));
+			NorthAlignmentProgressBar.style.scale =
+				new Scale(new Vector2(MathExtensions.Map01(currentSamples, 0, maxSamples), 1));
 		}
 
 	}

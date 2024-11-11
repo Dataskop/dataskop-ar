@@ -22,18 +22,23 @@ namespace Dataskop.Entities.Visualizations {
 			idTextMesh.text = displayData.Result.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper();
 
 			switch (displayData.Type) {
-				case MeasurementType.Float: {
+				case MeasurementType.Float:
+				{
 					float receivedValue = displayData.Result.ReadAsFloat();
 					valueTextMesh.alpha = 1;
-					valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) + $" {displayData.Attribute.Unit}";
+					valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) +
+					                     $" {displayData.Attribute.Unit}";
 					dateTextMesh.text = displayData.Result.GetDateText();
-					minValueTextMesh.text = displayData.Attribute.Minimum.ToString("00.00", CultureInfo.InvariantCulture) +
-					                        $" {displayData.Attribute.Unit}";
-					maxValueTextMesh.text = displayData.Attribute.Maximum.ToString("00.00", CultureInfo.InvariantCulture) +
-					                        $" {displayData.Attribute.Unit}";
+					minValueTextMesh.text =
+						displayData.Attribute.Minimum.ToString("00.00", CultureInfo.InvariantCulture) +
+						$" {displayData.Attribute.Unit}";
+					maxValueTextMesh.text =
+						displayData.Attribute.Maximum.ToString("00.00", CultureInfo.InvariantCulture) +
+						$" {displayData.Attribute.Unit}";
 					break;
 				}
-				case MeasurementType.Bool: {
+				case MeasurementType.Bool:
+				{
 					valueTextMesh.alpha = 1;
 					valueTextMesh.text = displayData.Result.ReadAsBool().ToString();
 					dateTextMesh.text = displayData.Result.GetDateText();

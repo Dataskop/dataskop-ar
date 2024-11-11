@@ -22,11 +22,13 @@ namespace Dataskop.Data {
 				return companies;
 			}
 			catch {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = "Could not fetch companies!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = "Could not fetch companies!",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 
 				return null;
 			}
@@ -44,11 +46,13 @@ namespace Dataskop.Data {
 			}
 			catch {
 
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = $"Could not fetch measurement definitions of company: {company.ID}",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = $"Could not fetch measurement definitions of company: {company.ID}",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 
 				return null;
 			}
@@ -75,9 +79,11 @@ namespace Dataskop.Data {
 					if (foundDevice == null) {
 
 						string deviceId = measurementDefinition.DeviceId;
-						Device newDevice = new(deviceId, $"Device_{deviceId}", new List<MeasurementDefinition> {
-							measurementDefinition
-						});
+						Device newDevice = new(
+							deviceId, $"Device_{deviceId}", new List<MeasurementDefinition> {
+								measurementDefinition
+							}
+						);
 
 						devices.Add(newDevice);
 					}
@@ -86,15 +92,18 @@ namespace Dataskop.Data {
 					}
 
 				}
+
 				return devices;
 			}
 			catch {
 
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = $"Could not fetch measurement definitions of project: {project.ID}",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = $"Could not fetch measurement definitions of project: {project.ID}",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 
 				return null;
 
@@ -115,7 +124,8 @@ namespace Dataskop.Data {
 			string response = await GetResponse(url);
 
 			try {
-				MeasurementResultsResponse resultsResponse = JsonConvert.DeserializeObject<MeasurementResultsResponse>(response);
+				MeasurementResultsResponse resultsResponse =
+					JsonConvert.DeserializeObject<MeasurementResultsResponse>(response);
 				MeasurementResultRange measurementResults = resultsResponse?.MeasurementResults;
 
 				foreach (MeasurementResult mr in measurementResults!) {
@@ -126,11 +136,13 @@ namespace Dataskop.Data {
 
 			}
 			catch {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = $"Could not fetch measurement results for definition: {measurementDefinition.ID}!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = $"Could not fetch measurement results for definition: {measurementDefinition.ID}!",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 				return null;
 			}
 
@@ -142,16 +154,19 @@ namespace Dataskop.Data {
 			string response = await GetResponse(url);
 
 			try {
-				MeasurementResultsResponse resultsResponse = JsonConvert.DeserializeObject<MeasurementResultsResponse>(response);
+				MeasurementResultsResponse resultsResponse =
+					JsonConvert.DeserializeObject<MeasurementResultsResponse>(response);
 				MeasurementResult measurementResult = resultsResponse?.MeasurementResults.FirstOrDefault();
 				return measurementResult;
 			}
 			catch {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = $"Could not fetch measurement results for definition: {measurementDefinition.ID}!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = $"Could not fetch measurement results for definition: {measurementDefinition.ID}!",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 				return null;
 			}
 
@@ -163,15 +178,18 @@ namespace Dataskop.Data {
 			string response = await GetResponse(url);
 
 			try {
-				MeasurementResultsResponse resultsResponse = JsonConvert.DeserializeObject<MeasurementResultsResponse>(response);
+				MeasurementResultsResponse resultsResponse =
+					JsonConvert.DeserializeObject<MeasurementResultsResponse>(response);
 				return resultsResponse.Count;
 			}
 			catch {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = $"Could not fetch measurement results for definition: {measurementDefinition.ID}!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = $"Could not fetch measurement results for definition: {measurementDefinition.ID}!",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 				return null;
 			}
 
@@ -189,9 +207,7 @@ namespace Dataskop.Data {
 			request.SetRequestHeader("Authorization", UserData.Instance.Token!);
 			UnityWebRequestAsyncOperation operation = request.SendWebRequest();
 
-			while (!operation.isDone) {
-				await Task.Yield();
-			}
+			while (!operation.isDone) await Task.Yield();
 
 			if (request.result == UnityWebRequest.Result.Success) {
 				return request.downloadHandler.text;
@@ -203,38 +219,46 @@ namespace Dataskop.Data {
 		}
 
 		private void HandleClientOffline() {
-			NotificationHandler.Add(new Notification {
-				Category = NotificationCategory.Error,
-				Text = "You are offline. Make sure you are connected to the internet and try again.",
-				DisplayDuration = NotificationDuration.Medium
-			});
+			NotificationHandler.Add(
+				new Notification {
+					Category = NotificationCategory.Error,
+					Text = "You are offline. Make sure you are connected to the internet and try again.",
+					DisplayDuration = NotificationDuration.Medium
+				}
+			);
 		}
 
 		private void HandleWebRequestErrors(UnityWebRequest request) {
 
 			if (request.result == UnityWebRequest.Result.ConnectionError) {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = "No connection to the server.",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = "No connection to the server.",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 				return;
 			}
 
 			if (request.result == UnityWebRequest.Result.ProtocolError) {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = request.responseCode == 401 ? "Your access token is invalid." : "No data available.",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = request.responseCode == 401 ? "Your access token is invalid." : "No data available.",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 				return;
 			}
 
-			NotificationHandler.Add(new Notification {
-				Category = NotificationCategory.Error,
-				Text = "An unexpected error occurred.",
-				DisplayDuration = NotificationDuration.Medium
-			});
+			NotificationHandler.Add(
+				new Notification {
+					Category = NotificationCategory.Error,
+					Text = "An unexpected error occurred.",
+					DisplayDuration = NotificationDuration.Medium
+				}
+			);
 
 		}
 

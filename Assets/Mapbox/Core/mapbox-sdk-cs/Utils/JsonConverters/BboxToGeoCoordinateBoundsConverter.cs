@@ -4,33 +4,30 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Utils.JsonConverters
-{
+namespace Mapbox.Utils.JsonConverters {
+
 	using System;
-	using Mapbox.Json;
-	using Mapbox.Json.Converters;
-	using Mapbox.Json.Linq;
+	using Json;
+	using Json.Converters;
+	using Json.Linq;
 
 	/// <summary>
 	/// Bbox to geo coordinate bounds converter.
 	/// </summary>
-	public class BboxToVector2dBoundsConverter : CustomCreationConverter<Vector2dBounds>
-	{
+	public class BboxToVector2dBoundsConverter : CustomCreationConverter<Vector2dBounds> {
+
 		/// <summary>
 		/// Gets a value indicating whether this <see cref="T:Mapbox.BboxToVector2dBoundsConverter"/> can write.
 		/// </summary>
 		/// <value><c>true</c> if can write; otherwise, <c>false</c>.</value>
-		public override bool CanWrite {
-			get { return true; }
-		}
+		public override bool CanWrite => true;
 
 		/// <summary>
 		/// Create the specified objectType.
 		/// </summary>
 		/// <param name="objectType">Object type.</param>
 		/// <returns>A <see cref="Vector2dBounds"/>.</returns>
-		public override Vector2dBounds Create(Type objectType)
-		{
+		public override Vector2dBounds Create(Type objectType) {
 			throw new NotImplementedException();
 		}
 
@@ -40,11 +37,11 @@ namespace Mapbox.Utils.JsonConverters
 		/// <param name="objectType">Object type.</param>
 		/// <param name="val">J array.</param>
 		/// <returns>A <see cref="Vector2dBounds"/>.</returns>
-		public Vector2dBounds Create(Type objectType, JArray val)
-		{
+		public Vector2dBounds Create(Type objectType, JArray val) {
 			return new Vector2dBounds(
 				new Vector2d((double)val[0], (double)val[1]),
-				new Vector2d((double)val[2], (double)val[3]));
+				new Vector2d((double)val[2], (double)val[3])
+			);
 		}
 
 		/// <summary>
@@ -55,8 +52,8 @@ namespace Mapbox.Utils.JsonConverters
 		/// <param name="objectType">Object type.</param>
 		/// <param name="existingValue">Existing value.</param>
 		/// <param name="serializer">A <see cref="JsonSerializer"/>.</param>
-		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-		{
+		public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+			JsonSerializer serializer) {
 			JArray bbox = JArray.Load(reader);
 
 			return Create(objectType, bbox);
@@ -68,13 +65,14 @@ namespace Mapbox.Utils.JsonConverters
 		/// <param name="writer">A <see cref="JsonWriter"/>.</param>
 		/// <param name="value">The value to serialize.</param>
 		/// <param name="serializer">A <see cref="JsonSerializer"/>.</param>
-		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-		{
-			var val = (Vector2dBounds)value;
+		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
+			Vector2dBounds val = (Vector2dBounds)value;
 
 			// TODO: This is not working correctly, and setting "bbox: [0,0,0,0]" to Vector2d properties for some reason. 
 			System.Diagnostics.Debug.WriteLine(val);
 			serializer.Serialize(writer, val.ToArray());
 		}
+
 	}
+
 }

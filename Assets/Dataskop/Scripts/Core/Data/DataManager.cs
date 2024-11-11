@@ -30,7 +30,8 @@ namespace Dataskop.Data {
 
 		public Project SelectedProject { get; private set; }
 
-		private int FetchAmount {
+		private int FetchAmount
+		{
 			get => fetchAmount;
 			set => fetchAmount = value;
 		}
@@ -67,11 +68,13 @@ namespace Dataskop.Data {
 
 			if (!AccountManager.IsLoggedIn) {
 
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = "You are not logged in! Logout and enter a valid Token!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = "You are not logged in! Logout and enter a valid Token!",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 
 				return;
 			}
@@ -80,11 +83,13 @@ namespace Dataskop.Data {
 
 			if (UserData.Instance.Token == null) {
 
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = "Token was empty! Logout and enter a valid Token!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = "Token was empty! Logout and enter a valid Token!",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 
 				return;
 
@@ -104,11 +109,13 @@ namespace Dataskop.Data {
 
 			if (Companies == null || Companies.Count == 0) {
 
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = "No Companies available!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = "No Companies available!",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 
 				LoadingIndicator.Hide();
 				return;
@@ -141,11 +148,13 @@ namespace Dataskop.Data {
 			SelectedProject = GetAvailableProjects(Companies).FirstOrDefault(project => project.ID == projectId);
 
 			if (SelectedProject == null) {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = $"No Project with ID {projectId} found!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = $"No Project with ID {projectId} found!",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 
 				LoadingIndicator.Hide();
 				return;
@@ -154,11 +163,13 @@ namespace Dataskop.Data {
 			SelectedProject.Devices = await RequestHandler.GetDevices(SelectedProject);
 
 			if (SelectedProject.Devices?.Count == 0) {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Warning,
-					Text = $"No Devices found in Project {SelectedProject.ID}!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Warning,
+						Text = $"No Devices found in Project {SelectedProject.ID}!",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 
 				LoadingIndicator.Hide();
 				OnProjectDataLoaded(SelectedProject);
@@ -172,12 +183,19 @@ namespace Dataskop.Data {
 				device.Attributes = SelectedProject.Properties.Attributes.ToArray();
 			}
 
-			availableAttributes.Insert(0,
-				new DataAttribute("all", "All", "", "continuous", "", "",
+			availableAttributes.Insert(
+				0,
+				new DataAttribute(
+					"all", "All", "", "continuous", "", "",
 					new[] {
 						new VisualizationOption("radialBar", new VisualizationStyle(false, false, false))
-					}));
-			SelectedProject.Properties = new AdditionalProperties(availableAttributes, SelectedProject.Properties.IsDemo);
+					}
+				)
+			);
+
+			SelectedProject.Properties = new AdditionalProperties(
+				availableAttributes, SelectedProject.Properties.IsDemo
+			);
 
 			LoadingIndicator.Hide();
 			await GetInitialProjectMeasurements();
@@ -204,11 +222,13 @@ namespace Dataskop.Data {
 				return;
 			}
 
-			NotificationHandler.Add(new Notification {
-				Category = NotificationCategory.Check,
-				Text = "Project Code scanned!",
-				DisplayDuration = NotificationDuration.Flash
-			});
+			NotificationHandler.Add(
+				new Notification {
+					Category = NotificationCategory.Check,
+					Text = "Project Code scanned!",
+					DisplayDuration = NotificationDuration.Flash
+				}
+			);
 
 			if (!LoadingIndicator.IsLoading) {
 				LoadingIndicator.Show();
@@ -219,22 +239,28 @@ namespace Dataskop.Data {
 				.FirstOrDefault(project => project.Information.Name == projectName);
 
 			if (SelectedProject != null) {
+
 				if (AppOptions.DemoMode && !SelectedProject.Properties.IsDemo) {
-					NotificationHandler.Add(new Notification {
-						Category = NotificationCategory.Error,
-						Text = $"Can not load '{projectName}'! Project is not a demo project.",
-						DisplayDuration = NotificationDuration.Medium
-					});
+					NotificationHandler.Add(
+						new Notification {
+							Category = NotificationCategory.Error,
+							Text = $"Can not load '{projectName}'! Project is not a demo project.",
+							DisplayDuration = NotificationDuration.Medium
+						}
+					);
 					LoadingIndicator.Hide();
 					return;
 				}
+
 			}
 			else {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = $"No Project with name '{projectName}' found!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = $"No Project with name '{projectName}' found!",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 
 				LoadingIndicator.Hide();
 				return;
@@ -243,11 +269,13 @@ namespace Dataskop.Data {
 			SelectedProject.Devices = await RequestHandler.GetDevices(SelectedProject);
 
 			if (SelectedProject.Devices?.Count == 0) {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Warning,
-					Text = $"No Devices found in Project {SelectedProject.ID}!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Warning,
+						Text = $"No Devices found in Project {SelectedProject.ID}!",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 
 				OnProjectDataLoaded(SelectedProject);
 				return;
@@ -285,11 +313,13 @@ namespace Dataskop.Data {
 			HasLoadedProjectData?.Invoke(selectedProject);
 			projectLoaded?.Invoke(selectedProject);
 
-			NotificationHandler.Add(new Notification {
-				Category = NotificationCategory.Check,
-				Text = "Project loaded!",
-				DisplayDuration = NotificationDuration.Short
-			});
+			NotificationHandler.Add(
+				new Notification {
+					Category = NotificationCategory.Check,
+					Text = "Project loaded!",
+					DisplayDuration = NotificationDuration.Short
+				}
+			);
 
 			ShouldRefetch = true;
 			FetchTimer = new Stopwatch();
@@ -307,8 +337,11 @@ namespace Dataskop.Data {
 					md.FirstMeasurementResult = await RequestHandler.GetFirstMeasurementResult(md);
 					int? count = await RequestHandler.GetCount(md);
 					md.TotalMeasurements = count ?? -1;
-					MeasurementResultRange newResults = await RequestHandler.GetMeasurementResults(md, FetchAmount, null, null);
-					md.AddMeasurementResultRange(newResults, new TimeRange(newResults.Last().Timestamp, newResults.First().Timestamp));
+					MeasurementResultRange newResults =
+						await RequestHandler.GetMeasurementResults(md, FetchAmount, null, null);
+					md.AddMeasurementResultRange(
+						newResults, new TimeRange(newResults.Last().Timestamp, newResults.First().Timestamp)
+					);
 				}
 			}
 
@@ -325,7 +358,9 @@ namespace Dataskop.Data {
 					MeasurementResult latestResult = md.LatestMeasurementResult;
 
 					MeasurementResultRange newResults =
-						await RequestHandler.GetMeasurementResults(md, FetchAmount, latestResult.Timestamp, DateTime.Now);
+						await RequestHandler.GetMeasurementResults(
+							md, FetchAmount, latestResult.Timestamp, DateTime.Now
+						);
 
 					if (newResults == null || !newResults.SkipLast(1).Any()) {
 						continue;
@@ -358,7 +393,9 @@ namespace Dataskop.Data {
 
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
-					TimeRange[] missingRanges = TimeRangeExtensions.GetTimeRangeGaps(timeRange, md.GetAvailableTimeRanges());
+					TimeRange[] missingRanges = TimeRangeExtensions.GetTimeRangeGaps(
+						timeRange, md.GetAvailableTimeRanges()
+					);
 
 					if (missingRanges.Length < 1) {
 						continue;
@@ -375,8 +412,10 @@ namespace Dataskop.Data {
 							destroyCancellationToken.ThrowIfCancellationRequested();
 
 							MeasurementResultRange results =
-								await RequestHandler.GetMeasurementResults(md, fetchingCount, dynamicStartTime,
-									dynamicEndTime);
+								await RequestHandler.GetMeasurementResults(
+									md, fetchingCount, dynamicStartTime,
+									dynamicEndTime
+								);
 
 							if (results.Count > 0 && results.Count < fetchingCount) {
 								md.AddMeasurementResultRange(results, new TimeRange(dynamicStartTime, dynamicEndTime));
@@ -404,10 +443,13 @@ namespace Dataskop.Data {
 					}
 
 					Debug.Log($"Result Ranges in {md.DeviceId} - {md.AttributeId} ({md.ID}):");
+
 					foreach (MeasurementResultRange m in md.MeasurementResults) {
 						Debug.Log(
-							$"from {m.GetTimeRange().StartTime} to {m.GetTimeRange().EndTime} with {m.Count} results");
+							$"from {m.GetTimeRange().StartTime} to {m.GetTimeRange().EndTime} with {m.Count} results"
+						);
 					}
+
 					Debug.Log(" ----- ");
 
 				}
@@ -425,6 +467,7 @@ namespace Dataskop.Data {
 					OnRefetchTimerElapsed();
 					FetchTimer?.Restart();
 				}
+
 				await Task.Yield();
 			}
 		}

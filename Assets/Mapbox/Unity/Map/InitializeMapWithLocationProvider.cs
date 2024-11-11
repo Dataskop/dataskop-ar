@@ -1,15 +1,14 @@
 ﻿namespace Mapbox.Unity.Map {
 
 	using System.Collections;
-	using Mapbox.Unity.Location;
+	using Location;
 	using UnityEngine;
 
 	public class InitializeMapWithLocationProvider : MonoBehaviour {
 
-		[SerializeField]
-		AbstractMap _map;
+		[SerializeField] private AbstractMap _map;
 
-		ILocationProvider _locationProvider;
+		private ILocationProvider _locationProvider;
 
 		private void Awake() {
 			// Prevent double initialization of the map. 
@@ -22,7 +21,7 @@
 			_locationProvider.OnLocationUpdated += LocationProvider_OnLocationUpdated;
 		}
 
-		void LocationProvider_OnLocationUpdated(Unity.Location.Location location) {
+		private void LocationProvider_OnLocationUpdated(Location location) {
 			_locationProvider.OnLocationUpdated -= LocationProvider_OnLocationUpdated;
 			_map.Initialize(location.LatitudeLongitude, _map.AbsoluteZoom);
 		}

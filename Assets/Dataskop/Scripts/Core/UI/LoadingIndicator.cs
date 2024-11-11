@@ -23,27 +23,45 @@ namespace Dataskop.UI {
 
 		private void FixedUpdate() {
 
-			if (!IsLoading) return;
+			if (!IsLoading) {
+				return;
+			}
 
 			rotation += rotationSpeed * Time.fixedDeltaTime;
 
-			if (rotation >= 360) rotation = 0;
+			if (rotation >= 360) {
+				rotation = 0;
+			}
 
 			indicator.style.rotate = new StyleRotate(new Rotate(new Angle(rotation)));
 		}
 
 		public void Show() {
-			if (indicator == null) return;
-			if (loadingIndicatorUiDocument == null) return;
+			if (indicator == null) {
+				return;
+			}
+
+			if (loadingIndicatorUiDocument == null) {
+				return;
+			}
+
 			IsLoading = true;
-			loadingIndicatorUiDocument.rootVisualElement.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
+			loadingIndicatorUiDocument.rootVisualElement.style.visibility =
+				new StyleEnum<Visibility>(Visibility.Visible);
 		}
 
 		public void Hide() {
-			if (indicator == null) return;
-			if (loadingIndicatorUiDocument == null) return;
+			if (indicator == null) {
+				return;
+			}
+
+			if (loadingIndicatorUiDocument == null) {
+				return;
+			}
+
 			IsLoading = false;
-			loadingIndicatorUiDocument.rootVisualElement.style.visibility = new StyleEnum<Visibility>(Visibility.Hidden);
+			loadingIndicatorUiDocument.rootVisualElement.style.visibility =
+				new StyleEnum<Visibility>(Visibility.Hidden);
 		}
 
 	}

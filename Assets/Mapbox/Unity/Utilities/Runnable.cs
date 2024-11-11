@@ -18,155 +18,173 @@
 // Uncomment to enable debugging of the Runnable class.
 //#define ENABLE_RUNNABLE_DEBUGGING
 
-namespace Mapbox.Unity.Utilities
-{
-    using UnityEngine;
-    using System.Collections;
-    using System.Collections.Generic;
+namespace Mapbox.Unity.Utilities {
 
-    /// <summary>
-    /// Helper class for running co-routines without having to inherit from MonoBehavior.
-    /// </summary>
-    public class Runnable : MonoBehaviour
-    {
-        #region Public Properties
-        /// <summary>
-        /// Returns the Runnable instance.
-        /// </summary>
-        public static Runnable Instance { get { return Singleton<Runnable>.Instance; } }
-        #endregion
+	using UnityEngine;
+	using System.Collections;
+	using System.Collections.Generic;
 
-        #region Public Interface
-        /// <summary>
-        /// Start a co-routine function.
-        /// </summary>
-        /// <param name="routine">The IEnumerator returns by the co-routine function the user is invoking.</param>
-        /// <returns>Returns a ID that can be passed into Stop() to halt the co-routine.</returns>
-        public static int Run(IEnumerator routine)
-        {
-            Routine r = new Routine(routine);
-            return r.ID;
-        }
+	/// <summary>
+	/// Helper class for running co-routines without having to inherit from MonoBehavior.
+	/// </summary>
+	public class Runnable : MonoBehaviour {
 
-        /// <summary>
-        /// Stops a active co-routine.
-        /// </summary>
-        /// <param name="ID">THe ID of the co-routine to stop.</param>
-        public static void Stop(int ID)
-        {
-            Routine r = null;
-            if (Instance.m_Routines.TryGetValue(ID, out r))
-                r.Stop = true;
-        }
+		#region Public Properties
 
-        /// <summary>
-        /// Check if a routine is still running.
-        /// </summary>
-        /// <param name="id">The ID returned by Run().</param>
-        /// <returns>Returns true if the routine is still active.</returns>
-        static public bool IsRunning(int id)
-        {
-            return Instance.m_Routines.ContainsKey(id);
-        }
+		/// <summary>
+		/// Returns the Runnable instance.
+		/// </summary>
+		public static Runnable Instance => Singleton<Runnable>.Instance;
+
+		#endregion
+
+		#region Public Interface
+
+		/// <summary>
+		/// Start a co-routine function.
+		/// </summary>
+		/// <param name="routine">The IEnumerator returns by the co-routine function the user is invoking.</param>
+		/// <returns>Returns a ID that can be passed into Stop() to halt the co-routine.</returns>
+		public static int Run(IEnumerator routine) {
+			Routine r = new(routine);
+			return r.ID;
+		}
+
+		/// <summary>
+		/// Stops a active co-routine.
+		/// </summary>
+		/// <param name="ID">THe ID of the co-routine to stop.</param>
+		public static void Stop(int ID) {
+			Routine r = null;
+
+			if (Instance.m_Routines.TryGetValue(ID, out r)) {
+				r.Stop = true;
+			}
+		}
+
+		/// <summary>
+		/// Check if a routine is still running.
+		/// </summary>
+		/// <param name="id">The ID returned by Run().</param>
+		/// <returns>Returns true if the routine is still active.</returns>
+		public static bool IsRunning(int id) {
+			return Instance.m_Routines.ContainsKey(id);
+		}
 
 #if UNITY_EDITOR
-        private static bool sm_EditorRunnable = false;
+		private static bool sm_EditorRunnable = false;
 
-        /// <summary>
-        /// This function enables the Runnable in edit mode.
-        /// </summary>
-        public static void EnableRunnableInEditor()
-        {
-            if (!sm_EditorRunnable)
-            {
-                sm_EditorRunnable = true;
-                UnityEditor.EditorApplication.update += UpdateRunnable;
-            }
-        }
-        static void UpdateRunnable()
-        {
-            if (!Application.isPlaying)
-            {
-                Instance.UpdateRoutines();
-            }
-        }
+		/// <summary>
+		/// This function enables the Runnable in edit mode.
+		/// </summary>
+		public static void EnableRunnableInEditor() {
+			if (!sm_EditorRunnable) {
+				sm_EditorRunnable = true;
+				UnityEditor.EditorApplication.update += UpdateRunnable;
+			}
+		}
+
+		private static void UpdateRunnable() {
+			if (!Application.isPlaying) {
+				Instance.UpdateRoutines();
+			}
+		}
 
 #endif
-        #endregion
 
-        #region Private Types
-        /// <summary>
-        /// This class handles a running co-routine.
-        /// </summary>
-        private class Routine : IEnumerator
-        {
-            #region Public Properties
-            public int ID { get; private set; }
-            public bool Stop { get; set; }
-            #endregion
+		#endregion
 
-            #region Private Data
-            private bool m_bMoveNext = false;
-            private IEnumerator m_Enumerator = null;
-            #endregion
+		#region Private Types
 
-            public Routine(IEnumerator a_enumerator)
-            {
-                m_Enumerator = a_enumerator;
-                Runnable.Instance.StartCoroutine(this);
-                Stop = false;
-                ID = Runnable.Instance.m_NextRoutineId++;
+		/// <summary>
+		/// This class handles a running co-routine.
+		/// </summary>
+		private class Routine : IEnumerator {
 
-                Runnable.Instance.m_Routines[ID] = this;
+			#region Public Properties
+
+			public int ID { get; private set; }
+
+			public bool Stop { get; set; }
+
+			#endregion
+
+			#region Private Data
+
+			private bool m_bMoveNext = false;
+			private IEnumerator m_Enumerator = null;
+
+			#endregion
+
+			public Routine(IEnumerator a_enumerator) {
+				m_Enumerator = a_enumerator;
+				Instance.StartCoroutine(this);
+				Stop = false;
+				ID = Instance.m_NextRoutineId++;
+
+				Instance.m_Routines[ID] = this;
 #if ENABLE_RUNNABLE_DEBUGGING
-                Debug.Log( string.Format("Coroutine {0} started.", ID ) ); 
+                Debug.Log( string.Format("Coroutine {0} started.", ID ) );
 #endif
-            }
+			}
 
-            #region IEnumerator Interface
-            public object Current { get { return m_Enumerator.Current; } }
-            public bool MoveNext()
-            {
-                m_bMoveNext = m_Enumerator.MoveNext();
-                if (m_bMoveNext && Stop)
-                    m_bMoveNext = false;
+			#region IEnumerator Interface
 
-                if (!m_bMoveNext)
-                {
-                    Runnable.Instance.m_Routines.Remove(ID);      // remove from the mapping
+			public object Current => m_Enumerator.Current;
+
+			public bool MoveNext() {
+				m_bMoveNext = m_Enumerator.MoveNext();
+
+				if (m_bMoveNext && Stop) {
+					m_bMoveNext = false;
+				}
+
+				if (!m_bMoveNext) {
+					Instance.m_Routines.Remove(ID); // remove from the mapping
 #if ENABLE_RUNNABLE_DEBUGGING
                     Debug.Log( string.Format("Coroutine {0} stopped.", ID ) );
 #endif
-                }
+				}
 
-                return m_bMoveNext;
-            }
-            public void Reset() { m_Enumerator.Reset(); }
-            #endregion
-        }
-        #endregion
+				return m_bMoveNext;
+			}
 
-        #region Private Data
-        private Dictionary<int, Routine> m_Routines = new Dictionary<int, Routine>();
-        private int m_NextRoutineId = 1;
-        #endregion
+			public void Reset() {
+				m_Enumerator.Reset();
+			}
 
-        /// <summary>
-        /// THis can be called by the user to force all co-routines to get a time slice, this is usually
-        /// invoked from an EditorApplication.Update callback so we can use runnable in Editor mode.
-        /// </summary>
-        public void UpdateRoutines()
-        {
-            if (m_Routines.Count > 0)
-            {
-                // we are not in play mode, so we must manually update our co-routines ourselves
-                List<Routine> routines = new List<Routine>();
-                foreach (var kp in m_Routines)
-                    routines.Add(kp.Value);
+			#endregion
 
-                foreach (var r in routines)
-                    r.MoveNext();
-            }
-        }
-    }
+		}
+
+		#endregion
+
+		#region Private Data
+
+		private Dictionary<int, Routine> m_Routines = new();
+		private int m_NextRoutineId = 1;
+
+		#endregion
+
+		/// <summary>
+		/// THis can be called by the user to force all co-routines to get a time slice, this is usually
+		/// invoked from an EditorApplication.Update callback so we can use runnable in Editor mode.
+		/// </summary>
+		public void UpdateRoutines() {
+			if (m_Routines.Count > 0) {
+				// we are not in play mode, so we must manually update our co-routines ourselves
+				List<Routine> routines = new();
+
+				foreach (KeyValuePair<int, Routine> kp in m_Routines) {
+					routines.Add(kp.Value);
+				}
+
+				foreach (Routine r in routines) {
+					r.MoveNext();
+				}
+			}
+		}
+
+	}
+
 }

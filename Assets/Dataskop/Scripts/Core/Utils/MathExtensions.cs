@@ -11,7 +11,9 @@ namespace Dataskop.Utils {
 
 			(b * Quaternion.Inverse(a)).ToAngleAxis(out float angle, out Vector3 angleAxis);
 
-			if (Vector3.Angle(axis, angleAxis) > 90f) angle = -angle;
+			if (Vector3.Angle(axis, angleAxis) > 90f) {
+				angle = -angle;
+			}
 
 			return Mathf.DeltaAngle(0f, angle);
 

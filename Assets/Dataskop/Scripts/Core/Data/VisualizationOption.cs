@@ -14,10 +14,7 @@ namespace Dataskop.Data {
 		public VisualizationOption(string type, VisualizationStyle style) {
 
 			string[] acceptedTypes = {
-				"dot",
-				"bubble",
-				"bar",
-				"radialBar"
+				"dot", "bubble", "bar", "radialBar"
 			};
 
 			if (!acceptedTypes.Contains(type)) {

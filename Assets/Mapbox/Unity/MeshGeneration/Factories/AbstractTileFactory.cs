@@ -1,10 +1,10 @@
-namespace Mapbox.Unity.MeshGeneration.Factories
-{
-	using Mapbox.Platform;
-	using Mapbox.Unity.MeshGeneration.Data;
+namespace Mapbox.Unity.MeshGeneration.Factories {
+
+	using Platform;
+	using Data;
 	using System;
 	using UnityEngine;
-	using Mapbox.Unity.Map;
+	using Map;
 	using Mapbox.Map;
 	using System.Collections.Generic;
 
@@ -30,67 +30,56 @@ namespace Mapbox.Unity.MeshGeneration.Factories
 	/// and apply height data on that. By creating a custom terrain factory, you can have a custom mesh instead of a grid,
 	/// optimize and minimize vertex count etc.
 	/// </summary>
-	public abstract class AbstractTileFactory : ScriptableObject
-	{
+	public abstract class AbstractTileFactory : ScriptableObject {
+
 		protected IFileSource _fileSource;
 
 		protected LayerProperties _options;
 
-		public LayerProperties Options
-		{
-			get { return _options; }
-		}
+		public LayerProperties Options => _options;
 
 		protected HashSet<UnityTile> _tilesWaitingResponse;
 		protected HashSet<UnityTile> _tilesWaitingProcessing;
 
-		public virtual void SetOptions(LayerProperties options)
-		{
+		public virtual void SetOptions(LayerProperties options) {
 			_options = options;
 		}
 
-		protected virtual void OnErrorOccurred(UnityTile tile, TileErrorEventArgs e)
-		{
+		protected virtual void OnErrorOccurred(UnityTile tile, TileErrorEventArgs e) {
 			EventHandler<TileErrorEventArgs> handler = OnTileError;
-			if (handler != null)
-			{
+
+			if (handler != null) {
 				handler(this, e);
 			}
 		}
 
-		public virtual void Initialize(IFileSource fileSource)
-		{
+		public virtual void Initialize(IFileSource fileSource) {
 			_fileSource = fileSource;
 			_tilesWaitingResponse = new HashSet<UnityTile>();
 			_tilesWaitingProcessing = new HashSet<UnityTile>();
 			OnInitialized();
 		}
 
-		public virtual void Register(UnityTile tile)
-		{
+		public virtual void Register(UnityTile tile) {
 			OnRegistered(tile);
 		}
 
-		public virtual void PostProcess(UnityTile tile)
-		{
+		public virtual void PostProcess(UnityTile tile) {
 			OnPostProcess(tile);
 		}
-		public virtual void Unregister(UnityTile tile)
-		{
+
+		public virtual void Unregister(UnityTile tile) {
 			OnUnregistered(tile);
 		}
 
-		public virtual void UnbindEvents()
-		{
+		public virtual void UnbindEvents() {
 			OnUnbindEvents();
 		}
 
-		public virtual void UpdateTileProperty(UnityTile tile, LayerUpdateArgs updateArgs)
-		{
+		public virtual void UpdateTileProperty(UnityTile tile, LayerUpdateArgs updateArgs) {
 			updateArgs.property.UpdateProperty(tile);
 
-			if (updateArgs.property.NeedsForceUpdate())
-			{
+			if (updateArgs.property.NeedsForceUpdate()) {
 				Register(tile);
 			}
 		}
@@ -103,30 +92,33 @@ namespace Mapbox.Unity.MeshGeneration.Factories
 		protected abstract void OnUnbindEvents();
 
 		#region Events
+
 		public event EventHandler<TileErrorEventArgs> OnTileError;
-		protected virtual void OnErrorOccurred(TileErrorEventArgs e)
-		{
+
+		protected virtual void OnErrorOccurred(TileErrorEventArgs e) {
 			EventHandler<TileErrorEventArgs> handler = OnTileError;
-			if (handler != null)
-			{
+
+			if (handler != null) {
 				handler(this, e);
 			}
 		}
 
 		public event EventHandler TileFactoryHasChanged;
-		protected virtual void UpdateTileFactory(object sender, System.EventArgs args)
-		{
-			System.EventHandler handler = TileFactoryHasChanged;
-			if (handler != null)
-			{
+
+		protected virtual void UpdateTileFactory(object sender, EventArgs args) {
+			EventHandler handler = TileFactoryHasChanged;
+
+			if (handler != null) {
 				handler(this, args);
 			}
 		}
+
 		#endregion
 
-		public virtual void Clear()
-		{
+		public virtual void Clear() {
 
 		}
+
 	}
+
 }

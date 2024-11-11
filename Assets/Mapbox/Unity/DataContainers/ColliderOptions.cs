@@ -1,20 +1,14 @@
 ﻿using Mapbox.Unity.SourceLayers;
 
-namespace Mapbox.Unity.Map
-{
-	using Mapbox.Unity.MeshGeneration.Modifiers;
+namespace Mapbox.Unity.Map {
+
+	using MeshGeneration.Modifiers;
 	using System;
 
 	[Serializable]
-	public class ColliderOptions : ModifierProperties, ISubLayerColliderOptions
-	{
-		public override Type ModifierType
-		{
-			get
-			{
-				return typeof(ColliderModifier);
-			}
-		}
+	public class ColliderOptions : ModifierProperties, ISubLayerColliderOptions {
+
+		public override Type ModifierType => typeof(ColliderModifier);
 
 		public ColliderType colliderType = ColliderType.None;
 
@@ -22,13 +16,13 @@ namespace Mapbox.Unity.Map
 		/// Enable/Disable feature colliders and sets the type of colliders to use.
 		/// </summary>
 		/// <param name="colliderType">Type of the collider to use on features.</param>
-		public virtual void SetFeatureCollider(ColliderType colType)
-		{
-			if (colliderType != colType)
-			{
+		public virtual void SetFeatureCollider(ColliderType colType) {
+			if (colliderType != colType) {
 				colliderType = colType;
 				HasChanged = true;
 			}
 		}
+
 	}
+
 }

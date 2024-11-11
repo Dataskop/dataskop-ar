@@ -1,17 +1,17 @@
-namespace Mapbox.Unity.Location
-{
+namespace Mapbox.Unity.Location {
+
 	using System;
-	using Mapbox.Unity.Utilities;
-	using Mapbox.Utils;
+	using Utilities;
+	using Utils;
 	using UnityEngine;
-	using Mapbox.Unity.Map;
+	using Map;
 
 	/// <summary>
 	/// The EditorLocationProvider is responsible for providing mock location and heading data
 	/// for testing purposes in the Unity editor.
 	/// </summary>
-	public class EditorLocationProvider : AbstractEditorLocationProvider
-	{
+	public class EditorLocationProvider : AbstractEditorLocationProvider {
+
 		/// <summary>
 		/// The mock "latitude, longitude" location, respresented with a string.
 		/// You can search for a place using the embedded "Search" button in the inspector.
@@ -19,26 +19,23 @@ namespace Mapbox.Unity.Location
 		/// </summary>
 		[SerializeField]
 		[Geocode]
-		string _latitudeLongitude;
+		private string _latitudeLongitude;
 
 		/// <summary>
 		/// The transform that will be queried for location and heading data & ADDED to the mock latitude/longitude
 		/// Can be changed at runtime to simulate moving within the map.
 		/// </summary>
-		[SerializeField]
-		Transform _targetTransform;
+		[SerializeField] private Transform _targetTransform;
 
-		AbstractMap _map;
+		private AbstractMap _map;
 
-		bool _mapInitialized;
+		private bool _mapInitialized;
 
 #if UNITY_EDITOR
-		protected virtual void Start()
-		{
+		protected virtual void Start() {
 			LocationProviderFactory.Instance.mapManager.OnInitialized += Map_OnInitialized;
 
-			if (_targetTransform == null)
-			{
+			if (_targetTransform == null) {
 				_targetTransform = transform;
 			}
 
@@ -46,21 +43,19 @@ namespace Mapbox.Unity.Location
 		}
 #endif
 
-		void Map_OnInitialized()
-		{
+		private void Map_OnInitialized() {
 			LocationProviderFactory.Instance.mapManager.OnInitialized -= Map_OnInitialized;
 			_mapInitialized = true;
 			_map = LocationProviderFactory.Instance.mapManager;
 		}
 
-		Vector2d LatitudeLongitude
+		private Vector2d LatitudeLongitude
 		{
 			get
 			{
-				if (_mapInitialized)
-				{
-					var startingLatLong = Conversions.StringToLatLon(_latitudeLongitude);
-					var position = Conversions.GeoToWorldPosition(
+				if (_mapInitialized) {
+					Vector2d startingLatLong = Conversions.StringToLatLon(_latitudeLongitude);
+					Vector3 position = Conversions.GeoToWorldPosition(
 						startingLatLong,
 						_map.CenterMercator,
 						_map.WorldRelativeScale
@@ -73,8 +68,7 @@ namespace Mapbox.Unity.Location
 			}
 		}
 
-		protected override void SetLocation()
-		{
+		protected override void SetLocation() {
 			_currentLocation.UserHeading = _targetTransform.eulerAngles.y;
 			_currentLocation.LatitudeLongitude = LatitudeLongitude;
 			_currentLocation.Accuracy = _accuracy;
@@ -83,5 +77,7 @@ namespace Mapbox.Unity.Location
 			_currentLocation.IsUserHeadingUpdated = true;
 			_currentLocation.IsLocationServiceEnabled = true;
 		}
+
 	}
+
 }

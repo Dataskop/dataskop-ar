@@ -1,8 +1,8 @@
-namespace Mapbox.Unity.MeshGeneration
-{
+namespace Mapbox.Unity.MeshGeneration {
+
 	using UnityEngine;
 	using KDTree;
-	using Mapbox.Unity.MeshGeneration.Data;
+	using Data;
 	using System;
 
 	/// <summary>
@@ -11,28 +11,26 @@ namespace Mapbox.Unity.MeshGeneration
 	/// KdTree structures focus on search performance so querying for features will be very fast using this collection. On the other
 	/// hand it's not good for dynamic/moving entities but we don't have such features on map so it's one of the best options for maps.
 	/// </summary>
-
 	[CreateAssetMenu(menuName = "Mapbox/Feature Collections/Kd Tree Collection")]
-	public class KdTreeCollection : FeatureCollectionBase
-	{
+	public class KdTreeCollection : FeatureCollectionBase {
+
 		private KDTree<VectorEntity> _entities;
 		public int Count;
 
-		public override void Initialize()
-		{
+		public override void Initialize() {
 			base.Initialize();
-			_entities = new KDTree.KDTree<VectorEntity>(2);
+			_entities = new KDTree<VectorEntity>(2);
 		}
 
-		public override void AddFeature(double[] position, VectorEntity ve)
-		{
+		public override void AddFeature(double[] position, VectorEntity ve) {
 			_entities.AddPoint(position, ve);
 			Count = _entities.Size;
 		}
 
-		public NearestNeighbour<VectorEntity> NearestNeighbors(double[] v, int maxCount, float range)
-		{
+		public NearestNeighbour<VectorEntity> NearestNeighbors(double[] v, int maxCount, float range) {
 			return _entities.NearestNeighbors(v, maxCount, range);
 		}
+
 	}
+
 }

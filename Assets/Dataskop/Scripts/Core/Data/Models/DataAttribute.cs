@@ -39,11 +39,7 @@ namespace Dataskop.Data {
 			}
 
 			string[] acceptedTypes = {
-				"nominal",
-				"binary",
-				"ordinal",
-				"discrete",
-				"continuous"
+				"nominal", "binary", "ordinal", "discrete", "continuous"
 			};
 
 			if (!acceptedTypes.Contains(attributeType)) {

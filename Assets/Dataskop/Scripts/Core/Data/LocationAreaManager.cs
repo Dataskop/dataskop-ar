@@ -51,8 +51,9 @@ namespace Dataskop.Data {
 					LocationName = data.locationName
 				};
 
-				foreach (string point in area.boundaryPoints)
+				foreach (string point in area.boundaryPoints) {
 					locArea.LatLonShapePoints.Add(Conversions.StringToLatLon(point));
+				}
 
 				LocationAreas.Add(locArea);
 			}
@@ -63,8 +64,9 @@ namespace Dataskop.Data {
 
 			foreach (LocationArea area in LocationAreas) {
 
-				if (!GPSExtensions.IsCoordinateInPolygon(userLocation.LatitudeLongitude, area.LatLonShapePoints))
+				if (!GPSExtensions.IsCoordinateInPolygon(userLocation.LatitudeLongitude, area.LatLonShapePoints)) {
 					continue;
+				}
 
 				lastLocatedArea = area;
 				userAreaLocated?.Invoke(lastLocatedArea);
@@ -72,8 +74,9 @@ namespace Dataskop.Data {
 
 			}
 
-			if (lastLocatedArea == null)
+			if (lastLocatedArea == null) {
 				return;
+			}
 
 			lastLocatedArea = null;
 			userAreaLocated?.Invoke(lastLocatedArea);

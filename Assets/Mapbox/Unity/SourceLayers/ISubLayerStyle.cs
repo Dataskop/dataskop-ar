@@ -1,10 +1,9 @@
-﻿namespace Mapbox.Unity.Map
-{
-	public interface ISubLayerStyle
-	{
+﻿namespace Mapbox.Unity.Map {
+
+	public interface ISubLayerStyle {
+
 		void SetAsStyle();
+
 	}
 
 }
-
-

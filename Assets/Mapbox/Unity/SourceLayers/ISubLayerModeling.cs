@@ -1,14 +1,17 @@
 ﻿using Mapbox.Unity.Map;
 
-namespace Mapbox.Unity.SourceLayers
-{
-	public interface ISubLayerModeling
-	{
+namespace Mapbox.Unity.SourceLayers {
+
+	public interface ISubLayerModeling {
+
 		ISubLayerCoreOptions CoreOptions { get; }
+
 		ISubLayerExtrusionOptions ExtrusionOptions { get; }
+
 		ISubLayerColliderOptions ColliderOptions { get; }
+
 		ISubLayerLineGeometryOptions LineOptions { get; }
-		
+
 		/// <summary>
 		/// Enable terrain snapping for features which sets vertices to terrain
 		/// elevation before extrusion.
@@ -22,5 +25,7 @@ namespace Mapbox.Unity.SourceLayers
 		/// </summary>
 		/// <param name="isEnabled"></param>
 		void EnableCombiningMeshes(bool isEnabled);
+
 	}
+
 }

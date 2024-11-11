@@ -38,10 +38,12 @@ namespace Dataskop.UI {
 
 		private Label VersionLabel { get; set; }
 
-		private string Token {
+		private string Token
+		{
 			get => token;
 
-			set {
+			set
+			{
 				token = value;
 				TokenTextField.value = token;
 			}
@@ -56,10 +58,11 @@ namespace Dataskop.UI {
 #if UNITY_IOS
 			yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
 #elif UNITY_ANDROID
-			Permission.RequestUserPermissions(new[] {
-				Permission.Camera,
-				Permission.FineLocation
-			});
+			Permission.RequestUserPermissions(
+				new[] {
+					Permission.Camera, Permission.FineLocation
+				}
+			);
 			yield return Permission.HasUserAuthorizedPermission(Permission.Camera);
 #else
 			yield break;
@@ -72,12 +75,15 @@ namespace Dataskop.UI {
 			Container = mainMenuUIDoc.rootVisualElement.Q<VisualElement>("container");
 			CloseButton = mainMenuUIDoc.rootVisualElement.Q<Button>("closeButton");
 
-			Container.Q<Button>("btnScan").RegisterCallback<ClickEvent>(_ => {
-				ToggleElement(CloseButton, true);
-				ToggleElement(Container, false);
-				ToggleCamera(true);
-				qrReader.SetQrScanStatus(true);
-			});
+			Container.Q<Button>("btnScan").RegisterCallback<ClickEvent>(
+				_ =>
+				{
+					ToggleElement(CloseButton, true);
+					ToggleElement(Container, false);
+					ToggleCamera(true);
+					qrReader.SetQrScanStatus(true);
+				}
+			);
 
 			Container.Q<Button>("btnDemo")
 				.RegisterCallback<ClickEvent>(_ => { OnDemoButtonPressed(); });
@@ -86,9 +92,7 @@ namespace Dataskop.UI {
 				.RegisterCallback<ClickEvent>(_ => { OnLoginButtonPressed(); });
 
 			DemoUserButton = Container.Q<Button>("demoUserButton");
-			DemoUserButton.RegisterCallback<ClickEvent>(_ => {
-				TokenTextField.value = defaultToken;
-			});
+			DemoUserButton.RegisterCallback<ClickEvent>(_ => { TokenTextField.value = defaultToken; });
 
 			TokenTextField = Container.Q<TextField>("txtAPISecret");
 			defaultToken = TokenTextField.value;
@@ -100,12 +104,15 @@ namespace Dataskop.UI {
 			VersionLabel = Container.Q<Label>("footerCopyright");
 			VersionLabel.text = Version.ID + " ©FHSTP (2022-2024)";
 
-			CloseButton.RegisterCallback<ClickEvent>(_ => {
-				qrReader.SetQrScanStatus(false);
-				ToggleCamera(false);
-				ToggleElement(CloseButton, false);
-				ToggleElement(Container, true);
-			});
+			CloseButton.RegisterCallback<ClickEvent>(
+				_ =>
+				{
+					qrReader.SetQrScanStatus(false);
+					ToggleCamera(false);
+					ToggleElement(CloseButton, false);
+					ToggleElement(Container, true);
+				}
+			);
 
 			AppOptions.DemoMode = false;
 		}
@@ -127,11 +134,13 @@ namespace Dataskop.UI {
 
 			Token = result.Code;
 
-			NotificationHandler.Add(new Notification {
-				Category = NotificationCategory.Check,
-				Text = "Scanned QR successfully!",
-				DisplayDuration = NotificationDuration.Short
-			});
+			NotificationHandler.Add(
+				new Notification {
+					Category = NotificationCategory.Check,
+					Text = "Scanned QR successfully!",
+					DisplayDuration = NotificationDuration.Short
+				}
+			);
 
 		}
 
@@ -142,11 +151,13 @@ namespace Dataskop.UI {
 				loginButtonPressed?.Invoke(Token);
 			}
 			else {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = "No token entered!",
-					DisplayDuration = NotificationDuration.Short
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = "No token entered!",
+						DisplayDuration = NotificationDuration.Short
+					}
+				);
 			}
 
 		}
@@ -160,11 +171,13 @@ namespace Dataskop.UI {
 				SceneHandler.LoadScene("World");
 			}
 			else {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = "The provided token is not valid!",
-					DisplayDuration = NotificationDuration.Short
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = "The provided token is not valid!",
+						DisplayDuration = NotificationDuration.Short
+					}
+				);
 			}
 
 		}
@@ -175,11 +188,13 @@ namespace Dataskop.UI {
 				Token = TokenTextField.value;
 			}
 			else {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = "Please enter a Demo Token!",
-					DisplayDuration = NotificationDuration.Short
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = "Please enter a Demo Token!",
+						DisplayDuration = NotificationDuration.Short
+					}
+				);
 			}
 
 			AppOptions.DemoMode = true;

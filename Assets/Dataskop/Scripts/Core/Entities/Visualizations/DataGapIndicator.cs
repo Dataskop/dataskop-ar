@@ -14,8 +14,10 @@ namespace Dataskop.Entities.Visualizations {
 				GameObject seg = Instantiate(lineSegment, transform);
 				seg.GetComponent<RectTransform>().SetLocalPositionAndRotation(
 					new Vector3(0 - width / 2 - gap / 2 + (segmentWidth + gap) * i, 0, 0),
-					Quaternion.identity);
-				seg.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, segmentWidth);
+					Quaternion.identity
+				);
+				seg.GetComponent<RectTransform>()
+					.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, segmentWidth);
 			}
 		}
 

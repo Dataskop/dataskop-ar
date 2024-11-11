@@ -18,9 +18,10 @@ namespace Dataskop {
 			list = newList.ToList();
 		}
 
-#region IList<MeasurementResult> Members
+		#region IList<MeasurementResult> Members
 
-		public MeasurementResult this[int index] {
+		public MeasurementResult this[int index]
+		{
 			get => list[index];
 			set => list[index] = value;
 		}
@@ -69,7 +70,7 @@ namespace Dataskop {
 			list.RemoveAt(index);
 		}
 
-#endregion
+		#endregion
 
 		public TimeRange GetTimeRange() {
 			return new TimeRange(StartTime, EndTime);

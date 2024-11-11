@@ -1,15 +1,18 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <Style src="project://database/Assets/Dataskop/UIComponents/SettingsMenu/SettingsMenuStyles.uss?fileID=7433441132597879392&amp;guid=3ea82a0a9c67db041b4dad349eb75bbd&amp;type=3#SettingsMenuStyles" />
+    <Style src="project://database/Assets/Dataskop/UIComponents/SettingsMenu/SettingsMenuStyles.uss?fileID=7433441132597879392&amp;guid=3ea82a0a9c67db041b4dad349eb75bbd&amp;type=3#SettingsMenuStyles"/>
     <ui:VisualElement name="DatePicker" style="flex-grow: 1; width: 100%; align-items: center; justify-content: flex-start; flex-direction: column;">
-        <ui:VisualElement name="DateFromContainer" class="option-container" style="flex-direction: row; justify-content: space-between; display: flex; width: 100%;">
-            <ui:Label text="Date: from" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" style="margin-right: 20px;" />
-            <ui:TextField name="DateInputFrom" max-length="19" class="text-input" style="justify-content: flex-start;" />
+        <ui:VisualElement name="DateFromContainer" class="option-container"
+                          style="flex-direction: row; justify-content: space-between; display: flex; width: 100%;">
+            <ui:Label text="Date: from" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" style="margin-right: 20px;"/>
+            <ui:TextField name="DateInputFrom" max-length="19" class="text-input" style="justify-content: flex-start;"/>
         </ui:VisualElement>
-        <ui:VisualElement name="DateToContainer" class="option-container" style="justify-content: space-between; flex-direction: row; display: flex; width: 100%;">
-            <ui:Label text="Date: to" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" style="margin-right: 20px;" />
-            <ui:TextField name="DateInputTo" max-length="19" class="text-input" style="flex-wrap: nowrap; white-space: nowrap; text-overflow: clip; -unity-text-align: middle-left;" />
+        <ui:VisualElement name="DateToContainer" class="option-container"
+                          style="justify-content: space-between; flex-direction: row; display: flex; width: 100%;">
+            <ui:Label text="Date: to" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" style="margin-right: 20px;"/>
+            <ui:TextField name="DateInputTo" max-length="19" class="text-input"
+                          style="flex-wrap: nowrap; white-space: nowrap; text-overflow: clip; -unity-text-align: middle-left;"/>
         </ui:VisualElement>
-        <ui:Button text="Filter" parse-escape-sequences="true" display-tooltip-when-elided="true" name="DateFilterButton" class="option-button" />
-        <ui:VisualElement name="Splitter" class="splitter" />
+        <ui:Button text="Filter" parse-escape-sequences="true" display-tooltip-when-elided="true" name="DateFilterButton" class="option-button"/>
+        <ui:VisualElement name="Splitter" class="splitter"/>
     </ui:VisualElement>
 </ui:UXML>

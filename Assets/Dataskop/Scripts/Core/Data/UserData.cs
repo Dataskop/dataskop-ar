@@ -8,8 +8,6 @@ namespace Dataskop.Data {
 
 		public static UserData Instance { get; } = new();
 
-		private UserData() { }
-
 	}
 
 }

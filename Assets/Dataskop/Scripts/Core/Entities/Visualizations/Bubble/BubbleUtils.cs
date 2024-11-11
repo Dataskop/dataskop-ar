@@ -4,7 +4,7 @@ namespace Dataskop.Entities.Visualizations {
 
 	public static class BubbleUtils {
 
-		const float PI = Mathf.PI;
+		private const float PI = Mathf.PI;
 
 		/// <summary>
 		/// Calculates the area based on a given value and maps it to a new radius based on it.
@@ -15,7 +15,8 @@ namespace Dataskop.Entities.Visualizations {
 		/// <param name="minRadius">The lower radius limit of the </param>
 		/// <param name="maxRadius">The upper limit of the calculated radius</param>
 		/// <returns>Radius</returns>
-		public static float CalculateRadius(float value, float minValue, float maxValue, float minRadius, float maxRadius) {
+		public static float CalculateRadius(float value, float minValue, float maxValue, float minRadius,
+			float maxRadius) {
 			value = Mathf.Clamp(value, minValue, maxValue);
 
 			float minArea = PI * minRadius * minRadius;

@@ -82,12 +82,14 @@ namespace Dataskop.UI {
 				RequestConfirmation(foundRange);
 			}
 			else {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = "Please enter valid start and end dates.",
-					DisplayDuration = NotificationDuration.Flash,
-					UniqueID = null
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = "Please enter valid start and end dates.",
+						DisplayDuration = NotificationDuration.Flash,
+						UniqueID = null
+					}
+				);
 			}
 
 		}

@@ -1,8 +1,6 @@
-namespace Mapbox.Unity.Location
-{
+namespace Mapbox.Unity.Location {
 
-
-	using Mapbox.Utils;
+	using Utils;
 	using System;
 	using UnityEngine;
 
@@ -10,18 +8,17 @@ namespace Mapbox.Unity.Location
 	/// <summary>
 	/// Base class for implementing different smoothing strategies
 	/// </summary>
-	public abstract class AngleSmoothingAbstractBase : MonoBehaviour, IAngleSmoothing
-	{
-
+	public abstract class AngleSmoothingAbstractBase : MonoBehaviour, IAngleSmoothing {
 
 		[SerializeField]
-		[Tooltip("Number of measurements used for smoothing. Keep that number as low as feasible as collection of measurements depends on update time of location provider (minimum 500ms). eg 6 smoothes over the last 3 seconds.")]
+		[Tooltip(
+			"Number of measurements used for smoothing. Keep that number as low as feasible as collection of measurements depends on update time of location provider (minimum 500ms). eg 6 smoothes over the last 3 seconds."
+		)]
 		[Range(5, 20)]
 		public int _measurements = 5;
 
 
-		public AngleSmoothingAbstractBase()
-		{
+		public AngleSmoothingAbstractBase() {
 			_angles = new CircularBuffer<double>(_measurements);
 		}
 
@@ -48,8 +45,7 @@ namespace Mapbox.Unity.Location
 		/// Add angle to list of angles used for calculation.
 		/// </summary>
 		/// <param name="angle"></param>
-		public void Add(double angle)
-		{
+		public void Add(double angle) {
 			// safe measures to stay within [0..<360]
 			angle = angle < 0 ? angle + 360 : angle >= 360 ? angle - 360 : angle;
 			_angles.Add(angle);
@@ -64,14 +60,12 @@ namespace Mapbox.Unity.Location
 
 
 		[System.Diagnostics.Conditional("UNITY_EDITOR")]
-		protected void debugLogAngle(double raw, double smoothed)
-		{
+		protected void debugLogAngle(double raw, double smoothed) {
 			double debugAngle = Math.Atan2(Math.Sin(smoothed * DEG2RAD), Math.Cos(smoothed * DEG2RAD)) * RAD2DEG;
 			debugAngle = debugAngle < 0 ? debugAngle + 360 : debugAngle >= 360 ? debugAngle - 360 : debugAngle;
 			Debug.Log(string.Format("{0:0.000} => {1:0.000}", raw, smoothed));
 		}
 
-
-
 	}
+
 }

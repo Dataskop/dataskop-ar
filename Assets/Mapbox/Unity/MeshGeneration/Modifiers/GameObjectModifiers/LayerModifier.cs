@@ -1,18 +1,19 @@
-namespace Mapbox.Unity.MeshGeneration.Modifiers
-{
-    using UnityEngine;
-    using Mapbox.Unity.MeshGeneration.Components;
-	using Mapbox.Unity.MeshGeneration.Data;
+namespace Mapbox.Unity.MeshGeneration.Modifiers {
 
-    [CreateAssetMenu(menuName = "Mapbox/Modifiers/Layer Modifier")]
-    public class LayerModifier : GameObjectModifier
-    {
-        [SerializeField]
-        private int _layerId;
+	using UnityEngine;
+	using Components;
+	using Data;
 
-		public override void Run(VectorEntity ve, UnityTile tile)
-        {
-            ve.GameObject.layer = _layerId;
-        }
-    }
+	[CreateAssetMenu(menuName = "Mapbox/Modifiers/Layer Modifier")]
+	public class LayerModifier : GameObjectModifier {
+
+		[SerializeField]
+		private int _layerId;
+
+		public override void Run(VectorEntity ve, UnityTile tile) {
+			ve.GameObject.layer = _layerId;
+		}
+
+	}
+
 }

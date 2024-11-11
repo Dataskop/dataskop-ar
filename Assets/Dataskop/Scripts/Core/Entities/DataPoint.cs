@@ -26,15 +26,15 @@ namespace Dataskop.Entities {
 		/// <summary>
 		/// The Measurement Range currently selected.
 		/// </summary>
-		public MeasurementResultRange CurrentMeasurementRange {
-
+		public MeasurementResultRange CurrentMeasurementRange
+		{
 			get => currentMeasurementRange;
 
-			private set {
+			private set
+			{
 				currentMeasurementRange = value;
 				MeasurementRangeChanged?.Invoke();
 			}
-
 		}
 
 		/// <summary>

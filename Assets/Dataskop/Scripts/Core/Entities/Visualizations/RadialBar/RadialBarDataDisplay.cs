@@ -29,11 +29,14 @@ namespace Dataskop.Entities.Visualizations {
 			ApplyData(currentDataIndex);
 		}
 
-		public void Select() { }
+		public void Select() {
+		}
 
-		public void Deselect(bool isFocused) { }
+		public void Deselect(bool isFocused) {
+		}
 
-		public void Hover(bool isFocused) { }
+		public void Hover(bool isFocused) {
+		}
 
 		public void Show() {
 			dataDisplay.alpha = 1;
@@ -73,7 +76,8 @@ namespace Dataskop.Entities.Visualizations {
 			unitSymbol.text = data.Attribute.Unit;
 			dateTextMesh.text = data.Result.GetDateText();
 			legendDots.color = data.Color;
-			minMaxTextMesh.text = $"{data.Attribute.Minimum} {data.Attribute.Unit} - {data.Attribute.Maximum} {data.Attribute.Unit}";
+			minMaxTextMesh.text =
+				$"{data.Attribute.Minimum} {data.Attribute.Unit} - {data.Attribute.Maximum} {data.Attribute.Unit}";
 			idTextMesh.text = data.Result.MeasurementDefinition.MeasurementDefinitionInformation.Name;
 			SetArrowState();
 		}

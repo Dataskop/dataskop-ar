@@ -1,12 +1,10 @@
-﻿namespace Mapbox.Platform.TilesetTileJSON
-{
-	using Mapbox.Json;
+﻿namespace Mapbox.Platform.TilesetTileJSON {
+
+	using Json;
 	using System.Collections.Generic;
 
 
-
-	public class TileJSONObjectVectorLayer
-	{
+	public class TileJSONObjectVectorLayer {
 
 		[JsonProperty("description")]
 		public string Description { get; set; }
@@ -27,6 +25,6 @@
 		[JsonProperty("source_name")]
 		public string SourceName { get; set; }
 
-
 	}
+
 }

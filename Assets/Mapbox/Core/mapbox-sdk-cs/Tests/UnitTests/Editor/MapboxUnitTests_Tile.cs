@@ -6,15 +6,14 @@
 
 
 // TODO: figure out how run tests outside of Unity with .NET framework, something like '#if !UNITY'
+
 #if UNITY_5_6_OR_NEWER
 
 
-namespace Mapbox.MapboxSdkCs.UnitTest
-{
+namespace Mapbox.MapboxSdkCs.UnitTest {
 
-
-	using Mapbox.Map;
-	using Mapbox.Platform;
+	using Map;
+	using Platform;
 	using NUnit.Framework;
 #if UNITY_5_6_OR_NEWER
 	using System.Collections;
@@ -23,18 +22,18 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 
 
 	[TestFixture]
-	internal class TileTest
-	{
-
+	internal class TileTest {
 
 		private FileSource _fs;
 
 
 		[SetUp]
-		public void SetUp()
-		{
+		public void SetUp() {
 #if UNITY_5_6_OR_NEWER
-			_fs = new FileSource(Unity.MapboxAccess.Instance.Configuration.GetMapsSkuToken, Unity.MapboxAccess.Instance.Configuration.AccessToken);
+			_fs = new FileSource(
+				Unity.MapboxAccess.Instance.Configuration.GetMapsSkuToken,
+				Unity.MapboxAccess.Instance.Configuration.AccessToken
+			);
 #else
 			// when run outside of Unity FileSource gets the access token from environment variable 'MAPBOX_ACCESS_TOKEN'
 			_fs = new FileSource();
@@ -42,27 +41,26 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 		}
 
 
-
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]
 		public IEnumerator TileLoading()
 #else
 		[Test]
-		public void TileLoading() 
+		public void TileLoading()
 #endif
 		{
 			byte[] data;
 
-			var parameters = new Tile.Parameters();
+			Tile.Parameters parameters = new();
 			parameters.Fs = _fs;
 			parameters.Id = new CanonicalTileId(1, 1, 1);
 
-			var tile = new RawPngRasterTile();
+			RawPngRasterTile tile = new();
 			tile.Initialize(parameters, () => { data = tile.Data; });
 
 #if UNITY_5_6_OR_NEWER
 			IEnumerator enumerator = _fs.WaitForAllRequests();
-			while (enumerator.MoveNext()) { yield return null; }
+			while (enumerator.MoveNext()) yield return null;
 #else
 			_fs.WaitForAllRequests();
 #endif
@@ -71,20 +69,19 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 		}
 
 
-
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]
 		public IEnumerator States()
 #else
 		[Test]
-		public void States() 
+		public void States()
 #endif
 		{
-			var parameters = new Tile.Parameters();
+			Tile.Parameters parameters = new();
 			parameters.Fs = _fs;
 			parameters.Id = new CanonicalTileId(1, 1, 1);
 
-			var tile = new RawPngRasterTile();
+			RawPngRasterTile tile = new();
 			Assert.AreEqual(Tile.State.New, tile.CurrentState);
 
 			tile.Initialize(parameters, () => { });
@@ -92,7 +89,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 
 #if UNITY_5_6_OR_NEWER
 			IEnumerator enumerator = _fs.WaitForAllRequests();
-			while (enumerator.MoveNext()) { yield return null; }
+			while (enumerator.MoveNext()) yield return null;
 #else
 			_fs.WaitForAllRequests();
 #endif
@@ -102,7 +99,9 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 			tile.Cancel();
 			Assert.AreEqual(Tile.State.Canceled, tile.CurrentState);
 		}
+
 	}
+
 }
 
 #endif

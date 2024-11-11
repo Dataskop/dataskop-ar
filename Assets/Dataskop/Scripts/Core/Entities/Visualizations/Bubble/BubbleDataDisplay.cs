@@ -26,15 +26,18 @@ namespace Dataskop.Entities.Visualizations {
 			idTextMesh.text = displayData.Result.MeasurementDefinition.MeasurementDefinitionInformation.Name.ToUpper();
 
 			switch (displayData.Type) {
-				case MeasurementType.Float: {
+				case MeasurementType.Float:
+				{
 					float receivedValue = displayData.Result.ReadAsFloat();
 					boolIconRenderer.enabled = false;
 					valueTextMesh.alpha = 1;
-					valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) + $" {displayData.Attribute.Unit}";
+					valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) +
+					                     $" {displayData.Attribute.Unit}";
 					dateTextMesh.text = displayData.Result.GetDateText();
 					break;
 				}
-				case MeasurementType.Bool: {
+				case MeasurementType.Bool:
+				{
 					valueTextMesh.alpha = 1;
 					boolIconRenderer.enabled = false;
 					valueTextMesh.text = displayData.Result.ReadAsBool().ToString();

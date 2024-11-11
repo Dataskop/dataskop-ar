@@ -1,27 +1,26 @@
-﻿namespace Mapbox.Editor
-{
+﻿namespace Mapbox.Editor {
+
 	using UnityEngine;
 	using UnityEditor;
-	using Mapbox.Unity.MeshGeneration.Components;
+	using Unity.MeshGeneration.Components;
 
 	[CustomEditor(typeof(FeatureBehaviour))]
-	public class FeatureBehaviourEditor : Editor
-	{
-		FeatureBehaviour _beh;
+	public class FeatureBehaviourEditor : Editor {
 
-		public void OnEnable()
-		{
+		private FeatureBehaviour _beh;
+
+		public void OnEnable() {
 			_beh = (FeatureBehaviour)target;
 		}
 
-		public override void OnInspectorGUI()
-		{
+		public override void OnInspectorGUI() {
 			DrawDefaultInspector();
 
-			if (GUILayout.Button("Show Properties"))
-			{
+			if (GUILayout.Button("Show Properties")) {
 				_beh.ShowDebugData();
 			}
 		}
+
 	}
+
 }

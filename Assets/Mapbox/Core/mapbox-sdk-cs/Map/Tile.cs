@@ -4,14 +4,14 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Map
-{
+namespace Mapbox.Map {
+
 	using System;
-	using Mapbox.Platform;
+	using Platform;
 	using System.Linq;
 	using System.Collections.Generic;
 	using System.Collections.ObjectModel;
-	using Mapbox.Unity.Utilities;
+	using Unity.Utilities;
 
 
 	/// <summary>
@@ -19,9 +19,7 @@ namespace Mapbox.Map
 	///    bounding box. More info <see href="https://en.wikipedia.org/wiki/Tiled_web_map">
 	///    here </see>.
 	/// </summary>
-	public abstract class Tile : IAsyncRequest
-	{
-
+	public abstract class Tile : IAsyncRequest {
 
 		private CanonicalTileId _id;
 		private List<Exception> _exceptions;
@@ -30,8 +28,8 @@ namespace Mapbox.Map
 		private Action _callback;
 
 		/// <summary> Tile state. </summary>
-		public enum State
-		{
+		public enum State {
+
 			/// <summary> New tile, not yet initialized. </summary>
 			New,
 			/// <summary> Loading data. </summary>
@@ -42,32 +40,24 @@ namespace Mapbox.Map
 			Canceled,
 			/// <summary> Data has been loaded before and got updated. </summary>
 			Updated
+
 		}
 
 		/// <summary> Gets the <see cref="T:Mapbox.Map.CanonicalTileId"/> identifier. </summary>
 		/// <value> The canonical tile identifier. </value>
 		public CanonicalTileId Id
 		{
-			get { return _id; }
-			set { _id = value; }
+			get => _id;
+			set => _id = value;
 		}
 
 
 		/// <summary>Flag to indicate if the request was successful</summary>
-		public bool HasError
-		{
-			get
-			{
-				return _exceptions == null ? false : _exceptions.Count > 0;
-			}
-		}
+		public bool HasError => _exceptions == null ? false : _exceptions.Count > 0;
 
 
 		/// <summary> Exceptions that might have occured during creation of the tile. </summary>
-		public ReadOnlyCollection<Exception> Exceptions
-		{
-			get { return null == _exceptions ? null : _exceptions.AsReadOnly(); }
-		}
+		public ReadOnlyCollection<Exception> Exceptions => null == _exceptions ? null : _exceptions.AsReadOnly();
 
 
 		/// <summary> Messages of exceptions otherwise empty string. </summary>
@@ -75,7 +65,10 @@ namespace Mapbox.Map
 		{
 			get
 			{
-				if (null == _exceptions || _exceptions.Count == 0) { return string.Empty; }
+				if (null == _exceptions || _exceptions.Count == 0) {
+					return string.Empty;
+				}
+
 				return string.Join(Environment.NewLine, _exceptions.Select(e => e.Message).ToArray());
 			}
 		}
@@ -85,9 +78,11 @@ namespace Mapbox.Map
 		/// Sets the error message.
 		/// </summary>
 		/// <param name="errorMessage"></param>
-		internal void AddException(Exception ex)
-		{
-			if (null == _exceptions) { _exceptions = new List<Exception>(); }
+		internal void AddException(Exception ex) {
+			if (null == _exceptions) {
+				_exceptions = new List<Exception>();
+			}
+
 			_exceptions.Add(ex);
 		}
 
@@ -98,25 +93,13 @@ namespace Mapbox.Map
 		///     is accusing any error.
 		/// </summary>
 		/// <value> The tile state. </value>
-		public State CurrentState
-		{
-			get
-			{
-				return _state;
-			}
-		}
+		public State CurrentState => _state;
 
 
-		public HttpRequestType RequestType { get { return _request.RequestType; } }
+		public HttpRequestType RequestType => _request.RequestType;
 
 
-		public bool IsCompleted
-		{
-			get
-			{
-				return _state == State.Loaded;
-			}
-		}
+		public bool IsCompleted => _state == State.Loaded;
 
 		/// <summary>
 		///     Initializes the <see cref="T:Mapbox.Map.Tile"/> object. It will
@@ -124,24 +107,26 @@ namespace Mapbox.Map
 		/// </summary>
 		/// <param name="param"> Initialization parameters. </param>
 		/// <param name="callback"> The completion callback. </param>
-		public void Initialize(Parameters param, Action callback)
-		{
+		public void Initialize(Parameters param, Action callback) {
 			Cancel();
 
 			_state = State.Loading;
 			_id = param.Id;
 			_callback = callback;
-			_request = param.Fs.Request(MakeTileResource(param.TilesetId).GetUrl(), HandleTileResponse, tileId: _id, tilesetId: param.TilesetId);
+			_request = param.Fs.Request(
+				MakeTileResource(param.TilesetId).GetUrl(), HandleTileResponse, tileId: _id, tilesetId: param.TilesetId
+			);
 		}
 
-		internal void Initialize(IFileSource fileSource, CanonicalTileId canonicalTileId, string tilesetId, Action p)
-		{
+		internal void Initialize(IFileSource fileSource, CanonicalTileId canonicalTileId, string tilesetId, Action p) {
 			Cancel();
 
 			_state = State.Loading;
 			_id = canonicalTileId;
 			_callback = p;
-			_request = fileSource.Request(MakeTileResource(tilesetId).GetUrl(), HandleTileResponse, tileId: _id, tilesetId: tilesetId);
+			_request = fileSource.Request(
+				MakeTileResource(tilesetId).GetUrl(), HandleTileResponse, tileId: _id, tilesetId: tilesetId
+			);
 		}
 
 		/// <summary>
@@ -152,8 +137,7 @@ namespace Mapbox.Map
 		///     A <see cref="T:System.String"/> that represents the current
 		///     <see cref="T:Mapbox.Map.Tile"/>.
 		/// </returns>
-		public override string ToString()
-		{
+		public override string ToString() {
 			return Id.ToString();
 		}
 
@@ -182,10 +166,8 @@ namespace Mapbox.Map
 		///	});
 		/// </code>
 		/// </example>
-		public void Cancel()
-		{
-			if (_request != null)
-			{
+		public void Cancel() {
+			if (_request != null) {
 				_request.Cancel();
 				_request = null;
 			}
@@ -206,21 +188,21 @@ namespace Mapbox.Map
 		// a Worker class to abstract this, so on platforms that support threads (like Unity
 		// on the desktop, Android, etc) we can use worker threads and when building for
 		// the browser, we keep it single-threaded.
-		List<string> ids = new List<string>();
-		private void HandleTileResponse(Response response)
-		{
+		private List<string> ids = new();
 
-			if (response.HasError)
-			{
-				if (!ids.Contains(_id.ToString()))
+		private void HandleTileResponse(Response response) {
+
+			if (response.HasError) {
+				if (!ids.Contains(_id.ToString())) {
 					ids.Add(_id.ToString());
-				else
+				}
+				else {
 					return;
+				}
 
 				response.Exceptions.ToList().ForEach(e => AddException(e));
 			}
-			else
-			{
+			else {
 				// only try to parse if request was successful
 
 				// current implementation doesn't need to check if parsing is successful:
@@ -230,17 +212,15 @@ namespace Mapbox.Map
 			}
 
 			// Cancelled is not the same as loaded!
-			if (_state != State.Canceled)
-			{
-				if (response.IsUpdate)
-				{
+			if (_state != State.Canceled) {
+				if (response.IsUpdate) {
 					_state = State.Updated;
 				}
-				else
-				{
+				else {
 					_state = State.Loaded;
 				}
 			}
+
 			_callback();
 		}
 
@@ -256,8 +236,8 @@ namespace Mapbox.Map
 		/// parameters.TilesetId = "mapbox.mapbox-streets-v7";
 		/// </code>
 		/// </example>
-		public struct Parameters
-		{
+		public struct Parameters {
+
 			/// <summary> The tile id. </summary>
 			public CanonicalTileId Id;
 
@@ -270,8 +250,9 @@ namespace Mapbox.Map
 
 			/// <summary> The data source abstraction. </summary>
 			public IFileSource Fs;
+
 		}
 
-
 	}
+
 }

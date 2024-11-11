@@ -75,12 +75,16 @@ namespace Dataskop.UI {
 		}
 
 		public void OnProjectDataUpdated(Project selectedProject) {
-			infoCardProjectDataUI.UpdateProjectNameDisplay(selectedProject == null ? "N/A" : selectedProject.Information.Name);
+			infoCardProjectDataUI.UpdateProjectNameDisplay(
+				selectedProject == null ? "N/A" : selectedProject.Information.Name
+			);
 			infoCardProjectDataUI.UpdateLastUpdatedDisplay(selectedProject?.GetLastUpdatedTime() ?? new DateTime());
 		}
 
 		public void OnMeasurementResultsUpdated() {
-			infoCardProjectDataUI.UpdateLastUpdatedDisplay(dataManager.SelectedProject?.GetLastUpdatedTime() ?? new DateTime());
+			infoCardProjectDataUI.UpdateLastUpdatedDisplay(
+				dataManager.SelectedProject?.GetLastUpdatedTime() ?? new DateTime()
+			);
 		}
 
 		public void OnSidePanelOpened() {

@@ -10,7 +10,6 @@
 //-----------------------------------------------------------------------
 
 #if !UNITY
-
 namespace Mapbox.Platform {
 
 
@@ -114,7 +113,8 @@ namespace Mapbox.Platform {
 #if !UNITY && !NETFX_CORE
 			// 'NoCacheNoStore' greatly reduced the number of faulty request
 			// seems that .Net caching and Mapbox API don't play well together
-			_request.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
+			_request.CachePolicy =
+ new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
 #endif
 		}
 

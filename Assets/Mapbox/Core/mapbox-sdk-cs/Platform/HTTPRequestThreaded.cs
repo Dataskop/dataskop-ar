@@ -10,7 +10,6 @@
 #endif
 
 #if !UNITY
-
 namespace Mapbox.Platform {
 
 
@@ -86,7 +85,7 @@ namespace Mapbox.Platform {
 			// set ConnectionLimit per request
 			// https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest(v=vs.90).aspx#Remarks
 			// use a value that is 12 times the number of CPUs on the local computer
-			_request.ServicePoint.ConnectionLimit  = Environment.ProcessorCount * 6;
+			_request.ServicePoint.ConnectionLimit = Environment.ProcessorCount * 6;
 
 			_request.ServicePoint.UseNagleAlgorithm = true;
 			_request.ServicePoint.Expect100Continue = false;
@@ -113,7 +112,8 @@ namespace Mapbox.Platform {
 #if !UNITY && !NETFX_CORE
 			// 'NoCacheNoStore' greatly reduced the number of faulty request
 			// seems that .Net caching and Mapbox API don't play well together
-			_request.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
+			_request.CachePolicy =
+ new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
 #endif
 		}
 

@@ -4,8 +4,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Map
-{
+namespace Mapbox.Map {
+
 	/// <summary>
 	///    A raster tile containing an encoded RGBA PNG.
 	/// <see href="https://www.mapbox.com/blog/terrain-rgb/"> Read about global elevation data. </see>
@@ -26,11 +26,12 @@ namespace Mapbox.Map
 	/// }
 	/// </code>
 	/// </example>
-	public sealed class RawPngRasterTile : RasterTile
-	{
-		internal override TileResource MakeTileResource(string tilesetId)
-		{
+	public sealed class RawPngRasterTile : RasterTile {
+
+		internal override TileResource MakeTileResource(string tilesetId) {
 			return TileResource.MakeRawPngRaster(Id, tilesetId);
 		}
+
 	}
+
 }

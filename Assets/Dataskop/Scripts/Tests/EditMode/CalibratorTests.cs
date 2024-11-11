@@ -21,9 +21,7 @@ namespace Dataskop.EditMode.Tests {
 			// Act
 			calibrator.Initialize();
 
-			while (calibrator.IsCalibrating) {
-				calibrator.OnCalibratorContinued();
-			}
+			while (calibrator.IsCalibrating) calibrator.OnCalibratorContinued();
 
 			// Assert
 			Assert.AreEqual(calibrator.CurrentPhase, CalibratorPhase.None);

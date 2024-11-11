@@ -5,9 +5,10 @@
 //-----------------------------------------------------------------------
 
 namespace Mapbox.Geocoding {
+
 	using System;
 	using System.Collections.Generic;
-	using Mapbox.Json;
+	using Json;
 
 	/// <summary> Base geocode response. </summary>
 #if !WINDOWS_UWP
@@ -15,6 +16,7 @@ namespace Mapbox.Geocoding {
 	[Serializable]
 #endif
 	public abstract class GeocodeResponse {
+
 		/// <summary>
 		/// Gets or sets the type.
 		/// </summary>
@@ -35,6 +37,7 @@ namespace Mapbox.Geocoding {
 		/// <value>The attribution.</value>
 		[JsonProperty("attribution", Order = 3)]
 		public string Attribution { get; set; }
+
 	}
 
 	/// <summary>
@@ -45,12 +48,14 @@ namespace Mapbox.Geocoding {
 	[Serializable]
 #endif
 	public class ReverseGeocodeResponse : GeocodeResponse {
+
 		/// <summary>
 		/// Gets or sets the query.
 		/// </summary>
 		/// <value>The query.</value>
 		[JsonProperty("query", Order = 1)]
 		public List<double> Query { get; set; }
+
 	}
 
 	/// <summary>
@@ -61,11 +66,14 @@ namespace Mapbox.Geocoding {
 	[Serializable]
 #endif
 	public class ForwardGeocodeResponse : GeocodeResponse {
+
 		/// <summary>
 		/// Gets or sets the query.
 		/// </summary>
 		/// <value>The query.</value>
 		[JsonProperty("query", Order = 1)]
 		public List<string> Query { get; set; }
+
 	}
+
 }

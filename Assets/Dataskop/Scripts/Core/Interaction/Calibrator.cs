@@ -30,10 +30,12 @@ namespace Dataskop.Interaction {
 		/// <summary>
 		/// The current Calibration Phase.
 		/// </summary>
-		public CalibratorPhase CurrentPhase {
+		public CalibratorPhase CurrentPhase
+		{
 			get => currentPhase;
 
-			private set {
+			private set
+			{
 				currentPhase = value;
 				phaseChanged?.Invoke(CurrentPhase);
 			}
@@ -66,7 +68,8 @@ namespace Dataskop.Interaction {
 		public void Initialize() {
 
 			if (AppOptions.DemoMode) {
-				ARTrackedImageManager arManager = (ARTrackedImageManager)FindObjectOfType(typeof(ARTrackedImageManager), true);
+				ARTrackedImageManager arManager =
+					(ARTrackedImageManager)FindObjectOfType(typeof(ARTrackedImageManager), true);
 				arManager.enabled = true;
 				DemoBoxHandler demoBoxHandler = (DemoBoxHandler)FindObjectOfType(typeof(DemoBoxHandler), true);
 				demoBoxHandler.enabled = true;

@@ -1,67 +1,69 @@
-namespace Mapbox.Unity.MeshGeneration.Filters
-{
+namespace Mapbox.Unity.MeshGeneration.Filters {
+
 	using UnityEngine;
-	using Mapbox.Unity.MeshGeneration.Data;
+	using Data;
 	using System;
 	using System.Linq;
 	using System.Collections.Generic;
-	using Mapbox.Unity.Map;
+	using Map;
 
-	public class TypeFilter : FilterBase
-	{
-		public override string Key { get { return "type"; } }
+	public class TypeFilter : FilterBase {
+
+		public override string Key => "type";
+
 		[SerializeField]
 		private string[] _types;
 		[SerializeField]
 		private TypeFilterType _behaviour;
 
-		public override bool Try(VectorFeatureUnity feature)
-		{
-			var check = false;
-			for (int i = 0; i < _types.Length; i++)
-			{
-				if (_types[i].ToLowerInvariant() == feature.Properties["type"].ToString().ToLowerInvariant())
-				{
+		public override bool Try(VectorFeatureUnity feature) {
+			bool check = false;
+
+			for (int i = 0; i < _types.Length; i++) {
+				if (_types[i].ToLowerInvariant() == feature.Properties["type"].ToString().ToLowerInvariant()) {
 					check = true;
 				}
 			}
+
 			return _behaviour == TypeFilterType.Include ? check : !check;
 		}
 
-		public enum TypeFilterType
-		{
+		public enum TypeFilterType {
+
 			Include,
 			Exclude
+
 		}
+
 	}
 
-	public enum LayerFilterOperationType
-	{
+	public enum LayerFilterOperationType {
+
 		Contains,
 		IsEqual,
 		IsGreater,
 		IsLess,
-		IsInRange,
+		IsInRange
+
 	}
 
-	public enum LayerFilterCombinerOperationType
-	{
+	public enum LayerFilterCombinerOperationType {
+
 		Any,
 		All,
-		None,
+		None
+
 	}
 
 	[Serializable]
-	public class LayerFilterCombiner : ILayerFeatureFilterComparer
-	{
+	public class LayerFilterCombiner : ILayerFeatureFilterComparer {
+
 		public List<ILayerFeatureFilterComparer> Filters;
 
 		public LayerFilterCombinerOperationType Type;
 
-		public bool Try(VectorFeatureUnity feature)
-		{
-			switch (Type)
-			{
+		public bool Try(VectorFeatureUnity feature) {
+			switch (Type) {
 				case LayerFilterCombinerOperationType.Any:
 					return Filters.Any(m => m.Try(feature));
 				case LayerFilterCombinerOperationType.All:
@@ -72,227 +74,212 @@ namespace Mapbox.Unity.MeshGeneration.Filters
 					return false;
 			}
 		}
+
 	}
 
-	public class LayerFilterComparer : ILayerFeatureFilterComparer
-	{
-		public virtual bool Try(VectorFeatureUnity feature)
-		{
+	public class LayerFilterComparer : ILayerFeatureFilterComparer {
+
+		public virtual bool Try(VectorFeatureUnity feature) {
 			return true;
 		}
 
-		public static ILayerFeatureFilterComparer AnyOf(params ILayerFeatureFilterComparer[] filters)
-		{
-			return new LayerFilterCombiner
-			{
+		public static ILayerFeatureFilterComparer AnyOf(params ILayerFeatureFilterComparer[] filters) {
+			return new LayerFilterCombiner {
 				Type = LayerFilterCombinerOperationType.Any,
-				Filters = filters.ToList(),
+				Filters = filters.ToList()
 			};
 		}
 
-		public static ILayerFeatureFilterComparer AllOf(params ILayerFeatureFilterComparer[] filters)
-		{
-			return new LayerFilterCombiner
-			{
+		public static ILayerFeatureFilterComparer AllOf(params ILayerFeatureFilterComparer[] filters) {
+			return new LayerFilterCombiner {
 				Type = LayerFilterCombinerOperationType.All,
-				Filters = filters.ToList(),
+				Filters = filters.ToList()
 			};
 		}
 
-		public static ILayerFeatureFilterComparer NoneOf(params ILayerFeatureFilterComparer[] filters)
-		{
-			return new LayerFilterCombiner
-			{
+		public static ILayerFeatureFilterComparer NoneOf(params ILayerFeatureFilterComparer[] filters) {
+			return new LayerFilterCombiner {
 				Type = LayerFilterCombinerOperationType.None,
-				Filters = filters.ToList(),
+				Filters = filters.ToList()
 			};
 		}
-		public static ILayerFeatureFilterComparer HasProperty(string property)
-		{
-			return new LayerHasPropertyFilterComparer
-			{
+
+		public static ILayerFeatureFilterComparer HasProperty(string property) {
+			return new LayerHasPropertyFilterComparer {
 				Key = property
 			};
 		}
 
-		public static ILayerFeatureFilterComparer HasPropertyInRange(string property, double min, double max)
-		{
-			return new LayerPropertyInRangeFilterComparer
-			{
+		public static ILayerFeatureFilterComparer HasPropertyInRange(string property, double min, double max) {
+			return new LayerPropertyInRangeFilterComparer {
 				Key = property,
 				Min = min,
 				Max = max
 			};
 		}
 
-		public static ILayerFeatureFilterComparer HasPropertyGreaterThan(string property, double min)
-		{
-			return new LayerPropertyIsGreaterFilterComparer
-			{
+		public static ILayerFeatureFilterComparer HasPropertyGreaterThan(string property, double min) {
+			return new LayerPropertyIsGreaterFilterComparer {
 				Key = property,
-				Min = min,
+				Min = min
 			};
 		}
 
-		public static ILayerFeatureFilterComparer HasPropertyLessThan(string property, double min)
-		{
-			return new LayerPropertyIsLessFilterComparer
-			{
+		public static ILayerFeatureFilterComparer HasPropertyLessThan(string property, double min) {
+			return new LayerPropertyIsLessFilterComparer {
 				Key = property,
-				Min = min,
+				Min = min
 			};
 		}
 
-		public static ILayerFeatureFilterComparer HasPropertyIsEqual(string property, double min)
-		{
-			return new LayerPropertyIsEqualFilterComparer
-			{
+		public static ILayerFeatureFilterComparer HasPropertyIsEqual(string property, double min) {
+			return new LayerPropertyIsEqualFilterComparer {
 				Key = property,
-				Min = min,
+				Min = min
 			};
 		}
 
 
-		public static ILayerFeatureFilterComparer PropertyContainsValue(string property, params object[] values)
-		{
-			return new LayerPropertyContainsFilterComparer
-			{
+		public static ILayerFeatureFilterComparer PropertyContainsValue(string property, params object[] values) {
+			return new LayerPropertyContainsFilterComparer {
 				Key = property,
 				ValueSet = values.ToList()
 			};
 		}
+
 	}
 
 	[Serializable]
-	public class LayerHasPropertyFilterComparer : ILayerFeatureFilterComparer
-	{
+	public class LayerHasPropertyFilterComparer : ILayerFeatureFilterComparer {
+
 		public string Key;
 
-		public bool Try(VectorFeatureUnity feature)
-		{
+		public bool Try(VectorFeatureUnity feature) {
 			object property;
-			if (feature.Properties.TryGetValue(Key, out property))
-			{
+
+			if (feature.Properties.TryGetValue(Key, out property)) {
 				return PropertyComparer(property);
 			}
+
 			return false;
 		}
 
-		protected virtual bool PropertyComparer(object property)
-		{
+		protected virtual bool PropertyComparer(object property) {
 			return true;
 		}
+
 	}
 
 	[Serializable]
-	public class LayerPropertyInRangeFilterComparer : LayerHasPropertyFilterComparer
-	{
+	public class LayerPropertyInRangeFilterComparer : LayerHasPropertyFilterComparer {
+
 		public double Min;
 		public double Max;
 
-		protected override bool PropertyComparer(object property)
-		{
-			if (property == null)
-			{
+		protected override bool PropertyComparer(object property) {
+			if (property == null) {
 				return false;
 			}
-			var propertyValue = Convert.ToDouble(property);
-			if (propertyValue < Min)
-			{
+
+			double propertyValue = Convert.ToDouble(property);
+
+			if (propertyValue < Min) {
 				return false;
 			}
-			if (propertyValue >= Max)
-			{
+
+			if (propertyValue >= Max) {
 				return false;
 			}
+
 			return true;
 		}
+
 	}
 
 	[Serializable]
-	public class LayerPropertyIsGreaterFilterComparer : LayerHasPropertyFilterComparer
-	{
+	public class LayerPropertyIsGreaterFilterComparer : LayerHasPropertyFilterComparer {
+
 		public double Min;
 
-		protected override bool PropertyComparer(object property)
-		{
-			var propertyValue = Convert.ToDouble(property);
-			if (property == null)
-			{
-				return false;
-			}
-			if (propertyValue > Min)
-			{
-				return true;
-			}
-			return false;
-		}
-	}
+		protected override bool PropertyComparer(object property) {
+			double propertyValue = Convert.ToDouble(property);
 
-	[Serializable]
-	public class LayerPropertyIsLessFilterComparer : LayerHasPropertyFilterComparer
-	{
-		public double Min;
-
-		protected override bool PropertyComparer(object property)
-		{
-
-			if (property == null)
-			{
-				return false;
-			}
-			var propertyValue = Convert.ToDouble(property);
-
-			if (propertyValue < Min)
-			{
-				return true;
-			}
-			return false;
-		}
-	}
-
-	[Serializable]
-	public class LayerPropertyIsEqualFilterComparer : LayerHasPropertyFilterComparer
-	{
-		public double Min;
-
-		protected override bool PropertyComparer(object property)
-		{
-			if (property == null)
-			{
+			if (property == null) {
 				return false;
 			}
 
-			var propertyValue = Convert.ToDouble(property);
-			if (Math.Abs(propertyValue - Min) < Mapbox.Utils.Constants.EpsilonFloatingPoint)
-			{
+			if (propertyValue > Min) {
 				return true;
 			}
+
 			return false;
 		}
+
 	}
 
 	[Serializable]
-	public class LayerPropertyContainsFilterComparer : LayerHasPropertyFilterComparer
-	{
+	public class LayerPropertyIsLessFilterComparer : LayerHasPropertyFilterComparer {
+
+		public double Min;
+
+		protected override bool PropertyComparer(object property) {
+
+			if (property == null) {
+				return false;
+			}
+
+			double propertyValue = Convert.ToDouble(property);
+
+			if (propertyValue < Min) {
+				return true;
+			}
+
+			return false;
+		}
+
+	}
+
+	[Serializable]
+	public class LayerPropertyIsEqualFilterComparer : LayerHasPropertyFilterComparer {
+
+		public double Min;
+
+		protected override bool PropertyComparer(object property) {
+			if (property == null) {
+				return false;
+			}
+
+			double propertyValue = Convert.ToDouble(property);
+
+			if (Math.Abs(propertyValue - Min) < Utils.Constants.EpsilonFloatingPoint) {
+				return true;
+			}
+
+			return false;
+		}
+
+	}
+
+	[Serializable]
+	public class LayerPropertyContainsFilterComparer : LayerHasPropertyFilterComparer {
+
 		public List<object> ValueSet;
 
-		protected override bool PropertyComparer(object property)
-		{
-			foreach (var value in ValueSet)
-			{
-				if (property.ToString().ToLower().Contains(value.ToString()))
-				{
+		protected override bool PropertyComparer(object property) {
+			foreach (object value in ValueSet) {
+				if (property.ToString().ToLower().Contains(value.ToString())) {
 					return true;
 				}
 			}
+
 			return false;
 		}
+
 	}
 
 	[Serializable]
-	public class LayerFilter : MapboxDataProperty, ILayerFilter
-	{
+	public class LayerFilter : MapboxDataProperty, ILayerFilter {
+
 		[Tooltip("Name of the property to use as key. This property is case sensitive.")]
 		public string Key;
 		[SerializeField]
@@ -305,23 +292,24 @@ namespace Mapbox.Unity.MeshGeneration.Filters
 
 		[Tooltip("Filter operator to apply. ")]
 		public LayerFilterOperationType filterOperator;
-		private char[] _delimiters = new char[] { ',' };
+		private char[] _delimiters = new char[] {
+			','
+		};
 
-		public LayerFilter(LayerFilterOperationType filterOperation = LayerFilterOperationType.Contains)
-		{
+		public LayerFilter(LayerFilterOperationType filterOperation = LayerFilterOperationType.Contains) {
 			filterOperator = filterOperation;
 		}
 
-		public ILayerFeatureFilterComparer GetFilterComparer()
-		{
-			if (_delimiters == null)
-			{
-				_delimiters = new char[] { ',' };
+		public ILayerFeatureFilterComparer GetFilterComparer() {
+			if (_delimiters == null) {
+				_delimiters = new char[] {
+					','
+				};
 			}
+
 			ILayerFeatureFilterComparer filterComparer = new LayerFilterComparer();
 
-			switch (filterOperator)
-			{
+			switch (filterOperator) {
 				case LayerFilterOperationType.IsEqual:
 					filterComparer = LayerFilterComparer.HasPropertyIsEqual(Key, Min);
 					break;
@@ -332,7 +320,7 @@ namespace Mapbox.Unity.MeshGeneration.Filters
 					filterComparer = LayerFilterComparer.HasPropertyLessThan(Key, Min);
 					break;
 				case LayerFilterOperationType.Contains:
-					var matchList = PropertyValue.ToLower()
+					string[] matchList = PropertyValue.ToLower()
 						.Split(_delimiters, StringSplitOptions.RemoveEmptyEntries)
 						.Select(p => p.Trim())
 						.Where(p => !string.IsNullOrEmpty(p))
@@ -345,6 +333,7 @@ namespace Mapbox.Unity.MeshGeneration.Filters
 				default:
 					break;
 			}
+
 			return filterComparer;
 		}
 
@@ -353,8 +342,7 @@ namespace Mapbox.Unity.MeshGeneration.Filters
 		/// </summary>
 		/// <param name="key">Key.</param>
 		/// <param name="property">Property.</param>
-		public virtual void SetStringContains(string key, string property)
-		{
+		public virtual void SetStringContains(string key, string property) {
 			filterOperator = LayerFilterOperationType.Contains;
 			Key = key;
 			PropertyValue = property;
@@ -366,8 +354,7 @@ namespace Mapbox.Unity.MeshGeneration.Filters
 		/// </summary>
 		/// <param name="key">Key.</param>
 		/// <param name="value">Value.</param>
-		public virtual void SetNumberIsEqual(string key, float value)
-		{
+		public virtual void SetNumberIsEqual(string key, float value) {
 			filterOperator = LayerFilterOperationType.IsEqual;
 			Key = key;
 			Min = value;
@@ -379,8 +366,7 @@ namespace Mapbox.Unity.MeshGeneration.Filters
 		/// </summary>
 		/// <param name="key">Key.</param>
 		/// <param name="value">Value.</param>
-		public virtual void SetNumberIsLessThan(string key, float value)
-		{
+		public virtual void SetNumberIsLessThan(string key, float value) {
 			filterOperator = LayerFilterOperationType.IsLess;
 			Key = key;
 			Min = value;
@@ -392,8 +378,7 @@ namespace Mapbox.Unity.MeshGeneration.Filters
 		/// </summary>
 		/// <param name="key">Key.</param>
 		/// <param name="value">Value.</param>
-		public virtual void SetNumberIsGreaterThan(string key, float value)
-		{
+		public virtual void SetNumberIsGreaterThan(string key, float value) {
 			filterOperator = LayerFilterOperationType.IsGreater;
 			Key = key;
 			Min = value;
@@ -406,8 +391,7 @@ namespace Mapbox.Unity.MeshGeneration.Filters
 		/// <param name="key">Key.</param>
 		/// <param name="min">Minimum.</param>
 		/// <param name="max">Max.</param>
-		public virtual void SetNumberIsInRange(string key, float min, float max)
-		{
+		public virtual void SetNumberIsInRange(string key, float min, float max) {
 			filterOperator = LayerFilterOperationType.IsInRange;
 			Key = key;
 			Min = min;
@@ -419,81 +403,44 @@ namespace Mapbox.Unity.MeshGeneration.Filters
 		/// Gets the key.
 		/// </summary>
 		/// <returns>The key.</returns>
-		public virtual string GetKey
-		{
-			get
-			{
-				return Key;
-			}
-		}
+		public virtual string GetKey => Key;
 
 		/// <summary>
 		/// Gets the type of the filter operation.
 		/// </summary>
 		/// <returns>The filter operation type.</returns>
-		public virtual LayerFilterOperationType GetFilterOperationType
-		{
-			get
-			{
-				return filterOperator;
-			}
-		}
+		public virtual LayerFilterOperationType GetFilterOperationType => filterOperator;
 
 		/// <summary>
 		/// Gets the property value.
 		/// </summary>
 		/// <returns>The property value.</returns>
-		public virtual string GetPropertyValue
-		{
-			get
-			{
-				return PropertyValue;
-			}
-		}
+		public virtual string GetPropertyValue => PropertyValue;
 
 		/// <summary>
 		/// Gets the minimum value.
 		/// </summary>
 		/// <returns>The minimum value.</returns>
-		public virtual float GetNumberValue
-		{
-			get
-			{
-				return Min;
-			}
-		}
+		public virtual float GetNumberValue => Min;
 
 		/// <summary>
 		/// Gets the minimum value.
 		/// </summary>
 		/// <returns>The minimum value.</returns>
-		public virtual float GetMinValue
-		{
-			get
-			{
-				return Min;
-			}
-		}
+		public virtual float GetMinValue => Min;
 
 		/// <summary>
 		/// Gets the max value.
 		/// </summary>
 		/// <returns>The max value.</returns>
-		public virtual float GetMaxValue
-		{
-			get
-			{
-				return Max;
-			}
-		}
+		public virtual float GetMaxValue => Max;
 
 		/// <summary>
 		/// Returns true if filter key contains a given string.
 		/// </summary>
 		/// <returns><c>true</c>, if key contains was filtered, <c>false</c> otherwise.</returns>
 		/// <param name="key">Key.</param>
-		public virtual bool FilterKeyContains(string key)
-		{
+		public virtual bool FilterKeyContains(string key) {
 			return Key.Contains(key);
 		}
 
@@ -502,8 +449,7 @@ namespace Mapbox.Unity.MeshGeneration.Filters
 		/// </summary>
 		/// <returns><c>true</c>, if key matches exact was filtered, <c>false</c> otherwise.</returns>
 		/// <param name="key">Key.</param>
-		public virtual bool FilterKeyMatchesExact(string key)
-		{
+		public virtual bool FilterKeyMatchesExact(string key) {
 			return Key == key;
 		}
 
@@ -512,8 +458,7 @@ namespace Mapbox.Unity.MeshGeneration.Filters
 		/// </summary>
 		/// <returns><c>true</c>, if uses operation type was filtered, <c>false</c> otherwise.</returns>
 		/// <param name="layerFilterOperationType">Layer filter operation type.</param>
-		public virtual bool FilterUsesOperationType(LayerFilterOperationType layerFilterOperationType)
-		{
+		public virtual bool FilterUsesOperationType(LayerFilterOperationType layerFilterOperationType) {
 			return filterOperator == layerFilterOperationType;
 		}
 
@@ -522,8 +467,7 @@ namespace Mapbox.Unity.MeshGeneration.Filters
 		/// </summary>
 		/// <returns><c>true</c>, if property contains was filtered, <c>false</c> otherwise.</returns>
 		/// <param name="property">Property.</param>
-		public virtual bool FilterPropertyContains(string property)
-		{
+		public virtual bool FilterPropertyContains(string property) {
 			return PropertyValue.Contains(property);
 		}
 
@@ -532,8 +476,7 @@ namespace Mapbox.Unity.MeshGeneration.Filters
 		/// </summary>
 		/// <returns><c>true</c>, if property matches exact was filtered, <c>false</c> otherwise.</returns>
 		/// <param name="property">Property.</param>
-		public virtual bool FilterPropertyMatchesExact(string property)
-		{
+		public virtual bool FilterPropertyMatchesExact(string property) {
 			return PropertyValue == property;
 		}
 
@@ -542,8 +485,7 @@ namespace Mapbox.Unity.MeshGeneration.Filters
 		/// </summary>
 		/// <returns><c>true</c>, if number value equals was filtered, <c>false</c> otherwise.</returns>
 		/// <param name="value">Value.</param>
-		public virtual bool FilterNumberValueEquals(float value)
-		{
+		public virtual bool FilterNumberValueEquals(float value) {
 			return Mathf.Approximately(Min, value);
 		}
 
@@ -552,8 +494,7 @@ namespace Mapbox.Unity.MeshGeneration.Filters
 		/// </summary>
 		/// <returns><c>true</c>, if number value is greater than was filtered, <c>false</c> otherwise.</returns>
 		/// <param name="value">Value.</param>
-		public virtual bool FilterNumberValueIsGreaterThan(float value)
-		{
+		public virtual bool FilterNumberValueIsGreaterThan(float value) {
 			return Min > value;
 		}
 
@@ -562,9 +503,8 @@ namespace Mapbox.Unity.MeshGeneration.Filters
 		/// </summary>
 		/// <returns><c>true</c>, if number value is less than was filtered, <c>false</c> otherwise.</returns>
 		/// <param name="value">Value.</param>
-		public virtual bool FilterNumberValueIsLessThan(float value)
-		{
-			return Min < value;	
+		public virtual bool FilterNumberValueIsLessThan(float value) {
+			return Min < value;
 		}
 
 		/// <summary>
@@ -572,9 +512,10 @@ namespace Mapbox.Unity.MeshGeneration.Filters
 		/// </summary>
 		/// <returns><c>true</c>, if is in range value contains was filtered, <c>false</c> otherwise.</returns>
 		/// <param name="value">Value.</param>
-		public virtual bool FilterIsInRangeValueContains(float value)
-		{
+		public virtual bool FilterIsInRangeValueContains(float value) {
 			return Min < value && value < Max;
 		}
+
 	}
+
 }

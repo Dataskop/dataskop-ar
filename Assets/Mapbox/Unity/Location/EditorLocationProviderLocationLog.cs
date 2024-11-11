@@ -1,11 +1,11 @@
-﻿namespace Mapbox.Unity.Location
-{
+﻿namespace Mapbox.Unity.Location {
+
 	using System;
 	using System.Collections.Generic;
 	using System.Globalization;
 	using System.IO;
-	using Mapbox.Unity.Utilities;
-	using Mapbox.Utils;
+	using Utilities;
+	using Utils;
 	using UnityEngine;
 
 	/// <summary>
@@ -13,9 +13,7 @@
 	/// The EditorLocationProvider is responsible for providing mock location data via log file collected with the 'LocationProvider' scene
 	/// </para>
 	/// </summary>
-	public class EditorLocationProviderLocationLog : AbstractEditorLocationProvider
-	{
-
+	public class EditorLocationProviderLocationLog : AbstractEditorLocationProvider {
 
 		/// <summary>
 		/// The mock "latitude, longitude" location, respresented with a string.
@@ -31,8 +29,7 @@
 
 
 #if UNITY_EDITOR
-		protected override void Awake()
-		{
+		protected override void Awake() {
 			base.Awake();
 			_logReader = new LocationLogReader(_locationLogFile.bytes);
 			_locationEnumerator = _logReader.GetLocations();
@@ -40,28 +37,29 @@
 #endif
 
 
-		private void OnDestroy()
-		{
-			if (null != _locationEnumerator)
-			{
+		private void OnDestroy() {
+			if (null != _locationEnumerator) {
 				_locationEnumerator.Dispose();
 				_locationEnumerator = null;
 			}
-			if (null != _logReader)
-			{
+
+			if (null != _logReader) {
 				_logReader.Dispose();
 				_logReader = null;
 			}
 		}
 
 
-		protected override void SetLocation()
-		{
-			if (null == _locationEnumerator) { return; }
+		protected override void SetLocation() {
+			if (null == _locationEnumerator) {
+				return;
+			}
 
 			// no need to check if 'MoveNext()' returns false as LocationLogReader loops through log file
 			_locationEnumerator.MoveNext();
 			_currentLocation = _locationEnumerator.Current;
 		}
+
 	}
+
 }

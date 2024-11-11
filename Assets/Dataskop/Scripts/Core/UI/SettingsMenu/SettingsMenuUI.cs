@@ -127,13 +127,17 @@ namespace Dataskop.UI {
 
 			AmountInput = SettingsMenuContainer.Q<TextField>("AmountInput");
 			AmountInput.RegisterCallback<ChangeEvent<string>>(OnFetchAmountInputChanged);
-			AmountInput.SetValueWithoutNotify(PlayerPrefs.HasKey("fetchAmount") ? PlayerPrefs.GetInt("fetchAmount").ToString()
-				: DefaultAmount);
+			AmountInput.SetValueWithoutNotify(
+				PlayerPrefs.HasKey("fetchAmount") ? PlayerPrefs.GetInt("fetchAmount").ToString()
+					: DefaultAmount
+			);
 
 			CooldownInput = SettingsMenuContainer.Q<TextField>("CooldownInput");
 			CooldownInput.RegisterCallback<ChangeEvent<string>>(OnFetchIntervalInputChanged);
-			CooldownInput.SetValueWithoutNotify(PlayerPrefs.HasKey("fetchInterval")
-				? (PlayerPrefs.GetInt("fetchInterval") / 1000).ToString() : DefaultCooldown);
+			CooldownInput.SetValueWithoutNotify(
+				PlayerPrefs.HasKey("fetchInterval")
+					? (PlayerPrefs.GetInt("fetchInterval") / 1000).ToString() : DefaultCooldown
+			);
 		}
 
 		private void OnDisable() {

@@ -23,7 +23,8 @@ namespace Dataskop.Data {
 
 		public int TotalMeasurements { get; set; }
 
-		public IReadOnlyList<MeasurementResultRange> MeasurementResults { get; private set; } = new List<MeasurementResultRange>();
+		public IReadOnlyList<MeasurementResultRange> MeasurementResults { get; private set; } =
+			new List<MeasurementResultRange>();
 
 		public MeasurementResult FirstMeasurementResult { get; set; }
 
@@ -56,11 +57,13 @@ namespace Dataskop.Data {
 			}
 			catch {
 
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Warning,
-					Text = $"Measurement Definition {ID} has no valid additional properties!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Warning,
+						Text = $"Measurement Definition {ID} has no valid additional properties!",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 
 				DeviceId = null;
 				AttributeId = null;
@@ -91,13 +94,16 @@ namespace Dataskop.Data {
 				if (!TimeRangeExtensions.Contains(timeRange, availableRange.GetTimeRange())) {
 					continue;
 				}
+
 				foundRange = availableRange;
 				break;
 			}
 
 			MeasurementResultRange dataRange =
-				new(foundRange.Where(x => x.Timestamp >= timeRange.StartTime && x.Timestamp <= timeRange.EndTime)
-					.ToList());
+				new(
+					foundRange.Where(x => x.Timestamp >= timeRange.StartTime && x.Timestamp <= timeRange.EndTime)
+						.ToList()
+				);
 
 			dataRange.SetTimeRange(new TimeRange(timeRange.StartTime, timeRange.EndTime));
 			return dataRange;
@@ -153,9 +159,13 @@ namespace Dataskop.Data {
 					}
 
 					mergedRanges[i] =
-						new MeasurementResultRange(hasDuplicate ? firstRange.SkipLast(1).Concat(secondRange)
-							: firstRange.Concat(secondRange));
-					mergedRanges[i].SetTimeRange(new TimeRange(secondRange.GetTimeRange().StartTime, firstRange.GetTimeRange().EndTime));
+						new MeasurementResultRange(
+							hasDuplicate ? firstRange.SkipLast(1).Concat(secondRange)
+								: firstRange.Concat(secondRange)
+						);
+					mergedRanges[i].SetTimeRange(
+						new TimeRange(secondRange.GetTimeRange().StartTime, firstRange.GetTimeRange().EndTime)
+					);
 					mergedRanges.RemoveAt(i + 1);
 					i--;
 
@@ -172,7 +182,8 @@ namespace Dataskop.Data {
 				: Array.Empty<TimeRange>();
 		}
 
-		public IReadOnlyList<MeasurementResultRange> ReplaceMeasurementResultRange(int index, MeasurementResultRange newRange) {
+		public IReadOnlyList<MeasurementResultRange> ReplaceMeasurementResultRange(int index,
+			MeasurementResultRange newRange) {
 			MeasurementResults.ToList()[index] = newRange;
 			return MeasurementResults;
 		}

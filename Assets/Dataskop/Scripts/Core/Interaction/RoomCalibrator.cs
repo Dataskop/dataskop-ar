@@ -36,9 +36,9 @@ namespace Dataskop.Interaction {
 
 		private IEnumerator CheckRotationDelta() {
 
-			while (RoomScanProgress < 1) {
-
-				if (!(Vector3.Distance(ArCamera.transform.eulerAngles, PreviousRotationEuler) > ProgressDistanceThreshold)) {
+			while (RoomScanProgress < 1)
+				if (!(Vector3.Distance(ArCamera.transform.eulerAngles, PreviousRotationEuler) >
+				      ProgressDistanceThreshold)) {
 					yield return new WaitForEndOfFrame();
 				}
 				else {
@@ -47,8 +47,6 @@ namespace Dataskop.Interaction {
 					roomScanProgressed?.Invoke(RoomScanProgress);
 					PreviousRotationEuler = ArCamera.transform.eulerAngles;
 				}
-
-			}
 
 			yield return new WaitForEndOfFrame();
 			CalibrationCompleted?.Invoke();

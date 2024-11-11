@@ -1,26 +1,28 @@
-﻿namespace Mapbox.Editor
-{
+﻿namespace Mapbox.Editor {
+
 	using UnityEditor;
 	using UnityEngine;
 	using Mapbox.Unity.Map;
 
 	[CustomPropertyDrawer(typeof(LayerPerformanceOptions))]
-	public class LayerPerformanceOptionsDrawer : PropertyDrawer
-	{
-		SerializedProperty isActiveProperty;
+	public class LayerPerformanceOptionsDrawer : PropertyDrawer {
 
-		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-		{
+		private SerializedProperty isActiveProperty;
+
+		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
 			isActiveProperty = property.FindPropertyRelative("isEnabled");
 
-			isActiveProperty.boolValue = EditorGUILayout.Toggle(new GUIContent("Enable Coroutines"), isActiveProperty.boolValue);
+			isActiveProperty.boolValue = EditorGUILayout.Toggle(
+				new GUIContent("Enable Coroutines"), isActiveProperty.boolValue
+			);
 
-			if (isActiveProperty.boolValue == true)
-			{
+			if (isActiveProperty.boolValue == true) {
 				EditorGUI.indentLevel++;
 				EditorGUILayout.PropertyField(property.FindPropertyRelative("entityPerCoroutine"), true);
 				EditorGUI.indentLevel--;
 			}
 		}
+
 	}
+
 }

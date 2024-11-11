@@ -1,11 +1,12 @@
-namespace Mapbox.Unity.MeshGeneration.Modifiers
-{
-	using Mapbox.Unity.MeshGeneration.Data;
+namespace Mapbox.Unity.MeshGeneration.Modifiers {
 
-	public enum ModifierType
-	{
+	using Data;
+
+	public enum ModifierType {
+
 		Preprocess,
 		Postprocess
+
 	}
 
 	/// <summary>
@@ -30,18 +31,18 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 	/// take a little experience with mesh generation to be able to do this but it's the suggested way to create 
 	/// custom world objects, like blobly toonish buildings, or wobbly roads.
 	/// </summary>
-	public class MeshModifier : ModifierBase
-	{
-		public virtual ModifierType Type { get { return ModifierType.Preprocess; } }
+	public class MeshModifier : ModifierBase {
 
-		public virtual void Run(VectorFeatureUnity feature, MeshData md, float scale)
-		{
+		public virtual ModifierType Type => ModifierType.Preprocess;
+
+		public virtual void Run(VectorFeatureUnity feature, MeshData md, float scale) {
 			Run(feature, md);
 		}
 
-		public virtual void Run(VectorFeatureUnity feature, MeshData md, UnityTile tile = null)
-		{
+		public virtual void Run(VectorFeatureUnity feature, MeshData md, UnityTile tile = null) {
 
 		}
+
 	}
+
 }

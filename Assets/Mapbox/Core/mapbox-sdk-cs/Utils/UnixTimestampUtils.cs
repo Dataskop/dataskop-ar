@@ -4,8 +4,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Utils
-{
+namespace Mapbox.Utils {
+
 	using System;
 	using System.Collections.Generic;
 	using System.Text;
@@ -14,8 +14,7 @@ namespace Mapbox.Utils
 	/// <summary>
 	/// A set of Unix Timestamp utils.
 	/// </summary>
-	public static class UnixTimestampUtils
-	{
+	public static class UnixTimestampUtils {
 
 		// http://gigi.nullneuron.net/gigilabs/converting-tofrom-unix-timestamp-in-c/
 
@@ -24,8 +23,7 @@ namespace Mapbox.Utils
 		/// </summary>
 		/// <param name="date"></param>
 		/// <returns></returns>
-		public static double To(DateTime date)
-		{
+		public static double To(DateTime date) {
 			return date.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
 		}
 
@@ -35,8 +33,7 @@ namespace Mapbox.Utils
 		/// </summary>
 		/// <param name="timestamp"></param>
 		/// <returns></returns>
-		public static DateTime From(double timestamp)
-		{
+		public static DateTime From(double timestamp) {
 			return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Add(TimeSpan.FromSeconds(timestamp));
 		}
 
@@ -45,8 +42,7 @@ namespace Mapbox.Utils
 		/// </summary>
 		/// <param name="timestamp"></param>
 		/// <returns></returns>
-		public static DateTime FromMilliseconds(double timestamp)
-		{
+		public static DateTime FromMilliseconds(double timestamp) {
 			return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Add(TimeSpan.FromMilliseconds(timestamp));
 		}
 
@@ -55,11 +51,10 @@ namespace Mapbox.Utils
 		/// </summary>
 		/// <param name="timestamp"></param>
 		/// <returns></returns>
-		public static DateTime From(long timestamp)
-		{
+		public static DateTime From(long timestamp) {
 			return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Add(TimeSpan.FromTicks(timestamp));
 		}
 
-
 	}
+
 }

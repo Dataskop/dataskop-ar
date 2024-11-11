@@ -1,17 +1,19 @@
 ﻿using UnityEngine;
 
-namespace Mapbox.Unity.Map
-{
-	public interface ITerrainLayer : ILayer
-	{
+namespace Mapbox.Unity.Map {
+
+	public interface ITerrainLayer : ILayer {
+
 		/// <summary>
 		/// Gets the `Data Source` for the `TERRAIN` section.
 		/// </summary>
 		ElevationSourceType LayerSource { get; }
+
 		/// <summary>
 		/// Gets the `Elevation Layer Type` for the `TERRAIN` section.
 		/// </summary>
 		ElevationLayerType ElevationType { get; set; }
+
 		/// <summary>
 		/// Gets the `Exaggeration Factor` for the `TERRAIN` section.
 		/// </summary>
@@ -83,13 +85,17 @@ namespace Mapbox.Unity.Map
 		/// <param name="enableCollider">Enables or disables `Use Collider` settings for a mesh collider on the terrain.</param>
 		/// <param name="factor">`Exaggertion Factor` for a multiplier of the height data.</param>
 		/// <param name="layerId">`Add to Unity Layer` settings which adds terrrain to a layer.</param>
-		void SetProperties(ElevationSourceType dataSource = ElevationSourceType.MapboxTerrain, ElevationLayerType elevationType = ElevationLayerType.TerrainWithElevation, bool enableCollider = false, float factor = 1, int layerId = 0);
+		void SetProperties(ElevationSourceType dataSource = ElevationSourceType.MapboxTerrain,
+			ElevationLayerType elevationType = ElevationLayerType.TerrainWithElevation, bool enableCollider = false,
+			float factor = 1, int layerId = 0);
+
 	}
 
 
-	public interface IGlobeTerrainLayer : ITerrainLayer
-	{
+	public interface IGlobeTerrainLayer : ITerrainLayer {
+
 		float EarthRadius { get; set; }
+
 	}
 
 }

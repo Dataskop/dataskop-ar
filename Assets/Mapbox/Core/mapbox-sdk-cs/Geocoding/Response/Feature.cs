@@ -5,18 +5,20 @@
 //-----------------------------------------------------------------------
 
 namespace Mapbox.Geocoding {
-    using System;
-    using System.Collections.Generic;
-    using Mapbox.Json;
-    using Mapbox.Utils;
-    using Mapbox.Utils.JsonConverters;
 
-    /// <summary> A GeoJSON FeatureCollection of points returned by geocoding API.</summary>
+	using System;
+	using System.Collections.Generic;
+	using Json;
+	using Utils;
+	using Utils.JsonConverters;
+
+	/// <summary> A GeoJSON FeatureCollection of points returned by geocoding API.</summary>
 #if !WINDOWS_UWP
-    //http://stackoverflow.com/a/12903628
-    [Serializable]
+	//http://stackoverflow.com/a/12903628
+	[Serializable]
 #endif
 	public class Feature {
+
 		/// <summary> Gets or sets the id. Ids are unique in the Mapbox geocoder. </summary>
 		/// <value>The id.</value>
 		[JsonProperty("id")]
@@ -92,5 +94,7 @@ namespace Mapbox.Geocoding {
 		/// <value>The context.</value>
 		[JsonProperty("context", NullValueHandling = NullValueHandling.Ignore)]
 		public List<Dictionary<string, string>> Context { get; set; }
+
 	}
+
 }

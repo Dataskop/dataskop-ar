@@ -7,7 +7,7 @@
 
 namespace Mapbox.Platform {
 
-	using Mapbox.Unity.Utilities;
+	using Unity.Utilities;
 
 
 	/// <summary> A handle to an asynchronous request. </summary>
@@ -21,5 +21,7 @@ namespace Mapbox.Platform {
 
 		/// <summary>Type of request: GET, HEAD, ...</summary>
 		HttpRequestType RequestType { get; }
+
 	}
+
 }

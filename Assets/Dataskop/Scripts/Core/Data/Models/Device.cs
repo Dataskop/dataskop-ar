@@ -38,11 +38,13 @@ namespace Dataskop.Data {
 
 			if (MeasurementDefinitions.Count == 0) {
 
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Warning,
-					Text = $"Device {ID} has no reported location!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Warning,
+						Text = $"Device {ID} has no reported location!",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 
 				return null;
 			}
@@ -53,11 +55,13 @@ namespace Dataskop.Data {
 				return MeasurementDefinitions?.First().LatestMeasurementResult.Position;
 			}
 
-			NotificationHandler.Add(new Notification {
-				Category = NotificationCategory.Warning,
-				Text = $"Device {ID} has no reported location!",
-				DisplayDuration = NotificationDuration.Medium
-			});
+			NotificationHandler.Add(
+				new Notification {
+					Category = NotificationCategory.Warning,
+					Text = $"Device {ID} has no reported location!",
+					DisplayDuration = NotificationDuration.Medium
+				}
+			);
 
 			return null;
 

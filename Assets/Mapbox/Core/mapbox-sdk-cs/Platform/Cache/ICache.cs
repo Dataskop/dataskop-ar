@@ -1,13 +1,10 @@
+namespace Mapbox.Platform.Cache {
 
-namespace Mapbox.Platform.Cache
-{
-
-	using Mapbox.Map;
+	using Map;
 	using System;
 
 
-	public interface ICache
-	{
+	public interface ICache {
 
 		/// <summary>
 		/// Maximum number of tiles to store
@@ -49,5 +46,7 @@ namespace Mapbox.Platform.Cache
 		/// Reinitialize cache. Might be needed after 'Clear', eg for SQLiteCache
 		/// </summary>
 		void ReInit();
+
 	}
+
 }

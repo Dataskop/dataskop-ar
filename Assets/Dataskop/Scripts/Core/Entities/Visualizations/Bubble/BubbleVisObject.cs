@@ -78,6 +78,7 @@ namespace Dataskop.Entities.Visualizations {
 					if (isSelected && IsFocused) {
 						return;
 					}
+
 					visRenderer.sprite = IsFocused ? hoveredSprite : historicSprite;
 					break;
 				case VisObjectState.Selected:
@@ -91,7 +92,9 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void ApplyData(params VisObjectData[] data) {
 			CurrentData = data[0];
-			SetBubbleSize(CurrentData.Result.ReadAsFloat(), CurrentData.Attribute.Minimum, CurrentData.Attribute.Maximum);
+			SetBubbleSize(
+				CurrentData.Result.ReadAsFloat(), CurrentData.Attribute.Minimum, CurrentData.Attribute.Maximum
+			);
 		}
 
 		public void SetFocus(bool isFocused) {
@@ -111,7 +114,9 @@ namespace Dataskop.Entities.Visualizations {
 
 		private void SetBubbleSize(float value, float minAttributeValue, float maxAttributeValue) {
 
-			float newSize = BubbleUtils.CalculateRadius(value, minAttributeValue, maxAttributeValue, minScale, maxScale);
+			float newSize = BubbleUtils.CalculateRadius(
+				value, minAttributeValue, maxAttributeValue, minScale, maxScale
+			);
 			Vector3 newBubbleScale = new(newSize, newSize, newSize);
 
 			Transform visTransform = visRenderer.transform;
@@ -120,8 +125,12 @@ namespace Dataskop.Entities.Visualizations {
 				StopCoroutine(scaleRoutine);
 			}
 
-			scaleRoutine = StartCoroutine(Lerper.TransformLerpOnCurve(visTransform, TransformValue.Scale, visTransform.localScale,
-				newBubbleScale, 0.12f, scaleCurve, null));
+			scaleRoutine = StartCoroutine(
+				Lerper.TransformLerpOnCurve(
+					visTransform, TransformValue.Scale, visTransform.localScale,
+					newBubbleScale, 0.12f, scaleCurve, null
+				)
+			);
 
 		}
 

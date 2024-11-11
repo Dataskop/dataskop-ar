@@ -93,21 +93,27 @@ namespace Dataskop.UI {
 			attributeButton.text = attributeLabel;
 			attributeButton.name = attributeId;
 
-			attributeButton.RegisterCallback<ClickEvent>(e => {
-				SelectAttributeButton(attributeButton);
-				SelectAttribute(attributeButton.name);
-			});
+			attributeButton.RegisterCallback<ClickEvent>(
+				e =>
+				{
+					SelectAttributeButton(attributeButton);
+					SelectAttribute(attributeButton.name);
+				}
+			);
 
 			return attributeButton;
 		}
 
 		private void SelectAttributeButton(Button selectedButton) {
 
-			foreach (Button b in AttributeButtons)
-				if (b == selectedButton)
+			foreach (Button b in AttributeButtons) {
+				if (b == selectedButton) {
 					b.AddToClassList("selected");
-				else
+				}
+				else {
 					b.RemoveFromClassList("selected");
+				}
+			}
 
 		}
 
@@ -156,16 +162,19 @@ namespace Dataskop.UI {
 					.style.backgroundImage =
 				new StyleBackground(visualizationIcons.First(visIcon => visIcon.name == visOpt.Type));
 
-			visOptButton.RegisterCallback<ClickEvent>(e => {
-				SelectVisOptionButton(visOptButton);
-				SelectVisOption(visOpt);
-			});
+			visOptButton.RegisterCallback<ClickEvent>(
+				e =>
+				{
+					SelectVisOptionButton(visOptButton);
+					SelectVisOption(visOpt);
+				}
+			);
 
 			return visOptButton;
 		}
 
 		private void SelectVisOptionButton(Button selectedButton) {
-			foreach (Button b in VisOptionButtons)
+			foreach (Button b in VisOptionButtons) {
 				if (b == selectedButton) {
 					b.AddToClassList("selected");
 					b.Q<VisualElement>("icon").style.unityBackgroundImageTintColor = new StyleColor(selectedIconColor);
@@ -175,6 +184,7 @@ namespace Dataskop.UI {
 					b.Q<VisualElement>("icon").style.unityBackgroundImageTintColor =
 						new StyleColor(deselectedIconColor);
 				}
+			}
 		}
 
 		private void SelectVisOption(VisualizationOption visOpt) {
@@ -183,7 +193,9 @@ namespace Dataskop.UI {
 
 		public void ChangeVisSelectorPosition(InfoCardState infoCardState) {
 
-			if (isStateLocked) return;
+			if (isStateLocked) {
+				return;
+			}
 
 			switch (infoCardState) {
 				case InfoCardState.Short:

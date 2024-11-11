@@ -49,30 +49,36 @@ namespace Dataskop.UI {
 
 		public void OnSwipe(PointerInteraction pointerInteraction) {
 
-			if (!InfoCard.visible) return;
+			if (!InfoCard.visible) {
+				return;
+			}
 
 			SetPreviousState();
 
-			if (pointerInteraction.Direction.y > 0.20f)
+			if (pointerInteraction.Direction.y > 0.20f) {
 				CurrentCardState = CurrentCardState switch {
 					InfoCardState.Collapsed => InfoCardState.Short,
 					InfoCardState.Short => InfoCardState.Fullscreen,
 					_ => CurrentCardState
 				};
+			}
 
-			if (pointerInteraction.Direction.y < -0.20f)
+			if (pointerInteraction.Direction.y < -0.20f) {
 				CurrentCardState = CurrentCardState switch {
 					InfoCardState.Fullscreen => InfoCardState.Short,
 					InfoCardState.Short => InfoCardState.Collapsed,
 					_ => CurrentCardState
 				};
+			}
 
 			UpdateInformationCardState(CurrentCardState);
 		}
 
 		private void UpdateInformationCardState(InfoCardState infoCardState) {
 
-			if (infoCardState == PreviousCardState) return;
+			if (infoCardState == PreviousCardState) {
+				return;
+			}
 
 			InfoCard.ToggleInClassList(InfoCardStateTransitionClasses[PreviousCardState]);
 			InfoCard.ToggleInClassList(InfoCardStateTransitionClasses[infoCardState]);
@@ -96,8 +102,9 @@ namespace Dataskop.UI {
 
 		public void OnDataPointSoftSelected(DataPoint softSelectedDataPoint) {
 
-			if (IsLocked)
+			if (IsLocked) {
 				return;
+			}
 
 			if (softSelectedDataPoint != null) {
 

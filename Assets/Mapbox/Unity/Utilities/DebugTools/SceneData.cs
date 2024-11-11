@@ -1,13 +1,14 @@
-﻿namespace Mapbox.Unity.Utilities.DebugTools
-{
-    using UnityEngine;
+﻿namespace Mapbox.Unity.Utilities.DebugTools {
 
-    public class SceneData : ScriptableObject
-    {
-        public string Name;
-        public string ScenePath;
-        public Texture2D Image;
-        public TextAsset Text;
-    }
+	using UnityEngine;
+
+	public class SceneData : ScriptableObject {
+
+		public string Name;
+		public string ScenePath;
+		public Texture2D Image;
+		public TextAsset Text;
+
+	}
+
 }
-

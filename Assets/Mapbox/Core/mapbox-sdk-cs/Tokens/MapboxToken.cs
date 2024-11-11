@@ -1,8 +1,6 @@
+namespace Mapbox.Tokens {
 
-namespace Mapbox.Tokens
-{
-
-	using Mapbox.Json;
+	using Json;
 	using System;
 	using System.Text;
 
@@ -10,8 +8,7 @@ namespace Mapbox.Tokens
 	/// <summary>
 	/// Mapbox Token: https://www.mapbox.com/api-documentation/accounts/#retrieve-a-token
 	/// </summary>
-	public class MapboxToken
-	{
+	public class MapboxToken {
 
 		/// <summary>String representation of the token' status </summary>
 		[JsonProperty("code")]
@@ -38,54 +35,48 @@ namespace Mapbox.Tokens
 		public string ErrorMessage;
 
 
-		public static MapboxToken FromResponseData(byte[] data)
-		{
+		public static MapboxToken FromResponseData(byte[] data) {
 
-			if (null == data || data.Length < 1)
-			{
-				return new MapboxToken()
-				{
+			if (null == data || data.Length < 1) {
+				return new MapboxToken() {
 					HasError = true,
 					ErrorMessage = "No data received from token endpoint."
 				};
 			}
 
-
 			string jsonTxt = Encoding.UTF8.GetString(data);
 
-			MapboxToken token = new MapboxToken();
-			try
-			{
+			MapboxToken token = new();
+
+			try {
 				token = JsonConvert.DeserializeObject<MapboxToken>(jsonTxt);
 
 				MapboxTokenStatus status = (MapboxTokenStatus)Enum.Parse(typeof(MapboxTokenStatus), token.Code);
-				if (!Enum.IsDefined(typeof(MapboxTokenStatus), status))
-				{
-					throw new Exception(string.Format("could not convert token.code '{0}' to MapboxTokenStatus", token.Code));
+
+				if (!Enum.IsDefined(typeof(MapboxTokenStatus), status)) {
+					throw new Exception(
+						string.Format("could not convert token.code '{0}' to MapboxTokenStatus", token.Code)
+					);
 				}
 
 				token.Status = status;
 			}
-			catch (Exception ex)
-			{
+			catch (Exception ex) {
 				token.HasError = true;
 				token.ErrorMessage = ex.Message;
 			}
 
 			return token;
 		}
+
 	}
-
-
-
 
 
 	/// <summary>
 	/// Every token has a metadata object that contains information about the capabilities of the token.
 	/// https://www.mapbox.com/api-documentation/accounts/#token-metadata-object
 	/// </summary>
-	public class TokenMetadata
-	{
+	public class TokenMetadata {
 
 		/// <summary>the identifier for the token</summary>
 		[JsonProperty("id")]
@@ -135,8 +126,7 @@ namespace Mapbox.Tokens
 		/// <summary>the token itself</summary>
 		[JsonProperty("token")]
 		public string Token;
+
 	}
-
-
 
 }

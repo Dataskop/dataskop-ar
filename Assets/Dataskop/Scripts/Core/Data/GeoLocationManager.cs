@@ -57,17 +57,21 @@ namespace Dataskop.Data {
 		/// </summary>
 		private void UpdateLocation(Location userLocation) {
 
-			if (HasUsedFixedPositioning)
+			if (HasUsedFixedPositioning) {
 				return;
+			}
 
-			if (!HasInitialLocationData)
+			if (!HasInitialLocationData) {
 				return;
+			}
 
-			if (userLocation.Accuracy > BestAccuracy)
+			if (userLocation.Accuracy > BestAccuracy) {
 				return;
+			}
 
-			if (Mathf.Abs(userLocation.Accuracy - BestAccuracy) < 0.5f)
+			if (Mathf.Abs(userLocation.Accuracy - BestAccuracy) < 0.5f) {
 				return;
+			}
 
 			Debug.Log("Received Location: " + userLocation.LatitudeLongitude);
 			locationProvider.mapManager.UpdateMap(userLocation.LatitudeLongitude);
@@ -79,7 +83,9 @@ namespace Dataskop.Data {
 		/// Fetch Position manually
 		/// </summary>
 		public void FetchPosition() {
-			locationProvider.mapManager.UpdateMap(locationProvider.DefaultLocationProvider.CurrentLocation.LatitudeLongitude);
+			locationProvider.mapManager.UpdateMap(
+				locationProvider.DefaultLocationProvider.CurrentLocation.LatitudeLongitude
+			);
 		}
 
 		/// <summary>
@@ -106,11 +112,13 @@ namespace Dataskop.Data {
 
 			HasUsedFixedPositioning = true;
 
-			NotificationHandler.Add(new Notification {
-				Category = NotificationCategory.Check,
-				Text = "Location Code scanned!",
-				DisplayDuration = NotificationDuration.Flash
-			});
+			NotificationHandler.Add(
+				new Notification {
+					Category = NotificationCategory.Check,
+					Text = "Location Code scanned!",
+					DisplayDuration = NotificationDuration.Flash
+				}
+			);
 
 		}
 
@@ -119,7 +127,9 @@ namespace Dataskop.Data {
 		/// </summary>
 		private void UpdateMapRoot() {
 			Vector3 arPos = arCam.transform.position;
-			locationProvider.mapManager.Root.position = new Vector3(arPos.x, locationProvider.mapManager.Root.position.y, arPos.z);
+			locationProvider.mapManager.Root.position = new Vector3(
+				arPos.x, locationProvider.mapManager.Root.position.y, arPos.z
+			);
 		}
 
 	}

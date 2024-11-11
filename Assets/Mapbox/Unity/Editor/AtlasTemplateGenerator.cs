@@ -5,24 +5,23 @@ using System.Collections.Generic;
 using Mapbox.Unity.MeshGeneration.Data;
 using System.IO;
 
-namespace Mapbox.Editor
-{
+namespace Mapbox.Editor {
 
-	class AtlasTemplateGenerator : EditorWindow
-	{
+	internal class AtlasTemplateGenerator : EditorWindow {
+
 		[MenuItem("Mapbox/Atlas Template Generator")]
-		public static void ShowWindow()
-		{
-			EditorWindow.GetWindow(typeof(AtlasTemplateGenerator));
+		public static void ShowWindow() {
+			GetWindow(typeof(AtlasTemplateGenerator));
 		}
 
-		public class PixelRect
-		{
+		public class PixelRect {
+
 			public int x;
 			public int y;
 
 			public int xx;
 			public int yy;
+
 		}
 
 		public string m_saveFileName = "AtlasTemplate";
@@ -46,22 +45,19 @@ namespace Mapbox.Editor
 
 		private const float _cellRatioMargin = 0.01f;
 
-		private void Awake()
-		{
+		private void Awake() {
 			CreateTexture();
 		}
 
-		private void CreateTexture()
-		{
+		private void CreateTexture() {
 			m_texture = new Texture2D(m_textureResolution, m_textureResolution, TextureFormat.ARGB32, false);
 			m_texture.filterMode = FilterMode.Point;
 		}
 
-		void OnGUI()
-		{
+		private void OnGUI() {
 			GUILayout.Space(20);
 
-			GUIStyle titleStyle = new GUIStyle(EditorStyles.label);
+			GUIStyle titleStyle = new(EditorStyles.label);
 
 			titleStyle.fontSize = 32;
 			titleStyle.normal.textColor = Color.white;
@@ -83,17 +79,15 @@ namespace Mapbox.Editor
 
 			EditorGUI.indentLevel++;
 
-			m_atlasInfo = EditorGUILayout.ObjectField("Atlas info:", m_atlasInfo, typeof(AtlasInfo), true) as Mapbox.Unity.MeshGeneration.Data.AtlasInfo;
+			m_atlasInfo = EditorGUILayout.ObjectField("Atlas info:", m_atlasInfo, typeof(AtlasInfo), true) as AtlasInfo;
 
 			EditorGUILayout.Space();
 
 			m_generateFacadesTemplate = EditorGUILayout.Toggle("Create Facades", m_generateFacadesTemplate);
 			m_generateRoofsTemplate = EditorGUILayout.Toggle("Create Roofs", m_generateRoofsTemplate);
 
-			if (EditorGUI.EndChangeCheck())
-			{
-				if (m_atlasInfo != null)
-				{
+			if (EditorGUI.EndChangeCheck()) {
+				if (m_atlasInfo != null) {
 					int facadeCount = m_generateFacadesTemplate ? m_atlasInfo.Textures.Count : 0;
 					int roofCount = m_generateRoofsTemplate ? m_atlasInfo.Roofs.Count : 0;
 
@@ -104,14 +98,12 @@ namespace Mapbox.Editor
 					float hueIncrement = (float)1.0f / textureCount;
 					float hue = 0.0f;
 
-					for (int i = 0; i < textureCount; i++)
-					{
+					for (int i = 0; i < textureCount; i++) {
 						m_colors[i] = Color.HSVToRGB(hue, 1.0f, 1.0f);
 						hue += hueIncrement;
 					}
 				}
-				else
-				{
+				else {
 					m_colors = new Color[0];
 					CreateTexture();
 				}
@@ -119,43 +111,45 @@ namespace Mapbox.Editor
 
 			EditorGUI.BeginChangeCheck();
 
-			m_textureResolution = Mathf.Clamp(EditorGUILayout.IntField("Texture resolution:", m_textureResolution), _MIN_TEX_SIZE, _MAX_TEX_SIZE);
+			m_textureResolution = Mathf.Clamp(
+				EditorGUILayout.IntField("Texture resolution:", m_textureResolution), _MIN_TEX_SIZE, _MAX_TEX_SIZE
+			);
 
-			if (EditorGUI.EndChangeCheck())
-			{
+			if (EditorGUI.EndChangeCheck()) {
 				CreateTexture();
 			}
 
 			EditorGUILayout.Space();
 
-			if (m_colors != null)
-			{
-				for (int i = 0; i < m_colors.Length; i++)
-				{
+			if (m_colors != null) {
+				for (int i = 0; i < m_colors.Length; i++) {
 					string colorFieldName = string.Format("Color {0}", i);
 					m_colors[i] = EditorGUILayout.ColorField(colorFieldName, m_colors[i]);
 				}
 			}
 
-			if (GUILayout.Button("Generate Template"))
-			{
-				if (m_atlasInfo == null)
-				{
-					EditorUtility.DisplayDialog("Atlas Template Generator", "Error: No AtlasInfo object selected.", "Ok");
+			if (GUILayout.Button("Generate Template")) {
+				if (m_atlasInfo == null) {
+					EditorUtility.DisplayDialog(
+						"Atlas Template Generator", "Error: No AtlasInfo object selected.", "Ok"
+					);
 					return;
 				}
-				if (!m_generateFacadesTemplate && !m_generateRoofsTemplate)
-				{
-					EditorUtility.DisplayDialog("Atlas Template Generator", "Error: Template generation requires Create Facades and/or Create Roofs to be enabled.", "Ok");
+
+				if (!m_generateFacadesTemplate && !m_generateRoofsTemplate) {
+					EditorUtility.DisplayDialog(
+						"Atlas Template Generator",
+						"Error: Template generation requires Create Facades and/or Create Roofs to be enabled.", "Ok"
+					);
 					return;
 				}
+
 				GenerateTemplate();
 			}
 
 			EditorGUILayout.Space();
 
-			if (GUILayout.Button("Save to file"))
-			{
+			if (GUILayout.Button("Save to file")) {
 				SaveTextureAsPNG();
 			}
 
@@ -163,11 +157,14 @@ namespace Mapbox.Editor
 
 			GUILayout.EndVertical();
 
-			GUIStyle boxStyle = new GUIStyle();
+			GUIStyle boxStyle = new();
 
 			boxStyle.alignment = TextAnchor.UpperLeft;
 
-			GUILayout.Box(m_texture, boxStyle, GUILayout.Width(300), GUILayout.Height(300), GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+			GUILayout.Box(
+				m_texture, boxStyle, GUILayout.Width(300), GUILayout.Height(300), GUILayout.ExpandWidth(true),
+				GUILayout.ExpandHeight(true)
+			);
 
 			GUILayout.EndHorizontal();
 			GUILayout.EndVertical();
@@ -175,14 +172,12 @@ namespace Mapbox.Editor
 			GUILayout.Space(20);
 		}
 
-		private int GetPixelCoorFromAtlasRatio(float ratio)
-		{
+		private int GetPixelCoorFromAtlasRatio(float ratio) {
 			return (int)(m_textureResolution * ratio);
 		}
 
-		private PixelRect ConvertUVRectToPixelRect(Rect atlasRect)
-		{
-			PixelRect pixelRect = new PixelRect();
+		private PixelRect ConvertUVRectToPixelRect(Rect atlasRect) {
+			PixelRect pixelRect = new();
 			pixelRect.x = GetPixelCoorFromAtlasRatio(atlasRect.x);
 			pixelRect.y = GetPixelCoorFromAtlasRatio(atlasRect.y);
 			pixelRect.xx = GetPixelCoorFromAtlasRatio(atlasRect.x + atlasRect.width);
@@ -190,19 +185,15 @@ namespace Mapbox.Editor
 			return pixelRect;
 		}
 
-		private void DrawRect(PixelRect pr, Color color)
-		{
-			for (int i = pr.x; i < pr.xx; i++)
-			{
-				for (int j = pr.y; j < pr.yy; j++)
-				{
+		private void DrawRect(PixelRect pr, Color color) {
+			for (int i = pr.x; i < pr.xx; i++) {
+				for (int j = pr.y; j < pr.yy; j++) {
 					m_texture.SetPixel(i, j, color);
 				}
 			}
 		}
 
-		private void DrawWatermark(int x, int y)
-		{
+		private void DrawWatermark(int x, int y) {
 			m_texture.SetPixel(x, y, Color.black);
 			m_texture.SetPixel(x + 3, y, Color.black);
 			m_texture.SetPixel(x, y + 3, Color.black);
@@ -214,40 +205,34 @@ namespace Mapbox.Editor
 			m_texture.SetPixel(x + 2, y + 2, Color.black);
 		}
 
-		private void DrawCornerWatermarks(PixelRect pr)
-		{
+		private void DrawCornerWatermarks(PixelRect pr) {
 			DrawWatermark(pr.x, pr.y);
 			DrawWatermark(pr.xx - 4, pr.y);
 			DrawWatermark(pr.x, pr.yy - 4);
 			DrawWatermark(pr.xx - 4, pr.yy - 4);
 		}
 
-		private void DrawDebugCross(PixelRect pr)
-		{
+		private void DrawDebugCross(PixelRect pr) {
 			int centerX = (pr.x + pr.xx) / 2;
 			int centerY = (pr.y + pr.yy) / 2;
 
 			m_texture.SetPixel(centerX, centerY, Color.black);
 
-			for (int x = pr.x; x < pr.xx; x++)
-			{
+			for (int x = pr.x; x < pr.xx; x++) {
 				m_texture.SetPixel(x, centerY, Color.black);
 				m_texture.SetPixel(x, centerY - 1, Color.black);
 				m_texture.SetPixel(x, centerY + 1, Color.black);
 			}
 
-			for (int y = pr.y; y < pr.yy; y++)
-			{
+			for (int y = pr.y; y < pr.yy; y++) {
 				m_texture.SetPixel(centerX, y, Color.black);
 				m_texture.SetPixel(centerX - 1, y, Color.black);
 				m_texture.SetPixel(centerX + 1, y, Color.black);
 			}
 		}
 
-		private void DrawAtlasEntityData(List<AtlasEntity> aeList)
-		{
-			for (int i = 0; i < aeList.Count; i++)
-			{
+		private void DrawAtlasEntityData(List<AtlasEntity> aeList) {
+			for (int i = 0; i < aeList.Count; i++) {
 				AtlasEntity ae = aeList[i];
 
 				Rect baseRect = ae.TextureRect;
@@ -256,8 +241,8 @@ namespace Mapbox.Editor
 				float bottomRatio = ae.BottomSectionRatio * baseRect.height;
 				float middleRatio = baseRect.height - (topRatio + bottomRatio);
 
-				Rect groundFloorRect = new Rect(baseRect.x, baseRect.y, baseRect.width, bottomRatio);
-				Rect topFloorRect = new Rect(baseRect.x, baseRect.y + baseRect.height - topRatio, baseRect.width, topRatio);
+				Rect groundFloorRect = new(baseRect.x, baseRect.y, baseRect.width, bottomRatio);
+				Rect topFloorRect = new(baseRect.x, baseRect.y + baseRect.height - topRatio, baseRect.width, topRatio);
 
 				PixelRect basePixelRect = ConvertUVRectToPixelRect(baseRect);
 				PixelRect groundFloorPixelRect = ConvertUVRectToPixelRect(groundFloorRect);
@@ -285,55 +270,58 @@ namespace Mapbox.Editor
 				float mrgn = _cellRatioMargin;
 				float halfMrgn = mrgn / 2;
 
-				for (int j = 0; j < numMidFloors; j++)
-				{
-					float floorStart = midFloorBase + (floorHeight * j);
+				for (int j = 0; j < numMidFloors; j++) {
+					float floorStart = midFloorBase + floorHeight * j;
 
-					for (int k = 0; k < numColumns; k++)
-					{
-						float columnStart = baseRect.x + (colWidth * k);
+					for (int k = 0; k < numColumns; k++) {
+						float columnStart = baseRect.x + colWidth * k;
 
-						Rect cellRect = new Rect(columnStart + halfMrgn, floorStart + halfMrgn, colWidth - mrgn, floorHeight - mrgn);
+						Rect cellRect = new(
+							columnStart + halfMrgn, floorStart + halfMrgn, colWidth - mrgn, floorHeight - mrgn
+						);
 						PixelRect cellPixelRect = ConvertUVRectToPixelRect(cellRect);
 
 						DrawRect(cellPixelRect, Color.white);
 						DrawDebugCross(cellPixelRect);
 					}
 				}
+
 				DrawCornerWatermarks(groundFloorPixelRect);
 				DrawCornerWatermarks(topFloorPixelRect);
 				_drawCount++;
 			}
 		}
 
-		public void GenerateTemplate()
-		{
+		public void GenerateTemplate() {
 			_drawCount = 0;
-			if (m_generateFacadesTemplate)
-			{
+
+			if (m_generateFacadesTemplate) {
 				DrawAtlasEntityData(m_atlasInfo.Textures);
 			}
-			if (m_generateRoofsTemplate)
-			{
+
+			if (m_generateRoofsTemplate) {
 				DrawAtlasEntityData(m_atlasInfo.Roofs);
 			}
+
 			m_texture.Apply();
 		}
 
-		public void SaveTextureAsPNG()
-		{
-			var path = EditorUtility.SaveFilePanel("Save texture as PNG", "Assets", "AtlasTemplate.png", "png");
-			if (path.Length == 0)
-			{
+		public void SaveTextureAsPNG() {
+			string path = EditorUtility.SaveFilePanel("Save texture as PNG", "Assets", "AtlasTemplate.png", "png");
+
+			if (path.Length == 0) {
 				return;
 			}
+
 			byte[] pngData = m_texture.EncodeToPNG();
-			if (pngData != null)
-			{
+
+			if (pngData != null) {
 				File.WriteAllBytes(path, pngData);
 				Debug.Log(pngData.Length / 1024 + "Kb was saved as: " + path);
 				AssetDatabase.Refresh();
 			}
 		}
+
 	}
+
 }

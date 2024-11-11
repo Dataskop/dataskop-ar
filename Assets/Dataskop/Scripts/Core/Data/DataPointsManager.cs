@@ -63,17 +63,17 @@ namespace Dataskop.Data {
 		private TimeRange? TimeRangeFilter { get; set; }
 
 		private void Awake() {
-			
+
 			DataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
 			DataManager.HasDateFiltered += OnDataFiltered;
-			
+
 		}
 
 		private void Start() {
-			
+
 			inputHandler.WorldPointerUpped += OnSwiped;
 			LastKnownDevicePositions = new Dictionary<Device, Vector3>();
-			
+
 		}
 
 		private void FixedUpdate() {
@@ -188,13 +188,15 @@ namespace Dataskop.Data {
 				if (DataAttributeManager.SelectedAttribute.ID == "all") {
 
 					//If it is the same, create a datapoint instance
-					DataPoint dataPointInstance = Instantiate(dataPointPrefab, dataPointsContainer).GetComponent<DataPoint>();
+					DataPoint dataPointInstance =
+						Instantiate(dataPointPrefab, dataPointsContainer).GetComponent<DataPoint>();
 					dataPointInstance.Attribute = DataAttributeManager.SelectedAttribute;
 					dataPointInstance.MeasurementDefinition = projectDevices[i].MeasurementDefinitions.First();
 					dataPointInstance.Device = projectDevices[i];
 					dataPointInstance.AuthorRepository = AuthorRepository;
 					dataPointInstance.FocusedIndexChangedByTap += OnIndexChangeRequested;
-					dataPointInstance.FocusedMeasurement = dataPointInstance.MeasurementDefinition.LatestMeasurementResult;
+					dataPointInstance.FocusedMeasurement =
+						dataPointInstance.MeasurementDefinition.LatestMeasurementResult;
 
 					//Move the DataPoint to its location
 					if (AppOptions.DemoMode) {
@@ -205,8 +207,10 @@ namespace Dataskop.Data {
 						}
 
 						// Subtract Offset to place the Vis on top of the found images
-						PlaceDataPoint(GetLastKnownDevicePosition(projectDevices[i]) - dataPointInstance.Vis.Offset,
-							dataPointInstance.transform);
+						PlaceDataPoint(
+							GetLastKnownDevicePosition(projectDevices[i]) - dataPointInstance.Vis.Offset,
+							dataPointInstance.transform
+						);
 
 					}
 					else {
@@ -215,7 +219,9 @@ namespace Dataskop.Data {
 					}
 
 					DataPoints.Add(dataPointInstance);
-					SetDataPointVisualization(dataPointInstance, DataAttributeManager.SelectedAttribute.VisOptions.First());
+					SetDataPointVisualization(
+						dataPointInstance, DataAttributeManager.SelectedAttribute.VisOptions.First()
+					);
 
 				}
 				else {
@@ -228,7 +234,8 @@ namespace Dataskop.Data {
 						}
 
 						//If it is the same, create a datapoint instance
-						DataPoint dataPointInstance = Instantiate(dataPointPrefab, dataPointsContainer).GetComponent<DataPoint>();
+						DataPoint dataPointInstance =
+							Instantiate(dataPointPrefab, dataPointsContainer).GetComponent<DataPoint>();
 						dataPointInstance.Attribute = DataAttributeManager.SelectedAttribute;
 						dataPointInstance.MeasurementDefinition = definition;
 						dataPointInstance.Device = projectDevices[i];
@@ -245,19 +252,24 @@ namespace Dataskop.Data {
 							}
 
 							// Subtract Offset to place the Vis on top of the found images
-							PlaceDataPoint(GetLastKnownDevicePosition(projectDevices[i]) - dataPointInstance.Vis.Offset,
-								dataPointInstance.transform);
+							PlaceDataPoint(
+								GetLastKnownDevicePosition(projectDevices[i]) - dataPointInstance.Vis.Offset,
+								dataPointInstance.transform
+							);
 
 						}
 						else {
-							DataPointsLocations[i] = Conversions.StringToLatLon(projectDevices[i].Position.GetLatLong());
+							DataPointsLocations[i] =
+								Conversions.StringToLatLon(projectDevices[i].Position.GetLatLong());
 							PlaceDataPoint(DataPointsLocations[i], dataPointInstance.transform);
 						}
 
 						DataPoints.Add(dataPointInstance);
-						SetDataPointVisualization(dataPointInstance, DataAttributeManager.SelectedAttribute.VisOptions.First());
+						SetDataPointVisualization(
+							dataPointInstance, DataAttributeManager.SelectedAttribute.VisOptions.First()
+						);
 					}
-					
+
 				}
 
 			}
@@ -265,25 +277,25 @@ namespace Dataskop.Data {
 		}
 
 		private void PlaceDataPoint(Vector2d newPosition, Transform dataPointTransform) {
-			
+
 			dataPointTransform.localPosition = map.GeoToWorldPosition(newPosition);
-			
+
 		}
 
 		public void PlaceDataPoint(Vector3 newPosition, Transform dataPointTransform) {
-			
+
 			dataPointTransform.localPosition = newPosition;
-			
+
 		}
-		
+
 		public MeasurementResult GetLatestResult() {
-			
+
 			MeasurementResult latestResult = null;
-			
+
 			DateTime latestDate = new(1900, 1, 1);
 
-			foreach (var dp in DataPoints) {
-				foreach (var md in dp.Device.MeasurementDefinitions) {
+			foreach (DataPoint dp in DataPoints) {
+				foreach (MeasurementDefinition md in dp.Device.MeasurementDefinitions) {
 					if (md.LatestMeasurementResult.Timestamp > latestDate) {
 						latestDate = md.LatestMeasurementResult.Timestamp;
 						latestResult = md.LatestMeasurementResult;
@@ -299,8 +311,8 @@ namespace Dataskop.Data {
 			MeasurementResult earliestResult = null;
 			DateTime earliestDate = DateTime.Now;
 
-			foreach (var dp in DataPoints) {
-				foreach (var md in dp.Device.MeasurementDefinitions) {
+			foreach (DataPoint dp in DataPoints) {
+				foreach (MeasurementDefinition md in dp.Device.MeasurementDefinitions) {
 					if (md.LatestMeasurementResult.Timestamp < earliestDate) {
 						earliestDate = md.FirstMeasurementResult.Timestamp;
 						earliestResult = md.FirstMeasurementResult;
@@ -322,7 +334,7 @@ namespace Dataskop.Data {
 			}
 
 			DataPoints.Clear();
-			
+
 		}
 
 		private void SetDataPointVisualization(DataPoint dp, VisualizationOption visOpt) {
@@ -337,11 +349,13 @@ namespace Dataskop.Data {
 
 			}
 			else {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Info,
-					Text = $"Could not find {visOpt.Type} Vis.",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Info,
+						Text = $"Could not find {visOpt.Type} Vis.",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 			}
 
 		}
@@ -420,19 +434,19 @@ namespace Dataskop.Data {
 		}
 
 		private IEnumerator GetNearbyDevicesTask(float seconds) {
-			
+
 			while (HasLoadedDataPoints) {
 				int count = GetDevicesNearPosition(inputHandler.MainCamera.transform.position);
 				nearbyDevicesUpdated?.Invoke(count);
 				yield return new WaitForSeconds(seconds);
 			}
-			
+
 		}
 
 		private int GetDevicesNearPosition(Vector3 position) {
-			
+
 			return DataPoints.Count(dp => Vector3.Distance(dp.transform.position, position) <= nearbyDevicesDistance);
-			
+
 		}
 
 	}

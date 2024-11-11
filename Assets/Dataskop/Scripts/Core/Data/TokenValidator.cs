@@ -26,17 +26,17 @@ namespace Dataskop.Data {
 
 			UnityWebRequestAsyncOperation op = request.SendWebRequest();
 
-			while (!op.isDone) {
-				yield return null;
-			}
+			while (!op.isDone) yield return null;
 
 			if (request.downloadHandler.error != string.Empty) {
 
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = "Unauthorized Token!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = "Unauthorized Token!",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 
 				yield break;
 			}

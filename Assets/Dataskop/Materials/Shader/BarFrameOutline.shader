@@ -33,12 +33,14 @@ Shader "Dataskop/BarFrameOutline"
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
-            struct appdata {
+            struct appdata
+            {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
             };
 
-            struct v2f {
+            struct v2f
+            {
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
             };
@@ -46,10 +48,10 @@ Shader "Dataskop/BarFrameOutline"
             sampler2D _MainTex;
             CBUFFER_START(UnityPerMaterial)
                 float4 _MainTex_ST;
-                half4  _Color;
-                float  _Rotation;
-                float  _PlaneTransparency;
-                float  _FrameTransparency;
+                half4 _Color;
+                float _Rotation;
+                float _PlaneTransparency;
+                float _FrameTransparency;
             CBUFFER_END
 
             v2f vert(appdata v)
@@ -65,7 +67,7 @@ Shader "Dataskop/BarFrameOutline"
             {
                 half4 col = tex2D(_MainTex, i.uv);
 
-                if(any(col.rgb == half3(0, 0, 0)))
+                if (any(col.rgb == half3(0, 0, 0)))
                 {
                     return col * half4(1, 1, 1, _PlaneTransparency);
                 }

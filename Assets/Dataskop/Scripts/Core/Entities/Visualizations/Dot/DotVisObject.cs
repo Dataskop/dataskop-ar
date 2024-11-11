@@ -40,11 +40,17 @@ namespace Dataskop.Entities.Visualizations {
 
 		public event Action<int> HasDeselected;
 
-		public void OnHover() => HasHovered?.Invoke(Index);
+		public void OnHover() {
+			HasHovered?.Invoke(Index);
+		}
 
-		public void OnSelect() => HasSelected?.Invoke(Index);
+		public void OnSelect() {
+			HasSelected?.Invoke(Index);
+		}
 
-		public void OnDeselect() => HasDeselected?.Invoke(Index);
+		public void OnDeselect() {
+			HasDeselected?.Invoke(Index);
+		}
 
 		public void OnHistoryToggle(bool active) {
 			// Intentionally empty body
@@ -66,6 +72,7 @@ namespace Dataskop.Entities.Visualizations {
 					if (isSelected && IsFocused) {
 						return;
 					}
+
 					visRenderer.sprite = IsFocused ? hoveredSprite : historicSprite;
 					break;
 				case VisObjectState.Selected:
@@ -116,15 +123,17 @@ namespace Dataskop.Entities.Visualizations {
 
 			animationTarget = visRenderer.transform.localScale * selectionScale;
 
-			animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
-				visRenderer.transform,
-				TransformValue.Scale,
-				visRenderer.transform.localScale,
-				animationTarget,
-				animationTimeOnSelect,
-				animationCurveSelect,
-				OnAnimationFinished
-			));
+			animationCoroutine = StartCoroutine(
+				Lerper.TransformLerpOnCurve(
+					visRenderer.transform,
+					TransformValue.Scale,
+					visRenderer.transform.localScale,
+					animationTarget,
+					animationTimeOnSelect,
+					animationCurveSelect,
+					OnAnimationFinished
+				)
+			);
 
 		}
 
@@ -141,15 +150,17 @@ namespace Dataskop.Entities.Visualizations {
 
 			animationTarget = visRenderer.transform.localScale / selectionScale;
 
-			animationCoroutine = StartCoroutine(Lerper.TransformLerpOnCurve(
-				visRenderer.transform,
-				TransformValue.Scale,
-				visRenderer.transform.localScale,
-				animationTarget,
-				animationTimeOnDeselect,
-				animationCurveDeselect,
-				OnAnimationFinished
-			));
+			animationCoroutine = StartCoroutine(
+				Lerper.TransformLerpOnCurve(
+					visRenderer.transform,
+					TransformValue.Scale,
+					visRenderer.transform.localScale,
+					animationTarget,
+					animationTimeOnDeselect,
+					animationCurveDeselect,
+					OnAnimationFinished
+				)
+			);
 
 		}
 

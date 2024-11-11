@@ -93,7 +93,9 @@ namespace Dataskop {
 			// Only display the latest values, only one VisObject is needed.
 			VisObjects = new IVisObject[1];
 
-			GameObject visObject = Instantiate(visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer);
+			GameObject visObject = Instantiate(
+				visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer
+			);
 			VisObjects[DataPoint.FocusedIndex] = visObject.GetComponent<IVisObject>();
 			VisObjects[DataPoint.FocusedIndex].HasHovered += OnVisObjectHovered;
 			VisObjects[DataPoint.FocusedIndex].HasSelected += OnVisObjectSelected;
@@ -113,8 +115,10 @@ namespace Dataskop {
 			index = 0;
 			MeasurementResult[] focusedResult = CurrentRanges.Select(mrr => mrr.First()).ToArray();
 
-			UpdateVisObject(VisObjects[index], index, focusedResult, true,
-				IsSelected ? VisObjectState.Selected : VisObjectState.Deselected);
+			UpdateVisObject(
+				VisObjects[index], index, focusedResult, true,
+				IsSelected ? VisObjectState.Selected : VisObjectState.Deselected
+			);
 		}
 
 		public void OnSwipeInteraction(PointerInteraction pointerInteraction) {
@@ -156,18 +160,22 @@ namespace Dataskop {
 
 			visObjectsContainer.localPosition = VisOrigin.position;
 
-			GameObject visObject = Instantiate(visObjectPrefab, VisOrigin.position, visObjectsContainer.localRotation,
-				visObjectsContainer);
+			GameObject visObject = Instantiate(
+				visObjectPrefab, VisOrigin.position, visObjectsContainer.localRotation,
+				visObjectsContainer
+			);
 			VisObjects[DataPoint.FocusedIndex] = visObject.GetComponent<IVisObject>();
 			VisObjects[DataPoint.FocusedIndex].HasHovered += OnVisObjectHovered;
 			VisObjects[DataPoint.FocusedIndex].HasSelected += OnVisObjectSelected;
 			VisObjects[DataPoint.FocusedIndex].HasDeselected += OnVisObjectDeselected;
 			VisObjects[DataPoint.FocusedIndex].VisCollider.enabled = true;
 
-			UpdateVisObject(VisObjects[DataPoint.FocusedIndex], DataPoint.FocusedIndex,
+			UpdateVisObject(
+				VisObjects[DataPoint.FocusedIndex], DataPoint.FocusedIndex,
 				CurrentRanges.Select(mrr => mrr.First()).ToArray(),
 				true,
-				IsSelected ? VisObjectState.Selected : VisObjectState.Deselected);
+				IsSelected ? VisObjectState.Selected : VisObjectState.Deselected
+			);
 
 			OnTimeSeriesToggled(true);
 		}
@@ -260,7 +268,8 @@ namespace Dataskop {
 
 		}
 
-		private void UpdateVisObject(IVisObject target, int index, MeasurementResult[] results, bool focused, VisObjectState state) {
+		private void UpdateVisObject(IVisObject target, int index, MeasurementResult[] results, bool focused,
+			VisObjectState state) {
 
 			if (target == null) {
 				return;
@@ -274,7 +283,8 @@ namespace Dataskop {
 			for (int i = 0; i < results.Length; i++) {
 				dataSet[i].Result = results[i];
 				dataSet[i].Type = MeasurementType.Float;
-				dataSet[i].Attribute = DataPoint.Device.Attributes.First(x => x.ID == results[i].MeasurementDefinition.AttributeId);
+				dataSet[i].Attribute =
+					DataPoint.Device.Attributes.First(x => x.ID == results[i].MeasurementDefinition.AttributeId);
 				dataSet[i].AuthorSprite = null;
 				dataSet[i].Color = availableColors[i];
 			}

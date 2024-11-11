@@ -4,7 +4,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		Deselected,
 		Hovered,
-		Selected,
+		Selected
 
 	}
 

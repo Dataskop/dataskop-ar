@@ -38,11 +38,17 @@ namespace Dataskop.Entities.Visualizations {
 
 		public event Action<int> HasDeselected;
 
-		public void OnHover() => HasHovered?.Invoke(Index);
+		public void OnHover() {
+			HasHovered?.Invoke(Index);
+		}
 
-		public void OnSelect() => HasSelected?.Invoke(Index);
+		public void OnSelect() {
+			HasSelected?.Invoke(Index);
+		}
 
-		public void OnDeselect() => HasDeselected?.Invoke(Index);
+		public void OnDeselect() {
+			HasDeselected?.Invoke(Index);
+		}
 
 		public void OnHistoryToggle(bool active) {
 			Rotate(active);
@@ -85,15 +91,23 @@ namespace Dataskop.Entities.Visualizations {
 			CurrentData = data[0];
 
 			switch (CurrentData.Type) {
-				case MeasurementType.Float: {
-					SetPillarHeight(CurrentData.Result.ReadAsFloat(), CurrentData.Attribute.Minimum, CurrentData.Attribute.Maximum, 0.01f,
-						barFrame.localScale.y);
+				case MeasurementType.Float:
+				{
+					SetPillarHeight(
+						CurrentData.Result.ReadAsFloat(), CurrentData.Attribute.Minimum, CurrentData.Attribute.Maximum,
+						0.01f,
+						barFrame.localScale.y
+					);
 					break;
 				}
-				case MeasurementType.Bool: {
-					SetPillarHeight(CurrentData.Result.ReadAsBool() ? 1 : 0, CurrentData.Attribute.Minimum, CurrentData.Attribute.Maximum,
+				case MeasurementType.Bool:
+				{
+					SetPillarHeight(
+						CurrentData.Result.ReadAsBool() ? 1 : 0, CurrentData.Attribute.Minimum,
+						CurrentData.Attribute.Maximum,
 						0.01f,
-						barFrame.localScale.y);
+						barFrame.localScale.y
+					);
 					break;
 				}
 			}
@@ -120,7 +134,8 @@ namespace Dataskop.Entities.Visualizations {
 				Quaternion.Euler(0, 0, 0);
 		}
 
-		private void SetPillarHeight(float heightValue, float minValue, float maxValue, float minBarHeight, float maxBarHeight) {
+		private void SetPillarHeight(float heightValue, float minValue, float maxValue, float minBarHeight,
+			float maxBarHeight) {
 			heightValue = Mathf.Clamp(heightValue, minValue, maxValue);
 			float barHeight = MathExtensions.Map(heightValue, minValue, maxValue, minBarHeight, maxBarHeight);
 			Vector3 localScale = barFill.localScale;

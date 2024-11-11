@@ -25,7 +25,8 @@ namespace Dataskop.Data {
 		/// <summary>
 		/// Creates and returns a MeasurementResult from a given DTO.
 		/// </summary>
-		public MeasurementResult(string value, int valueType, string timeStamp, Position location, MeasurementDefinition md,
+		public MeasurementResult(string value, int valueType, string timeStamp, Position location,
+			MeasurementDefinition md,
 			string additionalProperties) {
 			Value = value;
 			ValueType = valueType;
@@ -54,8 +55,9 @@ namespace Dataskop.Data {
 		/// </summary>
 		public double ReadAsDouble() {
 
-			if (MeasurementDefinition != null && MeasurementDefinition.MeasurementType != MeasurementType.Float)
+			if (MeasurementDefinition != null && MeasurementDefinition.MeasurementType != MeasurementType.Float) {
 				throw new InvalidOperationException("Value type not suitable.");
+			}
 
 			return double.Parse(Value, CultureInfo.InvariantCulture);
 
@@ -83,8 +85,9 @@ namespace Dataskop.Data {
 		/// </summary>
 		public string ReadAsString() {
 
-			if (MeasurementDefinition != null && MeasurementDefinition.MeasurementType != MeasurementType.String)
+			if (MeasurementDefinition != null && MeasurementDefinition.MeasurementType != MeasurementType.String) {
 				throw new InvalidOperationException("Value type not suitable.");
+			}
 
 			return Value;
 
@@ -95,8 +98,9 @@ namespace Dataskop.Data {
 		/// </summary>
 		public bool ReadAsBool() {
 
-			if (MeasurementDefinition != null && MeasurementDefinition.MeasurementType != MeasurementType.Bool)
+			if (MeasurementDefinition != null && MeasurementDefinition.MeasurementType != MeasurementType.Bool) {
 				throw new InvalidOperationException("Value type not suitable.");
+			}
 
 			return bool.Parse(Value);
 
@@ -120,11 +124,13 @@ namespace Dataskop.Data {
 				"linear_interpolation"
 			};
 
-			if (!validStrategies.Contains(strategy))
+			if (!validStrategies.Contains(strategy)) {
 				throw new ArgumentOutOfRangeException(nameof(strategy), "Invalid strategy");
+			}
 
-			if (mResults.Count == 0)
+			if (mResults.Count == 0) {
 				throw new ArgumentOutOfRangeException(nameof(mResults), "No measurement results provided");
+			}
 
 			List<MeasurementResult> sortedMResults = mResults.OrderBy(item => item.Timestamp).ToList();
 			MeasurementResult leftItem = null;
@@ -134,9 +140,13 @@ namespace Dataskop.Data {
 			for (int i = 0; i < sortedMResults.Count; i++) {
 				MeasurementResult current = sortedMResults[i];
 
-				if (current.Timestamp == time) return current.ReadAsFloat();
+				if (current.Timestamp == time) {
+					return current.ReadAsFloat();
+				}
 
-				if (current.Timestamp > time) break;
+				if (current.Timestamp > time) {
+					break;
+				}
 
 				leftItem = current;
 			}
@@ -145,18 +155,26 @@ namespace Dataskop.Data {
 			for (int i = sortedMResults.Count - 1; i >= 0; i--) {
 				MeasurementResult current = sortedMResults[i];
 
-				if (current.Timestamp < time) break;
+				if (current.Timestamp < time) {
+					break;
+				}
 
 				rightItem = current;
 			}
 
 			// Return first value if there is no left.
-			if (leftItem == null) return rightItem.ReadAsFloat();
+			if (leftItem == null) {
+				return rightItem.ReadAsFloat();
+			}
 
 			// Return last item if there is no right.
-			if (rightItem == null) return leftItem.ReadAsFloat();
+			if (rightItem == null) {
+				return leftItem.ReadAsFloat();
+			}
 
-			if (strategy == "average") return (leftItem.ReadAsFloat() + rightItem.ReadAsFloat()) / 2;
+			if (strategy == "average") {
+				return (leftItem.ReadAsFloat() + rightItem.ReadAsFloat()) / 2;
+			}
 
 			if (strategy == "linear_interpolation") {
 				float valueDistanceLeftRight = rightItem.ReadAsFloat() - leftItem.ReadAsFloat();
@@ -169,7 +187,7 @@ namespace Dataskop.Data {
 			return leftItem.ReadAsFloat();
 		}
 
-#region Nested type: AdditionalMeasurementResultsProperties
+		#region Nested type: AdditionalMeasurementResultsProperties
 
 		public class AdditionalMeasurementResultsProperties {
 
@@ -181,7 +199,7 @@ namespace Dataskop.Data {
 
 		}
 
-#endregion
+		#endregion
 
 	}
 

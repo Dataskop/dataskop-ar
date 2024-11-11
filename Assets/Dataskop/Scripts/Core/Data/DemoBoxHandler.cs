@@ -58,7 +58,8 @@ namespace Dataskop.Data {
 
 			string encodedDeviceName = trackedImage.referenceImage.name;
 
-			Device scannedDevice = dataManager.SelectedProject.Devices.FirstOrDefault(device => device.ID == encodedDeviceName);
+			Device scannedDevice =
+				dataManager.SelectedProject.Devices.FirstOrDefault(device => device.ID == encodedDeviceName);
 
 			if (scannedDevice == null) {
 				return;

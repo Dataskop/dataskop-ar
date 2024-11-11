@@ -3,17 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mapbox.Utils
-{
+namespace Mapbox.Utils {
 
+	public interface ICircularBuffer<T> {
 
-	public interface ICircularBuffer<T>
-	{
 		int Count { get; }
+
 		void Add(T item);
 		T this[int index] { get; }
-	}
 
+	}
 
 
 	/// <summary>
@@ -22,17 +21,18 @@ namespace Mapbox.Utils
 	/// https://en.wikipedia.org/wiki/Circular_buffer
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class CircularBuffer<T> : ICircularBuffer<T>, IEnumerable<T>
+	public class CircularBuffer<T> : ICircularBuffer<T>, IEnumerable<T> {
 
-	{
 		private T[] _buffer;
 		private int _head;
 		private int _tail;
 
 
-		public CircularBuffer(int capacity)
-		{
-			if (capacity < 0) { throw new ArgumentOutOfRangeException("capacity", "must be positive"); }
+		public CircularBuffer(int capacity) {
+			if (capacity < 0) {
+				throw new ArgumentOutOfRangeException("capacity", "must be positive");
+			}
+
 			_buffer = new T[capacity];
 			_head = 0;
 		}
@@ -41,16 +41,14 @@ namespace Mapbox.Utils
 		public int Count { get; private set; }
 
 
-		public void Add(T item)
-		{
+		public void Add(T item) {
 			_head = (_head + 1) % _buffer.Length;
 			_buffer[_head] = item;
-			if (Count == _buffer.Length)
-			{
+
+			if (Count == _buffer.Length) {
 				_tail = (_tail + 1) % _buffer.Length;
 			}
-			else
-			{
+			else {
 				++Count;
 			}
 		}
@@ -66,9 +64,11 @@ namespace Mapbox.Utils
 		{
 			get
 			{
-				if (index < 0 || index >= _buffer.Length) { throw new ArgumentOutOfRangeException("index: " + index.ToString()); }
+				if (index < 0 || index >= _buffer.Length) {
+					throw new ArgumentOutOfRangeException("index: " + index.ToString());
+				}
 
-				return _buffer[mod((_head - index), _buffer.Length)];
+				return _buffer[mod(_head - index, _buffer.Length)];
 			}
 		}
 
@@ -78,31 +78,26 @@ namespace Mapbox.Utils
 			return (x % m + m) % m;
 		}
 
-		public IEnumerator<T> GetEnumerator()
-		{
-			if (Count == 0 || _buffer.Length == 0)
-			{
+		public IEnumerator<T> GetEnumerator() {
+			if (Count == 0 || _buffer.Length == 0) {
 				yield break;
 			}
 
-			for (var i = 0; i < Count; ++i) { yield return this[i]; }
+			for (int i = 0; i < Count; ++i) {
+				yield return this[i];
+			}
 		}
 
-		IEnumerator IEnumerable.GetEnumerator()
-		{
+		IEnumerator IEnumerable.GetEnumerator() {
 			return GetEnumerator();
 		}
 
 
-		public IEnumerable<T> GetEnumerable()
-		{
+		public IEnumerable<T> GetEnumerable() {
 			IEnumerator<T> enumerator = GetEnumerator();
-			while (enumerator.MoveNext())
-			{
-				yield return enumerator.Current;
-			}
+			while (enumerator.MoveNext()) yield return enumerator.Current;
 		}
 
-
 	}
+
 }

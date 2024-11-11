@@ -10,7 +10,7 @@ namespace Dataskop {
 	/// </summary>
 	public static class ErrorHandler {
 
-#region ErrorType enum
+		#region ErrorType enum
 
 		public enum ErrorType {
 
@@ -20,7 +20,7 @@ namespace Dataskop {
 
 		}
 
-#endregion
+		#endregion
 
 		private static readonly List<Error> ErrorList = new() {
 			new Error {
@@ -77,9 +77,11 @@ namespace Dataskop {
 			Error thrownError = GetError(errorCode);
 			thrownError.TimeStamp = DateTime.Now;
 			ErrorQueue.Enqueue(thrownError);
-			OnErrorReceived?.Invoke(sender, new ErrorReceivedEventArgs {
-				Error = thrownError
-			});
+			OnErrorReceived?.Invoke(
+				sender, new ErrorReceivedEventArgs {
+					Error = thrownError
+				}
+			);
 		}
 
 		/// <summary>
@@ -93,9 +95,11 @@ namespace Dataskop {
 			thrownError.TimeStamp = DateTime.Now;
 			thrownError.Value = value;
 			ErrorQueue.Enqueue(thrownError);
-			OnErrorReceived?.Invoke(sender, new ErrorReceivedEventArgs {
-				Error = thrownError
-			});
+			OnErrorReceived?.Invoke(
+				sender, new ErrorReceivedEventArgs {
+					Error = thrownError
+				}
+			);
 		}
 
 		/// <summary>
@@ -113,13 +117,14 @@ namespace Dataskop {
 		private static string GetAvailableErrorCodes() {
 			StringBuilder codeString = new();
 
-			foreach (Error error in ErrorList)
+			foreach (Error error in ErrorList) {
 				codeString.Append($" ({error.ErrorCode}) ");
+			}
 
 			return codeString.ToString();
 		}
 
-#region Nested type: Error
+		#region Nested type: Error
 
 		public struct Error {
 
@@ -139,9 +144,9 @@ namespace Dataskop {
 
 		}
 
-#endregion
+		#endregion
 
-#region Nested type: ErrorReceivedEventArgs
+		#region Nested type: ErrorReceivedEventArgs
 
 		public class ErrorReceivedEventArgs : EventArgs {
 
@@ -149,7 +154,7 @@ namespace Dataskop {
 
 		}
 
-#endregion
+		#endregion
 
 	}
 

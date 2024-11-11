@@ -59,8 +59,7 @@ namespace Dataskop.Entities.Visualizations {
 		public Transform VisOrigin { get; set; }
 
 		public MeasurementType[] AllowedMeasurementTypes { get; set; } = {
-			MeasurementType.Float,
-			MeasurementType.Bool
+			MeasurementType.Float, MeasurementType.Bool
 		};
 
 		public Vector3 Offset { get; private set; }
@@ -104,7 +103,9 @@ namespace Dataskop.Entities.Visualizations {
 
 			VisObjects = new IVisObject[CurrentRange.Count];
 
-			GameObject visObject = Instantiate(visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer);
+			GameObject visObject = Instantiate(
+				visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer
+			);
 			VisObjects[DataPoint.FocusedIndex] = visObject.GetComponent<IVisObject>();
 			VisObjects[DataPoint.FocusedIndex].HasHovered += OnVisObjectHovered;
 			VisObjects[DataPoint.FocusedIndex].HasSelected += OnVisObjectSelected;
@@ -126,11 +127,13 @@ namespace Dataskop.Entities.Visualizations {
 		public void OnFocusedIndexChanged(int index) {
 
 			if (!AllowedMeasurementTypes.Contains(DataPoint.MeasurementDefinition.MeasurementType)) {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = $"Value Type not supported by {Type} visualization.",
-					DisplayDuration = 5f
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = $"Value Type not supported by {Type} visualization.",
+						DisplayDuration = 5f
+					}
+				);
 				return;
 			}
 
@@ -144,8 +147,10 @@ namespace Dataskop.Entities.Visualizations {
 					PreviousIndex = DataPoint.FocusedIndex;
 				}
 
-				UpdateVisObject(VisObjects[DataPoint.FocusedIndex], DataPoint.FocusedIndex, focusedResult, true,
-					IsSelected ? VisObjectState.Selected : VisObjectState.Deselected);
+				UpdateVisObject(
+					VisObjects[DataPoint.FocusedIndex], DataPoint.FocusedIndex, focusedResult, true,
+					IsSelected ? VisObjectState.Selected : VisObjectState.Deselected
+				);
 
 			}
 			else {
@@ -157,8 +162,12 @@ namespace Dataskop.Entities.Visualizations {
 					visObjectsContainer.transform.position = moveTarget;
 				}
 
-				historyMove = StartCoroutine(MoveHistory(PreviousIndex < DataPoint.FocusedIndex ? Vector3.down : Vector3.up,
-					objectCountDistance));
+				historyMove = StartCoroutine(
+					MoveHistory(
+						PreviousIndex < DataPoint.FocusedIndex ? Vector3.down : Vector3.up,
+						objectCountDistance
+					)
+				);
 
 				// VisObjects above current result
 				for (int i = 1; i < VisObjects.Length - DataPoint.FocusedIndex; i++) {
@@ -177,8 +186,10 @@ namespace Dataskop.Entities.Visualizations {
 				}
 
 				MeasurementResult focusedResult = CurrentRange[DataPoint.FocusedIndex];
-				UpdateVisObject(VisObjects[DataPoint.FocusedIndex], DataPoint.FocusedIndex, focusedResult, true,
-					IsSelected ? VisObjectState.Selected : VisObjectState.Deselected);
+				UpdateVisObject(
+					VisObjects[DataPoint.FocusedIndex], DataPoint.FocusedIndex, focusedResult, true,
+					IsSelected ? VisObjectState.Selected : VisObjectState.Deselected
+				);
 				focusedDataDisplay.MoveTo(VisObjects[DataPoint.FocusedIndex].VisObjectTransform.position);
 				PreviousIndex = DataPoint.FocusedIndex;
 
@@ -210,8 +221,12 @@ namespace Dataskop.Entities.Visualizations {
 						continue;
 					}
 
-					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y + distance * i, VisOrigin.position.z);
-					VisObjects[targetIndex] = SpawnVisObject(targetIndex, spawnPos, result, false, VisObjectState.Deselected);
+					Vector3 spawnPos = new(
+						VisOrigin.position.x, VisOrigin.position.y + distance * i, VisOrigin.position.z
+					);
+					VisObjects[targetIndex] = SpawnVisObject(
+						targetIndex, spawnPos, result, false, VisObjectState.Deselected
+					);
 
 					MeasurementResult res2 = currentResults[targetIndex - 1];
 
@@ -224,9 +239,11 @@ namespace Dataskop.Entities.Visualizations {
 					}
 
 					float yPos = (spawnPos.y - VisObjects[targetIndex - 1].VisObjectTransform.position.y) / 2f;
-					GameObject indicator = Instantiate(dataGapIndicatorPrefab, new Vector3(spawnPos.x, spawnPos.y - yPos, spawnPos.z),
+					GameObject indicator = Instantiate(
+						dataGapIndicatorPrefab, new Vector3(spawnPos.x, spawnPos.y - yPos, spawnPos.z),
 						visObjectsContainer.localRotation,
-						visObjectsContainer);
+						visObjectsContainer
+					);
 					dataGapIndicators.Add(indicator);
 
 				}
@@ -241,8 +258,12 @@ namespace Dataskop.Entities.Visualizations {
 						continue;
 					}
 
-					Vector3 spawnPos = new(VisOrigin.position.x, VisOrigin.position.y - distance * i, VisOrigin.position.z);
-					VisObjects[targetIndex] = SpawnVisObject(targetIndex, spawnPos, result, false, VisObjectState.Deselected);
+					Vector3 spawnPos = new(
+						VisOrigin.position.x, VisOrigin.position.y - distance * i, VisOrigin.position.z
+					);
+					VisObjects[targetIndex] = SpawnVisObject(
+						targetIndex, spawnPos, result, false, VisObjectState.Deselected
+					);
 
 					MeasurementResult res2 = currentResults[targetIndex + 1];
 
@@ -255,9 +276,11 @@ namespace Dataskop.Entities.Visualizations {
 					}
 
 					float yPos = (spawnPos.y - VisObjects[targetIndex + 1].VisObjectTransform.position.y) / 2f;
-					GameObject indicator = Instantiate(dataGapIndicatorPrefab, new Vector3(spawnPos.x, spawnPos.y + yPos, spawnPos.z),
+					GameObject indicator = Instantiate(
+						dataGapIndicatorPrefab, new Vector3(spawnPos.x, spawnPos.y + yPos, spawnPos.z),
 						visObjectsContainer.localRotation,
-						visObjectsContainer);
+						visObjectsContainer
+					);
 					dataGapIndicators.Add(indicator);
 
 				}
@@ -310,16 +333,20 @@ namespace Dataskop.Entities.Visualizations {
 
 			visObjectsContainer.localPosition = VisOrigin.position;
 
-			GameObject visObject = Instantiate(visObjectPrefab, VisOrigin.position, visObjectsContainer.localRotation,
-				visObjectsContainer);
+			GameObject visObject = Instantiate(
+				visObjectPrefab, VisOrigin.position, visObjectsContainer.localRotation,
+				visObjectsContainer
+			);
 			VisObjects[DataPoint.FocusedIndex] = visObject.GetComponent<IVisObject>();
 			VisObjects[DataPoint.FocusedIndex].HasHovered += OnVisObjectHovered;
 			VisObjects[DataPoint.FocusedIndex].HasSelected += OnVisObjectSelected;
 			VisObjects[DataPoint.FocusedIndex].HasDeselected += OnVisObjectDeselected;
 			VisObjects[DataPoint.FocusedIndex].VisCollider.enabled = true;
 
-			UpdateVisObject(VisObjects[DataPoint.FocusedIndex], DataPoint.FocusedIndex, CurrentRange[DataPoint.FocusedIndex], true,
-				IsSelected ? VisObjectState.Selected : VisObjectState.Deselected);
+			UpdateVisObject(
+				VisObjects[DataPoint.FocusedIndex], DataPoint.FocusedIndex, CurrentRange[DataPoint.FocusedIndex], true,
+				IsSelected ? VisObjectState.Selected : VisObjectState.Deselected
+			);
 
 			OnTimeSeriesToggled(true);
 
@@ -415,7 +442,9 @@ namespace Dataskop.Entities.Visualizations {
 		private IVisObject SpawnVisObject(int index, Vector3 pos, MeasurementResult result,
 			bool focused, VisObjectState state) {
 
-			GameObject newVis = Instantiate(visObjectPrefab, pos, visObjectsContainer.localRotation, visObjectsContainer);
+			GameObject newVis = Instantiate(
+				visObjectPrefab, pos, visObjectsContainer.localRotation, visObjectsContainer
+			);
 			IVisObject visObject = newVis.GetComponent<IVisObject>();
 
 			UpdateVisObject(visObject, index, result, focused, state);
@@ -428,7 +457,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
-		private void UpdateVisObject(IVisObject target, int index, MeasurementResult result, bool focused, VisObjectState state) {
+		private void UpdateVisObject(IVisObject target, int index, MeasurementResult result, bool focused,
+			VisObjectState state) {
 
 			if (target == null) {
 				return;
@@ -533,6 +563,7 @@ namespace Dataskop.Entities.Visualizations {
 			hoverDataDisplay.Hide();
 
 			float t = 0;
+
 			while (t < moveDuration) {
 				visObjectsContainer.position = Vector3.Lerp(startPosition, moveTarget, t / moveDuration);
 				t += Time.deltaTime;
@@ -556,7 +587,9 @@ namespace Dataskop.Entities.Visualizations {
 			while (current <= duration) {
 				current += Time.deltaTime;
 				float currentPercentage = Mathf.Clamp01(current / duration);
-				groundLine.SetPosition(index, Vector3.LerpUnclamped(groundLine.GetPosition(index), target, currentPercentage));
+				groundLine.SetPosition(
+					index, Vector3.LerpUnclamped(groundLine.GetPosition(index), target, currentPercentage)
+				);
 				yield return null;
 			}
 		}

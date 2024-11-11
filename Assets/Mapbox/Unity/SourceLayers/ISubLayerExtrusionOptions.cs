@@ -1,9 +1,9 @@
 ﻿using Mapbox.Unity.Map;
 
-namespace Mapbox.Unity.SourceLayers
-{
-	public interface ISubLayerExtrusionOptions
-	{
+namespace Mapbox.Unity.SourceLayers {
+
+	public interface ISubLayerExtrusionOptions {
+
 		/// <summary>
 		/// Disable mesh extrusion for the features in this layer.
 		/// </summary>
@@ -39,7 +39,8 @@ namespace Mapbox.Unity.SourceLayers
 		/// <param name="extrusionGeometryType">Option to create top and side polygons after extrusion.</param>
 		/// <param name="height">Extrusion value</param>
 		/// <param name="extrusionScaleFactor">Height multiplier</param>
-		void EnableAbsoluteExtrusion(ExtrusionGeometryType extrusionGeometryType, float height, float extrusionScaleFactor = 1);
+		void EnableAbsoluteExtrusion(ExtrusionGeometryType extrusionGeometryType, float height,
+			float extrusionScaleFactor = 1);
 
 		/// <summary>
 		/// Changes extrusion type to "Property" and extrudes all features by
@@ -48,7 +49,8 @@ namespace Mapbox.Unity.SourceLayers
 		/// <param name="extrusionGeometryType">Option to create top and side polygons after extrusion.</param>
 		/// <param name="propertyName">Name of the property to use for extrusion</param>
 		/// <param name="extrusionScaleFactor">Height multiplier</param>
-		void EnablePropertyExtrusion(ExtrusionGeometryType extrusionGeometryType, string propertyName = "height", float extrusionScaleFactor = 1);
+		void EnablePropertyExtrusion(ExtrusionGeometryType extrusionGeometryType, string propertyName = "height",
+			float extrusionScaleFactor = 1);
 
 		/// <summary>
 		/// Changes extrusion type to "Minimum Height" and extrudes all features by
@@ -58,7 +60,8 @@ namespace Mapbox.Unity.SourceLayers
 		/// <param name="extrusionGeometryType">Option to create top and side polygons after extrusion.</param>
 		/// <param name="propertyName">Name of the property to use for extrusion</param>
 		/// <param name="extrusionScaleFactor">Height multiplier</param>
-		void EnableMinExtrusion(ExtrusionGeometryType extrusionGeometryType, string propertyName = "height", float extrusionScaleFactor = 1);
+		void EnableMinExtrusion(ExtrusionGeometryType extrusionGeometryType, string propertyName = "height",
+			float extrusionScaleFactor = 1);
 
 		/// <summary>
 		/// Changes extrusion type to "Range Height" and extrudes all features by
@@ -68,7 +71,8 @@ namespace Mapbox.Unity.SourceLayers
 		/// <param name="extrusionGeometryType">Option to create top and side polygons after extrusion.</param>
 		/// <param name="propertyName">Name of the property to use for extrusion</param>
 		/// <param name="extrusionScaleFactor">Height multiplier</param>
-		void EnableMaxExtrusion(ExtrusionGeometryType extrusionGeometryType, string propertyName = "height", float extrusionScaleFactor = 1);
+		void EnableMaxExtrusion(ExtrusionGeometryType extrusionGeometryType, string propertyName = "height",
+			float extrusionScaleFactor = 1);
 
 		/// /// <summary>
 		/// Changes extrusion type to "Minimum Height" and extrudes all features by
@@ -80,6 +84,9 @@ namespace Mapbox.Unity.SourceLayers
 		/// <param name="minHeight">Lower bound to be used for extrusion</param>
 		/// <param name="maxHeight">Top bound to be used for extrusion</param>
 		/// <param name="extrusionScaleFactor">Height multiplier</param>
-		void EnableRangeExtrusion(ExtrusionGeometryType extrusionGeometryType, float minHeight, float maxHeight, float extrusionScaleFactor = 1);
+		void EnableRangeExtrusion(ExtrusionGeometryType extrusionGeometryType, float minHeight, float maxHeight,
+			float extrusionScaleFactor = 1);
+
 	}
+
 }

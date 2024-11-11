@@ -34,11 +34,13 @@ namespace Dataskop.Data {
 
 			if (selectedProject.Properties == null) {
 
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Warning,
-					Text = "Project has no additional properties!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Warning,
+						Text = "Project has no additional properties!",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 
 				return;
 			}
@@ -47,11 +49,13 @@ namespace Dataskop.Data {
 
 			if (selectedProject.Properties.Attributes.Count == 0) {
 
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = "Selected Project has no attributes!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = "Selected Project has no attributes!",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 
 				return;
 			}
@@ -71,8 +75,9 @@ namespace Dataskop.Data {
 
 		public void SetSelectedAttribute(string attributeId) {
 
-			if (SelectedAttribute.ID == attributeId)
+			if (SelectedAttribute.ID == attributeId) {
 				return;
+			}
 
 			SelectedAttribute = ProjectAttributes.SingleOrDefault(attribute => attribute.ID == attributeId);
 

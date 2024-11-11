@@ -1,13 +1,13 @@
-﻿namespace Mapbox.Unity.Map
-{
+﻿namespace Mapbox.Unity.Map {
+
 	using System;
-	using Mapbox.Unity.MeshGeneration.Modifiers;
+	using MeshGeneration.Modifiers;
 	using UnityEngine;
 
 
 	[Serializable]
-	public class CoreVectorLayerProperties : MapboxDataProperty, ISubLayerCoreOptions
-	{
+	public class CoreVectorLayerProperties : MapboxDataProperty, ISubLayerCoreOptions {
+
 		[SerializeField]
 		private string sourceId;
 		[Tooltip("Is visualizer active.")]
@@ -28,9 +28,12 @@
 		{
 			set
 			{
-				if (value == true)
-				{
-					OnPropertyHasChanged(new VectorLayerUpdateArgs { property = this });
+				if (value == true) {
+					OnPropertyHasChanged(
+						new VectorLayerUpdateArgs {
+							property = this
+						}
+					);
 				}
 			}
 		}
@@ -42,14 +45,13 @@
 		/// generally visualized as polygons.
 		/// </summary>
 		/// <param name="type">Primitive type of the featues in the layer.</param>
-		public virtual void SetPrimitiveType(VectorPrimitiveType type)
-		{
-			if (geometryType != type)
-			{
+		public virtual void SetPrimitiveType(VectorPrimitiveType type) {
+			if (geometryType != type) {
 				geometryType = type;
 				HasChanged = true;
 			}
 		}
 
 	}
+
 }

@@ -16,7 +16,8 @@ namespace Dataskop {
 
 				TimeRange availableTimeRange = availableRanges[i];
 
-				if (IsInTimeRange(searchRange.StartTime, availableTimeRange) && IsInTimeRange(searchRange.EndTime, availableTimeRange)) {
+				if (IsInTimeRange(searchRange.StartTime, availableTimeRange) &&
+				    IsInTimeRange(searchRange.EndTime, availableTimeRange)) {
 					break;
 				}
 
@@ -26,9 +27,11 @@ namespace Dataskop {
 
 				if (IsInTimeRange(searchRange.EndTime, availableTimeRange)) {
 					TimeRange newTimeRange = new(previousEndTime, availableTimeRange.StartTime);
+
 					if (newTimeRange.EndTime - newTimeRange.StartTime > TimeSpan.FromSeconds(1)) {
 						missingTimeRanges.Add(newTimeRange);
 					}
+
 					break;
 				}
 
@@ -39,12 +42,14 @@ namespace Dataskop {
 
 				if (searchRange.EndTime <= availableTimeRange.StartTime) {
 					TimeRange newTimeRange = new(previousEndTime, searchRange.EndTime);
+
 					if (newTimeRange.EndTime - newTimeRange.StartTime > TimeSpan.FromSeconds(1)) {
 						missingTimeRanges.Add(newTimeRange);
 					}
 				}
 				else {
 					TimeRange newTimeRange = new(previousEndTime, availableTimeRange.StartTime);
+
 					if (newTimeRange.EndTime - newTimeRange.StartTime > TimeSpan.FromSeconds(1)) {
 						missingTimeRanges.Add(newTimeRange);
 						previousEndTime = availableTimeRange.EndTime;
@@ -53,7 +58,8 @@ namespace Dataskop {
 
 			}
 
-			if (searchRange.EndTime > availableRanges.First().EndTime && previousEndTime >= availableRanges.First().EndTime) {
+			if (searchRange.EndTime > availableRanges.First().EndTime &&
+			    previousEndTime >= availableRanges.First().EndTime) {
 				missingTimeRanges.Add(new TimeRange(previousEndTime, searchRange.EndTime));
 			}
 

@@ -5,24 +5,21 @@ using Mapbox.Map;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Mapbox.Unity.Map.TileProviders
-{
+namespace Mapbox.Unity.Map.TileProviders {
+
 	/// <summary>
 	/// Monobehavior Script to handle TileErrors.
 	/// There's an OnTileError event on AbstractMapVisualizer, AbstractTileFactory and UnityTile classes that one can subscribe to to listen to tile errors
 	/// </summary>
-	public class TileErrorHandler : MonoBehaviour
-	{
+	public class TileErrorHandler : MonoBehaviour {
 
 		[SerializeField]
 		private AbstractMap _mapInstance;
 		public TileErrorEvent OnTileError;
 
 
-		protected virtual void OnEnable()
-		{
-			if (_mapInstance == null)
-			{
+		protected virtual void OnEnable() {
+			if (_mapInstance == null) {
 				_mapInstance = GetComponent<AbstractMap>();
 			}
 
@@ -30,18 +27,15 @@ namespace Mapbox.Unity.Map.TileProviders
 		}
 
 
-		private void MapInstance_OnInitialized()
-		{
+		private void MapInstance_OnInitialized() {
 			_mapInstance.OnInitialized -= MapInstance_OnInitialized;
 			_mapInstance.MapVisualizer.OnTileError += _OnTileErrorHandler;
 		}
 
 
-		private void _OnTileErrorHandler(object sender, TileErrorEventArgs e)
-		{
+		private void _OnTileErrorHandler(object sender, TileErrorEventArgs e) {
 			// check if request has been aborted: show warning not error
-			if (e.Exceptions.Count > 0)
-			{
+			if (e.Exceptions.Count > 0) {
 				// 1. aborted is always the first exception
 				//    additional exceptions are always caused by the request being aborted
 				//    show all of them as warnings
@@ -51,25 +45,21 @@ namespace Mapbox.Unity.Map.TileProviders
 				if (
 					e.Exceptions[0].Message.Contains("Request aborted")
 					|| e.Exceptions[0].Message.Equals("Unable to write data")
-				)
-				{
+				) {
 					Debug.LogWarning(printMessage(e.Exceptions, e));
 				}
-				else
-				{
+				else {
 					Debug.LogError(printMessage(e.Exceptions, e));
 				}
 			}
 
-			if (OnTileError != null)
-			{
+			if (OnTileError != null) {
 				OnTileError.Invoke(e);
 			}
 		}
 
 
-		private string printMessage(List<Exception> exceptions, TileErrorEventArgs e)
-		{
+		private string printMessage(List<Exception> exceptions, TileErrorEventArgs e) {
 			return string.Format(
 				"{0} Exception(s) caused on the tile. Tile ID:{1} Tile Type:{4}{2}{3}"
 				, exceptions.Count
@@ -81,14 +71,16 @@ namespace Mapbox.Unity.Map.TileProviders
 		}
 
 
-		protected virtual void OnDisable()
-		{
+		protected virtual void OnDisable() {
 			_mapInstance.MapVisualizer.OnTileError -= _OnTileErrorHandler;
 		}
+
 	}
 
 
-	[System.Serializable]
-	public class TileErrorEvent : UnityEvent<TileErrorEventArgs> { }
+	[Serializable]
+	public class TileErrorEvent : UnityEvent<TileErrorEventArgs> {
+
+	}
 
 }

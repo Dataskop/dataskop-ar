@@ -6,36 +6,35 @@ using System.Collections.Generic;
 using System;
 using Mapbox.Unity.Utilities;
 
-namespace Mapbox.Unity.MeshGeneration.Modifiers
-{
-	public class ModifierStackBase : ScriptableObject
-	{
-		[NodeEditorElement("Mesh Modifiers")] public List<MeshModifier> MeshModifiers = new List<MeshModifier>();
-		[NodeEditorElement("Game Object Modifiers")] public List<GameObjectModifier> GoModifiers = new List<GameObjectModifier>();
+namespace Mapbox.Unity.MeshGeneration.Modifiers {
 
-		public virtual GameObject Execute(UnityTile tile, VectorFeatureUnity feature, MeshData meshData, GameObject parent = null, string type = "")
-		{
+	public class ModifierStackBase : ScriptableObject {
+
+		[NodeEditorElement("Mesh Modifiers")] public List<MeshModifier> MeshModifiers = new();
+		[NodeEditorElement("Game Object Modifiers")]
+		public List<GameObjectModifier> GoModifiers = new();
+
+		public virtual GameObject Execute(UnityTile tile, VectorFeatureUnity feature, MeshData meshData,
+			GameObject parent = null, string type = "") {
 			return null;
 		}
 
-		public virtual void Initialize()
-		{
+		public virtual void Initialize() {
 
 		}
 
-		public void UnregisterTile(UnityTile tile)
-		{
+		public void UnregisterTile(UnityTile tile) {
 			OnUnregisterTile(tile);
 		}
 
-		public virtual void OnUnregisterTile(UnityTile tile)
-		{
+		public virtual void OnUnregisterTile(UnityTile tile) {
 
 		}
 
-		public virtual void Clear()
-		{
+		public virtual void Clear() {
 
 		}
+
 	}
+
 }

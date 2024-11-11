@@ -37,7 +37,9 @@ namespace Dataskop.Interaction {
 
 		public void OnPointerDownInWorld(WorldPointerEventArgs e) {
 
-			if (isInteracting) return;
+			if (isInteracting) {
+				return;
+			}
 
 			isInteracting = true;
 
@@ -55,7 +57,9 @@ namespace Dataskop.Interaction {
 
 		public void OnPointerUpInWorld(WorldPointerEventArgs e) {
 
-			if (!CurrentPointerInteraction.isDownPhase) return;
+			if (!CurrentPointerInteraction.isDownPhase) {
+				return;
+			}
 
 			PointerInteraction currentPointerInteraction = CurrentPointerInteraction;
 
@@ -84,7 +88,9 @@ namespace Dataskop.Interaction {
 
 		public void OnPointerDownOnUI(UIPointerEventArgs e) {
 
-			if (isInteracting) return;
+			if (isInteracting) {
+				return;
+			}
 
 			isInteracting = true;
 
@@ -107,9 +113,13 @@ namespace Dataskop.Interaction {
 
 		public void OnPointerUpOnUI(UIPointerEventArgs e) {
 
-			if (CurrentPointerInteraction.pointerId != e.pointerId) return;
+			if (CurrentPointerInteraction.pointerId != e.pointerId) {
+				return;
+			}
 
-			if (!CurrentPointerInteraction.isDownPhase) return;
+			if (!CurrentPointerInteraction.isDownPhase) {
+				return;
+			}
 
 			PointerInteraction currentPointerInteraction = CurrentPointerInteraction;
 
@@ -147,7 +157,8 @@ namespace Dataskop.Interaction {
 
 #if UNITY_EDITOR
 
-		private Ray ReticuleToWorldRay => mainCamera.ScreenPointToRay(new Vector3(MousePosition.x, MousePosition.y, -5));
+		private Ray ReticuleToWorldRay =>
+			mainCamera.ScreenPointToRay(new Vector3(MousePosition.x, MousePosition.y, -5));
 
 		private static Vector3 MousePosition => Mouse.current.position.ReadValue();
 

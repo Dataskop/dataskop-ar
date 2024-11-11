@@ -3,15 +3,16 @@
 //     Copyright (c) 2017 Mapbox. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
+
 using System;
 using System.ComponentModel;
 using Mapbox.VectorTile.Geometry;
 
-namespace Mapbox.MapMatching
-{
+namespace Mapbox.MapMatching {
+
 	/// <summary>Directions profile id</summary>
-	public enum Profile
-	{
+	public enum Profile {
+
 		[Description("mapbox/driving")]
 		MapboxDriving,
 		[Description("mapbox/driving-traffic")]
@@ -20,12 +21,13 @@ namespace Mapbox.MapMatching
 		MapboxWalking,
 		[Description("mapbox/cycling")]
 		MapboxCycling
+
 	}
 
 
 	/// <summary>Format of the returned geometry. Default value 'Polyline' with precision 5.</summary>
-	public enum Geometries
-	{
+	public enum Geometries {
+
 		/// <summary>Default, precision 5.</summary>
 		[Description("polyline")]
 		Polyline,
@@ -35,12 +37,13 @@ namespace Mapbox.MapMatching
 		/// <summary>Geojson.</summary>
 		[Description("geojson")]
 		GeoJson
+
 	}
 
 
 	/// <summary>Type of returned overview geometry. </summary>
-	public enum Overview
-	{
+	public enum Overview {
+
 		/// <summary>The most detailed geometry available </summary>
 		[Description("full")]
 		Full,
@@ -50,13 +53,14 @@ namespace Mapbox.MapMatching
 		/// <summary>No overview geometry </summary>
 		[Description("false")]
 		None
+
 	}
 
 
 	/// <summary>Whether or not to return additional metadata along the route. Several annotations can be used.</summary>
-	[System.Flags]
-	public enum Annotations
-	{
+	[Flags]
+	public enum Annotations {
+
 		[Description("duration")]
 		Duration,
 		[Description("distance")]
@@ -65,14 +69,15 @@ namespace Mapbox.MapMatching
 		Speed,
 		[Description("congestion")]
 		Congestion
+
 	}
 
 
 	/// <summary>
 	/// https://www.mapbox.com/api-documentation/navigation/#retrieve-directions
 	/// </summary>
-	public enum InstructionLanguages
-	{
+	public enum InstructionLanguages {
+
 		[Description("de")]
 		German,
 		[Description("en")]
@@ -109,7 +114,7 @@ namespace Mapbox.MapMatching
 		Vietnamese,
 		[Description("zh-Hans")]
 		ChineseSimplified
-	}
 
+	}
 
 }

@@ -1,18 +1,17 @@
-﻿namespace Mapbox.Unity.Map
-{
-	using System.Collections.Generic;
-	using Mapbox.Unity.MeshGeneration.Filters;
-	using Mapbox.Unity.MeshGeneration.Modifiers;
+﻿namespace Mapbox.Unity.Map {
 
-	public static class PresetSubLayerPropertiesFetcher
-	{
+	using System.Collections.Generic;
+	using MeshGeneration.Filters;
+	using MeshGeneration.Modifiers;
+
+	public static class PresetSubLayerPropertiesFetcher {
+
 		/// <summary>
 		/// Gets the default sub layer properties for the chosen preset type.
 		/// </summary>
 		/// <returns>The sub layer properties.</returns>
 		/// <param name="type">Type.</param>
-		public static VectorSubLayerProperties GetSubLayerProperties(PresetFeatureType type)
-		{
+		public static VectorSubLayerProperties GetSubLayerProperties(PresetFeatureType type) {
 			//CoreOptions properties
 			VectorPrimitiveType geometryType = VectorPrimitiveType.Polygon;
 			string layerName = "building";
@@ -30,8 +29,7 @@
 
 			//Filter Options
 			LayerFilterCombinerOperationType combinerType = LayerFilterCombinerOperationType.Any;
-			List<LayerFilter> filters = new List<LayerFilter>();
-
+			List<LayerFilter> filters = new();
 
 			// Material Options
 			StyleTypes style = StyleTypes.Realistic;
@@ -41,12 +39,11 @@
 			PositionTargetType positionTargetType = PositionTargetType.TileCenter;
 
 			//Modifiers
-			List<MeshModifier> meshModifiers = new List<MeshModifier>();
-			List<GameObjectModifier> gameObjectModifiers = new List<GameObjectModifier>();
+			List<MeshModifier> meshModifiers = new();
+			List<GameObjectModifier> gameObjectModifiers = new();
 			ColliderType colliderType = ColliderType.None;
 
-			switch (type)
-			{
+			switch (type) {
 				case PresetFeatureType.Buildings:
 					layerName = "building";
 					geometryType = VectorPrimitiveType.Polygon;
@@ -81,12 +78,11 @@
 					break;
 			}
 
-			VectorSubLayerProperties _properties = new VectorSubLayerProperties();
+			VectorSubLayerProperties _properties = new();
 
 			_properties.presetFeatureType = type;
 
-			_properties.coreOptions = new CoreVectorLayerProperties
-			{
+			_properties.coreOptions = new CoreVectorLayerProperties {
 				isActive = true,
 				layerName = layerName,
 				geometryType = geometryType,
@@ -95,13 +91,11 @@
 				sublayerName = sublayerName
 			};
 
-			_properties.lineGeometryOptions = new LineGeometryOptions
-			{
+			_properties.lineGeometryOptions = new LineGeometryOptions {
 				Width = lineWidth
 			};
 
-			_properties.extrusionOptions = new GeometryExtrusionOptions
-			{
+			_properties.extrusionOptions = new GeometryExtrusionOptions {
 				extrusionType = extrusionType,
 				extrusionGeometryType = extrusionGeometryType,
 				propertyName = propertyName,
@@ -109,14 +103,12 @@
 				maximumHeight = extrusionHeight
 			};
 
-			_properties.filterOptions = new VectorFilterOptions
-			{
+			_properties.filterOptions = new VectorFilterOptions {
 				combinerType = combinerType,
 				filters = filters
 			};
 
-			_properties.materialOptions = new GeometryMaterialOptions
-			{
+			_properties.materialOptions = new GeometryMaterialOptions {
 				style = style,
 				colorStyleColor = Constants.GUI.Colors.EDITOR_FEATURE_DEFAULT_COLOR
 			};
@@ -125,8 +117,7 @@
 			_properties.moveFeaturePositionTo = positionTargetType;
 			_properties.MeshModifiers = meshModifiers;
 			_properties.GoModifiers = gameObjectModifiers;
-			_properties.colliderOptions = new ColliderOptions
-			{
+			_properties.colliderOptions = new ColliderOptions {
 				colliderType = colliderType
 			};
 
@@ -137,10 +128,8 @@
 		/// Gets the default preset type from supplied layerName.
 		/// </summary>
 		/// <param name="layerName">Layer name.</param>
-		public static PresetFeatureType GetPresetTypeFromLayerName(string layerName)
-		{
-			switch (layerName)
-			{
+		public static PresetFeatureType GetPresetTypeFromLayerName(string layerName) {
+			switch (layerName) {
 				case "building":
 					return PresetFeatureType.Buildings;
 				case "road":
@@ -153,5 +142,7 @@
 					return PresetFeatureType.Custom;
 			}
 		}
+
 	}
+
 }

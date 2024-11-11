@@ -1,7 +1,4 @@
-﻿
-namespace Mapbox.Unity.Location
-{
-
+﻿namespace Mapbox.Unity.Location {
 
 	using System;
 	using System.Linq;
@@ -12,20 +9,16 @@ namespace Mapbox.Unity.Location
 	/// <para>https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average</para>
 	/// <para>https://stackoverflow.com/questions/8450020/calculate-exponential-moving-average-on-a-queue-in-c-sharp</para>
 	/// </summary>
-	public class AngleSmoothingEMA : AngleSmoothingAbstractBase
-	{
+	public class AngleSmoothingEMA : AngleSmoothingAbstractBase {
 
-
-		public AngleSmoothingEMA() : base()
-		{
+		public AngleSmoothingEMA() : base() {
 			_alpha = 2.0d / (double)(_measurements + 1);
 		}
 
 
 		private double _alpha;
 
-		public override double Calculate()
-		{
+		public override double Calculate() {
 			// reverse order, _angles[0] is latest
 			double[] angles = _angles.Reverse().ToArray();
 
@@ -38,8 +31,7 @@ namespace Mapbox.Unity.Location
 			double cos = Math.Cos(angles[0] * DEG2RAD);
 			debugLogAngle(angles[0], Math.Atan2(sin, cos) * RAD2DEG);
 
-			for (int i = 1; i < angles.Length; i++)
-			{
+			for (int i = 1; i < angles.Length; i++) {
 				sin = (Math.Sin(angles[i] * DEG2RAD) - sin) * _alpha + sin;
 				cos = (Math.Cos(angles[i] * DEG2RAD) - cos) * _alpha + cos;
 				debugLogAngle(angles[i], Math.Atan2(sin, cos) * RAD2DEG);
@@ -55,8 +47,6 @@ namespace Mapbox.Unity.Location
 			return finalAngle;
 		}
 
-
-
-
 	}
+
 }

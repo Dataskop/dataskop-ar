@@ -4,20 +4,19 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Unity.Utilities
-{
-	using Mapbox.Utils;
+namespace Mapbox.Unity.Utilities {
+
+	using Utils;
 	using UnityEngine;
 
-	public static class VectorExtensions
-	{
+	public static class VectorExtensions {
+
 		/// <summary>
 		/// Vector2 convenience method to convert Vector2 to Vector3.
 		/// </summary>
 		/// <returns>Vector3 with a y value of zero.</returns>
 		/// <param name="v">Vector2.</param>
-		public static Vector3 ToVector3xz(this Vector2 v)
-		{
+		public static Vector3 ToVector3xz(this Vector2 v) {
 			return new Vector3(v.x, 0, v.y);
 		}
 
@@ -26,8 +25,7 @@ namespace Mapbox.Unity.Utilities
 		/// </summary>
 		/// <returns>Vector3 with a y value of zero.</returns>
 		/// <param name="v">Vector2d.</param>
-		public static Vector3 ToVector3xz(this Vector2d v)
-		{
+		public static Vector3 ToVector3xz(this Vector2d v) {
 			return new Vector3((float)v.x, 0, (float)v.y);
 		}
 
@@ -36,8 +34,7 @@ namespace Mapbox.Unity.Utilities
 		/// </summary>
 		/// <returns>The Vector2.</returns>
 		/// <param name="v">Vector3.</param>
-		public static Vector2 ToVector2xz(this Vector3 v)
-		{
+		public static Vector2 ToVector2xz(this Vector3 v) {
 			return new Vector2(v.x, v.z);
 		}
 
@@ -46,14 +43,12 @@ namespace Mapbox.Unity.Utilities
 		/// </summary>
 		/// <returns>The Vector2d.</returns>
 		/// <param name="v">Vector3.</param>
-		public static Vector2d ToVector2d(this Vector3 v)
-		{
+		public static Vector2d ToVector2d(this Vector3 v) {
 			return new Vector2d(v.x, v.z);
 		}
-		
-		
-		public static Vector3 Perpendicular(this Vector3 v)
-		{
+
+
+		public static Vector3 Perpendicular(this Vector3 v) {
 			return new Vector3(-v.z, v.y, v.x);
 		}
 
@@ -73,8 +68,8 @@ namespace Mapbox.Unity.Utilities
 		/// // (1113195.0, 0.0, 1118890.0)
 		/// </code>
 		/// </example>
-		public static void MoveToGeocoordinate(this Transform t, double lat, double lng, Vector2d refPoint, float scale = 1)
-		{
+		public static void MoveToGeocoordinate(this Transform t, double lat, double lng, Vector2d refPoint,
+			float scale = 1) {
 			t.position = Conversions.GeoToWorldPosition(lat, lng, refPoint, scale).ToVector3xz();
 		}
 
@@ -93,8 +88,7 @@ namespace Mapbox.Unity.Utilities
 		/// // (1113195.0, 0.0, 1118890.0)
 		/// </code>
 		/// </example>
-		public static void MoveToGeocoordinate(this Transform t, Vector2d latLon, Vector2d refPoint, float scale = 1)
-		{
+		public static void MoveToGeocoordinate(this Transform t, Vector2d latLon, Vector2d refPoint, float scale = 1) {
 			t.MoveToGeocoordinate(latLon.x, latLon.y, refPoint, scale);
 		}
 
@@ -105,8 +99,7 @@ namespace Mapbox.Unity.Utilities
 		/// <param name="latLon">Latitude Longitude.</param>
 		/// <param name="refPoint">Reference point.</param>
 		/// <param name="scale">Scale.</param>
-		public static Vector3 AsUnityPosition(this Vector2 latLon, Vector2d refPoint, float scale = 1)
-		{
+		public static Vector3 AsUnityPosition(this Vector2 latLon, Vector2d refPoint, float scale = 1) {
 			return Conversions.GeoToWorldPosition(latLon.x, latLon.y, refPoint, scale).ToVector3xz();
 		}
 
@@ -125,21 +118,20 @@ namespace Mapbox.Unity.Utilities
 		/// // (10.00000, 10.00000)
 		/// </code>
 		/// </example>
-		public static Vector2d GetGeoPosition(this Transform t, Vector2d refPoint, float scale = 1)
-		{
-			var pos = refPoint + (t.position / scale).ToVector2d();
+		public static Vector2d GetGeoPosition(this Transform t, Vector2d refPoint, float scale = 1) {
+			Vector2d pos = refPoint + (t.position / scale).ToVector2d();
 			return Conversions.MetersToLatLon(pos);
 		}
 
-		public static Vector2d GetGeoPosition(this Vector3 position, Vector2d refPoint, float scale = 1)
-		{
-			var pos = refPoint + (position / scale).ToVector2d();
+		public static Vector2d GetGeoPosition(this Vector3 position, Vector2d refPoint, float scale = 1) {
+			Vector2d pos = refPoint + (position / scale).ToVector2d();
 			return Conversions.MetersToLatLon(pos);
 		}
 
-		public static Vector2d GetGeoPosition(this Vector2 position, Vector2d refPoint, float scale = 1)
-		{
+		public static Vector2d GetGeoPosition(this Vector2 position, Vector2d refPoint, float scale = 1) {
 			return position.ToVector3xz().GetGeoPosition(refPoint, scale);
 		}
+
 	}
+
 }

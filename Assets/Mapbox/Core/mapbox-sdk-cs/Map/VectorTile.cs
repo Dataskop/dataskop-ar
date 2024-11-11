@@ -4,10 +4,10 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Map
-{
+namespace Mapbox.Map {
+
 	using System.Collections.ObjectModel;
-	using Mapbox.Utils;
+	using Utils;
 	using Mapbox.VectorTile;
 	using Mapbox.VectorTile.ExtensionMethods;
 	using System;
@@ -40,44 +40,36 @@ namespace Mapbox.Map
 	///	}));
 	/// </code>
 	/// </example>
-	public sealed class VectorTile : Tile, IDisposable
-	{
+	public sealed class VectorTile : Tile, IDisposable {
+
 		// FIXME: Namespace here is very confusing and conflicts (sematically)
 		// with his class. Something has to be renamed here.
 		private Mapbox.VectorTile.VectorTile data;
 
-		bool _isStyleOptimized = false;
+		private bool _isStyleOptimized = false;
 
-		string _optimizedStyleId;
+		private string _optimizedStyleId;
 
-		string _modifiedDate;
+		private string _modifiedDate;
 
 		private bool isDisposed = false;
 
 		/// <summary> Gets the vector decoded using Mapbox.VectorTile library. </summary>
 		/// <value> The GeoJson data. </value>
-		public Mapbox.VectorTile.VectorTile Data
-		{
-			get
-			{
-				return this.data;
-			}
-		}
+		public Mapbox.VectorTile.VectorTile Data => data;
 
-		public VectorTile()
-		{
+		public VectorTile() {
 			_isStyleOptimized = false;
 		}
 
-		public VectorTile(string styleId, string modifiedDate)
-		{
-			if (string.IsNullOrEmpty(styleId) || string.IsNullOrEmpty(modifiedDate))
-			{
-				UnityEngine.Debug.LogWarning("Style Id or Modified Time cannot be empty for style optimized tilesets. Switching to regular tilesets!");
+		public VectorTile(string styleId, string modifiedDate) {
+			if (string.IsNullOrEmpty(styleId) || string.IsNullOrEmpty(modifiedDate)) {
+				UnityEngine.Debug.LogWarning(
+					"Style Id or Modified Time cannot be empty for style optimized tilesets. Switching to regular tilesets!"
+				);
 				_isStyleOptimized = false;
 			}
-			else
-			{
+			else {
 				_isStyleOptimized = true;
 				_optimizedStyleId = styleId;
 				_modifiedDate = modifiedDate;
@@ -92,23 +84,18 @@ namespace Mapbox.Map
 		//}
 
 
-		public void Dispose()
-		{
+		public void Dispose() {
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
 		//TODO: change signature if 'VectorTile' class changes from 'sealed'
 		//protected override void Dispose(bool disposeManagedResources)
-		public void Dispose(bool disposeManagedResources)
-		{
-			if (!isDisposed)
-			{
-				if (disposeManagedResources)
-				{
+		public void Dispose(bool disposeManagedResources) {
+			if (!isDisposed) {
+				if (disposeManagedResources) {
 					//TODO implement IDisposable with Mapbox.VectorTile.VectorTile
-					if (null != data)
-					{
+					if (null != data) {
 						data = null;
 					}
 				}
@@ -130,13 +117,7 @@ namespace Mapbox.Map
 		/// Console.Write("GeoJson: " + json);
 		/// </code>
 		/// </example>
-		public string GeoJson
-		{
-			get
-			{
-				return this.data.ToGeoJson((ulong)Id.Z, (ulong)Id.X, (ulong)Id.Y, 0);
-			}
-		}
+		public string GeoJson => data.ToGeoJson((ulong)Id.Z, (ulong)Id.X, (ulong)Id.Y, 0);
 
 
 		/// <summary>
@@ -154,9 +135,8 @@ namespace Mapbox.Map
 		/// }
 		/// </code>
 		/// </example>
-		public ReadOnlyCollection<string> LayerNames()
-		{
-			return this.data.LayerNames();
+		public ReadOnlyCollection<string> LayerNames() {
+			return data.LayerNames();
 		}
 
 		// FIXME: Why don't these work?
@@ -176,36 +156,31 @@ namespace Mapbox.Map
 		/// }
 		/// </code>
 		/// </example>
-		public VectorTileLayer GetLayer(string layerName)
-		{
-			return this.data.GetLayer(layerName);
+		public VectorTileLayer GetLayer(string layerName) {
+			return data.GetLayer(layerName);
 		}
 
 
-		internal override TileResource MakeTileResource(string tilesetId)
-		{
+		internal override TileResource MakeTileResource(string tilesetId) {
 
-			return (_isStyleOptimized) ?
+			return _isStyleOptimized ?
 				TileResource.MakeStyleOptimizedVector(Id, tilesetId, _optimizedStyleId, _modifiedDate)
-			  : TileResource.MakeVector(Id, tilesetId);
+				: TileResource.MakeVector(Id, tilesetId);
 		}
 
 
-		internal override bool ParseTileData(byte[] data)
-		{
-			try
-			{
-				var decompressed = Compression.Decompress(data);
+		internal override bool ParseTileData(byte[] data) {
+			try {
+				byte[] decompressed = Compression.Decompress(data);
 				this.data = new Mapbox.VectorTile.VectorTile(decompressed);
 				return true;
 			}
-			catch (Exception ex)
-			{
+			catch (Exception ex) {
 				AddException(ex);
 				return false;
 			}
 		}
 
-
 	}
+
 }

@@ -40,10 +40,15 @@ namespace Dataskop.UI {
 			topDragger = cachedRangeContainer.Q<VisualElement>("unity-thumb-max");
 			bottomDragger = cachedRangeContainer.Q<VisualElement>("unity-thumb-min");
 
-			slider.RegisterCallback<ChangeEvent<Vector2>>(e => {
-				currentFilterRange = GetTimeRangeOfFilter(e.newValue);
-				SetFilterLabelTexts(currentFilterRange.StartTime.ToShortDateString(), currentFilterRange.EndTime.ToShortDateString());
-			});
+			slider.RegisterCallback<ChangeEvent<Vector2>>(
+				e =>
+				{
+					currentFilterRange = GetTimeRangeOfFilter(e.newValue);
+					SetFilterLabelTexts(
+						currentFilterRange.StartTime.ToShortDateString(), currentFilterRange.EndTime.ToShortDateString()
+					);
+				}
+			);
 
 			topDragger.hierarchy.Add(currentStartRangeLabel);
 			bottomDragger.hierarchy.Add(currentEndRangeLabel);

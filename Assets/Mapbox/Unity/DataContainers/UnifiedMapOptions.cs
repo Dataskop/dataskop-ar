@@ -1,18 +1,20 @@
-﻿namespace Mapbox.Unity.Map
-{
+﻿namespace Mapbox.Unity.Map {
+
 	using System;
-	using Mapbox.Unity.Utilities;
+	using Utilities;
 
 	[Serializable]
-	public class UnifiedMapOptions
-	{
+	public class UnifiedMapOptions {
+
 		public MapPresetType mapPreset = MapPresetType.LocationBasedMap;
-		public MapOptions mapOptions = new MapOptions();
+		public MapOptions mapOptions = new();
 		[NodeEditorElement("Image Layer")]
-		public ImageryLayerProperties imageryLayerProperties = new ImageryLayerProperties();
+		public ImageryLayerProperties imageryLayerProperties = new();
 		[NodeEditorElement("Terrain Layer")]
-		public ElevationLayerProperties elevationLayerProperties = new ElevationLayerProperties();
+		public ElevationLayerProperties elevationLayerProperties = new();
 		[NodeEditorElement("Vector Layer")]
-		public VectorLayerProperties vectorLayerProperties = new VectorLayerProperties();
+		public VectorLayerProperties vectorLayerProperties = new();
+
 	}
+
 }

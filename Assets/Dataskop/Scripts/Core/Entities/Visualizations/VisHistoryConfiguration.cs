@@ -4,7 +4,7 @@ namespace Dataskop.Entities.Visualizations {
 
 	[Serializable]
 	public struct VisHistoryConfiguration {
-		
+
 		public float elementDistance;
 		public float animationDuration;
 		public bool isFading;

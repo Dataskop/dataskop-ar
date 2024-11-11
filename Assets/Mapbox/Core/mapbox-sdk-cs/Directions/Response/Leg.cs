@@ -4,18 +4,16 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Directions
-{
+namespace Mapbox.Directions {
+
 	using System.Collections.Generic;
-	using Mapbox.Json;
+	using Json;
 
 
 	/// <summary>
 	/// A Leg from a Directions API call.
 	/// </summary>
-	public class Leg
-	{
-
+	public class Leg {
 
 		/// <summary>
 		/// Depending on the steps parameter, either an Array of RouteStep objects (true, default) or an empty array (false)
@@ -53,6 +51,6 @@ namespace Mapbox.Directions
 		[JsonProperty("annotation")]
 		public Annotation Annotation { get; set; }
 
-
 	}
+
 }

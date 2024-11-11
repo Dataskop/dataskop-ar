@@ -28,7 +28,10 @@ namespace Dataskop {
 
 		public static string? TryGetLoginToken() {
 			string? token = PlayerPrefs.GetString(APITokenKey, null);
-			if (token == null) return null;
+
+			if (token == null) {
+				return null;
+			}
 
 			return !string.IsNullOrEmpty(token) ? token : null;
 		}
