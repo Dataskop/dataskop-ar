@@ -63,23 +63,28 @@ namespace Dataskop.Data {
 		private TimeRange? TimeRangeFilter { get; set; }
 
 		private void Awake() {
+			
 			DataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
 			DataManager.HasDateFiltered += OnDataFiltered;
+			
 		}
 
 		private void Start() {
-
+			
 			inputHandler.WorldPointerUpped += OnSwiped;
 			LastKnownDevicePositions = new Dictionary<Device, Vector3>();
-
+			
 		}
 
 		private void FixedUpdate() {
 
-			if (!HasLoadedDataPoints)
+			if (!HasLoadedDataPoints) {
 				return;
+			}
 
-			if (AppOptions.DemoMode) return;
+			if (AppOptions.DemoMode) {
+				return;
+			}
 
 			for (int i = 0; i < DataPoints.Count; i++) {
 				DataPoints[i].transform.localPosition = map.GeoToWorldPosition(DataPointsLocations[i]);
@@ -110,8 +115,9 @@ namespace Dataskop.Data {
 
 		public void OnHistorySliderMoved(int newCount, int prevCount) {
 
-			if (!HasLoadedDataPoints)
+			if (!HasLoadedDataPoints) {
 				return;
+			}
 
 			foreach (DataPoint dp in DataPoints) {
 				dp.SetIndex(newCount);
@@ -175,8 +181,9 @@ namespace Dataskop.Data {
 
 			for (int i = 0; i < projectDevices.Length; i++) {
 
-				if (projectDevices[i].Position == null)
+				if (projectDevices[i].Position == null) {
 					continue;
+				}
 
 				if (DataAttributeManager.SelectedAttribute.ID == "all") {
 
@@ -250,6 +257,7 @@ namespace Dataskop.Data {
 						DataPoints.Add(dataPointInstance);
 						SetDataPointVisualization(dataPointInstance, DataAttributeManager.SelectedAttribute.VisOptions.First());
 					}
+					
 				}
 
 			}
@@ -257,16 +265,21 @@ namespace Dataskop.Data {
 		}
 
 		private void PlaceDataPoint(Vector2d newPosition, Transform dataPointTransform) {
+			
 			dataPointTransform.localPosition = map.GeoToWorldPosition(newPosition);
+			
 		}
 
 		public void PlaceDataPoint(Vector3 newPosition, Transform dataPointTransform) {
+			
 			dataPointTransform.localPosition = newPosition;
+			
 		}
-
+		
 		public MeasurementResult GetLatestResult() {
-
+			
 			MeasurementResult latestResult = null;
+			
 			DateTime latestDate = new(1900, 1, 1);
 
 			foreach (var dp in DataPoints) {
@@ -309,6 +322,7 @@ namespace Dataskop.Data {
 			}
 
 			DataPoints.Clear();
+			
 		}
 
 		private void SetDataPointVisualization(DataPoint dp, VisualizationOption visOpt) {
@@ -406,15 +420,19 @@ namespace Dataskop.Data {
 		}
 
 		private IEnumerator GetNearbyDevicesTask(float seconds) {
+			
 			while (HasLoadedDataPoints) {
 				int count = GetDevicesNearPosition(inputHandler.MainCamera.transform.position);
 				nearbyDevicesUpdated?.Invoke(count);
 				yield return new WaitForSeconds(seconds);
 			}
+			
 		}
 
 		private int GetDevicesNearPosition(Vector3 position) {
+			
 			return DataPoints.Count(dp => Vector3.Distance(dp.transform.position, position) <= nearbyDevicesDistance);
+			
 		}
 
 	}
