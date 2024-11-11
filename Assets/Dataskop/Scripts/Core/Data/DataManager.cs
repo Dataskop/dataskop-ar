@@ -24,7 +24,7 @@ namespace Dataskop.Data {
 		[SerializeField] private int fetchAmount;
 		[SerializeField] private int fetchInterval;
 
-		private readonly ApiRequestHandler RequestHandler = new();
+		private readonly ApiRequestHandler requestHandler = new();
 
 		private IReadOnlyCollection<Company> Companies { get; set; }
 
@@ -105,7 +105,7 @@ namespace Dataskop.Data {
 		private async void LoadAppData() {
 
 			LoadingIndicator.Show();
-			Companies = await RequestHandler.GetCompanies();
+			Companies = await requestHandler.GetCompanies();
 
 			if (Companies == null || Companies.Count == 0) {
 
@@ -123,7 +123,7 @@ namespace Dataskop.Data {
 			}
 
 			foreach (Company company in Companies) {
-				company.Projects = await RequestHandler.GetProjects(company);
+				company.Projects = await requestHandler.GetProjects(company);
 			}
 
 			projectListLoaded?.Invoke(Companies);
@@ -160,7 +160,7 @@ namespace Dataskop.Data {
 				return;
 			}
 
-			SelectedProject.Devices = await RequestHandler.GetDevices(SelectedProject);
+			SelectedProject.Devices = await requestHandler.GetDevices(SelectedProject);
 
 			if (SelectedProject.Devices?.Count == 0) {
 				NotificationHandler.Add(
@@ -179,8 +179,10 @@ namespace Dataskop.Data {
 			//TODO: This currently creates a fake DataAttribute for the "All" Variant.
 			List<DataAttribute> availableAttributes = SelectedProject.Properties.Attributes.ToList();
 
-			foreach (Device device in SelectedProject.Devices) {
-				device.Attributes = SelectedProject.Properties.Attributes.ToArray();
+			if (SelectedProject.Devices != null) {
+				foreach (Device device in SelectedProject.Devices) {
+					device.Attributes = SelectedProject.Properties.Attributes.ToArray();
+				}
 			}
 
 			availableAttributes.Insert(
@@ -266,7 +268,7 @@ namespace Dataskop.Data {
 				return;
 			}
 
-			SelectedProject.Devices = await RequestHandler.GetDevices(SelectedProject);
+			SelectedProject.Devices = await requestHandler.GetDevices(SelectedProject);
 
 			if (SelectedProject.Devices?.Count == 0) {
 				NotificationHandler.Add(
@@ -334,11 +336,11 @@ namespace Dataskop.Data {
 
 			foreach (Device d in SelectedProject.Devices) {
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
-					md.FirstMeasurementResult = await RequestHandler.GetFirstMeasurementResult(md);
-					int? count = await RequestHandler.GetCount(md);
+					md.FirstMeasurementResult = await requestHandler.GetFirstMeasurementResult(md);
+					int? count = await requestHandler.GetCount(md);
 					md.TotalMeasurements = count ?? -1;
 					MeasurementResultRange newResults =
-						await RequestHandler.GetMeasurementResults(md, FetchAmount, null, null);
+						await requestHandler.GetMeasurementResults(md, FetchAmount, null, null);
 					md.AddMeasurementResultRange(
 						newResults, new TimeRange(newResults.Last().Timestamp, newResults.First().Timestamp)
 					);
@@ -358,7 +360,7 @@ namespace Dataskop.Data {
 					MeasurementResult latestResult = md.LatestMeasurementResult;
 
 					MeasurementResultRange newResults =
-						await RequestHandler.GetMeasurementResults(
+						await requestHandler.GetMeasurementResults(
 							md, FetchAmount, latestResult.Timestamp, DateTime.Now
 						);
 
@@ -412,7 +414,7 @@ namespace Dataskop.Data {
 							destroyCancellationToken.ThrowIfCancellationRequested();
 
 							MeasurementResultRange results =
-								await RequestHandler.GetMeasurementResults(
+								await requestHandler.GetMeasurementResults(
 									md, fetchingCount, dynamicStartTime,
 									dynamicEndTime
 								);
@@ -462,6 +464,7 @@ namespace Dataskop.Data {
 		}
 
 		private async void RefetchDataTimer() {
+
 			while (ShouldRefetch) {
 				if (FetchTimer?.ElapsedMilliseconds > fetchInterval) {
 					OnRefetchTimerElapsed();
@@ -470,6 +473,7 @@ namespace Dataskop.Data {
 
 				await Task.Yield();
 			}
+
 		}
 
 		private async void OnRefetchTimerElapsed() {
