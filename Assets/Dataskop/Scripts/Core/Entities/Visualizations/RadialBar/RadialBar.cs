@@ -18,6 +18,7 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private float scaleFactor;
 		[SerializeField] private Color32[] availableColors;
 
+#pragma warning disable CS0067
 		public event Action SwipedDown;
 
 		public event Action SwipedUp;
@@ -29,6 +30,8 @@ namespace Dataskop.Entities.Visualizations {
 		public event Action<int> VisObjectDeselected;
 
 		public event Action<IVisObject> FocusedVisObjectChanged;
+
+#pragma warning restore CS0067
 
 		public DataPoint DataPoint { get; private set; }
 
