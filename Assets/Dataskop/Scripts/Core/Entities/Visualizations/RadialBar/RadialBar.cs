@@ -1,14 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using Dataskop.Data;
-using Dataskop.Entities;
-using Dataskop.Entities.Visualizations;
 using Dataskop.Interaction;
 using UnityEngine;
 
-namespace Dataskop {
+namespace Dataskop.Entities.Visualizations {
 
 	public class RadialBar : MonoBehaviour, IVisualization {
 
