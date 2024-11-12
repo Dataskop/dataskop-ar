@@ -27,7 +27,7 @@ namespace Dataskop.UI {
 		private Label ProjectMeasurements { get; set; }
 
 		private void Awake() {
-			ProjectSummaryContainer = infoCardDoc.rootVisualElement.Q<VisualElement>("ProjectData");
+			ProjectSummaryContainer = infoCardDoc.rootVisualElement.Q<VisualElement>("ProjectSummary");
 			ProjectName = ProjectSummaryContainer.Q<Label>("NameValue");
 			ProjectDescription = ProjectSummaryContainer.Q<Label>("DescriptionValue");
 			ProjectCreationDate = ProjectSummaryContainer.Q<Label>("CreationDateValue");
