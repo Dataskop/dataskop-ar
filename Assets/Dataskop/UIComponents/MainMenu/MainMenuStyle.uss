@@ -4,29 +4,6 @@
     flex-shrink: 0;
 }
 
-#txtAPISecret > TextInput {
-    background-color: rgb(245, 245, 245);
-    border-left-color: rgb(87, 86, 96);
-    border-right-color: rgb(87, 86, 96);
-    border-top-color: rgb(87, 86, 96);
-    border-bottom-color: rgb(87, 86, 96);
-    border-left-width: 0;
-    border-right-width: 0;
-    border-top-width: 0;
-    border-bottom-width: 6px;
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
-    font-size: 20px;
-    -unity-text-align: middle-center;
-    white-space: normal;
-    color: rgb(27, 27, 27);
-    -unity-font: url("project://database/Assets/Dataskop/UIComponents/MainMenu/Fonts/Inter-Regular.ttf?fileID=12800000&guid=c3cdfb8736a165d448335bd86d03cbbb&type=3#Inter-Regular");
-    justify-content: center;
-    height: auto;
-}
-
 .btnPrimary {
     align-items: center;
     top: 0;
@@ -141,17 +118,44 @@
 
 .token-container {
     width: 90%;
-    justify-content: space-between;
+    justify-content: space-evenly;
     margin-bottom: 16px;
+    align-self: auto;
+    align-content: auto;
+    align-items: auto;
 }
 
 .close-button {
     flex-grow: 1;
     position: absolute;
     left: auto;
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     right: 80px;
-    top: 80px;
+    top: 180px;
     display: none;
+    background-color: rgba(0, 0, 0, 0);
+    -unity-background-image-tint-color: rgb(220, 0, 0);
+}
+
+.token-input-field {
+    background-size: 200px 100px;
+    width: 80%;
+    height: 120px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-width: 6px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-left-color: rgb(114, 114, 114);
+    border-right-color: rgb(114, 114, 114);
+    border-top-color: rgb(114, 114, 114);
+    border-bottom-color: rgb(114, 114, 114);
+    -unity-font-definition: url("project://database/Assets/Dataskop/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular");
+    font-size: 28px;
+    -unity-text-align: middle-center;
+    text-overflow: clip;
+    white-space: normal;
 }

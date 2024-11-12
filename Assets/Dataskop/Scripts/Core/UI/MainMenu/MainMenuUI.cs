@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 using UnityEngine.XR.ARFoundation;
+
 #if UNITY_ANDROID
 using UnityEngine.Android;
 #endif
@@ -24,8 +25,8 @@ namespace Dataskop.UI {
 
 		[Header("Events")]
 		public UnityEvent<string> loginButtonPressed;
-		private string defaultToken = string.Empty;
 
+		private string defaultToken = string.Empty;
 		private string token = string.Empty;
 
 		private VisualElement Container { get; set; }
@@ -92,11 +93,11 @@ namespace Dataskop.UI {
 			Container.Q<Button>("btnLogin")
 				.RegisterCallback<ClickEvent>(_ => { OnLoginButtonPressed(); });
 
+			TokenTextField = Container.Q<TextField>("tokenInput");
+			defaultToken = TokenTextField.value;
+
 			DemoUserButton = Container.Q<Button>("demoUserButton");
 			DemoUserButton.RegisterCallback<ClickEvent>(_ => { TokenTextField.value = defaultToken; });
-
-			TokenTextField = Container.Q<TextField>("txtAPISecret");
-			defaultToken = TokenTextField.value;
 
 			if (AccountManager.IsLoggedIn && AccountManager.TryGetLoginToken() != TokenTextField.value) {
 				TokenTextField.value = AccountManager.TryGetLoginToken();
