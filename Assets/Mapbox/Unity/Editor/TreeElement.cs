@@ -45,8 +45,7 @@ namespace Mapbox.Editor {
 			set => m_ID = value;
 		}
 
-		public TreeElement() {
-		}
+		public TreeElement() { }
 
 		public TreeElement(string name, int depth, int id) {
 			m_Name = name;

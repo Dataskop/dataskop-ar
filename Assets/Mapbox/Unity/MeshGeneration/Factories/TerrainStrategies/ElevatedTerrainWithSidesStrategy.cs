@@ -35,6 +35,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 			_stitchTargetMeshData = new MeshData();
 			int sampleCountSquare = _elevationOptions.modificationOptions.sampleCount *
 			                        _elevationOptions.modificationOptions.sampleCount;
+
 			_newVertexList = new List<Vector3>(sampleCountSquare);
 			_newNormalList = new List<Vector3>(sampleCountSquare);
 			_newUvList = new List<Vector2>(sampleCountSquare);
@@ -96,6 +97,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 							(float)(yy - tile.Rect.Center.y) * tile.TileScale
 						)
 					);
+
 					_newNormalList.Add(Constants.Math.Vector3Up);
 					_newUvList.Add(new Vector2(x * 1f / (_sampleCount - 1), 1 - y * 1f / (_sampleCount - 1)));
 				}
@@ -138,6 +140,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 						_newVertexList[x].z
 					)
 				);
+
 				_newNormalList.Add(Constants.Math.Vector3Forward);
 				_newNormalList.Add(Constants.Math.Vector3Forward);
 				_newUvList.Add(new Vector2(_newUvList[x * _sampleCount].y, 1));
@@ -153,6 +156,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 						_newVertexList[x * _sampleCount].z
 					)
 				);
+
 				_newNormalList.Add(Vector3.left);
 				_newNormalList.Add(Vector3.left);
 				_newUvList.Add(new Vector2(_newUvList[x * _sampleCount].y, 1));
@@ -168,6 +172,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 						_newVertexList[(x + 1) * _sampleCount - 1].z
 					)
 				);
+
 				_newNormalList.Add(Vector3.right);
 				_newNormalList.Add(Vector3.right);
 				_newUvList.Add(new Vector2(_newUvList[x * _sampleCount].y, 1));
@@ -183,6 +188,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 						_newVertexList[lastRow + x].z
 					)
 				);
+
 				_newNormalList.Add(Vector3.back);
 				_newNormalList.Add(Vector3.back);
 				_newUvList.Add(new Vector2(_newUvList[x * _sampleCount].y, 1));
@@ -262,6 +268,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 						tile.QueryHeightData(x / (_sampleCount - 1), 1 - y / (_sampleCount - 1)),
 						_currentTileMeshData.Vertices[(int)(y * _sampleCount + x)].z
 					);
+
 					_currentTileMeshData.Normals[(int)(y * _sampleCount + x)] = Constants.Math.Vector3Zero;
 
 					if (y == 0) {
@@ -295,6 +302,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 						_currentTileMeshData.Vertices[_vertB] - _currentTileMeshData.Vertices[_vertA],
 						_currentTileMeshData.Vertices[_vertC] - _currentTileMeshData.Vertices[_vertA]
 					);
+
 					_currentTileMeshData.Normals[_vertA] += _newDir;
 					_currentTileMeshData.Normals[_vertB] += _newDir;
 					_currentTileMeshData.Normals[_vertC] += _newDir;
@@ -306,6 +314,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 						_currentTileMeshData.Vertices[_vertB] - _currentTileMeshData.Vertices[_vertA],
 						_currentTileMeshData.Vertices[_vertC] - _currentTileMeshData.Vertices[_vertA]
 					);
+
 					_currentTileMeshData.Normals[_vertA] += _newDir;
 					_currentTileMeshData.Normals[_vertB] += _newDir;
 					_currentTileMeshData.Normals[_vertC] += _newDir;
@@ -348,6 +357,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 						0,
 						_currentTileMeshData.Vertices[i].z
 					);
+
 					_currentTileMeshData.Normals[i] = Constants.Math.Vector3Up;
 				}
 
@@ -380,6 +390,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 						_stitchTargetMeshData.Vertices[meshVertCount - _sampleCount + i].y,
 						mesh.Vertices[i].z
 					);
+
 					mesh.Vertices[meshVertCount + 8 * i] = mesh.Vertices[i];
 
 					mesh.Normals[i] = new Vector3(
@@ -403,6 +414,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 						_stitchTargetMeshData.Vertices[i].y,
 						mesh.Vertices[meshVertCount - _sampleCount + i].z
 					);
+
 					mesh.Vertices[meshVertCount + 6 + 8 * i] = mesh.Vertices[meshVertCount - _sampleCount + i];
 
 					mesh.Normals[meshVertCount - _sampleCount + i] = new Vector3(
@@ -426,6 +438,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 						_stitchTargetMeshData.Vertices[i * _sampleCount + _sampleCount - 1].y,
 						mesh.Vertices[i * _sampleCount].z
 					);
+
 					mesh.Vertices[meshVertCount + 2 + 8 * i] = mesh.Vertices[i * _sampleCount];
 
 					mesh.Normals[i * _sampleCount] = new Vector3(
@@ -449,6 +462,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 						_stitchTargetMeshData.Vertices[i * _sampleCount].y,
 						mesh.Vertices[i * _sampleCount + _sampleCount - 1].z
 					);
+
 					mesh.Vertices[meshVertCount + 4 + 8 * i] = mesh.Vertices[i * _sampleCount + _sampleCount - 1];
 
 					mesh.Normals[i * _sampleCount + _sampleCount - 1] = new Vector3(

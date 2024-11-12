@@ -17,10 +17,11 @@
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
 			EditorGUI.BeginProperty(position, null, property);
-			GUIContent colliderTypeLabel = new GUIContent {
+			GUIContent colliderTypeLabel = new() {
 				text = "Collider Type",
 				tooltip = "The type of collider added to game objects in this layer."
 			};
+
 			SerializedProperty colliderTypeProperty = property.FindPropertyRelative("colliderType");
 
 			string[] displayNames = colliderTypeProperty.enumDisplayNames;

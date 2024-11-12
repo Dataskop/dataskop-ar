@@ -29,14 +29,11 @@ namespace Dataskop.Entities.Visualizations {
 			ApplyData(currentDataIndex);
 		}
 
-		public void Select() {
-		}
+		public void Select() { }
 
-		public void Deselect(bool isFocused) {
-		}
+		public void Deselect(bool isFocused) { }
 
-		public void Hover(bool isFocused) {
-		}
+		public void Hover(bool isFocused) { }
 
 		public void Show() {
 			dataDisplay.alpha = 1;
@@ -50,19 +47,21 @@ namespace Dataskop.Entities.Visualizations {
 
 			if (direction.y > 0) {
 
-				if (currentDataIndex == DataSet.Length - 1) {
-					return;
-				}
-
-				currentDataIndex++;
-			}
-			else {
-
 				if (currentDataIndex == 0) {
 					return;
 				}
 
 				currentDataIndex--;
+
+			}
+			else {
+
+				if (currentDataIndex == DataSet.Length - 1) {
+					return;
+				}
+
+				currentDataIndex++;
+
 			}
 
 			ApplyData(currentDataIndex);
@@ -78,6 +77,7 @@ namespace Dataskop.Entities.Visualizations {
 			legendDots.color = data.Color;
 			minMaxTextMesh.text =
 				$"{data.Attribute.Minimum} {data.Attribute.Unit} - {data.Attribute.Maximum} {data.Attribute.Unit}";
+
 			idTextMesh.text = data.Result.MeasurementDefinition.MeasurementDefinitionInformation.Name;
 			SetArrowState();
 		}

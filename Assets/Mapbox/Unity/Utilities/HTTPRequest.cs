@@ -4,7 +4,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-
 namespace Mapbox.Unity.Utilities {
 
 	using System;
@@ -23,7 +22,6 @@ namespace Mapbox.Unity.Utilities {
 		Head
 
 	}
-
 
 	internal sealed class HTTPRequest : IAsyncRequest {
 

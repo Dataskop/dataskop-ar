@@ -163,9 +163,11 @@ namespace Dataskop.Data {
 							hasDuplicate ? firstRange.SkipLast(1).Concat(secondRange)
 								: firstRange.Concat(secondRange)
 						);
+
 					mergedRanges[i].SetTimeRange(
 						new TimeRange(secondRange.GetTimeRange().StartTime, firstRange.GetTimeRange().EndTime)
 					);
+
 					mergedRanges.RemoveAt(i + 1);
 					i--;
 

@@ -48,11 +48,13 @@
 					SerializedProperty extrusionOptions = layerProperty.FindPropertyRelative("extrusionOptions");
 					extrusionOptions.FindPropertyRelative("_selectedLayerName").stringValue =
 						subLayerCoreOptions.FindPropertyRelative("layerName").stringValue;
+
 					EditorGUILayout.PropertyField(extrusionOptions);
 
 					EditorGUI.BeginChangeCheck();
 					SerializedProperty snapToTerrainProperty =
 						subLayerCoreOptions.FindPropertyRelative("snapToTerrain");
+
 					snapToTerrainProperty.boolValue = EditorGUILayout.Toggle(
 						snapToTerrainProperty.displayName, snapToTerrainProperty.boolValue
 					);
@@ -66,6 +68,7 @@
 					EditorGUI.BeginChangeCheck();
 					SerializedProperty combineMeshesProperty =
 						subLayerCoreOptions.FindPropertyRelative("combineMeshes");
+
 					combineMeshesProperty.boolValue = EditorGUILayout.Toggle(
 						combineMeshesProperty.displayName, combineMeshesProperty.boolValue
 					);

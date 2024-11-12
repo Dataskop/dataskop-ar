@@ -6,7 +6,7 @@ namespace Mapbox.Unity.Telemetry {
 	public static class AndroidJavaObjectExtensions {
 
 		public static AndroidJavaObject ClassForName(string className) {
-			using (AndroidJavaClass clazz = new AndroidJavaClass("java.lang.Class")) {
+			using (AndroidJavaClass clazz = new("java.lang.Class")) {
 				return clazz.CallStatic<AndroidJavaObject>("forName", className);
 			}
 		}

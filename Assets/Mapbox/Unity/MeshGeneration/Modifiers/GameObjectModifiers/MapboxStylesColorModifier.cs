@@ -47,8 +47,10 @@
 
 			Color baseColor = m_scriptablePalette.m_setBaseColor_Override ? m_scriptablePalette.m_baseColor_Override
 				: GetRandomColorFromPalette();
+
 			Color detailColor1 = m_scriptablePalette.m_setDetailColor1_Override
 				? m_scriptablePalette.m_detailColor1_Override : GetRandomColorFromPalette();
+
 			Color detailColor2 = m_scriptablePalette.m_setDetailColor2_Override
 				? m_scriptablePalette.m_detailColor2_Override : GetRandomColorFromPalette();
 

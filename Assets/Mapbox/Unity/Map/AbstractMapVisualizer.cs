@@ -130,7 +130,6 @@ namespace Mapbox.Unity.Map {
 
 		//factory event callback, not relaying this up for now
 
-
 		private void TileHeightStateChanged(UnityTile tile) {
 			if (tile.HeightDataState == TilePropertyState.Loaded) {
 				OnTileHeightProcessingFinished(tile);
@@ -165,6 +164,7 @@ namespace Mapbox.Unity.Map {
 			                   tile.HeightDataState == TilePropertyState.Loaded ||
 			                   tile.HeightDataState == TilePropertyState.Error ||
 			                   tile.HeightDataState == TilePropertyState.Cancelled;
+
 			bool vectorDone = tile.VectorDataState == TilePropertyState.None ||
 			                  tile.VectorDataState == TilePropertyState.Loaded ||
 			                  tile.VectorDataState == TilePropertyState.Error ||
@@ -354,7 +354,6 @@ namespace Mapbox.Unity.Map {
 				factory.UpdateTileProperty(tileBundle.Value, updateArgs);
 			}
 		}
-
 
 		#region Events
 

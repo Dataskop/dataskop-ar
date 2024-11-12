@@ -19,6 +19,7 @@ namespace Dataskop.EditMode.Tests {
 					new DateTime(2024, 8, 12)
 				)
 			};
+
 			TimeRange searchRange = new(
 				new DateTime(2024, 8, 09),
 				new DateTime(2024, 8, 11)
@@ -144,6 +145,7 @@ namespace Dataskop.EditMode.Tests {
 			TimeRange[] available = {
 				new(new DateTime(2024, 8, 10), NOW)
 			};
+
 			TimeRange searchRange = new(new DateTime(2024, 8, 11), NOW);
 
 			// Act

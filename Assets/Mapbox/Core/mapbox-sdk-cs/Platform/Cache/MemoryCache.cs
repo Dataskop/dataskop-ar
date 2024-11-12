@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-
 namespace Mapbox.Platform.Cache {
 
 	public class MemoryCache : ICache {
@@ -17,7 +16,6 @@ namespace Mapbox.Platform.Cache {
 			_cachedResponses = new Dictionary<string, CacheItem>();
 		}
 
-
 #if MAPBOX_DEBUG_CACHE
 		private string _className;
 #endif
@@ -25,14 +23,11 @@ namespace Mapbox.Platform.Cache {
 		private object _lock = new();
 		private Dictionary<string, CacheItem> _cachedResponses;
 
-
 		public uint MaxCacheSize => _maxCacheSize;
-
 
 		public void ReInit() {
 			_cachedResponses = new Dictionary<string, CacheItem>();
 		}
-
 
 		public void Add(string mapdId, CanonicalTileId tilesetId, CacheItem item, bool forceInsert) {
 			string key = mapdId + "||" + tilesetId;
@@ -49,7 +44,6 @@ namespace Mapbox.Platform.Cache {
 				}
 			}
 		}
-
 
 		public CacheItem Get(string tilesetId, CanonicalTileId tileId) {
 			string key = tilesetId + "||" + tileId;
@@ -68,13 +62,11 @@ namespace Mapbox.Platform.Cache {
 			}
 		}
 
-
 		public void Clear() {
 			lock (_lock) {
 				_cachedResponses.Clear();
 			}
 		}
-
 
 		public void Clear(string tilesetId) {
 			lock (_lock) {

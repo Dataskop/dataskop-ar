@@ -133,6 +133,7 @@ namespace Mapbox.Editor {
 					EditorUtility.DisplayDialog(
 						"Atlas Template Generator", "Error: No AtlasInfo object selected.", "Ok"
 					);
+
 					return;
 				}
 
@@ -141,6 +142,7 @@ namespace Mapbox.Editor {
 						"Atlas Template Generator",
 						"Error: Template generation requires Create Facades and/or Create Roofs to be enabled.", "Ok"
 					);
+
 					return;
 				}
 
@@ -279,6 +281,7 @@ namespace Mapbox.Editor {
 						Rect cellRect = new(
 							columnStart + halfMrgn, floorStart + halfMrgn, colWidth - mrgn, floorHeight - mrgn
 						);
+
 						PixelRect cellPixelRect = ConvertUVRectToPixelRect(cellRect);
 
 						DrawRect(cellPixelRect, Color.white);

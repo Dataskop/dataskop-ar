@@ -51,7 +51,7 @@
 				isGUIContentSet = true;
 			}
 
-			GUIContent sourceTypeLabel = new GUIContent {
+			GUIContent sourceTypeLabel = new() {
 				text = "Data Source",
 				tooltip = "Source tileset for Terrain."
 			};
@@ -85,6 +85,7 @@
 					layerSourceId.stringValue = string.IsNullOrEmpty(CustomSourceTilesetId)
 						? MapboxDefaultElevation.GetParameters(ElevationSourceType.MapboxTerrain).Id
 						: CustomSourceTilesetId;
+
 					EditorGUILayout.PropertyField(sourceOptionsProperty, _tilesetIdGui);
 					CustomSourceTilesetId = layerSourceId.stringValue;
 					break;

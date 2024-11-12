@@ -8,7 +8,6 @@
 
 #if UNITY_5_6_OR_NEWER
 
-
 namespace Mapbox.MapboxSdkCs.UnitTest {
 
 	using System.Linq;
@@ -21,12 +20,10 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 	using System.Collections;
 #endif
 
-
 	[TestFixture]
 	internal class VectorTileTest {
 
 		private FileSource _fs;
-
 
 		[SetUp]
 		public void SetUp() {
@@ -40,7 +37,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			_fs = new FileSource();
 #endif
 		}
-
 
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]
@@ -78,6 +74,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 				Assert.NotNull(
 					layer, "Tile contains 'water' layer. Layers: {0}", string.Join(",", tile.LayerNames().ToArray())
 				);
+
 				Assert.Greater(layer.FeatureCount(), 0, "Water layer has features");
 				Mapbox.VectorTile.VectorTileFeature feature = layer.GetFeature(0);
 				Assert.Greater(feature.Geometry<long>().Count, 0, "Feature has geometry");
@@ -86,7 +83,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 
 			map.Unsubscribe(mapObserver);
 		}
-
 
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]

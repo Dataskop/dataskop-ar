@@ -35,6 +35,7 @@
 			customFoldoutYOffset =
 				(kRowHeights - EditorGUIUtility.singleLineHeight) *
 				0.5f; // center foldout in the row since we also center content. See RowGUI
+
 			extraSpaceBeforeIconAndLabel = kToggleWidth;
 			uniqueId = uniqueIdentifier;
 			Reload();
@@ -87,6 +88,7 @@
 
 			string type = ((PresetFeatureType)subLayer.FindPropertyRelative("presetFeatureType").enumValueIndex)
 				.ToString();
+
 			FeatureTreeElement element = new(name, 0, id);
 			element.Name = name;
 			element.Type = type;
@@ -134,6 +136,7 @@
 				if (EditorGUI.EndChangeCheck()) {
 					VectorSubLayerProperties vectorSubLayerProperties =
 						(VectorSubLayerProperties)EditorHelper.GetTargetObjectOfProperty(layer);
+
 					EditorHelper.CheckForModifiedProperty(layer, vectorSubLayerProperties.coreOptions);
 				}
 
@@ -150,6 +153,7 @@
 
 				string typeString = ((PresetFeatureType)layer.FindPropertyRelative("presetFeatureType").intValue)
 					.ToString();
+
 				item.data.Type = typeString;
 				EditorGUI.LabelField(cellRect, item.data.Type, columnStyle);
 			}
@@ -186,7 +190,7 @@
 				}
 			};
 
-			MultiColumnHeaderState state = new MultiColumnHeaderState(columns);
+			MultiColumnHeaderState state = new(columns);
 			return state;
 		}
 

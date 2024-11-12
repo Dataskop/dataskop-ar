@@ -317,6 +317,7 @@ namespace Mapbox.Utils {
 			double num2 = num1 * deltaTime;
 			double num3 = 1.0d / (1.0d + num2 + 0.479999989271164d * num2 * num2 +
 			                      0.234999999403954d * num2 * num2 * num2);
+
 			double num4 = current - target;
 			double num5 = target;
 			double max = maxSpeed * smoothTime;

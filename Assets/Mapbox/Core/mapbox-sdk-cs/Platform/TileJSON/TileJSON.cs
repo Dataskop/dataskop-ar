@@ -11,15 +11,12 @@ namespace Mapbox.Platform.TilesetTileJSON {
 		private IFileSource _fileSource;
 		private int _timeout;
 
-
 		public IFileSource FileSource => _fileSource;
-
 
 		public TileJSON(IFileSource fileSource, int timeout) {
 			_fileSource = fileSource;
 			_timeout = timeout;
 		}
-
 
 		public IAsyncRequest Get(string tilesetName, Action<TileJSONResponse> callback) {
 			string url = string.Format(

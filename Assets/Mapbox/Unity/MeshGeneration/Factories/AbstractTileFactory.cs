@@ -115,9 +115,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories {
 
 		#endregion
 
-		public virtual void Clear() {
-
-		}
+		public virtual void Clear() { }
 
 	}
 

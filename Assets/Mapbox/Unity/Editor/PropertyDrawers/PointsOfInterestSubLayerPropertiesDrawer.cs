@@ -136,6 +136,7 @@ namespace Mapbox.Unity.Map {
 				selectedLayers = new int[1] {
 					prefabItemArray.arraySize - 1
 				};
+
 				layerTreeView.SetSelection(selectedLayers);
 
 				if (EditorHelper.DidModifyProperty(property)) {
@@ -151,6 +152,7 @@ namespace Mapbox.Unity.Map {
 
 						VectorLayerProperties vectorLayerProperties =
 							(VectorLayerProperties)EditorHelper.GetTargetObjectOfProperty(property);
+
 						PrefabItemOptions poiSubLayerProperties =
 							(PrefabItemOptions)EditorHelper.GetTargetObjectOfProperty(poiSubLayer);
 

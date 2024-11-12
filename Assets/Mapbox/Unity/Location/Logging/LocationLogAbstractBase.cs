@@ -5,7 +5,6 @@ namespace Mapbox.Unity.Location {
 	using System.Globalization;
 	using VectorTile.ExtensionMethods;
 
-
 	/// <summary>
 	/// Base class for reading/writing location logs
 	/// </summary>
@@ -13,7 +12,6 @@ namespace Mapbox.Unity.Location {
 
 		public readonly string Delimiter = ";";
 		protected readonly CultureInfo _invariantCulture = CultureInfo.InvariantCulture;
-
 
 		public enum LogfileColumns {
 
@@ -87,7 +85,6 @@ namespace Mapbox.Unity.Location {
 			SatellitesInView = 16
 
 		}
-
 
 		public string[] HeaderNames
 		{

@@ -17,6 +17,7 @@ namespace Mapbox.Unity.Map.TileProviders {
 			//get center WebMerc corrdinates of tile covering the center (Unity 0,0,0)
 			Vector2d centerTileCenter =
 				Conversions.TileIdToCenterWebMercator(centerTile.X, centerTile.Y, map.AbsoluteZoom);
+
 			//calculate distance between WebMerc center coordinates of center tile and WebMerc coordinates exactly at center
 			Vector2d shift = map.CenterMercator - centerTileCenter;
 			float unityTileSize = map.UnityTileSize;
@@ -34,6 +35,7 @@ namespace Mapbox.Unity.Map.TileProviders {
 				, 0
 				, ((centerTile.Y - tileId.Y) * unityTileSize - shiftY) * scaleFactor
 			);
+
 			tile.transform.localPosition = position;
 		}
 

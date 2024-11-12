@@ -28,9 +28,7 @@ namespace Mapbox.Unity.Map {
 			return false;
 		}
 
-		public virtual void UpdateProperty(UnityTile tile) {
-
-		}
+		public virtual void UpdateProperty(UnityTile tile) { }
 
 	}
 

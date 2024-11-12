@@ -20,7 +20,6 @@
 		)]
 		private float _updateDistanceInMeters = 0.0f;
 
-
 		/// <summary>
 		/// The minimum time interval between location updates, in milliseconds.
 		/// https://developer.android.com/reference/android/location/LocationManager.html#requestLocationUpdates(java.lang.String,%20long,%20float,%20android.location.LocationListener)
@@ -30,7 +29,6 @@
 			"The minimum time interval between location updates, in milliseconds. It's reasonable to not go below 500ms."
 		)]
 		private long _updateTimeInMilliSeconds = 1000;
-
 
 		private WaitForSeconds _wait1sec;
 		private WaitForSeconds _wait5sec;
@@ -45,7 +43,6 @@
 		private AndroidJavaObject _gpsInstance;
 		private AndroidJavaObject _sensorInstance;
 
-
 		~DeviceLocationProviderAndroidNative() {
 			Dispose(false);
 		}
@@ -54,7 +51,6 @@
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
-
 
 		protected virtual void Dispose(bool disposeManagedResources) {
 			if (!_disposed) {
@@ -65,7 +61,6 @@
 				_disposed = true;
 			}
 		}
-
 
 		private void shutdown() {
 			try {
@@ -88,11 +83,9 @@
 			}
 		}
 
-
 		protected virtual void OnDestroy() {
 			shutdown();
 		}
-
 
 		protected virtual void OnDisable() {
 			shutdown();
@@ -129,7 +122,6 @@
 			}
 		}
 
-
 		private void getActivityContext() {
 			using (AndroidJavaClass activityClass = new("com.unity3d.player.UnityPlayer")) {
 				_activityContext = activityClass.GetStatic<AndroidJavaObject>("currentActivity");
@@ -140,7 +132,6 @@
 				return;
 			}
 		}
-
 
 		private void getGpsInstance(bool showToastMessages = false) {
 			if (null == _activityContext) {
@@ -168,7 +159,6 @@
 				_gpsInstance.Call("startLocationListeners", _updateDistanceInMeters, _updateTimeInMilliSeconds);
 			}
 		}
-
 
 		private void getSensorInstance() {
 			if (null == _activityContext) {
@@ -272,7 +262,6 @@
 			}
 		}
 
-
 		private void populateCurrentLocation(AndroidJavaObject location) {
 			if (null == location) {
 				_currentLocation.IsLocationUpdated = false;
@@ -347,7 +336,6 @@
 
 		}
 
-
 		/// <summary>
 		/// If GPS and network location are available use the newer/better one
 		/// </summary>
@@ -383,9 +371,9 @@
 			long time = loc.Call<long>("getTime");
 			DateTime dtPlugin =
 				new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Add(TimeSpan.FromMilliseconds(time));
+
 			return dtPlugin.ToString("yyyyMMdd HHmmss");
 		}
-
 
 		private string loc2str(AndroidJavaObject loc) {
 

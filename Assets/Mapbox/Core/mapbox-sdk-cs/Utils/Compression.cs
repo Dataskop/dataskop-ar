@@ -9,7 +9,6 @@ namespace Mapbox.Utils {
 	using System.IO;
 	using Mapbox.IO.Compression;
 
-
 	/// <summary> Collection of constants used across the project. </summary>
 	public static class Compression {
 
@@ -58,7 +57,6 @@ namespace Mapbox.Utils {
 
 			return buffer;
 		}
-
 
 		public static byte[] Compress(byte[] raw, CompressionLevel compressionLevel) {
 			using (MemoryStream memory = new()) {

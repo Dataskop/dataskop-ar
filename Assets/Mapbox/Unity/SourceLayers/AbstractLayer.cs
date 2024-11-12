@@ -49,6 +49,7 @@
 							effectsVectorLayer = effectsVectorLayer,
 							property = prop
 						};
+
 				handler(this, layerUpdateArgs);
 			}
 		}

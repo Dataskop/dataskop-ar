@@ -3,7 +3,6 @@ namespace Mapbox.Unity.Location {
 	using System;
 	using System.Linq;
 
-
 	/// <summary>
 	/// Simple averaging latest 'n' values.
 	/// </summary>

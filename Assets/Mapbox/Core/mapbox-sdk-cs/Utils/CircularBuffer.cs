@@ -14,7 +14,6 @@ namespace Mapbox.Utils {
 
 	}
 
-
 	/// <summary>
 	/// http://geekswithblogs.net/blackrob/archive/2014/09/01/circular-buffer-in-c.aspx
 	/// https://social.msdn.microsoft.com/Forums/vstudio/en-US/416a2175-b05d-43b1-b99a-a01c56550dbe/circular-buffer-in-net?forum=netfxbcl
@@ -27,7 +26,6 @@ namespace Mapbox.Utils {
 		private int _head;
 		private int _tail;
 
-
 		public CircularBuffer(int capacity) {
 			if (capacity < 0) {
 				throw new ArgumentOutOfRangeException("capacity", "must be positive");
@@ -37,9 +35,7 @@ namespace Mapbox.Utils {
 			_head = 0;
 		}
 
-
 		public int Count { get; private set; }
-
 
 		public void Add(T item) {
 			_head = (_head + 1) % _buffer.Length;
@@ -52,7 +48,6 @@ namespace Mapbox.Utils {
 				++Count;
 			}
 		}
-
 
 		/// <summary>
 		/// <para>ATTENTION!!! order is flipped like in rolling window</para>
@@ -72,7 +67,6 @@ namespace Mapbox.Utils {
 			}
 		}
 
-
 		private int mod(int x, int m) // x mod m works for both positive and negative x (unlike x % m).
 		{
 			return (x % m + m) % m;
@@ -91,7 +85,6 @@ namespace Mapbox.Utils {
 		IEnumerator IEnumerable.GetEnumerator() {
 			return GetEnumerator();
 		}
-
 
 		public IEnumerable<T> GetEnumerable() {
 			IEnumerator<T> enumerator = GetEnumerator();

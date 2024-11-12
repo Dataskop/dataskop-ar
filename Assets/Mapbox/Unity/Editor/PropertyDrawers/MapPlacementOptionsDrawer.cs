@@ -37,6 +37,7 @@
 					tooltip = "Placement of Map root."
 				}, placementType.enumValueIndex, placementTypeContent
 			);
+
 			EditorGUILayout.PropertyField(
 				snapMapToTerrain, new GUIContent {
 					text = snapMapToTerrain.displayName,

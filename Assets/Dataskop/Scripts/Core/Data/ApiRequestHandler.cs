@@ -126,6 +126,7 @@ namespace Dataskop.Data {
 			try {
 				MeasurementResultsResponse resultsResponse =
 					JsonConvert.DeserializeObject<MeasurementResultsResponse>(response);
+
 				MeasurementResultRange measurementResults = resultsResponse?.MeasurementResults;
 
 				foreach (MeasurementResult mr in measurementResults!) {
@@ -143,6 +144,7 @@ namespace Dataskop.Data {
 						DisplayDuration = NotificationDuration.Medium
 					}
 				);
+
 				return null;
 			}
 
@@ -156,6 +158,7 @@ namespace Dataskop.Data {
 			try {
 				MeasurementResultsResponse resultsResponse =
 					JsonConvert.DeserializeObject<MeasurementResultsResponse>(response);
+
 				MeasurementResult measurementResult = resultsResponse?.MeasurementResults.FirstOrDefault();
 				return measurementResult;
 			}
@@ -167,6 +170,7 @@ namespace Dataskop.Data {
 						DisplayDuration = NotificationDuration.Medium
 					}
 				);
+
 				return null;
 			}
 
@@ -180,6 +184,7 @@ namespace Dataskop.Data {
 			try {
 				MeasurementResultsResponse resultsResponse =
 					JsonConvert.DeserializeObject<MeasurementResultsResponse>(response);
+
 				return resultsResponse.Count;
 			}
 			catch {
@@ -190,6 +195,7 @@ namespace Dataskop.Data {
 						DisplayDuration = NotificationDuration.Medium
 					}
 				);
+
 				return null;
 			}
 
@@ -238,6 +244,7 @@ namespace Dataskop.Data {
 						DisplayDuration = NotificationDuration.Medium
 					}
 				);
+
 				return;
 			}
 
@@ -249,6 +256,7 @@ namespace Dataskop.Data {
 						DisplayDuration = NotificationDuration.Medium
 					}
 				);
+
 				return;
 			}
 

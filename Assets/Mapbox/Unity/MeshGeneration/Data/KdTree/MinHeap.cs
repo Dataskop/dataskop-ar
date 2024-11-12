@@ -29,8 +29,7 @@ namespace KDTree {
 		/// <summary>
 		/// Create a new min heap with the default capacity.
 		/// </summary>
-		public MinHeap() : this(DEFAULT_SIZE) {
-		}
+		public MinHeap() : this(DEFAULT_SIZE) { }
 
 		/// <summary>
 		/// Create a new min heap with a given capacity.

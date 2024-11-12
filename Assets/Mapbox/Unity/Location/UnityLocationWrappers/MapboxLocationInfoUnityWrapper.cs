@@ -2,7 +2,6 @@ namespace Mapbox.Unity.Location {
 
 	using UnityEngine;
 
-
 	/// <summary>
 	/// Wrapper to use Unity's LocationInfo as MapboxLocationInfo
 	/// </summary>
@@ -13,7 +12,6 @@ namespace Mapbox.Unity.Location {
 		}
 
 		private LocationInfo _locationInfo;
-
 
 		public float latitude => _locationInfo.latitude;
 

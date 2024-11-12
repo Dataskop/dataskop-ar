@@ -100,6 +100,7 @@ namespace Dataskop.Entities.Visualizations {
 			GameObject visObject = Instantiate(
 				visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer
 			);
+
 			VisObjects[DataPoint.FocusedIndex] = visObject.GetComponent<IVisObject>();
 			VisObjects[DataPoint.FocusedIndex].HasHovered += OnVisObjectHovered;
 			VisObjects[DataPoint.FocusedIndex].HasSelected += OnVisObjectSelected;
@@ -120,6 +121,7 @@ namespace Dataskop.Entities.Visualizations {
 						DisplayDuration = 5f
 					}
 				);
+
 				return;
 			}
 
@@ -176,6 +178,7 @@ namespace Dataskop.Entities.Visualizations {
 					VisObjects[DataPoint.FocusedIndex], DataPoint.FocusedIndex, focusedResult, true,
 					IsSelected ? VisObjectState.Selected : VisObjectState.Deselected
 				);
+
 				focusedDataDisplay.MoveTo(VisObjects[DataPoint.FocusedIndex].VisObjectTransform.position);
 				PreviousIndex = DataPoint.FocusedIndex;
 
@@ -210,9 +213,11 @@ namespace Dataskop.Entities.Visualizations {
 					Vector3 spawnPos = new(
 						VisOrigin.position.x, VisOrigin.position.y + distance * i, VisOrigin.position.z
 					);
+
 					VisObjects[targetIndex] = SpawnVisObject(
 						targetIndex, spawnPos, result, false, VisObjectState.Deselected
 					);
+
 					VisObjects[targetIndex].OnHistoryToggle(true);
 
 					MeasurementResult res2 = currentResults[targetIndex - 1];
@@ -231,6 +236,7 @@ namespace Dataskop.Entities.Visualizations {
 						visObjectsContainer.localRotation,
 						visObjectsContainer
 					);
+
 					dataGapIndicators.Add(indicator);
 
 				}
@@ -248,9 +254,11 @@ namespace Dataskop.Entities.Visualizations {
 					Vector3 spawnPos = new(
 						VisOrigin.position.x, VisOrigin.position.y - distance * i, VisOrigin.position.z
 					);
+
 					VisObjects[targetIndex] = SpawnVisObject(
 						targetIndex, spawnPos, result, false, VisObjectState.Deselected
 					);
+
 					VisObjects[targetIndex].OnHistoryToggle(true);
 
 					MeasurementResult res2 = currentResults[targetIndex + 1];
@@ -269,6 +277,7 @@ namespace Dataskop.Entities.Visualizations {
 						visObjectsContainer.localRotation,
 						visObjectsContainer
 					);
+
 					dataGapIndicators.Add(indicator);
 
 				}
@@ -331,6 +340,7 @@ namespace Dataskop.Entities.Visualizations {
 				visObjectPrefab, VisOrigin.position, visObjectsContainer.localRotation,
 				visObjectsContainer
 			);
+
 			VisObjects[DataPoint.FocusedIndex] = visObject.GetComponent<IVisObject>();
 			VisObjects[DataPoint.FocusedIndex].HasHovered += OnVisObjectHovered;
 			VisObjects[DataPoint.FocusedIndex].HasSelected += OnVisObjectSelected;
@@ -436,6 +446,7 @@ namespace Dataskop.Entities.Visualizations {
 			GameObject newVis = Instantiate(
 				visObjectPrefab, pos, visObjectsContainer.localRotation, visObjectsContainer
 			);
+
 			IVisObject visObject = newVis.GetComponent<IVisObject>();
 
 			UpdateVisObject(visObject, index, result, focused, state);

@@ -4,7 +4,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-
 // TODO: figure out how run tests outside of Unity with .NET framework, something like '#if !UNITY'
 
 #if UNITY_5_6_OR_NEWER
@@ -19,7 +18,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 	using MapMatching;
 	using Mapbox.Utils;
 
-
 	[TestFixture]
 	internal class MapMatcherTest {
 
@@ -28,16 +26,15 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 		private FileSource _fs;
 		private int _timeout = 10;
 
-
 		[SetUp]
 		public void SetUp() {
 			_fs = new FileSource(
 				Unity.MapboxAccess.Instance.Configuration.GetMapsSkuToken,
 				Unity.MapboxAccess.Instance.Configuration.AccessToken
 			);
+
 			_timeout = Unity.MapboxAccess.Instance.Configuration.DefaultTimeout;
 		}
-
 
 		[UnityTest]
 		public IEnumerator AsSimpleAsPossible() {
@@ -70,11 +67,11 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 				matchingResponse.Matchings[0].Weight > 0 && matchingResponse.Matchings[0].Weight < 100,
 				"Wrong Weight: {0}", matchingResponse.Matchings[0].Weight
 			);
+
 			Assert.AreEqual("routability", matchingResponse.Matchings[0].WeightName, "Wrong WeightName");
 			Assert.AreEqual(6, matchingResponse.Matchings[0].Legs.Count, "Wrong number of legs");
 			Assert.AreEqual(8, matchingResponse.Matchings[0].Geometry.Count, "Wrong number of vertices in geometry");
 		}
-
 
 		[UnityTest]
 		public IEnumerator Profiles() {
@@ -130,7 +127,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			Assert.GreaterOrEqual(matchingResponse.Matchings[0].Duration, 100, "'driving' duration less than expected");
 		}
 
-
 		private IEnumerator<MapMatchingResponse> profile(Profile profile) {
 			MapMatchingResource resource = new();
 			resource.Coordinates = new Vector2d[] {
@@ -140,6 +136,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 				new(48.27223259203358, 16.3416588306427), new(48.27138280254541, 16.34069323539734),
 				new(48.27114714413402, 16.34015679359436)
 			};
+
 			resource.Profile = profile;
 
 			MapMatcher mapMatcher = new(_fs, _timeout);
@@ -156,7 +153,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 
 			yield return matchingResponse;
 		}
-
 
 		[UnityTest]
 		public IEnumerator NoSegment() {
@@ -190,7 +186,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			Assert.AreEqual(0, matchingResponse.Matchings.Length, "Wrong number of matchings");
 		}
 
-
 		[UnityTest]
 		public IEnumerator Radiuses() {
 
@@ -198,6 +193,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			resource.Coordinates = new Vector2d[] {
 				new(48.28585, 16.55267), new(48.28933, 16.55211)
 			};
+
 			resource.Radiuses = new uint[] {
 				50, 50
 			};
@@ -224,7 +220,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			Assert.AreEqual(2, matchingResponse.Matchings[0].Geometry.Count, "Wrong number of vertices in geometry");
 		}
 
-
 		[UnityTest]
 		public IEnumerator AlternativesWithSteps() {
 
@@ -232,9 +227,11 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			resource.Coordinates = new Vector2d[] {
 				new(48.31331, 16.49062), new(48.31638, 16.49243)
 			};
+
 			resource.Radiuses = new uint[] {
 				10, 30
 			};
+
 			resource.Steps = true;
 
 			MapMatcher mapMatcher = new(_fs, _timeout);
@@ -253,6 +250,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			Assert.GreaterOrEqual(
 				2, matchingResponse.Tracepoints[0].AlternativesCount, "Wrong 'AlternativesCount' for Tracepoint[0]"
 			);
+
 			Assert.GreaterOrEqual(
 				19, matchingResponse.Tracepoints[1].AlternativesCount, "Wrong 'AlternativesCount' for Tracepoint[1]"
 			);
@@ -265,7 +263,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			);
 		}
 
-
 		[UnityTest]
 		public IEnumerator OverviewSimplified() {
 			MapMatchingResource resource = new();
@@ -276,6 +273,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 				new(48.28467074996644, 16.325050592422485), new(48.28459935701301, 16.324610710144043)
 
 			};
+
 			resource.Overview = Overview.Simplified;
 
 			MapMatcher mapMatcher = new(_fs, _timeout);
@@ -295,7 +293,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			);
 		}
 
-
 		[UnityTest]
 		public IEnumerator OverviewFull() {
 			MapMatchingResource resource = new();
@@ -306,6 +303,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 				new(48.28467074996644, 16.325050592422485), new(48.28459935701301, 16.324610710144043)
 
 			};
+
 			resource.Overview = Overview.Full;
 
 			MapMatcher mapMatcher = new(_fs, _timeout);
@@ -325,7 +323,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			);
 		}
 
-
 		[UnityTest]
 		public IEnumerator Timestamps() {
 
@@ -333,6 +330,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			resource.Coordinates = new Vector2d[] {
 				new(48.1974721043879, 16.36202484369278), new(48.197922645046546, 16.36285901069641)
 			};
+
 			resource.Timestamps = new long[] {
 				946684800, 946684980
 			};
@@ -350,7 +348,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			commonBasicResponseAsserts(matchingResponse);
 		}
 
-
 		[UnityTest]
 		public IEnumerator Annotation() {
 
@@ -358,6 +355,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			resource.Coordinates = new Vector2d[] {
 				new(48.1974721043879, 16.36202484369278), new(48.197922645046546, 16.36285901069641)
 			};
+
 			//need to pass 'Overview.Full' to get 'Congestion'
 			resource.Overview = Overview.Full;
 			resource.Annotations =
@@ -385,7 +383,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			Assert.GreaterOrEqual(leg.Annotation.Distance[1], 42, "Annotation has wrong distnce");
 		}
 
-
 		[UnityTest]
 		public IEnumerator Tidy() {
 
@@ -397,6 +394,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 				new(48.1870656581716, 16.312524676322937), new(48.187079964015524, 16.312484443187714),
 				new(48.18704598762968, 16.312776803970337)
 			};
+
 			resource.Tidy = true;
 
 			MapMatcher mapMatcher = new(_fs, _timeout);
@@ -418,7 +416,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			Assert.IsNull(tps[7], "Tracepoints is NULL");
 		}
 
-
 		[UnityTest]
 		public IEnumerator LanguageEnglish() {
 
@@ -426,6 +423,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			resource.Coordinates = new Vector2d[] {
 				new(48.1974721043879, 16.36202484369278), new(48.197922645046546, 16.36285901069641)
 			};
+
 			//set Steps to true to get turn-by-turn-instructions
 			resource.Steps = true;
 			//no language parameter needed: English is default
@@ -448,12 +446,12 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 				"Head northeast on Rechte Wienzeile (B1)", step0.Maneuver.Instruction,
 				"Step[0]:Instruction not as expected"
 			);
+
 			Assert.AreEqual(
 				"You have arrived at your destination", step1.Maneuver.Instruction,
 				"Step[1]:Instruction not as expected"
 			);
 		}
-
 
 		[UnityTest]
 		public IEnumerator LanguageGerman() {
@@ -462,6 +460,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			resource.Coordinates = new Vector2d[] {
 				new(48.1974721043879, 16.36202484369278), new(48.197922645046546, 16.36285901069641)
 			};
+
 			//set Steps to true to get turn-by-turn-instructions
 			resource.Steps = true;
 			resource.Language = InstructionLanguages.German;
@@ -484,11 +483,11 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 				"Fahren Sie Richtung Nordosten auf Rechte Wienzeile (B1)", step0.Maneuver.Instruction,
 				"Step[0]:Instruction not as expected"
 			);
+
 			Assert.AreEqual(
 				"Sie haben Ihr Ziel erreicht", step1.Maneuver.Instruction, "Step[1]:Instruction not as expected"
 			);
 		}
-
 
 		[UnityTest]
 		public IEnumerator AllParameters() {
@@ -499,18 +498,22 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			resource.Coordinates = new Vector2d[] {
 				new(48.28585, 16.55267), new(48.28933, 16.55211)
 			};
+
 			resource.Timestamps = new long[] {
 				946684800, 946684980
 			};
+
 			resource.Radiuses = new uint[] {
 				50, 50
 			};
+
 			//set Steps to true to get turn-by-turn-instructions
 			resource.Steps = true;
 			//need to pass 'Overview.Full' to get 'Congestion'
 			resource.Overview = Overview.Full;
 			resource.Annotations =
 				Annotations.Distance | Annotations.Duration | Annotations.Speed | Annotations.Congestion;
+
 			resource.Tidy = true;
 			resource.Language = InstructionLanguages.German;
 
@@ -540,7 +543,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			);
 
 		}
-
 
 		[UnityTest]
 		public IEnumerator CoordinatesNull() {
@@ -575,7 +577,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			Assert.IsNull(matchingResponse, "Matching response was expected to be null");
 		}
 
-
 		[UnityTest]
 		public IEnumerator InvalidCoordinate() {
 
@@ -604,7 +605,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 				"Matching message not as expected"
 			);
 		}
-
 
 		private void commonBasicResponseAsserts(MapMatchingResponse matchingResponse) {
 			Assert.IsNotNull(matchingResponse, "Matching response is NULL");

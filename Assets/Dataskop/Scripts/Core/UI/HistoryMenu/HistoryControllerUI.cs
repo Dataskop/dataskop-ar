@@ -36,6 +36,7 @@ namespace Dataskop.UI {
 			IsActive = false;
 			historySlider =
 				new HistorySliderUI(historyUIDocument.rootVisualElement.Q<VisualElement>("HistoryContainer"));
+
 			cachedDataDisplay.Init(historyUIDocument.rootVisualElement.Q<VisualElement>("CachedDataDisplay"));
 			historySlider.SliderValueChanged += OnHistorySliderMoved;
 			cachedDataDisplay.OnFilterRequested += OnFilterRequestSent;
@@ -58,13 +59,16 @@ namespace Dataskop.UI {
 				cachedDataDisplay.SetGlobalTimeLabels(
 					earliest.Timestamp.ToShortDateString(), latest.Timestamp.ToShortDateString()
 				);
+
 				cachedDataDisplay.SetFilterLabelTexts(
 					earliest.Timestamp.ToShortDateString(), latest.Timestamp.ToShortDateString()
 				);
+
 				cachedDataDisplay.UpdateMinMaxSlider(latest.Timestamp, earliest.Timestamp);
 				cachedDataDisplay.SetLabelPositionsForRange(
 					earliest.Timestamp, latest.Timestamp, latest.Timestamp, earliest.Timestamp
 				);
+
 				cachedDataDisplay.ClearCacheDisplay();
 			}
 
@@ -97,13 +101,16 @@ namespace Dataskop.UI {
 				cachedDataDisplay.SetGlobalTimeLabels(
 					earliest.Timestamp.ToShortDateString(), latest.Timestamp.ToShortDateString()
 				);
+
 				cachedDataDisplay.SetFilterLabelTexts(
 					earliest.Timestamp.ToShortDateString(), latest.Timestamp.ToShortDateString()
 				);
+
 				cachedDataDisplay.UpdateMinMaxSlider(latest.Timestamp, earliest.Timestamp);
 				cachedDataDisplay.SetLabelPositionsForRange(
 					earliest.Timestamp, latest.Timestamp, latest.Timestamp, earliest.Timestamp
 				);
+
 				cachedDataDisplay.ClearCacheDisplay();
 				cachedDataDisplay.ClearData();
 				historySlider.ClearData();
@@ -162,13 +169,16 @@ namespace Dataskop.UI {
 				cachedDataDisplay.SetGlobalTimeLabels(
 					earliest.Timestamp.ToShortDateString(), latest.Timestamp.ToShortDateString()
 				);
+
 				cachedDataDisplay.SetFilterLabelTexts(
 					earliest.Timestamp.ToShortDateString(), latest.Timestamp.ToShortDateString()
 				);
+
 				cachedDataDisplay.UpdateMinMaxSlider(latest.Timestamp, earliest.Timestamp);
 				cachedDataDisplay.SetLabelPositionsForRange(
 					earliest.Timestamp, latest.Timestamp, latest.Timestamp, earliest.Timestamp
 				);
+
 				cachedDataDisplay.ClearCacheDisplay();
 				historySlider.ClearData();
 				return;

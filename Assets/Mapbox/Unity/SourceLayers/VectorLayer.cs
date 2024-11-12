@@ -49,7 +49,6 @@ namespace Mapbox.Unity.Map {
 			_vectorTileFactory.TileFactoryHasChanged += OnVectorTileFactoryOnTileFactoryHasChanged;
 		}
 
-
 		public void Update(LayerProperties properties) {
 			Initialize(properties);
 		}
@@ -95,6 +94,7 @@ namespace Mapbox.Unity.Map {
 
 			layerUpdateArgs.visualizer =
 				_vectorTileFactory.FindVectorLayerVisualizer((VectorSubLayerProperties)layerUpdateArgs.property);
+
 			layerUpdateArgs.factory = _vectorTileFactory;
 
 			if (SubLayerRemoved != null) {
@@ -185,7 +185,6 @@ namespace Mapbox.Unity.Map {
 			_layerProperty.HasChanged = true;
 		}
 
-
 		/// <summary>
 		/// Enable coroutines for vector features, processing choosen amount
 		/// of them each frame.
@@ -221,6 +220,7 @@ namespace Mapbox.Unity.Map {
 				Debug.LogError(
 					"In order to place location prefabs please add \"mapbox.mapbox-streets-v7\" to the list of vector data sources"
 				);
+
 				return;
 			}
 
@@ -240,6 +240,7 @@ namespace Mapbox.Unity.Map {
 			Vector2d[] latLonArray = new Vector2d[] {
 				LatLon
 			};
+
 			SpawnPrefabAtGeoLocation(prefab, latLonArray, callback, scaleDownWithWorld, locationItemName);
 		}
 
@@ -360,6 +361,7 @@ namespace Mapbox.Unity.Map {
 
 			VectorSubLayerProperties subLayer =
 				PresetSubLayerPropertiesFetcher.GetSubLayerProperties(PresetFeatureType.Buildings);
+
 			subLayer.coreOptions.layerName = dataLayerNameInService;
 			subLayer.coreOptions.sublayerName = assignedSubLayerName;
 
@@ -370,6 +372,7 @@ namespace Mapbox.Unity.Map {
 			float lineWidth = 1) {
 			VectorSubLayerProperties subLayer =
 				PresetSubLayerPropertiesFetcher.GetSubLayerProperties(PresetFeatureType.Roads);
+
 			subLayer.coreOptions.layerName = dataLayerNameInService;
 			subLayer.coreOptions.sublayerName = assignedSubLayerName;
 			subLayer.lineGeometryOptions.Width = lineWidth;
@@ -380,6 +383,7 @@ namespace Mapbox.Unity.Map {
 		public virtual void AddPointFeatureSubLayer(string assignedSubLayerName, string dataLayerNameInService) {
 			VectorSubLayerProperties subLayer =
 				PresetSubLayerPropertiesFetcher.GetSubLayerProperties(PresetFeatureType.Points);
+
 			subLayer.coreOptions.layerName = dataLayerNameInService;
 			subLayer.coreOptions.sublayerName = assignedSubLayerName;
 
@@ -389,6 +393,7 @@ namespace Mapbox.Unity.Map {
 		public virtual void AddCustomFeatureSubLayer(string assignedSubLayerName, string dataLayerNameInService) {
 			VectorSubLayerProperties subLayer =
 				PresetSubLayerPropertiesFetcher.GetSubLayerProperties(PresetFeatureType.Custom);
+
 			subLayer.coreOptions.layerName = dataLayerNameInService;
 			subLayer.coreOptions.sublayerName = assignedSubLayerName;
 

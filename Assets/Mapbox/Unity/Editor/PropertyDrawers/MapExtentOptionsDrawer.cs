@@ -32,11 +32,12 @@
 			}
 
 			// Draw label.
-			GUIContent extentTypeLabel = new GUIContent {
+			GUIContent extentTypeLabel = new() {
 				text = label.text,
 				tooltip =
 					"Options to determine the geographic extent of the world for which the map tiles will be requested."
 			};
+
 			EditorGUI.BeginChangeCheck();
 			kindProperty.enumValueIndex = EditorGUILayout.Popup(
 				extentTypeLabel, kindProperty.enumValueIndex, extentTypeContent, GUILayout.Height(_lineHeight)
@@ -62,6 +63,7 @@
 							text = "CameraOptions-"
 						}
 					);
+
 					break;
 				case MapExtentType.RangeAroundCenter:
 					EditorGUILayout.PropertyField(
@@ -69,6 +71,7 @@
 							text = "RangeAroundCenter"
 						}
 					);
+
 					break;
 				case MapExtentType.RangeAroundTransform:
 					GUILayout.Space(_lineHeight);
@@ -77,6 +80,7 @@
 							text = "RangeAroundTransform"
 						}
 					);
+
 					break;
 				default:
 					break;

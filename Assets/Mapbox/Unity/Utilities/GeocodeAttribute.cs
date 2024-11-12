@@ -7,8 +7,6 @@
 	///     Links to custom drawer: 
 	///     <see cref="T:Mapbox.Editor.GeocodeAttributeDrawer"/>. 
 	/// </summary>
-	public class GeocodeAttribute : PropertyAttribute {
-
-	}
+	public class GeocodeAttribute : PropertyAttribute { }
 
 }

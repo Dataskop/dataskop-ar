@@ -102,7 +102,6 @@
 		/// </summary>
 		public string Provider;
 
-
 		/// <summary>
 		/// Name of the location provider script class in Unity
 		/// </summary>

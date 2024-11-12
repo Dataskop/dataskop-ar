@@ -72,7 +72,7 @@ namespace Mapbox.Map {
 		}
 
 		public string GetUrl() {
-			UriBuilder uriBuilder = new UriBuilder(_query);
+			UriBuilder uriBuilder = new(_query);
 
 			if (uriBuilder.Query != null && uriBuilder.Query.Length > 1) {
 				uriBuilder.Query = uriBuilder.Query.Substring(1);

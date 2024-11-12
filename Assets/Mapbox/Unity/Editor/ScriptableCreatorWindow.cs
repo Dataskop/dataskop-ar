@@ -165,7 +165,6 @@
 			return asset;
 		}
 
-
 		public bool Header(string title, bool show) {
 			Rect rect = GUILayoutUtility.GetRect(16f, 22f, header);
 			GUI.Box(rect, title, header);

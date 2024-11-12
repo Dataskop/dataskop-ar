@@ -113,6 +113,7 @@ namespace Mapbox.Unity.MeshGeneration.Data {
 					Points[0][0].x / Tile.TileScale + Tile.Rect.Center.x,
 					Points[0][0].z / Tile.TileScale + Tile.Rect.Center.y
 				);
+
 				double dist = Vector2d.Distance(from, to);
 
 				if (Mathd.Abs(dist) < 50) {

@@ -45,7 +45,6 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 		private float _cornerOffsetB;
 		private bool _startOfLine = true;
 
-
 		private Vector3 _prevVertex;
 		private Vector3 _currentVertex;
 		private Vector3 _nextVertex;
@@ -154,6 +153,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 
 					bool middleVertex = _prevVertex != Constants.Math.Vector3Unused &&
 					                    _nextVertex != Constants.Math.Vector3Unused;
+
 					JoinType currentJoin = middleVertex ? _options.JoinType : _options.CapType;
 
 					if (middleVertex && currentJoin == JoinType.Round) {
@@ -202,6 +202,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 							int direction = _prevNormal.x * _nextNormal.z - _prevNormal.z * _nextNormal.x > 0 ? -1 : 1;
 							float bevelLength = miterLength * (_prevNormal + _nextNormal).magnitude /
 							                    (_prevNormal - _nextNormal).magnitude;
+
 							joinNormal = joinNormal.Perpendicular() * (bevelLength * direction);
 						}
 
@@ -242,6 +243,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 							for (float m = 0f; m < n; m++) {
 								approxFractionalJoinNormal =
 									(_nextNormal * ((m + 1f) / (n + 1f)) + _prevNormal).normalized;
+
 								AddPieSliceVertex(
 									_currentVertex, _distance, approxFractionalJoinNormal, lineTurnsLeft, md
 								);
@@ -254,6 +256,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 							for (float k = n - 1; k >= -1; k--) {
 								approxFractionalJoinNormal =
 									(_prevNormal * ((k + 1) / (n + 1)) + _nextNormal).normalized;
+
 								AddPieSliceVertex(
 									_currentVertex, _distance, approxFractionalJoinNormal, lineTurnsLeft, md
 								);
@@ -320,6 +323,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 						if (nextSegmentLength > 2 * _sharpCornerOffset) {
 							Vector3 newCurrentVertex = _currentVertex + (_nextVertex - _currentVertex) *
 								(_sharpCornerOffset / nextSegmentLength); //._round()
+
 							_distance += Vector3.Distance(newCurrentVertex, _currentVertex);
 							AddCurrentVertex(newCurrentVertex, _distance, _nextNormal, md);
 							_currentVertex = newCurrentVertex;
@@ -403,7 +407,6 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 				_index1 = _index3;
 			}
 		}
-
 
 		private void AddCurrentVertex(Vector3 vertexPosition, float dist, Vector3 normal, MeshData md,
 			float endLeft = 0, float endRight = 0) {

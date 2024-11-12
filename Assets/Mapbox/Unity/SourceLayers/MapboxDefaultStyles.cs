@@ -17,6 +17,7 @@
 			string sideMaterialName = string.Format(
 				"{0}{1}", styleName, Constants.StyleAssetNames.SIDE_MATERIAL_SUFFIX
 			);
+
 			string atlasInfoName = string.Format("{0}{1}", styleName, Constants.StyleAssetNames.ALTAS_SUFFIX);
 			string paletteName = styleName == "Simple" ? samplePaletteName : string.Format(
 				"{0}{1}", styleName, Constants.StyleAssetNames.PALETTE_SUFFIX

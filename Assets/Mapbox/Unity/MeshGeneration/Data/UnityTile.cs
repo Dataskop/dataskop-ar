@@ -175,7 +175,6 @@ namespace Mapbox.Unity.MeshGeneration.Data {
 
 		private bool _isInitialized = false;
 
-
 		internal void Initialize(IMapReadable map, UnwrappedTileId tileId, float scale, int zoom,
 			Texture2D loadingTexture = null) {
 			gameObject.hideFlags = HideFlags.DontSave;

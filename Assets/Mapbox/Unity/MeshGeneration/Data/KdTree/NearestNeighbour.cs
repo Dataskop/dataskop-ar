@@ -214,8 +214,7 @@ namespace KDTree {
 		/// </summary>
 		T IEnumerator<T>.Current => _Current;
 
-		public void Dispose() {
-		}
+		public void Dispose() { }
 
 		IEnumerator IEnumerable.GetEnumerator() {
 			return GetEnumerator();

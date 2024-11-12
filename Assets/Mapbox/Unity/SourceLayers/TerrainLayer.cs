@@ -60,9 +60,7 @@ namespace Mapbox.Unity.Map {
 
 		public AbstractTileFactory Factory => _elevationFactory;
 
-
-		public TerrainLayer() {
-		}
+		public TerrainLayer() { }
 
 		public TerrainLayer(ElevationLayerProperties properties) {
 			_layerProperty = properties;
@@ -82,14 +80,17 @@ namespace Mapbox.Unity.Map {
 			{
 				NotifyUpdateLayer(_elevationFactory, property as MapboxDataProperty, true);
 			};
+
 			_layerProperty.requiredOptions.PropertyHasChanged += (property, e) =>
 			{
 				NotifyUpdateLayer(_elevationFactory, property as MapboxDataProperty, true);
 			};
+
 			_layerProperty.unityLayerOptions.PropertyHasChanged += (property, e) =>
 			{
 				NotifyUpdateLayer(_elevationFactory, property as MapboxDataProperty, true);
 			};
+
 			_layerProperty.PropertyHasChanged += (property, e) =>
 			{
 				//terrain factory uses strategy objects and they are controlled by layer
@@ -139,7 +140,6 @@ namespace Mapbox.Unity.Map {
 				sourceType = ElevationSourceType.None
 			};
 		}
-
 
 		public void Update(LayerProperties properties) {
 			Initialize(properties);

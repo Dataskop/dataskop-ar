@@ -2,7 +2,6 @@
 
 	using System;
 
-
 	public class CacheItem {
 
 		/// <summary> Raw response data- </summary>

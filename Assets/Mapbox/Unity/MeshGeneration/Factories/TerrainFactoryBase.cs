@@ -65,6 +65,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories {
 					tilesetId = _elevationOptions.sourceOptions.Id,
 					tile = tile
 				};
+
 				DataFetcher.FetchData(parameters);
 			}
 			else {
@@ -95,8 +96,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories {
 			base.UnbindEvents();
 		}
 
-		protected override void OnUnbindEvents() {
-		}
+		protected override void OnUnbindEvents() { }
 
 		#endregion
 
@@ -112,6 +112,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories {
 						_elevationOptions.modificationOptions.useRelativeHeight,
 						_elevationOptions.colliderOptions.addCollider
 					);
+
 					Strategy.RegisterTile(tile);
 				}
 

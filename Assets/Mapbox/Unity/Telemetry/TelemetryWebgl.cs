@@ -54,14 +54,15 @@
 		}
 
 		private bool ShouldPostTurnstile(long ticks) {
-			DateTime date = new DateTime(ticks);
+			DateTime date = new(ticks);
 			string longAgo = DateTime.Now.AddDays(-100).Ticks.ToString();
 			string lastDateString = PlayerPrefs.GetString(
 				Constants.Path.TELEMETRY_TURNSTILE_LAST_TICKS_FALLBACK_KEY, longAgo
 			);
+
 			long lastTicks = 0;
 			long.TryParse(lastDateString, out lastTicks);
-			DateTime lastDate = new DateTime(lastTicks);
+			DateTime lastDate = new(lastTicks);
 			TimeSpan timeSpan = date - lastDate;
 			return timeSpan.Days >= 1;
 		}
@@ -94,6 +95,7 @@
 				Application.platform,
 				Constants.SDK_VERSION
 			);
+
 			return userAgent;
 		}
 
@@ -102,6 +104,7 @@
 				"MapboxEventsUnity{0}",
 				Application.platform
 			);
+
 			return sdkIdentifier;
 		}
 

@@ -35,7 +35,6 @@
 
 	}
 
-
 	[Serializable]
 	public class DefaultMapExtents : MapboxDataProperty {
 

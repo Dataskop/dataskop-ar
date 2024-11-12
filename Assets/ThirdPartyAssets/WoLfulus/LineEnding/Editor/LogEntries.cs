@@ -25,7 +25,6 @@ namespace WoLfulus.LineEnding {
 		private static MethodInfo _ClickStatusBar;
 		private static MethodInfo _Clear;
 
-
 		static LogEntries() {
 			BindingFlags flags = BindingFlags.Static | BindingFlags.Public;
 

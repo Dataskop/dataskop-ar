@@ -27,7 +27,6 @@
 		[Range(0, 359)]
 		private float _heading;
 
-
 		private int idx = -1;
 
 		private Vector2d LatitudeLongitude

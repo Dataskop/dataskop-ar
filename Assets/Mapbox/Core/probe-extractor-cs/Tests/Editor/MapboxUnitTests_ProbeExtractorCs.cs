@@ -33,13 +33,11 @@ namespace Mapbox.ProbeExtractorCs.UnitTest {
 			_probes = loadProbeFixture("ProbeExtractorCs_fixture_probes");
 		}
 
-
 		[Test] [Order(1)]
 		public void FixturesLoaded() {
 			Assert.AreEqual(14, _trace.Count);
 			Assert.AreEqual(12, _probes.Count);
 		}
-
 
 		[Test]
 		public void ExtractProbes() {
@@ -67,6 +65,7 @@ namespace Mapbox.ProbeExtractorCs.UnitTest {
 				Assert.AreEqual(
 					fp.Longitude, ep.Longitude, 0.001, "probe[" + i.ToString() + "]: longitude doesn't match"
 				);
+
 				Assert.AreEqual(fp.Latitude, ep.Latitude, 0.001, "probe[" + i.ToString() + "]: latitude doesn't match");
 				Assert.AreEqual(fp.StartTime, ep.StartTime, "probe[" + i.ToString() + "]: start time doesn't match");
 				Assert.AreEqual(fp.Duration, ep.Duration, "probe[" + i.ToString() + "]: duration doesn't match");
@@ -89,7 +88,6 @@ namespace Mapbox.ProbeExtractorCs.UnitTest {
 			Assert.AreEqual(13, extractedProbes.Count, "13 probes were expected to be extracted");
 		}
 
-
 		[Test]
 		public void ExtractFootTrace() {
 			CheapRuler ruler = new(_footTrace[0].Latitude);
@@ -100,7 +98,6 @@ namespace Mapbox.ProbeExtractorCs.UnitTest {
 
 			Assert.AreEqual(40, extractedProbes.Count);
 		}
-
 
 		private List<TracePoint> loadTraceFixture(string fixtureName) {
 			TextAsset fixtureAsset = Resources.Load<TextAsset>(fixtureName);
@@ -157,7 +154,6 @@ namespace Mapbox.ProbeExtractorCs.UnitTest {
 
 			return trace;
 		}
-
 
 		private List<Probe> loadProbeFixture(string fixtureName) {
 			TextAsset fixtureAsset = Resources.Load<TextAsset>(fixtureName);
@@ -243,7 +239,6 @@ namespace Mapbox.ProbeExtractorCs.UnitTest {
 			return probes;
 		}
 
-
 		// quick hack for visualizing output of ProbeExtractor on http://geojson.io
 		private string probesToGeojson(List<Probe> probes) {
 			StringBuilder sb = new();
@@ -252,6 +247,7 @@ namespace Mapbox.ProbeExtractorCs.UnitTest {
 			sb.Append(
 				"{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\":{},\"geometry\":{\"type\":\"LineString\",\"coordinates\":["
 			);
+
 			sb.Append(
 				string.Join(
 					",",
@@ -260,6 +256,7 @@ namespace Mapbox.ProbeExtractorCs.UnitTest {
 					).ToArray()
 				)
 			);
+
 			sb.Append("]}}");
 
 			sb.Append("]}");

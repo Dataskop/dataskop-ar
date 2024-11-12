@@ -18,8 +18,7 @@ namespace KDTree {
 		/// </summary>
 		/// <param name="iDimensions">The number of data sorting dimensions. i.e. 3 for a 3D point.</param>
 		public KDTree(int iDimensions)
-			: base(iDimensions, 24) {
-		}
+			: base(iDimensions, 24) { }
 
 		/// <summary>
 		/// Create a new KD-Tree given a number of dimensions and initial bucket capacity.
@@ -27,8 +26,7 @@ namespace KDTree {
 		/// <param name="iDimensions">The number of data sorting dimensions. i.e. 3 for a 3D point.</param>
 		/// <param name="iBucketCapacity">The default number of items that can be stored in each node.</param>
 		public KDTree(int iDimensions, int iBucketCapacity)
-			: base(iDimensions, iBucketCapacity) {
-		}
+			: base(iDimensions, iBucketCapacity) { }
 
 		/// <summary>
 		/// Get the nearest neighbours to a point in the kd tree using a square euclidean distance function.

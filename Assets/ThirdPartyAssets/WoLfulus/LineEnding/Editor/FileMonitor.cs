@@ -93,7 +93,7 @@ namespace WoLfulus.LineEnding {
 		/// Collect files from log entries
 		/// </summary>
 		private static IEnumerable<string> Collect() {
-			List<string> files = new List<string>();
+			List<string> files = new();
 			int flags = LogEntries.consoleFlags;
 
 			LogEntries.SetConsoleFlag((int)ConsoleFlags.LogLevelLog, false);
@@ -153,11 +153,13 @@ namespace WoLfulus.LineEnding {
 						"File '" + file +
 						"' is reported to have wrong line endings but the file itself couldn't be found."
 					);
+
 					continue;
 				}
 
 				string fileContents = File.ReadAllText(file).Replace("\r\n", "\n").Replace("\r", "\n")
 					.Replace("\n", ending);
+
 				File.WriteAllText(file, fileContents);
 
 				EditorApplication.delayCall += () =>

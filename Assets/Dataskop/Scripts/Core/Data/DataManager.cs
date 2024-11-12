@@ -250,6 +250,7 @@ namespace Dataskop.Data {
 							DisplayDuration = NotificationDuration.Medium
 						}
 					);
+
 					LoadingIndicator.Hide();
 					return;
 				}
@@ -341,6 +342,7 @@ namespace Dataskop.Data {
 					md.TotalMeasurements = count ?? -1;
 					MeasurementResultRange newResults =
 						await requestHandler.GetMeasurementResults(md, FetchAmount, null, null);
+
 					md.AddMeasurementResultRange(
 						newResults, new TimeRange(newResults.Last().Timestamp, newResults.First().Timestamp)
 					);

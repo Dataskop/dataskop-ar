@@ -17,7 +17,6 @@ namespace Mapbox.Unity.Map.TileProviders {
 		private AbstractMap _mapInstance;
 		public TileErrorEvent OnTileError;
 
-
 		protected virtual void OnEnable() {
 			if (_mapInstance == null) {
 				_mapInstance = GetComponent<AbstractMap>();
@@ -26,12 +25,10 @@ namespace Mapbox.Unity.Map.TileProviders {
 			_mapInstance.OnInitialized += MapInstance_OnInitialized;
 		}
 
-
 		private void MapInstance_OnInitialized() {
 			_mapInstance.OnInitialized -= MapInstance_OnInitialized;
 			_mapInstance.MapVisualizer.OnTileError += _OnTileErrorHandler;
 		}
-
 
 		private void _OnTileErrorHandler(object sender, TileErrorEventArgs e) {
 			// check if request has been aborted: show warning not error
@@ -58,7 +55,6 @@ namespace Mapbox.Unity.Map.TileProviders {
 			}
 		}
 
-
 		private string printMessage(List<Exception> exceptions, TileErrorEventArgs e) {
 			return string.Format(
 				"{0} Exception(s) caused on the tile. Tile ID:{1} Tile Type:{4}{2}{3}"
@@ -70,17 +66,13 @@ namespace Mapbox.Unity.Map.TileProviders {
 			);
 		}
 
-
 		protected virtual void OnDisable() {
 			_mapInstance.MapVisualizer.OnTileError -= _OnTileErrorHandler;
 		}
 
 	}
 
-
 	[Serializable]
-	public class TileErrorEvent : UnityEvent<TileErrorEventArgs> {
-
-	}
+	public class TileErrorEvent : UnityEvent<TileErrorEventArgs> { }
 
 }

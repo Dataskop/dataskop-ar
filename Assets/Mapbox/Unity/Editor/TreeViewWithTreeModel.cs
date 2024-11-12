@@ -28,7 +28,6 @@ namespace Mapbox.Editor {
 
 		public event Action<IList<TreeViewItem>> beforeDroppingDraggedItems;
 
-
 		public TreeViewWithTreeModel(TreeViewState state, TreeModel<T> model) : base(state) {
 			Init(model);
 		}
@@ -83,7 +82,7 @@ namespace Mapbox.Editor {
 
 		private void AddChildrenRecursive(T parent, int depth, IList<TreeViewItem> newRows) {
 			foreach (T child in parent.children) {
-				TreeViewItem<T> item = new TreeViewItem<T>(child.id, depth, child.name, child);
+				TreeViewItem<T> item = new(child.id, depth, child.name, child);
 				newRows.Add(item);
 
 				if (child.hasChildren) {
@@ -142,7 +141,6 @@ namespace Mapbox.Editor {
 			return m_TreeModel.GetDescendantsThatHaveChildren(id);
 		}
 
-
 		// Dragging
 		//-----------
 
@@ -160,8 +158,7 @@ namespace Mapbox.Editor {
 			DragAndDrop.PrepareStartDrag();
 			List<TreeViewItem> draggedRows = GetRows().Where(item => args.draggedItemIDs.Contains(item.id)).ToList();
 			DragAndDrop.SetGenericData(k_GenericDragID, draggedRows);
-			DragAndDrop.objectReferences = new UnityEngine.Object[] {
-			}; // this IS required for dragging to work
+			DragAndDrop.objectReferences = new UnityEngine.Object[] { }; // this IS required for dragging to work
 			string title = draggedRows.Count == 1 ? draggedRows[0].displayName : "< Multiple >";
 			DragAndDrop.StartDrag(title);
 		}
@@ -210,7 +207,7 @@ namespace Mapbox.Editor {
 				beforeDroppingDraggedItems(draggedRows);
 			}
 
-			List<TreeElement> draggedElements = new List<TreeElement>();
+			List<TreeElement> draggedElements = new();
 
 			foreach (TreeViewItem x in draggedRows) {
 				draggedElements.Add(((TreeViewItem<T>)x).data);
@@ -220,7 +217,6 @@ namespace Mapbox.Editor {
 			m_TreeModel.MoveElements(parent, insertIndex, draggedElements);
 			SetSelection(selectedIDs, TreeViewSelectionOptions.RevealAndFrame);
 		}
-
 
 		private bool ValidDrag(TreeViewItem parent, List<TreeViewItem> draggedItems) {
 			TreeViewItem currentParent = parent;

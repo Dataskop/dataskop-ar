@@ -18,14 +18,11 @@ namespace Mapbox.Directions {
 		[JsonProperty("distance")]
 		public double[] Distance { get; set; }
 
-
 		[JsonProperty("duration")]
 		public double[] Duration { get; set; }
 
-
 		[JsonProperty("speed")]
 		public string[] Speed { get; set; }
-
 
 		[JsonProperty("congestion")]
 		public string[] Congestion { get; set; }

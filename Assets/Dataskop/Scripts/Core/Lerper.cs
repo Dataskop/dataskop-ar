@@ -29,6 +29,7 @@ namespace Dataskop {
 						t.localRotation = Quaternion.LerpUnclamped(
 							Quaternion.Euler(origin), Quaternion.Euler(target), currentPercentage
 						);
+
 						break;
 					default:
 						throw new ArgumentOutOfRangeException(nameof(tValue), tValue, null);
@@ -66,6 +67,7 @@ namespace Dataskop {
 						t.localRotation = Quaternion.LerpUnclamped(
 							Quaternion.Euler(origin), Quaternion.Euler(target), curvePercentage
 						);
+
 						break;
 					default:
 						throw new ArgumentOutOfRangeException(nameof(tValue), tValue, null);

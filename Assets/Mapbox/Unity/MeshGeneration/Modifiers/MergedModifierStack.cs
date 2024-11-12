@@ -48,9 +48,11 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 						MeshRenderer = _tempGameObject.AddComponent<MeshRenderer>(),
 						Mesh = _tempMeshFilter.sharedMesh
 					};
+
 					return _tempVectorEntity;
 				}
 			);
+
 			_listPool = new ObjectPool<List<VectorEntity>>(() => { return new List<VectorEntity>(); });
 			_meshDataPool = new ObjectPool<List<MeshData>>(() => { return new List<MeshData>(); });
 			_tempMeshData = new MeshData();
@@ -145,7 +147,6 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 
 			return go;
 		}
-
 
 		public GameObject End(UnityTile tile, GameObject parent, string name = "") {
 			int c2 = 0;

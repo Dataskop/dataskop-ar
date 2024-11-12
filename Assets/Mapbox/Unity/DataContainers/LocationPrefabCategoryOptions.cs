@@ -101,7 +101,6 @@ namespace Mapbox.Unity.Map {
 
 		private static Dictionary<string, LocationPrefabCategories> MakiToCategoriesDictionary = new();
 
-
 		//Creates a reverse reference from the CategoriesToMakiDictionary
 		private static void PopulateCategoriesToMakiDictionary() {
 			foreach (KeyValuePair<LocationPrefabCategories, List<string>> item in CategoriesToMakiDictionary) {

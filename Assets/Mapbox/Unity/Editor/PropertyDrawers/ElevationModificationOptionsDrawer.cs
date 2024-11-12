@@ -15,16 +15,19 @@
 				new Rect(position.x, position.y, position.width, lineHeight),
 				property.FindPropertyRelative("sampleCount")
 			);
+
 			position.y += lineHeight;
 			EditorGUI.PropertyField(
 				new Rect(position.x, position.y, position.width, lineHeight),
 				property.FindPropertyRelative("useRelativeHeight")
 			);
+
 			position.y += lineHeight;
 			EditorGUI.PropertyField(
 				new Rect(position.x, position.y, position.width, lineHeight),
 				property.FindPropertyRelative("earthRadius")
 			);
+
 			EditorGUI.EndProperty();
 		}
 

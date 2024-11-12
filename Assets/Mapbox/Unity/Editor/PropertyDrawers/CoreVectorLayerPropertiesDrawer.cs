@@ -21,7 +21,7 @@
 
 			SerializedProperty primitiveType = property.FindPropertyRelative("geometryType");
 
-			GUIContent primitiveTypeLabel = new GUIContent {
+			GUIContent primitiveTypeLabel = new() {
 				text = "Primitive Type",
 				tooltip = "Primitive geometry type of the visualizer, allowed primitives - point, line, polygon."
 			};

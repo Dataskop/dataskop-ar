@@ -159,19 +159,23 @@
 					property.FindPropertyRelative("Min").doubleValue = EditorGUILayout.DoubleField(
 						property.FindPropertyRelative("Min").doubleValue, GUILayout.MaxWidth(100)
 					);
+
 					break;
 				case LayerFilterOperationType.Contains:
 					property.FindPropertyRelative("PropertyValue").stringValue = EditorGUILayout.TextField(
 						property.FindPropertyRelative("PropertyValue").stringValue, GUILayout.MaxWidth(150)
 					);
+
 					break;
 				case LayerFilterOperationType.IsInRange:
 					property.FindPropertyRelative("Min").doubleValue = EditorGUILayout.DoubleField(
 						property.FindPropertyRelative("Min").doubleValue, GUILayout.MaxWidth(100)
 					);
+
 					property.FindPropertyRelative("Max").doubleValue = EditorGUILayout.DoubleField(
 						property.FindPropertyRelative("Max").doubleValue, GUILayout.MaxWidth(100)
 					);
+
 					break;
 				default:
 					break;
@@ -224,6 +228,7 @@
 							tileJsonData.optionalPropertiesString
 						}, System.StringSplitOptions.None
 					)[0].Trim();
+
 					_propertyNameContent[extIdx] = new GUIContent {
 						text = _propertyNamesList[extIdx],
 						tooltip =
@@ -245,6 +250,7 @@
 						tileJsonData.optionalPropertiesString
 					}, System.StringSplitOptions.None
 				)[0].Trim();
+
 				descriptionString = tileJsonData.LayerPropertyDescriptionDictionary[selectedLayerName][parsedString];
 
 			}
@@ -268,6 +274,7 @@
 							tileJsonData.optionalPropertiesString
 						}, System.StringSplitOptions.None
 					)[0].Trim();
+
 					_propertyNameContent[extIdx] = new GUIContent {
 						text = _propertyNamesList[extIdx],
 						tooltip =
@@ -289,6 +296,7 @@
 						tileJsonData.optionalPropertiesString
 					}, System.StringSplitOptions.None
 				)[0].Trim();
+
 				descriptionString = "Unavailable in Selected Layer.";
 
 			}
@@ -311,6 +319,7 @@
 					GUILayout.MaxWidth(155)
 				}
 			);
+
 			return;
 		}
 

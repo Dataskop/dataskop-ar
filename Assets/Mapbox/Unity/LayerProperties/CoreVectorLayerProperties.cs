@@ -4,7 +4,6 @@
 	using MeshGeneration.Modifiers;
 	using UnityEngine;
 
-
 	[Serializable]
 	public class CoreVectorLayerProperties : MapboxDataProperty, ISubLayerCoreOptions {
 
@@ -22,7 +21,6 @@
 		public bool snapToTerrain = true;
 		[Tooltip("Groups features into one Unity GameObject.")]
 		public bool combineMeshes = false;
-
 
 		public override bool HasChanged
 		{

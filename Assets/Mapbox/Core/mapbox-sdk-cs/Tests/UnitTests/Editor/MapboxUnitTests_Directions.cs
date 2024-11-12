@@ -13,7 +13,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 	using NUnit.Framework;
 	using UnityEngine;
 
-
 	/// <summary>
 	/// Test that Directions serializes and deserializes responses correctly.
 	/// </summary>
@@ -31,7 +30,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			)
 		);
 
-
 		[Test]
 		public void SerializesAndDeserializesBasic() {
 			// First, deserialize the example response
@@ -43,7 +41,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			// Ensure the two match
 			Assert.AreEqual(_basicResponse, basicReserialized);
 		}
-
 
 		//TODO: implement a proper Json object comaparer
 		/// <summary> This test will fail, see https://github.com/mapbox/mapbox-sdk-unity/issues/51. </summary>

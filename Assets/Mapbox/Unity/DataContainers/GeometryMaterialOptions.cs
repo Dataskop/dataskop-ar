@@ -39,6 +39,7 @@
 			StyleAssetPathBundle styleAssetPathBundle = new(
 				"Default", Constants.Path.MAP_FEATURE_STYLES_DEFAULT_STYLE_ASSETS
 			);
+
 			texturingType = mapType;
 			AssignAssets(styleAssetPathBundle);
 		}
@@ -133,7 +134,6 @@
 				return _fantasyStyle;
 			}
 		}
-
 
 		private SubLayerCustomStyle _customStyle;
 
@@ -275,6 +275,7 @@
 			StyleAssetPathBundle styleAssetPathBundle = new(
 				"Default", Constants.Path.MAP_FEATURE_STYLES_DEFAULT_STYLE_ASSETS
 			);
+
 			texturingType = mapType;
 			AssignAssets(styleAssetPathBundle);
 		}
@@ -287,7 +288,6 @@
 			style = styleType;
 			HasChanged = true;
 		}
-
 
 		/// <summary>
 		/// Gets the type of style used in the layer.

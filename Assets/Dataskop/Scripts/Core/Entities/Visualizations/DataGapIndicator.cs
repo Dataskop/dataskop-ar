@@ -16,6 +16,7 @@ namespace Dataskop.Entities.Visualizations {
 					new Vector3(0 - width / 2 - gap / 2 + (segmentWidth + gap) * i, 0, 0),
 					Quaternion.identity
 				);
+
 				seg.GetComponent<RectTransform>()
 					.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, segmentWidth);
 			}

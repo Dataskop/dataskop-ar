@@ -183,6 +183,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 						md.Vertices[i] = new Vector3(md.Vertices[i].x, minmax.min + maxHeight, md.Vertices[i].z);
 					}
 				}
+
 					break;
 				case ExtrusionType.MaxHeight:
 				{
@@ -194,6 +195,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 
 					height += minmax.max - minmax.min;
 				}
+
 					break;
 				case ExtrusionType.RangeHeight:
 					for (int i = 0; i < _counter; i++) {
@@ -233,6 +235,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 								"Property: '" + _options.propertyName +
 								"' must contain a numerical value for extrusion."
 							);
+
 							return;
 						}
 
@@ -261,6 +264,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 								"Property: '" + _options.propertyName +
 								"' must contain a numerical value for extrusion."
 							);
+
 							return;
 						}
 

@@ -18,7 +18,6 @@ namespace Mapbox.Editor {
 			tooltip = "Where on the map to spawn the selected prefab"
 		};
 
-
 		private GUIContent findByDropDown = new() {
 			text = "Find by",
 			tooltip = "Find points-of-interest by category, name, or address"
@@ -169,13 +168,13 @@ namespace Mapbox.Editor {
 				coordinateProperties.arraySize++;
 				SerializedProperty newElement =
 					coordinateProperties.GetArrayElementAtIndex(coordinateProperties.arraySize - 1);
+
 				newElement.stringValue = "";
 				EditorHelper.CheckForModifiedProperty(property);
 			}
 
 			EditorGUILayout.EndHorizontal();
 		}
-
 
 		private void ShowPOINames(SerializedProperty property) {
 			//Name field

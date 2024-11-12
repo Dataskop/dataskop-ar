@@ -33,6 +33,7 @@ namespace Dataskop.Entities.Visualizations {
 					valueTextMesh.alpha = 1;
 					valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture) +
 					                     $" {displayData.Attribute.Unit}";
+
 					dateTextMesh.text = displayData.Result.GetDateText();
 					break;
 				}

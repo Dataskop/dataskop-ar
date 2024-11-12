@@ -20,19 +20,20 @@
 
 		protected override TreeViewItem BuildRoot() {
 			// The root item is required to have a depth of -1, and the rest of the items increment from that.
-			TreeViewItem root = new TreeViewItem {
+			TreeViewItem root = new() {
 				id = -1,
 				depth = -1,
 				displayName = "Root"
 			};
 
-			List<TreeViewItem> items = new List<TreeViewItem>();
+			List<TreeViewItem> items = new();
 			int index = 0;
 
 			if (Layers != null) {
 				for (int i = 0; i < Layers.arraySize; i++) {
 					string name = Layers.GetArrayElementAtIndex(i).FindPropertyRelative("coreOptions.sublayerName")
 						.stringValue;
+
 					items.Add(
 						new TreeViewItem {
 							id = index,
@@ -40,6 +41,7 @@
 							displayName = name
 						}
 					);
+
 					index++;
 				}
 			}

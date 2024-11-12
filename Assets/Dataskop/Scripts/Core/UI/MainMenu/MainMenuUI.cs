@@ -63,6 +63,7 @@ namespace Dataskop.UI {
 					Permission.Camera, Permission.FineLocation
 				}
 			);
+
 			yield return Permission.HasUserAuthorizedPermission(Permission.Camera);
 #else
 			yield break;

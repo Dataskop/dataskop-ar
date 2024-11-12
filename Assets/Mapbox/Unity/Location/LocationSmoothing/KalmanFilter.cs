@@ -25,7 +25,6 @@ namespace Mapbox.Unity.Location {
 
 	using System;
 
-
 	/// <summary>
 	/// <para>From SackOverflow: Smooth GPS data</para>
 	/// <para>https://stackoverflow.com/a/15657798</para>
@@ -40,12 +39,10 @@ namespace Mapbox.Unity.Location {
 		private float
 			_variance; // P matrix.  Negative means object uninitialised.  NB: units irrelevant, as long as same units used throughout
 
-
 		public KalmanLatLong(float Q_metres_per_second) {
 			_qMetresPerSecond = Q_metres_per_second;
 			_variance = -1;
 		}
-
 
 		public long TimeStamp => _timeStampMilliseconds;
 
@@ -55,14 +52,12 @@ namespace Mapbox.Unity.Location {
 
 		public float Accuracy => (float)Math.Sqrt(_variance);
 
-
 		public void SetState(double lat, double lng, float accuracy, long TimeStamp_milliseconds) {
 			_lat = lat;
 			_lng = lng;
 			_variance = accuracy * accuracy;
 			_timeStampMilliseconds = TimeStamp_milliseconds;
 		}
-
 
 		/// <summary>
 		/// Kalman filter processing for lattitude and longitude

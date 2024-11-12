@@ -18,7 +18,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 			_counter = feature.Points.Count;
 
 			for (int i = 0; i < _counter; i++) {
-				List<Vector3> nl = new List<Vector3>();
+				List<Vector3> nl = new();
 				_counter2 = feature.Points[i].Count;
 
 				for (int j = 1; j < _counter2; j++) {
@@ -33,6 +33,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 							Vector3 nv = Vector3.Lerp(
 								feature.Points[i][j - 1], feature.Points[i][j], Mathf.Min(1, counter / step)
 							);
+
 							nl.Add(nv);
 							counter++;
 						}

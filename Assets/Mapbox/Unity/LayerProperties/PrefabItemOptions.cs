@@ -123,7 +123,6 @@ namespace Mapbox.Unity.Map {
 		[Geocode]
 		public string[] coordinates;
 
-
 		[Range(1, 30)]
 		public int density = 15;
 

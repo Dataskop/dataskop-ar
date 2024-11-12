@@ -4,7 +4,6 @@
 	using System;
 	using System.Collections.Generic;
 
-
 	public class ProbeExtractorOptions {
 
 		/// <summary>Seconds</summary>
@@ -24,7 +23,6 @@
 
 	}
 
-
 	/// <summary>
 	/// <para>This module allows to pass a list of trace points and extract its probes and their properties.</para>
 	/// <para>It can also act as a filter for those probes.</para>
@@ -33,7 +31,6 @@
 
 		private CheapRuler _ruler;
 		private ProbeExtractorOptions _options;
-
 
 		/// <summary>
 		/// 
@@ -44,7 +41,6 @@
 			_ruler = ruler;
 			_options = options;
 		}
-
 
 		/// <summary>
 		/// Extract probes according to ProbeExtractorOptions.
@@ -68,9 +64,11 @@
 				double[] currLocation = new double[] {
 					current.Longitude, current.Latitude
 				};
+
 				double[] prevLocation = new double[] {
 					previous.Longitude, previous.Latitude
 				};
+
 				distances[insertIdx] = _ruler.Distance(currLocation, prevLocation);
 				speeds[insertIdx] = distances[insertIdx] / durations[insertIdx] * 3600; //kph
 
@@ -239,7 +237,6 @@
 			return probes;
 		}
 
-
 		/// <summary>
 		/// Computes the average of two angles.
 		/// </summary>
@@ -264,7 +261,6 @@
 			}
 		}
 
-
 		/// <summary>
 		/// Map angle to positive modulo 360 space.
 		/// </summary>
@@ -273,7 +269,6 @@
 		private double normalizeAngle(double angle) {
 			return angle < 0 ? angle % 360 + 360 : angle % 360;
 		}
-
 
 		/// <summary>
 		/// Compare bearing `baseBearing` to `bearing`, to determine if they are close enough to each other to be considered matching.
@@ -307,7 +302,6 @@
 
 			return false;
 		}
-
 
 		/// <summary>
 		/// Creates coordinate in between two trace points to smooth line

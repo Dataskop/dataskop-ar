@@ -62,6 +62,7 @@
 					prefab = feature.prefab,
 					scaleDownWithWorld = feature.scaleDownWithWorld
 				};
+
 				replaceFeatureModifier.PrefabLocations = new List<string>(feature._prefabLocations);
 				replaceFeatureModifier.BlockedIds = new List<string>(feature._explicitlyBlockedFeatureIds);
 				replaceFeatureModifier.Initialize();

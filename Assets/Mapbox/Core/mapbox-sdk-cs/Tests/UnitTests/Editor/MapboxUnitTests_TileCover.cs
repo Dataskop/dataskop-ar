@@ -12,7 +12,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 	using Mapbox.Utils;
 	using NUnit.Framework;
 
-
 	[TestFixture]
 	internal class TileCoverTest {
 
@@ -26,29 +25,28 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			}
 		}
 
-
 		[Test]
 		public void Helsinki() {
 			// Assertion results verified on Mapbox GL Native.
-			Vector2d sw = new Vector2d(60.163200, 24.937700);
-			Vector2d ne = new Vector2d(60.163300, 24.937800);
+			Vector2d sw = new(60.163200, 24.937700);
+			Vector2d ne = new(60.163300, 24.937800);
 
 			HashSet<CanonicalTileId> set1 = TileCover.Get(new Vector2dBounds(sw, ne), 13);
 			Assert.AreEqual(1, set1.Count);
 
-			List<CanonicalTileId> list1 = new List<CanonicalTileId>(set1);
+			List<CanonicalTileId> list1 = new(set1);
 			Assert.AreEqual("13/4663/2371", list1[0].ToString());
 
 			HashSet<CanonicalTileId> set2 = TileCover.Get(new Vector2dBounds(sw, ne), 6);
 			Assert.AreEqual(1, set2.Count);
 
-			List<CanonicalTileId> list2 = new List<CanonicalTileId>(set2);
+			List<CanonicalTileId> list2 = new(set2);
 			Assert.AreEqual("6/36/18", list2[0].ToString());
 
 			HashSet<CanonicalTileId> set3 = TileCover.Get(new Vector2dBounds(sw, ne), 0);
 			Assert.AreEqual(1, set3.Count);
 
-			List<CanonicalTileId> list3 = new List<CanonicalTileId>(set3);
+			List<CanonicalTileId> list3 = new(set3);
 			Assert.AreEqual("0/0/0", list3[0].ToString());
 		}
 

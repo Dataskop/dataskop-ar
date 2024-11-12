@@ -60,6 +60,7 @@ namespace Mapbox.Unity.Location {
 						_map.CenterMercator,
 						_map.WorldRelativeScale
 					).ToVector3xz();
+
 					position += _targetTransform.position;
 					return position.GetGeoPosition(_map.CenterMercator, _map.WorldRelativeScale);
 				}

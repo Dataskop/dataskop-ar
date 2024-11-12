@@ -14,7 +14,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 	using System.Collections;
 	using UnityEngine.TestTools;
 
-
 	[TestFixture]
 	internal class TokenTest {
 
@@ -28,7 +27,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			_configAccessToken = MapboxAccess.Instance.Configuration.AccessToken;
 			_configSkuToken = MapboxAccess.Instance.Configuration.GetMapsSkuToken;
 		}
-
 
 		[UnityTest]
 		public IEnumerator RetrieveConfigToken() {
@@ -48,7 +46,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			Assert.AreEqual(MapboxTokenStatus.TokenValid, token.Status, "Config token is not valid");
 		}
 
-
 		[UnityTest]
 		public IEnumerator TokenMalformed() {
 
@@ -66,7 +63,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			Assert.IsFalse(token.HasError);
 			Assert.AreEqual(MapboxTokenStatus.TokenMalformed, token.Status, "token is malformed");
 		}
-
 
 		[UnityTest]
 		public IEnumerator TokenInvalid() {

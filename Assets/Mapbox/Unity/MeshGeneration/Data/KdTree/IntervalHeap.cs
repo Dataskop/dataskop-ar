@@ -32,8 +32,7 @@ namespace KDTree {
 		/// <summary>
 		/// Construct a new interval heap with the default capacity.
 		/// </summary>
-		public IntervalHeap() : this(DEFAULT_SIZE) {
-		}
+		public IntervalHeap() : this(DEFAULT_SIZE) { }
 
 		/// <summary>
 		/// Construct a new interval heap with a custom capacity.
@@ -244,7 +243,6 @@ namespace KDTree {
 			SiftDownMax(1);
 		}
 
-
 		/// <summary>
 		/// Internal helper method which swaps two values in the arrays.
 		/// This swaps both data and key entries.
@@ -286,8 +284,7 @@ namespace KDTree {
 			int u = Size - 1;
 
 			// If it is the only element, nothing to do.
-			if (u == 0) {
-			}
+			if (u == 0) { }
 
 			// If it is the second element, sort with it's pair.
 			else if (u == 1) {

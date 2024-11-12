@@ -171,6 +171,7 @@ namespace Mapbox.Unity.Utilities {
 			Vector2d max = PixelsToMeters(
 				new Vector2d((tileCoordinate.x + 1) * TileSize, (tileCoordinate.y + 1) * TileSize), zoom
 			);
+
 			return new RectD(min, max - min);
 		}
 
@@ -178,9 +179,11 @@ namespace Mapbox.Unity.Utilities {
 			Vector2d min = PixelsToMeters(
 				new Vector2d(unwrappedTileId.X * TileSize, unwrappedTileId.Y * TileSize), unwrappedTileId.Z
 			);
+
 			Vector2d max = PixelsToMeters(
 				new Vector2d((unwrappedTileId.X + 1) * TileSize, (unwrappedTileId.Y + 1) * TileSize), unwrappedTileId.Z
 			);
+
 			return new RectD(min, max - min);
 		}
 
@@ -204,7 +207,6 @@ namespace Mapbox.Unity.Utilities {
 			return new UnwrappedTileId(zoom, x, y);
 		}
 
-
 		/// <summary>
 		/// Get coordinates for a given latitude/longitude in tile-space. Useful when comparing feature geometry to lat/lon coordinates.
 		/// </summary>
@@ -217,6 +219,7 @@ namespace Mapbox.Unity.Utilities {
 			UnwrappedTileId coordinateTileId = LatitudeLongitudeToTileId(
 				coordinate.x, coordinate.y, tileZoom
 			);
+
 			Vector2d _meters = LatLonToMeters(coordinate);
 			RectD _rect = TileBounds(coordinateTileId);
 
@@ -247,6 +250,7 @@ namespace Mapbox.Unity.Utilities {
 			UnwrappedTileId coordinateTileId = LatitudeLongitudeToTileId(
 				coordinate.x, coordinate.y, tileZoom
 			);
+
 			RectD _rect = TileBounds(coordinateTileId);
 
 			//vectortile space point (0 - layerExtent)
@@ -313,7 +317,6 @@ namespace Mapbox.Unity.Utilities {
 			Vector2d center = bb.Center;
 			return new Vector2d(center.x, center.y);
 		}
-
 
 		/// <summary>
 		/// Gets the Web Mercator x/y of the center of a tile.
@@ -404,6 +407,7 @@ namespace Mapbox.Unity.Utilities {
 			Vector2 t = new(
 				(int)Math.Ceiling(p.x / (double)TileSize) - 1, (int)Math.Ceiling(p.y / (double)TileSize) - 1
 			);
+
 			return t;
 		}
 

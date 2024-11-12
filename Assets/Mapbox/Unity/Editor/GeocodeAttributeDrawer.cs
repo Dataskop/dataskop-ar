@@ -21,6 +21,7 @@ namespace Mapbox.Editor {
 			Rect fieldRect = new(
 				position.x, position.y, position.width - buttonWidth, EditorGUIUtility.singleLineHeight
 			);
+
 			Rect buttonRect = new(
 				position.x + position.width - buttonWidth, position.y, buttonWidth, EditorGUIUtility.singleLineHeight
 			);

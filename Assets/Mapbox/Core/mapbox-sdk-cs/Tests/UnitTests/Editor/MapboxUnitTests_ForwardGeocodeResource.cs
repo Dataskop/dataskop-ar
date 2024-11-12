@@ -10,7 +10,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 	using Mapbox.Utils;
 	using NUnit.Framework;
 
-
 	[TestFixture]
 	internal class ForwardGeocodeResourceTest {
 

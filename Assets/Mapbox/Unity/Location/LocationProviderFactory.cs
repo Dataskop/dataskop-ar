@@ -118,7 +118,7 @@ namespace Mapbox.Unity.Location {
 		[System.Diagnostics.Conditional("NOT_UNITY_EDITOR")]
 		private void InjectDeviceLocationProvider() {
 			int AndroidApiVersion = 0;
-			Regex regex = new Regex(@"(?<=API-)-?\d+");
+			Regex regex = new(@"(?<=API-)-?\d+");
 			Match match =
 				regex.Match(SystemInfo.operatingSystem); // eg 'Android OS 8.1.0 / API-27 (OPM2.171019.029/4657601)'
 

@@ -11,6 +11,7 @@ namespace Mapbox.Unity.Map.Strategies {
 			RectD referenceTileRect = Conversions.TileBounds(
 				TileCover.CoordinateToTileId(map.CenterLatitudeLongitude, map.AbsoluteZoom)
 			);
+
 			map.SetCenterMercator(referenceTileRect.Center);
 		}
 

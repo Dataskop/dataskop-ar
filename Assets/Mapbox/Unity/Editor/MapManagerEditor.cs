@@ -261,6 +261,7 @@ namespace Mapbox.Editor {
 						text = displayNames[index],
 						tooltip = ((VectorSourceType)Enum.Parse(typeof(VectorSourceType), name)).Description()
 					};
+
 					index++;
 				}
 				//

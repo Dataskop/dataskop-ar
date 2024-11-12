@@ -126,7 +126,6 @@ namespace Assets.Mapbox.Unity.MeshGeneration.Modifiers.MeshModifiers {
 			}
 		}
 
-
 		private static bool isEarHashed(Node ear, float minX, float minY, float size) {
 			Node a = ear.prev;
 			Node b = ear;
@@ -687,6 +686,7 @@ namespace Assets.Mapbox.Unity.MeshGeneration.Modifiers.MeshModifiers {
 			Data result = new() {
 				Dim = 2
 			};
+
 			result.Vertices = new List<float>(totalVertCount * 2);
 			int holeIndex = 0;
 

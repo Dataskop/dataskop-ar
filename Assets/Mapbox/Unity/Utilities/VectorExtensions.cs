@@ -47,7 +47,6 @@ namespace Mapbox.Unity.Utilities {
 			return new Vector2d(v.x, v.z);
 		}
 
-
 		public static Vector3 Perpendicular(this Vector3 v) {
 			return new Vector3(-v.z, v.y, v.x);
 		}

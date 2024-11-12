@@ -161,6 +161,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 							edges
 						}
 					);
+
 					List<int> result = EarcutLibrary.Earcut(flatData.Vertices, flatData.Holes, flatData.Dim);
 
 					md.Triangles[1].AddRange(result.Select(x => md.Vertices.Count + x).ToList());

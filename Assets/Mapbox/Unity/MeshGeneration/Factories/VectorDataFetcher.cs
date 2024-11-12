@@ -20,6 +20,7 @@ public class VectorDataFetcher : DataFetcher {
 		VectorTile vectorTile = vectorDaraParameters.useOptimizedStyle ? new VectorTile(
 			vectorDaraParameters.style.Id, vectorDaraParameters.style.Modified
 		) : new VectorTile();
+
 		vectorDaraParameters.tile.AddTile(vectorTile);
 		vectorTile.Initialize(
 			_fileSource, vectorDaraParameters.tile.CanonicalTileId, vectorDaraParameters.tilesetId, () =>

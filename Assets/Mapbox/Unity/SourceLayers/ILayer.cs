@@ -45,7 +45,6 @@ namespace Mapbox.Unity.Map {
 
 		TileJsonData GetTileJsonData();
 
-
 		/// <summary>
 		/// Gets the `Data Source` for the `MAP LAYERS` section.
 		/// </summary>
@@ -189,7 +188,6 @@ namespace Mapbox.Unity.Map {
 			bool scaleDownWithWorld = true,
 			string locationItemName = "New Location");
 
-
 		/// <summary>
 		/// Places a prefab at all locations specified by the LatLon array.
 		/// </summary>
@@ -216,7 +214,6 @@ namespace Mapbox.Unity.Map {
 			bool scaleDownWithWorld = true,
 			string locationItemName = "New Location");
 
-
 		/// <summary>
 		/// Places the prefab at POI locations if its name contains the supplied string
 		/// <param name="prefab">GameObject Prefab</param>
@@ -238,9 +235,7 @@ namespace Mapbox.Unity.Map {
 
 	// TODO: Move interfaces into individual files.
 
-	public interface ISubLayerPolygonGeometryOptions {
-
-	}
+	public interface ISubLayerPolygonGeometryOptions { }
 
 	public interface ISubLayerFiltering {
 

@@ -56,7 +56,6 @@ namespace Mapbox.MapMatching {
 			);
 		}
 
-
 		/// <summary>
 		/// Deserialize the map match response string into a <see cref="MapMatchingResponse"/>.
 		/// </summary>

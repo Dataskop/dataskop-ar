@@ -10,7 +10,6 @@
 	using VectorTile.Geometry;
 	using Interfaces;
 
-
 	/// <summary>
 	/// ReplaceBuildingFeatureModifier takes in POIs and checks if the feature layer has those points and deletes them
 	/// </summary>
@@ -111,6 +110,7 @@
 						_tempFeatureId = feature.Data.Id.ToString();
 						string idCandidate = _tempFeatureId.Length <= 3 ? _tempFeatureId
 							: _tempFeatureId.Substring(0, _tempFeatureId.Length - 3);
+
 						_featureId[index].Add(idCandidate);
 					}
 				}
@@ -147,6 +147,7 @@
 								feature.Points[0][0].x / feature.Tile.TileScale + feature.Tile.Rect.Center.x,
 								feature.Points[0][0].z / feature.Tile.TileScale + feature.Tile.Rect.Center.y
 							);
+
 							double dist = Vector2d.Distance(from, to);
 
 							if (dist > 500) {
@@ -218,6 +219,7 @@
 
 			latLongPosition = Conversions
 				.LatitudeLongitudeToUnityTilePosition(latLong, tile.CurrentZoom, tile.TileScale, 4096).ToVector3xz();
+
 			latLongPosition.y = centroidVector.y;
 
 			go.name = ve.Feature.Data.Id.ToString();

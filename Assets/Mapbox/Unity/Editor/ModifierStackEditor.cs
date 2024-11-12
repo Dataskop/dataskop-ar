@@ -38,6 +38,7 @@
 				meshfac.GetArrayElementAtIndex(ind).objectReferenceValue = EditorGUILayout.ObjectField(
 					meshfac.GetArrayElementAtIndex(i).objectReferenceValue, typeof(MeshModifier), false
 				) as ScriptableObject;
+
 				EditorGUILayout.EndVertical();
 
 				if (GUILayout.Button(_magnifier, (GUIStyle)"minibuttonleft", GUILayout.Width(30))) {
@@ -79,6 +80,7 @@
 				gofac.GetArrayElementAtIndex(ind).objectReferenceValue = EditorGUILayout.ObjectField(
 					gofac.GetArrayElementAtIndex(i).objectReferenceValue, typeof(GameObjectModifier), false
 				) as ScriptableObject;
+
 				EditorGUILayout.EndVertical();
 
 				if (GUILayout.Button(_magnifier, (GUIStyle)"minibuttonleft", GUILayout.Width(30))) {

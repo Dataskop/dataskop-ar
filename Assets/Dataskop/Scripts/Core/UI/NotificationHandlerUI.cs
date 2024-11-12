@@ -92,6 +92,7 @@ namespace Dataskop.UI {
 			IconElement.style.backgroundImage = new StyleBackground(NotificationStyles[notification.Category].Icon);
 			IconElement.style.unityBackgroundImageTintColor =
 				new StyleColor(NotificationStyles[notification.Category].Color);
+
 			MessageTextElement.text = notification.Text;
 		}
 

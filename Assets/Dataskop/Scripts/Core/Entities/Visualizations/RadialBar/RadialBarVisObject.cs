@@ -84,6 +84,7 @@ namespace Dataskop.Entities.Visualizations {
 				RadialSegments[i] = Instantiate(
 					radialSegmentPrefab, transform.position, Quaternion.identity, transform
 				);
+
 				RadialSegments[i].transform.localScale = new Vector2(1 + 0.1f * (i + 1), 1 + 0.1f * (i + 1));
 				SpriteRenderer sr = RadialSegments[i].GetComponent<SpriteRenderer>();
 				sr.color = data[i].Color;
@@ -91,6 +92,7 @@ namespace Dataskop.Entities.Visualizations {
 				int angle = GetMappedAngle(
 					data[i].Result.ReadAsFloat(), data[i].Attribute.Minimum, data[i].Attribute.Maximum
 				);
+
 				sr.material.SetInt("_Arc2", angle);
 			}
 

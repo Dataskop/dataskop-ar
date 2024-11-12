@@ -19,6 +19,7 @@
 				"Style Id and Modified date is required for optimized tileset feature. You can copy&paste those values from Styles page under your Mapbox Account or use the search feature to fetch them automatically.",
 				MessageType.Info
 			);
+
 			EditorGUI.indentLevel++;
 
 			SerializedProperty id = property.FindPropertyRelative("Id");

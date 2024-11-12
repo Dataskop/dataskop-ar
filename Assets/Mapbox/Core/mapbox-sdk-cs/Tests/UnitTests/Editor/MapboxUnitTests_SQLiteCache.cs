@@ -15,7 +15,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 	using ued = UnityEngine.Debug;
 	using UnityEngine.TestTools;
 
-
 	[TestFixture]
 	internal class SQLiteCacheTest {
 
@@ -35,7 +34,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 		private HashSet<CanonicalTileId> _tileIds;
 		// be careful when setting the 'maxTileCount' parameter. when setting too low unwanted pruning might happen.
 		private uint _maxCacheTileCount = 6000;
-
 
 		[OneTimeSetUp]
 		public void Init() {
@@ -63,7 +61,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			_cache = new SQLiteCache(_maxCacheTileCount, _dbName);
 		}
 
-
 		[OneTimeTearDown]
 		public void Cleanup() {
 			if (null != _cache) {
@@ -71,7 +68,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 				_cache = null;
 			}
 		}
-
 
 		[Test] [Order(1)]
 		public void InsertSameTileNoOverwrite() {
@@ -84,7 +80,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			);
 		}
 
-
 		[Test] [Order(2)]
 		public void InsertSameTileForceOverwrite() {
 			string methodName = _className + "." + new StackFrame().GetMethod().Name;
@@ -95,7 +90,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 				1, _cache.TileCount(TS_FORCE_OVERWRITE), "tileset {0}: unexpected number of tiles", TS_FORCE_OVERWRITE
 			);
 		}
-
 
 		[UnityTest] [Order(3)]
 		public IEnumerator ConcurrentTilesetInsert() {
@@ -111,7 +105,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			       Runnable.IsRunning(rIdCr4)) yield return null;
 
 		}
-
 
 		[Test] [Order(4)]
 		public void VerifyTilesFromConcurrentInsert() {
@@ -137,7 +130,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			ued.Log("all tiles in cache!");
 		}
 
-
 		[Test] [Order(5)]
 		public void Prune() {
 			string methodName = _className + "." + new StackFrame().GetMethod().Name;
@@ -158,7 +150,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			);
 		}
 
-
 		[Test] [Order(6)]
 		public void Clear() {
 			// We still should have tiles in the cache
@@ -176,7 +167,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			Assert.AreEqual(0, tileCnt, "'Clear()' did not work as expected");
 		}
 
-
 		[Test] [Order(7)]
 		public void ReInit() {
 			// after previous 'Clear' there shouldn't be any tiles in cache
@@ -192,7 +182,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			Assert.AreEqual(1, tileCnt, "tile was lost during 'ReInit()'");
 		}
 
-
 		#region helper methods
 
 		private long getAllTilesCount() {
@@ -205,14 +194,12 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			return tileCnt;
 		}
 
-
 		private void cacheItemAsserts(string tilesetName, CanonicalTileId tileId) {
 			CacheItem ci = _cache.Get(tilesetName, tileId);
 			Assert.NotNull(ci, "tileset '{0}': {1} not found in cache", tilesetName, tileId);
 			Assert.NotNull(ci.Data, "tileset '{0}': {1} tile data is null", tilesetName, tileId);
 			Assert.NotZero(ci.Data.Length, "tileset '{0}': {1} data length is 0", tilesetName, tileId);
 		}
-
 
 		private IEnumerator InsertCoroutine(string tileSetName, bool forceInsert,
 			HashSet<CanonicalTileId> tileIds = null) {
@@ -224,7 +211,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			ued.Log(string.Format("coroutine [{0}] finished", tileSetName));
 			logTime(tileSetName, elapsed);
 		}
-
 
 		private List<long> simpleInsert(string tileSetName, bool forceInsert, HashSet<CanonicalTileId> tileIds = null,
 			int itemCount = 1000) {
@@ -255,7 +241,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 
 			return elapsed;
 		}
-
 
 		private void logTime(string label, List<long> elapsed) {
 			double overall = elapsed.Sum() / 1000.0;

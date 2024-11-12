@@ -24,7 +24,6 @@ namespace Mapbox.MapMatching {
 
 	}
 
-
 	/// <summary>Format of the returned geometry. Default value 'Polyline' with precision 5.</summary>
 	public enum Geometries {
 
@@ -39,7 +38,6 @@ namespace Mapbox.MapMatching {
 		GeoJson
 
 	}
-
 
 	/// <summary>Type of returned overview geometry. </summary>
 	public enum Overview {
@@ -56,7 +54,6 @@ namespace Mapbox.MapMatching {
 
 	}
 
-
 	/// <summary>Whether or not to return additional metadata along the route. Several annotations can be used.</summary>
 	[Flags]
 	public enum Annotations {
@@ -71,7 +68,6 @@ namespace Mapbox.MapMatching {
 		Congestion
 
 	}
-
 
 	/// <summary>
 	/// https://www.mapbox.com/api-documentation/navigation/#retrieve-directions

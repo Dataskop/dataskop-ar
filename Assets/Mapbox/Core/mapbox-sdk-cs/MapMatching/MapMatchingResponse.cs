@@ -19,8 +19,7 @@ namespace Mapbox.MapMatching {
 	public class MapMatchingResponse {
 
 		/// <summary>Simple constructor for deserialization </summary>
-		public MapMatchingResponse() {
-		}
+		public MapMatchingResponse() { }
 
 		[JsonProperty("code")]
 		public string Code;

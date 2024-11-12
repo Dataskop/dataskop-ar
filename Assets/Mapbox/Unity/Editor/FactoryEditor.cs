@@ -6,8 +6,7 @@ namespace Mapbox.Editor {
 	[CustomEditor(typeof(AbstractTileFactory))]
 	public class FactoryEditor : Editor {
 
-		public override void OnInspectorGUI() {
-		}
+		public override void OnInspectorGUI() { }
 
 	}
 

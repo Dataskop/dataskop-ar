@@ -190,6 +190,7 @@ namespace Dataskop.Data {
 					//If it is the same, create a datapoint instance
 					DataPoint dataPointInstance =
 						Instantiate(dataPointPrefab, dataPointsContainer).GetComponent<DataPoint>();
+
 					dataPointInstance.Attribute = DataAttributeManager.SelectedAttribute;
 					dataPointInstance.MeasurementDefinition = projectDevices[i].MeasurementDefinitions.First();
 					dataPointInstance.Device = projectDevices[i];
@@ -236,6 +237,7 @@ namespace Dataskop.Data {
 						//If it is the same, create a datapoint instance
 						DataPoint dataPointInstance =
 							Instantiate(dataPointPrefab, dataPointsContainer).GetComponent<DataPoint>();
+
 						dataPointInstance.Attribute = DataAttributeManager.SelectedAttribute;
 						dataPointInstance.MeasurementDefinition = definition;
 						dataPointInstance.Device = projectDevices[i];
@@ -261,6 +263,7 @@ namespace Dataskop.Data {
 						else {
 							DataPointsLocations[i] =
 								Conversions.StringToLatLon(projectDevices[i].Position.GetLatLong());
+
 							PlaceDataPoint(DataPointsLocations[i], dataPointInstance.transform);
 						}
 

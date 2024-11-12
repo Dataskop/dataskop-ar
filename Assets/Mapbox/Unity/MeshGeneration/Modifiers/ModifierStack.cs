@@ -41,7 +41,6 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 
 		[SerializeField] public PositionTargetType moveFeaturePositionTo;
 
-
 		[NonSerialized] private int vertexIndex = 1;
 		[NonSerialized] private Dictionary<UnityTile, List<VectorEntity>> _activeObjects;
 		[NonSerialized] private ObjectPool<VectorEntity> _pool;
@@ -57,7 +56,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 			_pool = new ObjectPool<VectorEntity>(
 				() =>
 				{
-					GameObject go = new GameObject();
+					GameObject go = new();
 					MeshFilter mf = go.AddComponent<MeshFilter>();
 					mf.sharedMesh = new Mesh();
 					mf.sharedMesh.name = "feature";
@@ -69,9 +68,11 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 						MeshRenderer = mr,
 						Mesh = mf.sharedMesh
 					};
+
 					return _tempVectorEntity;
 				}
 			);
+
 			_listPool = new ObjectPool<List<VectorEntity>>(() => { return new List<VectorEntity>(); });
 			_activeObjects = new Dictionary<UnityTile, List<VectorEntity>>();
 		}

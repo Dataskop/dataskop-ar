@@ -52,6 +52,7 @@
 			VectorSourceType sourceTypeValue = (VectorSourceType)Enum.Parse(
 				typeof(VectorSourceType), names[sourceTypeProperty.enumValueIndex]
 			);
+
 			//VectorSourceType sourceTypeValue = (VectorSourceType)sourceTypeProperty.enumValueIndex;
 			string streets_v7 = MapboxDefaultVector.GetParameters(VectorSourceType.MapboxStreets).Id;
 			SerializedProperty layerSourceId = layerSourceProperty.FindPropertyRelative("layerSource.Id");
@@ -104,13 +105,16 @@
 					SerializedProperty prefabItemArray = property.FindPropertyRelative("locationPrefabList");
 					SerializedProperty prefabItem =
 						prefabItemArray.GetArrayElementAtIndex(prefabItemArray.arraySize - 1);
+
 					PrefabItemOptions prefabItemOptionToAdd =
 						(PrefabItemOptions)EditorHelper.GetTargetObjectOfProperty(prefabItem) as PrefabItemOptions;
+
 					((VectorLayerProperties)EditorHelper.GetTargetObjectOfProperty(property)).OnSubLayerPropertyAdded(
 						new VectorLayerUpdateArgs {
 							property = prefabItemOptionToAdd
 						}
 					);
+
 					_poiSublayerDrawer.isLayerAdded = false;
 				}
 			}
@@ -124,6 +128,7 @@
 							property = EditorHelper.GetTargetObjectOfProperty(subLayer) as MapboxDataProperty
 						}
 					);
+
 					_vectorSublayerDrawer.isLayerAdded = false;
 				}
 			}

@@ -30,15 +30,11 @@ namespace Mapbox.Platform {
 	/// <summary> A response from a <see cref="IFileSource" /> request. </summary>
 	public class Response {
 
-		private Response() {
-		}
-
+		private Response() { }
 
 		public IAsyncRequest Request { get; private set; }
 
-
 		public bool RateLimitHit => StatusCode.HasValue ? 429 == StatusCode.Value : false;
-
 
 		/// <summary>Flag to indicate if the request was successful</summary>
 		public bool HasError => _exceptions == null ? false : _exceptions.Count > 0;
@@ -51,30 +47,23 @@ namespace Mapbox.Platform {
 
 		public string RequestUrl;
 
-
 		public int? StatusCode;
 
-
 		public string ContentType;
-
 
 		/// <summary>Length of rate-limiting interval in seconds. https://www.mapbox.com/api-documentation/#rate-limit-headers </summary>
 		public int? XRateLimitInterval;
 
-
 		/// <summary>Maximum number of requests you may make in the current interval before reaching the limit. https://www.mapbox.com/api-documentation/#rate-limit-headers </summary>
 		public long? XRateLimitLimit;
 
-
 		/// <summary>Timestamp of when the current interval will end and the ratelimit counter is reset. https://www.mapbox.com/api-documentation/#rate-limit-headers </summary>
 		public DateTime? XRateLimitReset;
-
 
 		private List<Exception> _exceptions;
 
 		/// <summary> Exceptions that might have occured during the request. </summary>
 		public ReadOnlyCollection<Exception> Exceptions => null == _exceptions ? null : _exceptions.AsReadOnly();
-
 
 		/// <summary> Messages of exceptions otherwise empty string. </summary>
 		public string ExceptionsAsString
@@ -89,10 +78,8 @@ namespace Mapbox.Platform {
 			}
 		}
 
-
 		/// <summary> Headers of the response. </summary>
 		public Dictionary<string, string> Headers;
-
 
 		/// <summary> Raw data fetched from the request. </summary>
 		public byte[] Data;

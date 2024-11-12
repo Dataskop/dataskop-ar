@@ -68,7 +68,7 @@ namespace Mapbox.Unity.Map {
 		/// </summary>
 		/// <param name="function">Query function to test mesh modifiers</param>
 		public virtual List<GameObjectModifier> GetGameObjectModifier(Func<GameObjectModifier, bool> function) {
-			List<GameObjectModifier> finalList = new List<GameObjectModifier>();
+			List<GameObjectModifier> finalList = new();
 
 			if (_subLayerProperties.GoModifiers != null) {
 				foreach (GameObjectModifier goModifier in _subLayerProperties.GoModifiers) {
@@ -123,7 +123,7 @@ namespace Mapbox.Unity.Map {
 		/// </summary>
 		/// <param name="function">Query function to test mesh modifiers</param>
 		public virtual List<MeshModifier> GetMeshModifier(Func<MeshModifier, bool> function) {
-			List<MeshModifier> finalList = new List<MeshModifier>();
+			List<MeshModifier> finalList = new();
 
 			if (_subLayerProperties.MeshModifiers != null) {
 				foreach (MeshModifier meshModifier in _subLayerProperties.MeshModifiers) {

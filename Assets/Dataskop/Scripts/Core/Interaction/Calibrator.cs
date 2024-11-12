@@ -70,6 +70,7 @@ namespace Dataskop.Interaction {
 			if (AppOptions.DemoMode) {
 				ARTrackedImageManager arManager =
 					(ARTrackedImageManager)FindObjectOfType(typeof(ARTrackedImageManager), true);
+
 				arManager.enabled = true;
 				DemoBoxHandler demoBoxHandler = (DemoBoxHandler)FindObjectOfType(typeof(DemoBoxHandler), true);
 				demoBoxHandler.enabled = true;

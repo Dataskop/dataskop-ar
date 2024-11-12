@@ -66,6 +66,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 							(float)(((_vert.x + md.PositionInTile.x) / tile.TileScale + _size.x / 2) / _size.x),
 							(float)(((_vert.z + md.PositionInTile.z) / tile.TileScale + _size.x / 2) / _size.x)
 						);
+
 						_uv.Add(fromBottomLeft);
 					}
 					else if (_options.texturingType == UvMapType.Tiled) {
@@ -86,6 +87,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 				_textureDirection = Quaternion.FromToRotation(
 					md.Vertices[0] - md.Vertices[1], Mapbox.Unity.Constants.Math.Vector3Right
 				);
+
 				_textureUvCoordinates[0] = new Vector2(0, 0);
 				_firstVert = md.Vertices[0];
 

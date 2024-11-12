@@ -4,7 +4,6 @@ namespace Mapbox.Unity.Location {
 	using System.Collections.Generic;
 	using UnityEngine;
 
-
 	/// <summary>
 	/// Class to mock Unity's location service Input.location
 	/// </summary>
@@ -19,12 +18,10 @@ namespace Mapbox.Unity.Location {
 			_locationEnumerator = _logReader.GetLocations();
 		}
 
-
 		private LocationLogReader _logReader;
 		private IEnumerator<Location> _locationEnumerator;
 		private bool _isRunning;
 		private bool _disposed;
-
 
 		#region idisposable
 
@@ -32,12 +29,10 @@ namespace Mapbox.Unity.Location {
 			Dispose(false);
 		}
 
-
 		public void Dispose() {
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
-
 
 		protected virtual void Dispose(bool disposeManagedResources) {
 			if (!_disposed) {
@@ -59,13 +54,10 @@ namespace Mapbox.Unity.Location {
 
 		#endregion
 
-
 		public bool isEnabledByUser => true;
-
 
 		public LocationServiceStatus status =>
 			_isRunning ? LocationServiceStatus.Running : LocationServiceStatus.Stopped;
-
 
 		public IMapboxLocationInfo lastData
 		{
@@ -83,11 +75,9 @@ namespace Mapbox.Unity.Location {
 			}
 		}
 
-
 		public void Start(float desiredAccuracyInMeters, float updateDistanceInMeters) {
 			_isRunning = true;
 		}
-
 
 		public void Stop() {
 			_isRunning = false;

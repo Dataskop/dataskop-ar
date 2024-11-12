@@ -37,7 +37,7 @@
 			}
 
 			// Draw label.
-			GUIContent sourceTypeLabel = new GUIContent {
+			GUIContent sourceTypeLabel = new() {
 				text = "Data Source",
 				tooltip = "Source tileset for Imagery."
 			};
@@ -79,6 +79,7 @@
 							tooltip = _tilesetIdGui.tooltip
 						}
 					);
+
 					break;
 				case ImagerySourceType.None:
 					break;

@@ -106,6 +106,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories {
 					tilesetId = TilesetId,
 					useRetina = _properties.rasterOptions.useRetina
 				};
+
 				DataFetcher.FetchData(parameters);
 			}
 		}
@@ -132,16 +133,13 @@ namespace Mapbox.Unity.MeshGeneration.Factories {
 			DestroyImmediate(DataFetcher);
 		}
 
-		protected override void OnPostProcess(UnityTile tile) {
-
-		}
+		protected override void OnPostProcess(UnityTile tile) { }
 
 		public override void UnbindEvents() {
 			base.UnbindEvents();
 		}
 
-		protected override void OnUnbindEvents() {
-		}
+		protected override void OnUnbindEvents() { }
 
 		#endregion
 

@@ -48,6 +48,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 			_currentTileMeshData = new MeshData();
 			int sampleCountSquare = _elevationOptions.modificationOptions.sampleCount *
 			                        _elevationOptions.modificationOptions.sampleCount;
+
 			_newVertexList = new List<Vector3>(sampleCountSquare);
 			_newNormalList = new List<Vector3>(sampleCountSquare);
 			_newUvList = new List<Vector2>(sampleCountSquare);
@@ -114,9 +115,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 			ResetToFlatMesh(t);
 		}
 
-		public override void PostProcessTile(UnityTile tile) {
-
-		}
+		public override void PostProcessTile(UnityTile tile) { }
 
 		#region mesh gen
 
@@ -143,6 +142,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 							(float)(yy - tile.Rect.Center.y) * tile.TileScale
 						)
 					);
+
 					_newNormalList.Add(Constants.Math.Vector3Up);
 					_newUvList.Add(new Vector2(x * 1f / (sampleCount - 1), 1 - y * 1f / (sampleCount - 1)));
 				}
@@ -181,7 +181,6 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 		private Vector3[] _targetVerts;
 		private Vector3[] _targetNormals;
 
-
 		private void GenerateTerrainMesh(UnityTile tile) {
 			_verts = _dataArrays[tile.UnwrappedTileId].Vertices;
 			_normals = _dataArrays[tile.UnwrappedTileId].Normals;
@@ -197,6 +196,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 						hd[(int)((1 - y / (_sampleCount - 1)) * 255) * 256 + (int)(x / (_sampleCount - 1) * 255)] * ts,
 						_verts[(int)(y * _sampleCount + x)].z
 					);
+
 					_normals[(int)(y * _sampleCount + x)] = Constants.Math.Vector3Zero;
 				}
 			}
@@ -237,6 +237,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 						0,
 						_currentTileMeshData.Vertices[i].z
 					);
+
 					_currentTileMeshData.Normals[i] = Constants.Math.Vector3Up;
 				}
 

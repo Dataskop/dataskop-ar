@@ -95,6 +95,7 @@ namespace Dataskop.Entities.Visualizations {
 			GameObject visObject = Instantiate(
 				visObjectPrefab, transform.position, Quaternion.identity, visObjectsContainer
 			);
+
 			VisObjects[DataPoint.FocusedIndex] = visObject.GetComponent<IVisObject>();
 			VisObjects[DataPoint.FocusedIndex].HasHovered += OnVisObjectHovered;
 			VisObjects[DataPoint.FocusedIndex].HasSelected += OnVisObjectSelected;
@@ -163,6 +164,7 @@ namespace Dataskop.Entities.Visualizations {
 				visObjectPrefab, VisOrigin.position, visObjectsContainer.localRotation,
 				visObjectsContainer
 			);
+
 			VisObjects[DataPoint.FocusedIndex] = visObject.GetComponent<IVisObject>();
 			VisObjects[DataPoint.FocusedIndex].HasHovered += OnVisObjectHovered;
 			VisObjects[DataPoint.FocusedIndex].HasSelected += OnVisObjectSelected;
@@ -284,6 +286,7 @@ namespace Dataskop.Entities.Visualizations {
 				dataSet[i].Type = MeasurementType.Float;
 				dataSet[i].Attribute =
 					DataPoint.Device.Attributes.First(x => x.ID == results[i].MeasurementDefinition.AttributeId);
+
 				dataSet[i].AuthorSprite = null;
 				dataSet[i].Color = availableColors[i];
 			}

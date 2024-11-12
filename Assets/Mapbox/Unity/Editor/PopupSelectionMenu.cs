@@ -45,7 +45,7 @@ namespace Mapbox.Editor {
 			}
 
 			GUILayout.Label(string.Format("{0}s", _type.Name), EditorStyles.boldLabel);
-			GUIStyle st = new GUIStyle();
+			GUIStyle st = new();
 			st.padding = new RectOffset(0, 0, 15, 15);
 			_scrollPos = EditorGUILayout.BeginScrollView(_scrollPos, st);
 

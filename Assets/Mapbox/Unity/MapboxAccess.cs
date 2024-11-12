@@ -45,7 +45,6 @@ namespace Mapbox.Unity {
 			}
 		}
 
-
 		public static bool Configured;
 		public static string ConfigurationJSON;
 		private MapboxConfiguration _configuration;
@@ -100,7 +99,6 @@ namespace Mapbox.Unity {
 				Configured = true;
 			}
 		}
-
 
 		public void ClearAllCacheFiles() {
 			// explicity call Clear() to close any connections that might be referenced by the current scene
@@ -157,7 +155,6 @@ namespace Mapbox.Unity {
 #endif
 		}
 
-
 		private void ConfigureFileSource() {
 			_fileSource = new CachingWebFileSource(
 						_configuration.AccessToken, _configuration.GetMapsSkuToken, _configuration.AutoRefreshCache
@@ -168,7 +165,6 @@ namespace Mapbox.Unity {
 #endif
 				;
 		}
-
 
 		private void ConfigureTelemetry() {
 			// TODO: enable after token validation has been made async
@@ -222,7 +218,6 @@ namespace Mapbox.Unity {
 			return _fileSource.Request(url, callback, _configuration.DefaultTimeout, tileId, tilesetId);
 		}
 
-
 		private Geocoder _geocoder;
 
 		/// <summary>
@@ -241,7 +236,6 @@ namespace Mapbox.Unity {
 				return _geocoder;
 			}
 		}
-
 
 		private Directions _directions;
 
@@ -282,7 +276,6 @@ namespace Mapbox.Unity {
 			}
 		}
 
-
 		private MapboxTokenApi _tokenValidator;
 
 		/// <summary>
@@ -299,7 +292,6 @@ namespace Mapbox.Unity {
 				return _tokenValidator;
 			}
 		}
-
 
 		private TileJSON _tileJson;
 
@@ -321,11 +313,9 @@ namespace Mapbox.Unity {
 			}
 		}
 
-
 		private class InvalidTokenException : Exception {
 
-			public InvalidTokenException(string message) : base(message) {
-			}
+			public InvalidTokenException(string message) : base(message) { }
 
 		}
 

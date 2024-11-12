@@ -16,7 +16,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 	using System.Collections;
 	using Platform.TilesetTileJSON;
 
-
 	[TestFixture]
 	internal class TileJSONTest {
 
@@ -39,7 +38,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			testsCommonToVectorAndRasterTilesets(response, id, minZoom, maxZoom);
 			testsForVectorTilesets(response);
 		}
-
 
 		[UnityTest]
 		public IEnumerator ConcatenatedVectorTilesets() {
@@ -65,9 +63,9 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 				, boundsSouth: -90
 				, boundsNorth: 90
 			);
+
 			testsForVectorTilesets(response);
 		}
-
 
 		[UnityTest]
 		public IEnumerator MapboxSatellite() {
@@ -87,7 +85,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 
 			testsCommonToVectorAndRasterTilesets(response, id, minZoom, maxZoom, boundsSouth: -85, boundsNorth: 85);
 		}
-
 
 		[UnityTest]
 		public IEnumerator MapboxEmerald() {
@@ -110,7 +107,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			Assert.IsNotEmpty(response.Source, "'Source' not set properly");
 		}
 
-
 		private void testsForVectorTilesets(TileJSONResponse response) {
 			Assert.IsNotNull(response.VectorLayers, "'VectorLayers' not set properly");
 			Assert.GreaterOrEqual(response.VectorLayers.Length, 1, "Not enough 'VectorLayers'");
@@ -122,7 +118,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			Assert.IsNotEmpty(vl1.Source, "'Source' of vector layer not parsed properly");
 			Assert.IsNotEmpty(vl1.SourceName, "'SourceName' of vector layer not parsed properly");
 		}
-
 
 		private void testsCommonToVectorAndRasterTilesets(
 			TileJSONResponse response

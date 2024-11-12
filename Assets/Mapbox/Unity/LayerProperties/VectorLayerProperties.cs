@@ -77,7 +77,6 @@
 		[NodeEditorElementAttribute("POI Sublayers")]
 		public List<PrefabItemOptions> locationPrefabList = new();
 
-
 		public override bool NeedsForceUpdate() {
 			return true;
 		}

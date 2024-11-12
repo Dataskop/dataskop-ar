@@ -13,7 +13,6 @@ namespace Mapbox.Map {
 	using System.Collections.ObjectModel;
 	using Unity.Utilities;
 
-
 	/// <summary>
 	///    A Map tile, a square with vector or raster data representing a geographic
 	///    bounding box. More info <see href="https://en.wikipedia.org/wiki/Tiled_web_map">
@@ -51,14 +50,11 @@ namespace Mapbox.Map {
 			set => _id = value;
 		}
 
-
 		/// <summary>Flag to indicate if the request was successful</summary>
 		public bool HasError => _exceptions == null ? false : _exceptions.Count > 0;
 
-
 		/// <summary> Exceptions that might have occured during creation of the tile. </summary>
 		public ReadOnlyCollection<Exception> Exceptions => null == _exceptions ? null : _exceptions.AsReadOnly();
-
 
 		/// <summary> Messages of exceptions otherwise empty string. </summary>
 		public string ExceptionsAsString
@@ -73,7 +69,6 @@ namespace Mapbox.Map {
 			}
 		}
 
-
 		/// <summary>
 		/// Sets the error message.
 		/// </summary>
@@ -86,7 +81,6 @@ namespace Mapbox.Map {
 			_exceptions.Add(ex);
 		}
 
-
 		/// <summary>
 		///     Gets the current state. When fully loaded, you must
 		///     check if the data actually arrived and if the tile
@@ -95,9 +89,7 @@ namespace Mapbox.Map {
 		/// <value> The tile state. </value>
 		public State CurrentState => _state;
 
-
 		public HttpRequestType RequestType => _request.RequestType;
-
 
 		public bool IsCompleted => _state == State.Loaded;
 
@@ -141,7 +133,6 @@ namespace Mapbox.Map {
 			return Id.ToString();
 		}
 
-
 		/// <summary>
 		///     Cancels the request for the <see cref="T:Mapbox.Map.Tile"/> object.
 		///     It will stop a network request and set the tile's state to Canceled.
@@ -175,14 +166,11 @@ namespace Mapbox.Map {
 			_state = State.Canceled;
 		}
 
-
 		// Get the tile resource (raster/vector/etc).
 		internal abstract TileResource MakeTileResource(string tilesetId);
 
-
 		// Decode the tile.
 		internal abstract bool ParseTileData(byte[] data);
-
 
 		// TODO: Currently the tile decoding is done on the main thread. We must implement
 		// a Worker class to abstract this, so on platforms that support threads (like Unity
@@ -223,7 +211,6 @@ namespace Mapbox.Map {
 
 			_callback();
 		}
-
 
 		/// <summary>
 		///    Parameters for initializing a Tile object.

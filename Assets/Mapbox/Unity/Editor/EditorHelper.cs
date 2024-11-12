@@ -52,7 +52,6 @@ namespace Mapbox.Editor {
 			}
 		}
 
-
 		public static void CheckForModifiedProperty<T>(SerializedProperty property, T targetObject,
 			bool forceHasChanged = false) {
 			MapboxDataProperty targetObjectAsDataProperty = GetMapboxDataPropertyObject(targetObject);
@@ -120,7 +119,6 @@ namespace Mapbox.Editor {
 			}
 		}
 
-
 		/// <summary>
 		/// Gets the object the property represents.
 		/// </summary>
@@ -138,6 +136,7 @@ namespace Mapbox.Editor {
 						element.Substring(element.IndexOf("[", StringComparison.CurrentCulture)).Replace("[", "")
 							.Replace("]", "")
 					);
+
 					obj = GetValue_Imp(obj, elementName, index);
 				}
 				else {
@@ -160,6 +159,7 @@ namespace Mapbox.Editor {
 						element.Substring(element.IndexOf("[", StringComparison.CurrentCulture)).Replace("[", "")
 							.Replace("]", "")
 					);
+
 					obj = GetValue_Imp(obj, elementName, index);
 				}
 				else {
@@ -181,9 +181,11 @@ namespace Mapbox.Editor {
 						element.Substring(element.IndexOf("[", StringComparison.CurrentCulture)).Replace("[", "")
 							.Replace("]", "")
 					);
+
 					FieldInfo field = tp.GetField(
 						elementName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
 					);
+
 					IList arr = field.GetValue(obj) as IList;
 					arr[index] = value;
 				}
@@ -204,7 +206,6 @@ namespace Mapbox.Editor {
 			}
 		}
 
-
 		/// <summary>
 		/// Gets the object that the property is a member of
 		/// </summary>
@@ -222,6 +223,7 @@ namespace Mapbox.Editor {
 						element.Substring(element.IndexOf("[", StringComparison.CurrentCulture)).Replace("[", "")
 							.Replace("]", "")
 					);
+
 					obj = GetValue_Imp(obj, elementName, index);
 				}
 				else {

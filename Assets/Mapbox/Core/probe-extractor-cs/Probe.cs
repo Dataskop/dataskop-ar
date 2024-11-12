@@ -2,7 +2,6 @@ namespace Mapbox.ProbeExtractorCs {
 
 	using Unity.Location;
 
-
 	/// <summary>
 	/// Represents a point of a GPS trace
 	/// </summary>
@@ -29,7 +28,6 @@ namespace Mapbox.ProbeExtractorCs {
 		}
 
 	}
-
 
 	/// <summary>
 	/// Represents a probe extracted by ProbeExtractor

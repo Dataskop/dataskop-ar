@@ -7,7 +7,6 @@
 	using System.IO;
 	using UnityEngine;
 
-
 	/// <summary>
 	/// Parses location data and returns Location objects.
 	/// </summary>
@@ -18,10 +17,8 @@
 			_textReader = new StreamReader(ms);
 		}
 
-
 		private bool _disposed;
 		private TextReader _textReader;
-
 
 		#region idisposable
 
@@ -29,12 +26,10 @@
 			Dispose(false);
 		}
 
-
 		public void Dispose() {
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
-
 
 		protected virtual void Dispose(bool disposeManagedResources) {
 			if (!_disposed) {
@@ -53,7 +48,6 @@
 		}
 
 		#endregion
-
 
 		/// <summary>
 		/// Returns 'Location' objects from the data passed in. Loops through the data.
@@ -96,6 +90,7 @@
 				location.IsLocationServiceEnabled = bool.Parse(tokens[(int)LogfileColumns.LocationServiceEnabled]);
 				location.IsLocationServiceInitializing =
 					bool.Parse(tokens[(int)LogfileColumns.LocationServiceInitializing]);
+
 				location.IsLocationUpdated = bool.Parse(tokens[(int)LogfileColumns.LocationUpdated]);
 				location.IsUserHeadingUpdated = bool.Parse(tokens[(int)LogfileColumns.UserHeadingUpdated]);
 				location.Provider = tokens[(int)LogfileColumns.LocationProvider];
@@ -140,25 +135,31 @@
 				location.Accuracy = float.TryParse(
 					tokens[(int)LogfileColumns.Accuracy], NumberStyles.Any, _invariantCulture, out accuracy
 				) ? accuracy : 0;
+
 				float userHeading;
 				location.UserHeading = float.TryParse(
 					tokens[(int)LogfileColumns.UserHeading], NumberStyles.Any, _invariantCulture, out userHeading
 				) ? userHeading : 0;
+
 				float deviceOrientation;
 				location.DeviceOrientation = float.TryParse(
 					tokens[(int)LogfileColumns.DeviceOrientation], NumberStyles.Any, _invariantCulture,
 					out deviceOrientation
 				) ? deviceOrientation : 0;
+
 				float speed;
 				location.SpeedMetersPerSecond = float.TryParse(
 					tokens[(int)LogfileColumns.Speed], NumberStyles.Any, _invariantCulture, out speed
 				) ? speed / 3.6f : (float?)null;
+
 				bool hasGpsFix;
 				location.HasGpsFix = bool.TryParse(tokens[(int)LogfileColumns.HasGpsFix], out hasGpsFix) ? hasGpsFix
 					: (bool?)null;
+
 				int satellitesUsed;
 				location.SatellitesUsed = int.TryParse(tokens[(int)LogfileColumns.SatellitesUsed], out satellitesUsed)
 					? satellitesUsed : (int?)null;
+
 				int satellitesInView;
 				location.SatellitesInView =
 					int.TryParse(tokens[(int)LogfileColumns.SatellitesInView], out satellitesInView) ? satellitesInView

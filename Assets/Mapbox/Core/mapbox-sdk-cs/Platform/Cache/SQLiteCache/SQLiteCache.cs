@@ -16,12 +16,10 @@
 		/// </summary>
 		public uint MaxCacheSize => _maxTileCount;
 
-
 		/// <summary>
 		/// Check cache size every n inserts
 		/// </summary>
 		public uint PruneCacheDelta => _pruneCacheDelta;
-
 
 #if MAPBOX_DEBUG_CACHE
 		private string _className;
@@ -37,13 +35,11 @@
 		private int _pruneCacheCounter = 0;
 		private object _lock = new();
 
-
 		public SQLiteCache(uint? maxTileCount = null, string dbName = "cache.db") {
 			_maxTileCount = maxTileCount ?? 3000;
 			_dbName = dbName;
 			init();
 		}
-
 
 		#region idisposable
 
@@ -73,7 +69,6 @@
 
 		#endregion
 
-
 		private void init() {
 
 #if MAPBOX_DEBUG_CACHE
@@ -92,6 +87,7 @@
 id    INTEGER PRIMARY KEY ASC AUTOINCREMENT NOT NULL UNIQUE,
 name  STRING  NOT NULL
 );";
+
 				_sqlite.Execute(cmdCreateTableTilesets);
 				string cmdCreateIdxNames = @"CREATE UNIQUE INDEX idx_names ON tilesets (name ASC);";
 				_sqlite.Execute(cmdCreateIdxNames);
@@ -117,6 +113,7 @@ lastmodified INTEGER,
 		tile_row ASC
 	)
 );";
+
 				_sqlite.Execute(cmdCreateTableTiles);
 
 				string cmdIdxTileset = "CREATE INDEX idx_tileset ON tiles (tile_set ASC);";
@@ -148,12 +145,10 @@ lastmodified INTEGER,
 			}
 		}
 
-
 		private void openOrCreateDb(string dbName) {
 			_dbPath = GetFullDbPath(dbName);
 			_sqlite = new SQLiteConnection(_dbPath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create);
 		}
-
 
 		/// <summary>
 		/// <para>Reinitialize cache.</para>
@@ -169,7 +164,6 @@ lastmodified INTEGER,
 			init();
 		}
 
-
 		public static string GetFullDbPath(string dbName) {
 			string dbPath = Path.Combine(Application.persistentDataPath, "cache");
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
@@ -183,7 +177,6 @@ lastmodified INTEGER,
 
 			return dbPath;
 		}
-
 
 		public void Add(string tilesetName, CanonicalTileId tileId, CacheItem item, bool forceInsert = false) {
 
@@ -250,7 +243,6 @@ lastmodified INTEGER,
 			}
 		}
 
-
 		private void prune() {
 
 			long tileCnt = _sqlite.ExecuteScalar<long>("SELECT COUNT(zoom_level) FROM tiles");
@@ -278,7 +270,6 @@ lastmodified INTEGER,
 				Debug.LogErrorFormat("error pruning: {0}", ex);
 			}
 		}
-
 
 		/// <summary>
 		/// Returns the tile data, otherwise null
@@ -314,6 +305,7 @@ lastmodified INTEGER,
 				Debug.LogErrorFormat(
 					"error getting tile {1} {2} from cache{0}{3}", Environment.NewLine, tilesetName, tileId, ex
 				);
+
 				return null;
 			}
 
@@ -334,7 +326,6 @@ lastmodified INTEGER,
 				LastModified = lastModified
 			};
 		}
-
 
 		/// <summary>
 		/// Check if tile exists
@@ -360,13 +351,13 @@ lastmodified INTEGER,
 				.FirstOrDefault();
 		}
 
-
 		private int insertTileset(string tilesetName) {
 			try {
 				_sqlite.BeginTransaction(true);
 				tilesets newTileset = new() {
 					name = tilesetName
 				};
+
 				int rowsAffected = _sqlite.Insert(newTileset);
 
 				if (1 != rowsAffected) {
@@ -386,15 +377,14 @@ lastmodified INTEGER,
 			}
 		}
 
-
 		private int? getTilesetId(string tilesetName) {
 			tilesets tileset = _sqlite
 				.Table<tilesets>()
 				.Where(ts => ts.name.Equals(tilesetName))
 				.FirstOrDefault();
+
 			return null == tileset ? (int?)null : tileset.id;
 		}
-
 
 		/// <summary>
 		/// FOR INTERNAL DEBUGGING ONLY - DON'T RELY ON IN PRODUCTION
@@ -414,7 +404,6 @@ lastmodified INTEGER,
 				.LongCount();
 		}
 
-
 		/// <summary>
 		/// Clear cache for one tile set
 		/// </summary>
@@ -429,7 +418,6 @@ lastmodified INTEGER,
 			//just delete on table 'tilesets', we've setup cascading which should take care of tabls 'tiles'
 			_sqlite.Delete<tilesets>(tilesetId.Value);
 		}
-
 
 		/// <summary>
 		/// <para>Delete the database file.</para>

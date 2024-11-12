@@ -87,6 +87,7 @@ namespace Dataskop.UI {
 			IdLabel.text = focusedResult.MeasurementDefinition.ID.ToString();
 			MeasurementLabel.text =
 				$"{focusedResult.ReadAsFloat().ToString("00.00", CultureInfo.InvariantCulture)} {SelectedDataPoint!.Attribute.Unit}";
+
 			LocationLabel.text = focusedResult.Position.GetLatLong();
 			TimeStampLabel.text = focusedResult.GetDateText();
 			MeasurementDefinitionLabel.text = focusedResult.MeasurementDefinition.MeasurementDefinitionInformation.Name;

@@ -78,6 +78,7 @@ namespace Dataskop.UI {
 			infoCardProjectDataUI.UpdateProjectNameDisplay(
 				selectedProject == null ? "N/A" : selectedProject.Information.Name
 			);
+
 			infoCardProjectDataUI.UpdateLastUpdatedDisplay(selectedProject?.GetLastUpdatedTime() ?? new DateTime());
 		}
 

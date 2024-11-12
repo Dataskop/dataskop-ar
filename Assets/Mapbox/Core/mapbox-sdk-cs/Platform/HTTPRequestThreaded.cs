@@ -314,5 +314,4 @@ namespace Mapbox.Platform {
 	}
 }
 
-
 #endif

@@ -74,7 +74,7 @@ namespace Mapbox.Utils {
 		/// <param name="b"> The second point. </param>
 		/// <returns> The convex hull. </returns>
 		public static Vector2dBounds FromCoordinates(Vector2d a, Vector2d b) {
-			Vector2dBounds bounds = new Vector2dBounds(a, a);
+			Vector2dBounds bounds = new(a, a);
 			bounds.Extend(b);
 
 			return bounds;
@@ -83,8 +83,8 @@ namespace Mapbox.Utils {
 		/// <summary> A bounding box containing the world. </summary>
 		/// <returns> The world bounding box. </returns>
 		public static Vector2dBounds World() {
-			Vector2d sw = new Vector2d(-90, -180);
-			Vector2d ne = new Vector2d(90, 180);
+			Vector2d sw = new(-90, -180);
+			Vector2d ne = new(90, 180);
 
 			return new Vector2dBounds(sw, ne);
 		}

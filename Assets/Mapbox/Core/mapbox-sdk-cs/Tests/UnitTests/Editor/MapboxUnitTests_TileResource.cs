@@ -20,13 +20,11 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 		private string _api;
 		private CanonicalTileId _tileId;
 
-
 		[SetUp]
 		public void SetUp() {
 			_api = Constants.BaseAPI;
 			_tileId = new CanonicalTileId(0, 0, 0);
 		}
-
 
 		[Test]
 		public void GetUrlRaster() {
@@ -41,9 +39,9 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			TileResource res3 = TileResource.MakeRaster(
 				_tileId, "https://api.mapbox.com/styles/v1/penny/penny-map/tiles"
 			);
+
 			Assert.AreEqual(_api + "styles/v1/penny/penny-map/tiles/0/0/0", res3.GetUrl().Split("?".ToCharArray())[0]);
 		}
-
 
 		[Test]
 		public void GetUrlClassicRaster() {

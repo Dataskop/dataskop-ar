@@ -9,7 +9,6 @@ namespace Mapbox.Unity.Location {
 			_location = location;
 		}
 
-
 		private Location _location;
 
 		public float latitude => (float)_location.LatitudeLongitude.x;

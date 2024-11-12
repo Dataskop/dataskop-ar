@@ -62,6 +62,7 @@
 				filterOperator = LayerFilterOperationType.Contains,
 				PropertyValue = property
 			};
+
 			AddFilterToList(layerFilter);
 			return layerFilter;
 
@@ -79,6 +80,7 @@
 				filterOperator = LayerFilterOperationType.IsEqual,
 				Min = value
 			};
+
 			AddFilterToList(layerFilter);
 			return layerFilter;
 		}
@@ -95,6 +97,7 @@
 				filterOperator = LayerFilterOperationType.IsLess,
 				Min = value
 			};
+
 			AddFilterToList(layerFilter);
 			return layerFilter;
 		}
@@ -111,6 +114,7 @@
 				filterOperator = LayerFilterOperationType.IsGreater,
 				Min = value
 			};
+
 			AddFilterToList(layerFilter);
 			return layerFilter;
 		}
@@ -129,6 +133,7 @@
 				Min = min,
 				Max = max
 			};
+
 			AddFilterToList(layerFilter);
 			return layerFilter;
 		}

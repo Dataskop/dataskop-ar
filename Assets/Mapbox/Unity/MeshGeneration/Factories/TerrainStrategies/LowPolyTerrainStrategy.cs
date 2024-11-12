@@ -22,7 +22,6 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 		private int _vertA, _vertB, _vertC;
 		private int _counter;
 
-
 		public override void Initialize(ElevationLayerProperties elOptions) {
 			_elevationOptions = elOptions;
 			_meshData = new Dictionary<UnwrappedTileId, Mesh>();
@@ -30,6 +29,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 			_stitchTargetMeshData = new MeshData();
 			int sampleCountSquare = _elevationOptions.modificationOptions.sampleCount *
 			                        _elevationOptions.modificationOptions.sampleCount;
+
 			_newVertexList = new List<Vector3>(sampleCountSquare);
 			_newNormalList = new List<Vector3>(sampleCountSquare);
 			_newUvList = new List<Vector2>(sampleCountSquare);
@@ -69,10 +69,13 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 				for (float x = 0; x < cap; x++) {
 					float x1 = tile.TileScale *
 					           (float)(Mathd.Lerp(tile.Rect.Min.x, tile.Rect.Max.x, x / cap) - tile.Rect.Center.x);
+
 					float y1 = tile.TileScale *
 					           (float)(Mathd.Lerp(tile.Rect.Min.y, tile.Rect.Max.y, y / cap) - tile.Rect.Center.y);
+
 					float x2 = tile.TileScale * (float)(Mathd.Lerp(tile.Rect.Min.x, tile.Rect.Max.x, (x + 1) / cap) -
 					                                    tile.Rect.Center.x);
+
 					float y2 = tile.TileScale * (float)(Mathd.Lerp(tile.Rect.Min.y, tile.Rect.Max.y, (y + 1) / cap) -
 					                                    tile.Rect.Center.y);
 
@@ -119,7 +122,6 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 			mesh.SetTriangles(_newTriangleList, 0);
 			mesh.RecalculateBounds();
 		}
-
 
 		/// <summary>
 		/// Creates the non-flat terrain mesh, using a grid by defined resolution (_sampleCount). Vertex order goes right & up. Normals are calculated manually and UV map is fitted/stretched 1-1.
@@ -179,6 +181,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 						_currentTileMeshData.Vertices[(int)(y * cap + x) * 6 + 2] -
 						_currentTileMeshData.Vertices[(int)(y * cap + x) * 6]
 					);
+
 					_currentTileMeshData.Normals[(int)(y * cap + x) * 6 + 0] = _newDir;
 					_currentTileMeshData.Normals[(int)(y * cap + x) * 6 + 1] = _newDir;
 					_currentTileMeshData.Normals[(int)(y * cap + x) * 6 + 2] = _newDir;
@@ -189,6 +192,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 						_currentTileMeshData.Vertices[(int)(y * cap + x) * 6 + 5] -
 						_currentTileMeshData.Vertices[(int)(y * cap + x) * 6 + 3]
 					);
+
 					_currentTileMeshData.Normals[(int)(y * cap + x) * 6 + 3] = _newDir;
 					_currentTileMeshData.Normals[(int)(y * cap + x) * 6 + 4] = _newDir;
 					_currentTileMeshData.Normals[(int)(y * cap + x) * 6 + 5] = _newDir;
@@ -225,6 +229,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 					0,
 					_currentTileMeshData.Vertices[i].z
 				);
+
 				_currentTileMeshData.Normals[i] = Constants.Math.Vector3Up;
 			}
 
@@ -253,11 +258,13 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 						_stitchTargetMeshData.Vertices[6 * cap * (cap - 1) + 6 * i + 2].y,
 						mesh.Vertices[6 * i].z
 					);
+
 					mesh.Vertices[6 * i + 1] = new Vector3(
 						mesh.Vertices[6 * i + 1].x,
 						_stitchTargetMeshData.Vertices[6 * cap * (cap - 1) + 6 * i + 4].y,
 						mesh.Vertices[6 * i + 1].z
 					);
+
 					mesh.Vertices[6 * i + 3] = new Vector3(
 						mesh.Vertices[6 * i + 3].x,
 						_stitchTargetMeshData.Vertices[6 * cap * (cap - 1) + 6 * i + 4].y,
@@ -279,11 +286,13 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 						_stitchTargetMeshData.Vertices[6 * i].y,
 						mesh.Vertices[6 * cap * (cap - 1) + 6 * i + 2].z
 					);
+
 					mesh.Vertices[6 * cap * (cap - 1) + 6 * i + 5] = new Vector3(
 						mesh.Vertices[6 * cap * (cap - 1) + 6 * i + 5].x,
 						_stitchTargetMeshData.Vertices[6 * i].y,
 						mesh.Vertices[6 * cap * (cap - 1) + 6 * i + 5].z
 					);
+
 					mesh.Vertices[6 * cap * (cap - 1) + 6 * i + 4] = new Vector3(
 						mesh.Vertices[6 * cap * (cap - 1) + 6 * i + 4].x,
 						_stitchTargetMeshData.Vertices[6 * i + 3].y,

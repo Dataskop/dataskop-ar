@@ -74,6 +74,7 @@ namespace Mapbox.Unity.Map.TileProviders {
 			bool dispose = false;
 			dispose = tile.X > _currentTile.X + _rangeTileProviderOptions.disposeBuffer ||
 			          tile.X < _currentTile.X - _rangeTileProviderOptions.disposeBuffer;
+
 			dispose = dispose || tile.Y > _currentTile.Y + _rangeTileProviderOptions.disposeBuffer ||
 			          tile.Y < _currentTile.Y - _rangeTileProviderOptions.disposeBuffer;
 

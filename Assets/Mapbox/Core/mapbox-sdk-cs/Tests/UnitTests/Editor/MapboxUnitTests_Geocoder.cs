@@ -41,7 +41,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			Assert.AreEqual(_reverseResponse, reverseReserialized);
 		}
 
-
 		[Test]
 		public void SerializesAndDeserializesForward() {
 			// First, deserialize the example response

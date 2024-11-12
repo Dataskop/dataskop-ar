@@ -10,7 +10,6 @@ namespace Mapbox.Utils {
 	using System.Collections.Generic;
 	using System.Text;
 
-
 	/// <summary>
 	/// A set of Unix Timestamp utils.
 	/// </summary>
@@ -26,7 +25,6 @@ namespace Mapbox.Utils {
 		public static double To(DateTime date) {
 			return date.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
 		}
-
 
 		/// <summary>
 		/// Convert from Unitx timestamp to DateTime. Uses TimeSpan.FromSeconds to caluclate offset since epoch 0

@@ -3,7 +3,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 	using NUnit.Framework;
 	using Unity.Location;
 
-
 	[TestFixture]
 	internal class AngleSmoothingTest {
 
@@ -21,7 +20,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			noop.Add(359.99);
 			Assert.AreEqual(359.99d, noop.Calculate(), opName + "did modify data");
 		}
-
 
 		[Test]
 		public void Average() {
@@ -43,7 +41,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			avg.Add(100);
 			Assert.AreEqual(140d, avg.Calculate(), opName + "internal default buffer of 5 did not roll over correctly");
 		}
-
 
 		[Test]
 		public void LowPass() {
@@ -85,7 +82,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			lp.Add(320);
 			Assert.AreEqual(344.02d, lp.Calculate(), opName + "did not smooth back across '0' as expected");
 		}
-
 
 		[Test]
 		public void Weighted() {

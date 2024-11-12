@@ -25,7 +25,6 @@ namespace Mapbox.Unity.MeshGeneration.Factories {
 		[Range(1, 10)]
 		private float UpdateFrequency = 2;
 
-
 		private Directions _directions;
 		private int _counter;
 
@@ -71,7 +70,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories {
 				wp[i] = _waypoints[i].GetGeoPosition(_map.CenterMercator, _map.WorldRelativeScale);
 			}
 
-			DirectionResource _directionResource = new DirectionResource(wp, RoutingProfile.Driving);
+			DirectionResource _directionResource = new(wp, RoutingProfile.Driving);
 			_directionResource.Steps = true;
 			_directions.Query(_directionResource, HandleDirectionsResponse);
 		}
@@ -99,8 +98,8 @@ namespace Mapbox.Unity.MeshGeneration.Factories {
 				return;
 			}
 
-			MeshData meshData = new MeshData();
-			List<Vector3> dat = new List<Vector3>();
+			MeshData meshData = new();
+			List<Vector3> dat = new();
 
 			foreach (Vector2d point in response.Routes[0].Geometry) {
 				dat.Add(
@@ -109,7 +108,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories {
 				);
 			}
 
-			VectorFeatureUnity feat = new VectorFeatureUnity();
+			VectorFeatureUnity feat = new();
 			feat.Points.Add(dat);
 
 			foreach (MeshModifier mod in MeshModifiers.Where(x => x.Active)) {

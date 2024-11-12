@@ -19,7 +19,6 @@ namespace Mapbox.Unity.Utilities {
 
 		private string _log;
 
-
 		protected virtual void Awake() {
 			if (_instance != null) {
 				Debug.LogError("Duplicate singleton!", gameObject);
@@ -44,7 +43,6 @@ namespace Mapbox.Unity.Utilities {
 			_logText.text = _log;
 			_logScroll.verticalNormalizedPosition = 0f;
 		}
-
 
 		public void ToggleMenu() {
 			_menu.SetActive(!_menu.activeSelf);

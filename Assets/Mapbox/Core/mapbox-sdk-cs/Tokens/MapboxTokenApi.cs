@@ -29,15 +29,12 @@ namespace Mapbox.Tokens {
 
 	}
 
-
 	/// <summary>
 	/// Wrapper class to retrieve details about a token
 	/// </summary>
 	public class MapboxTokenApi {
 
-		public MapboxTokenApi() {
-		}
-
+		public MapboxTokenApi() { }
 
 		// use internal FileSource without(!) passing access token from config into constructor
 		// otherwise access token would be appended to url twice
@@ -45,7 +42,6 @@ namespace Mapbox.Tokens {
 		// if we should ever implement other API methods: creating, deleting, updating ... tokens
 		// we will need another FileSource with the token from the config
 		private FileSource _fs;
-
 
 		public void Retrieve(Func<string> skuToken, string accessToken, Action<MapboxToken> callback) {
 			if (_fs == null) {
@@ -63,6 +59,7 @@ namespace Mapbox.Tokens {
 								ErrorMessage = response.ExceptionsAsString
 							}
 						);
+
 						return;
 
 					}

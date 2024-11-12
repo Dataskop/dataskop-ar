@@ -33,6 +33,7 @@ namespace Mapbox.Unity.Location {
 			_currentLocation.UserHeading = _targetTransform.eulerAngles.y;
 			_currentLocation.LatitudeLongitude =
 				_targetTransform.GetGeoPosition(_map.CenterMercator, _map.WorldRelativeScale);
+
 			_currentLocation.Accuracy = _accuracy;
 			_currentLocation.Timestamp = UnixTimestampUtils.To(DateTime.UtcNow);
 			_currentLocation.IsLocationUpdated = true;

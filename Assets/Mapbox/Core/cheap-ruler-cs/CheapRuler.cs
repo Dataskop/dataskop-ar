@@ -2,7 +2,6 @@
 
 	using System;
 
-
 	public enum CheapRulerUnits {
 
 		Kilometers,
@@ -19,7 +18,6 @@
 
 		private double _kx;
 		private double _ky;
-
 
 		/// <summary>
 		/// Creates a ruler object that will approximate measurements around the given latitude. Units are one of: kilometers
@@ -67,7 +65,6 @@
 			_ky = factor * (111.13209 - 0.56605 * cos2 + 0.0012 * cos4);
 		}
 
-
 		/// <summary>
 		/// Creates a ruler object from tile coordinates.
 		/// </summary>
@@ -81,7 +78,6 @@
 			return new CheapRuler(lat, units);
 		}
 
-
 		/// <summary>
 		/// Given two points returns the distance.
 		/// </summary>
@@ -93,7 +89,6 @@
 			double dy = (a[1] - b[1]) * _ky;
 			return Math.Sqrt(dx * dx + dy * dy);
 		}
-
 
 		/// <summary>
 		/// Returns the bearing between two points in angles.
@@ -118,7 +113,6 @@
 			return bearing;
 		}
 
-
 		/// <summary>
 		/// Returns a new point given distance and bearing from the starting point.
 		/// </summary>
@@ -134,7 +128,6 @@
 				, Math.Sin(a) * distance
 			);
 		}
-
 
 		/// <summary>
 		/// Returns a new point given easting and northing offsets (in ruler units) from the starting point.

@@ -108,6 +108,7 @@
 					tooltip =
 						"Texturing style for feature; choose from sample style or create your own by choosing Custom. "
 				};
+
 				SerializedProperty styleType = property.FindPropertyRelative("style");
 
 				GUIContent[] styleTypeGuiContent = new GUIContent[styleType.enumDisplayNames.Length];
@@ -147,6 +148,7 @@
 						new GUIContent(" ", thumbnailTexture), Constants.GUI.Styles.EDITOR_TEXTURE_THUMBNAIL_STYLE,
 						GUILayout.Height(60), GUILayout.Width(EditorGUIUtility.labelWidth - 60)
 					);
+
 					EditorGUILayout.TextArea(descriptionLabel, (GUIStyle)"wordWrappedLabel");
 
 					GUILayout.EndHorizontal();
@@ -174,21 +176,25 @@
 							samplePaletteType.enumValueIndex = EditorGUILayout.Popup(
 								samplePaletteTypeLabel, samplePaletteType.enumValueIndex, samplePaletteTypeGuiContent
 							);
+
 							break;
 						case StyleTypes.Light:
 							property.FindPropertyRelative("lightStyleOpacity").floatValue = EditorGUILayout.Slider(
 								"Opacity", property.FindPropertyRelative("lightStyleOpacity").floatValue, 0.0f, 1.0f
 							);
+
 							break;
 						case StyleTypes.Dark:
 							property.FindPropertyRelative("darkStyleOpacity").floatValue = EditorGUILayout.Slider(
 								"Opacity", property.FindPropertyRelative("darkStyleOpacity").floatValue, 0.0f, 1.0f
 							);
+
 							break;
 						case StyleTypes.Color:
 							property.FindPropertyRelative("colorStyleColor").colorValue = EditorGUILayout.ColorField(
 								"Color", property.FindPropertyRelative("colorStyleColor").colorValue
 							);
+
 							break;
 						default:
 							break;

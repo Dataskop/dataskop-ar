@@ -7,8 +7,6 @@
 	///     Links to custom drawer: 
 	///     <see cref="T:Mapbox.Editor.StyleSearchAttributeDrawer"/>. 
 	/// </summary>
-	public class StyleSearchAttribute : PropertyAttribute {
-
-	}
+	public class StyleSearchAttribute : PropertyAttribute { }
 
 }

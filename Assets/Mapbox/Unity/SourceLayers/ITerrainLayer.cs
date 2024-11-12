@@ -63,7 +63,6 @@ namespace Mapbox.Unity.Map {
 		/// </summary>
 		void DisableSideWalls();
 
-
 		/// <summary>
 		/// Adds the terrain mesh GameObject to a Unity layer.
 		/// </summary>
@@ -90,7 +89,6 @@ namespace Mapbox.Unity.Map {
 			float factor = 1, int layerId = 0);
 
 	}
-
 
 	public interface IGlobeTerrainLayer : ITerrainLayer {
 

@@ -68,9 +68,7 @@ namespace SQLite4Unity3d {
 		public IEnumerable<TableMapping.Column> Columns { get; protected set; }
 
 		protected NotNullConstraintViolationException(SQLite3.Result r, string message)
-			: this(r, message, null, null) {
-
-		}
+			: this(r, message, null, null) { }
 
 		protected NotNullConstraintViolationException(SQLite3.Result r, string message, TableMapping mapping,
 			object obj)
@@ -167,8 +165,7 @@ namespace SQLite4Unity3d {
 		/// down sides, when setting storeDateTimeAsTicks = true.
 		/// </param>
 		public SQLiteConnection(string databasePath, bool storeDateTimeAsTicks = false)
-			: this(databasePath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create, storeDateTimeAsTicks) {
-		}
+			: this(databasePath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create, storeDateTimeAsTicks) { }
 
 		/// <summary>
 		/// Constructs a new SQLiteConnection and opens a SQLite database specified by databasePath.
@@ -404,6 +401,7 @@ namespace SQLite4Unity3d {
 							Unique = i.Unique,
 							Columns = new List<IndexedColumn>()
 						};
+
 						indexes.Add(iname, iinfo);
 					}
 
@@ -443,6 +441,7 @@ namespace SQLite4Unity3d {
 			string sql = string.Format(
 				sqlFormat, tableName, string.Join("\", \"", columnNames), unique ? "unique" : "", indexName
 			);
+
 			return Execute(sql);
 		}
 
@@ -563,6 +562,7 @@ namespace SQLite4Unity3d {
 			foreach (TableMapping.Column p in toBeAdded) {
 				string addCol = "alter table \"" + map.TableName + "\" add column " +
 				                Orm.SqlDecl(p, StoreDateTimeAsTicks);
+
 				Execute(addCol);
 			}
 		}
@@ -1094,6 +1094,7 @@ namespace SQLite4Unity3d {
 					}
 				}
 			);
+
 			return c;
 		}
 
@@ -1119,6 +1120,7 @@ namespace SQLite4Unity3d {
 					}
 				}
 			);
+
 			return c;
 		}
 
@@ -1144,6 +1146,7 @@ namespace SQLite4Unity3d {
 					}
 				}
 			);
+
 			return c;
 		}
 
@@ -1383,8 +1386,10 @@ namespace SQLite4Unity3d {
 			IEnumerable<TableMapping.Column> cols = from p in map.Columns
 				where p != pk
 				select p;
+
 			IEnumerable<object> vals = from c in cols
 				select c.GetValue(obj);
+
 			List<object> ps = new(vals);
 			ps.Add(pk.GetValue(obj));
 			string q = string.Format(
@@ -1429,6 +1434,7 @@ namespace SQLite4Unity3d {
 					}
 				}
 			);
+
 			return c;
 		}
 
@@ -1583,14 +1589,10 @@ namespace SQLite4Unity3d {
 	}
 
 	[AttributeUsage(AttributeTargets.Property)]
-	public class PrimaryKeyAttribute : Attribute {
-
-	}
+	public class PrimaryKeyAttribute : Attribute { }
 
 	[AttributeUsage(AttributeTargets.Property)]
-	public class AutoIncrementAttribute : Attribute {
-
-	}
+	public class AutoIncrementAttribute : Attribute { }
 
 	[AttributeUsage(AttributeTargets.Property)]
 	public class IndexedAttribute : Attribute {
@@ -1601,8 +1603,7 @@ namespace SQLite4Unity3d {
 
 		public virtual bool Unique { get; set; }
 
-		public IndexedAttribute() {
-		}
+		public IndexedAttribute() { }
 
 		public IndexedAttribute(string name, int order) {
 			Name = name;
@@ -1612,9 +1613,7 @@ namespace SQLite4Unity3d {
 	}
 
 	[AttributeUsage(AttributeTargets.Property)]
-	public class IgnoreAttribute : Attribute {
-
-	}
+	public class IgnoreAttribute : Attribute { }
 
 	[AttributeUsage(AttributeTargets.Property)]
 	public class UniqueAttribute : IndexedAttribute {
@@ -1628,11 +1627,9 @@ namespace SQLite4Unity3d {
 			}
 		}
 
-		public UniqueAttribute() : base() {
-		}
+		public UniqueAttribute() : base() { }
 
-		public UniqueAttribute(string name, int order) : base(name, order) {
-		}
+		public UniqueAttribute(string name, int order) : base(name, order) { }
 
 	}
 
@@ -1659,9 +1656,7 @@ namespace SQLite4Unity3d {
 	}
 
 	[AttributeUsage(AttributeTargets.Property)]
-	public class NotNullAttribute : Attribute {
-
-	}
+	public class NotNullAttribute : Attribute { }
 
 	public class TableMapping {
 
@@ -1875,6 +1870,7 @@ namespace SQLite4Unity3d {
 
 				bool isAuto = Orm.IsAutoInc(prop) ||
 				              IsPK && (createFlags & CreateFlags.AutoIncPK) == CreateFlags.AutoIncPK;
+
 				IsAutoGuid = isAuto && ColumnType == typeof(Guid);
 				IsAutoInc = isAuto && !IsAutoGuid || isAuto;
 
@@ -2167,8 +2163,7 @@ namespace SQLite4Unity3d {
 					SQLite3.ColType colType = SQLite3.ColumnType(stmt, 0);
 					val = (T)ReadCol(stmt, 0, colType, typeof(T));
 				}
-				else if (r == SQLite3.Result.Done) {
-				}
+				else if (r == SQLite3.Result.Done) { }
 				else {
 					throw SQLiteException.New(r, SQLite3.GetErrmsg(_conn.Handle));
 				}
@@ -2610,6 +2605,7 @@ namespace SQLite4Unity3d {
 							Ascending = asc
 						}
 					);
+
 					return q;
 				}
 				else {
@@ -2642,6 +2638,7 @@ namespace SQLite4Unity3d {
 				_joinInnerKeySelector = innerKeySelector,
 				_joinSelector = resultSelector
 			};
+
 			return q;
 		}
 
@@ -2668,6 +2665,7 @@ namespace SQLite4Unity3d {
 					string t = string.Join(
 						", ", _orderBys.Select(o => "\"" + o.ColumnName + "\"" + (o.Ascending ? "" : " desc")).ToArray()
 					);
+
 					cmdText += " order by " + t;
 				}
 
@@ -3078,7 +3076,6 @@ namespace SQLite4Unity3d {
 			NoticeRecoverRollback = Result.Notice | 2 << 8
 
 		}
-
 
 		public enum ConfigOption : int {
 

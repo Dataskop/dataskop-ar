@@ -19,21 +19,13 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 	/// </summary>
 	public class GameObjectModifier : ModifierBase {
 
-		public virtual void Run(VectorEntity ve, UnityTile tile) {
+		public virtual void Run(VectorEntity ve, UnityTile tile) { }
 
-		}
+		public virtual void OnPoolItem(VectorEntity vectorEntity) { }
 
-		public virtual void OnPoolItem(VectorEntity vectorEntity) {
+		public virtual void Clear() { }
 
-		}
-
-		public virtual void Clear() {
-
-		}
-
-		public virtual void ClearCaches() {
-
-		}
+		public virtual void ClearCaches() { }
 
 	}
 

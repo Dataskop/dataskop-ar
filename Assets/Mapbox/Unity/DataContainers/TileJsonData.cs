@@ -117,6 +117,7 @@
 							layerName
 						}
 					);
+
 					LayerDisplayNames.Add(layerName);
 				}
 

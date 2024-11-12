@@ -2,7 +2,6 @@ namespace Mapbox.Unity.Location {
 
 	using UnityEngine;
 
-
 	public interface IMapboxLocationService {
 
 		bool isEnabledByUser { get; }

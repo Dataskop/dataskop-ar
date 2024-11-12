@@ -5,7 +5,6 @@ namespace Mapbox.Unity.UnitTest {
 	using NUnit.Framework;
 	using Utils;
 
-
 	[TestFixture]
 	internal class CircularBufferTest {
 

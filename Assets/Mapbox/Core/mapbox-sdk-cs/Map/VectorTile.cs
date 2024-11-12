@@ -67,6 +67,7 @@ namespace Mapbox.Map {
 				UnityEngine.Debug.LogWarning(
 					"Style Id or Modified Time cannot be empty for style optimized tilesets. Switching to regular tilesets!"
 				);
+
 				_isStyleOptimized = false;
 			}
 			else {
@@ -82,7 +83,6 @@ namespace Mapbox.Map {
 		//{
 		//    Dispose(false);
 		//}
-
 
 		public void Dispose() {
 			Dispose(true);
@@ -102,7 +102,6 @@ namespace Mapbox.Map {
 			}
 		}
 
-
 		/// <summary>
 		/// <para>Gets the vector in a GeoJson format.</para>
 		/// <para>
@@ -118,7 +117,6 @@ namespace Mapbox.Map {
 		/// </code>
 		/// </example>
 		public string GeoJson => data.ToGeoJson((ulong)Id.Z, (ulong)Id.X, (ulong)Id.Y, 0);
-
 
 		/// <summary>
 		/// Gets all availble layer names.
@@ -160,14 +158,12 @@ namespace Mapbox.Map {
 			return data.GetLayer(layerName);
 		}
 
-
 		internal override TileResource MakeTileResource(string tilesetId) {
 
 			return _isStyleOptimized ?
 				TileResource.MakeStyleOptimizedVector(Id, tilesetId, _optimizedStyleId, _modifiedDate)
 				: TileResource.MakeVector(Id, tilesetId);
 		}
-
 
 		internal override bool ParseTileData(byte[] data) {
 			try {

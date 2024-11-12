@@ -117,6 +117,7 @@ namespace Dataskop.Entities.Visualizations {
 			float newSize = BubbleUtils.CalculateRadius(
 				value, minAttributeValue, maxAttributeValue, minScale, maxScale
 			);
+
 			Vector3 newBubbleScale = new(newSize, newSize, newSize);
 
 			Transform visTransform = visRenderer.transform;

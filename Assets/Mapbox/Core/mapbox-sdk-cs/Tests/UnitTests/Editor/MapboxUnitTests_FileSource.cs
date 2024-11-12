@@ -17,14 +17,12 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 	using System.Collections;
 #endif
 
-
 	[TestFixture]
 	internal class FileSourceTest {
 
 		private const string _url = "https://api.mapbox.com/geocoding/v5/mapbox.places/helsinki.json";
 		private FileSource _fs;
 		private int _timeout = 10;
-
 
 		[SetUp]
 		public void SetUp() {
@@ -33,13 +31,13 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 				Unity.MapboxAccess.Instance.Configuration.GetMapsSkuToken,
 				Unity.MapboxAccess.Instance.Configuration.AccessToken
 			);
+
 			_timeout = Unity.MapboxAccess.Instance.Configuration.DefaultTimeout;
 #else
 			// when run outside of Unity FileSource gets the access token from environment variable 'MAPBOX_ACCESS_TOKEN'
 			_fs = new FileSource();
 #endif
 		}
-
 
 #if !UNITY_5_6_OR_NEWER
 		[Test]
@@ -51,7 +49,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			);
 		}
 #endif
-
 
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]
@@ -77,7 +74,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			Assert.IsNotNull(data, "No data received from the servers.");
 		}
 
-
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]
 		public IEnumerator MultipleRequests()
@@ -101,7 +97,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 
 			Assert.AreEqual(count, 3, "Should have received 3 replies.");
 		}
-
 
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]
@@ -158,7 +153,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 #endif
 		}
 
-
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]
 		public IEnumerator RequestDnsError()
@@ -189,7 +183,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 #endif
 		}
 
-
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]
 		public IEnumerator RequestForbidden()
@@ -218,7 +211,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			_fs.WaitForAllRequests();
 #endif
 		}
-
 
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]

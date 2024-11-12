@@ -26,7 +26,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 		private FileSource _fs;
 		private int _timeout = 10;
 
-
 		[SetUp]
 		public void SetUp() {
 #if UNITY_5_6_OR_NEWER
@@ -34,6 +33,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 				Unity.MapboxAccess.Instance.Configuration.GetMapsSkuToken,
 				Unity.MapboxAccess.Instance.Configuration.AccessToken
 			);
+
 			_timeout = Unity.MapboxAccess.Instance.Configuration.DefaultTimeout;
 #else
 			// when run outside of Unity FileSource gets the access token from environment variable 'MAPBOX_ACCESS_TOKEN'
@@ -41,11 +41,9 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 #endif
 		}
 
-
 		[Test]
 		public void Empty() {
-			byte[] buffer = new byte[] {
-			};
+			byte[] buffer = new byte[] { };
 			Assert.AreEqual(buffer, Compression.Decompress(buffer));
 		}
 
@@ -62,8 +60,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 		[Test]
 		public void Corrupt() {
 #endif
-			byte[] buffer = new byte[] {
-			};
+			byte[] buffer = new byte[] { };
 
 			// Vector tiles are compressed.
 			_fs.Request(
@@ -99,7 +96,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			Assert.AreEqual(buffer, Compression.Decompress(buffer));
 		}
 
-
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]
 		public IEnumerator Decompress() {
@@ -107,8 +103,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 		[Test]
 		public void Decompress() {
 #endif
-			byte[] buffer = new byte[] {
-			};
+			byte[] buffer = new byte[] { };
 
 			// Vector tiles are compressed.
 			_fs.Request(
@@ -155,6 +150,5 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 	}
 
 }
-
 
 #endif

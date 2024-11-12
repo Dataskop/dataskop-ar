@@ -51,7 +51,6 @@ namespace Mapbox.Editor {
 		private static ScenesList _prefabList;
 		private static GUIContent[] _prefabContent;
 
-
 		//styles
 		private GUISkin _skin;
 		private Color _defaultContentColor;
@@ -78,7 +77,6 @@ namespace Mapbox.Editor {
 		private GUIStyle _scrollViewStyle;
 
 		private GUIStyle _sampleButtonStyle;
-
 
 		[DidReloadScripts]
 		public static void ShowWindowOnImport() {
@@ -127,6 +125,7 @@ namespace Mapbox.Editor {
 					AutoRefreshCache = _autoRefreshCache,
 					DefaultTimeout = _webRequestTimeout
 				};
+
 				string json = JsonUtility.ToJson(_mapboxConfig);
 				File.WriteAllText(_configurationFile, json);
 				AssetDatabase.Refresh();
@@ -188,7 +187,7 @@ namespace Mapbox.Editor {
 		private static GUIContent[] LoadContent(ScenesList list) {
 
 			//exclude scenes with no image data
-			List<SceneData> content = new List<SceneData>();
+			List<SceneData> content = new();
 
 			if (list != null) {
 				for (int i = 0; i < list.SceneList.Length; i++) {
@@ -212,7 +211,6 @@ namespace Mapbox.Editor {
 
 		}
 
-
 		/// <summary>
 		/// Unity Events
 		/// </summary>
@@ -228,18 +226,18 @@ namespace Mapbox.Editor {
 			AssetDatabase.Refresh();
 		}
 
-
 		/// <summary>
 		/// Mapbox access
 		/// </summary>
 		private static void SubmitConfiguration() {
-			MapboxConfiguration mapboxConfiguration = new MapboxConfiguration {
+			MapboxConfiguration mapboxConfiguration = new() {
 				AccessToken = _accessToken,
 				MemoryCacheSize = (uint)_memoryCacheSize,
 				FileCacheSize = (uint)_fileCacheSize,
 				AutoRefreshCache = _autoRefreshCache,
 				DefaultTimeout = _webRequestTimeout
 			};
+
 			_mapboxAccess.SetConfiguration(mapboxConfiguration, false);
 			_validating = true;
 		}
@@ -254,7 +252,6 @@ namespace Mapbox.Editor {
 			string json = JsonUtility.ToJson(_mapboxAccess.Configuration);
 			File.WriteAllText(_configurationFile, json);
 		}
-
 
 		private void OnGUI() {
 			//only run after init
@@ -516,6 +513,7 @@ namespace Mapbox.Editor {
 						"Automatically update tiles in the local ambient cache if there is a newer version available online. ATTENTION: for every tile displayed (even a cached one) a webrequest needs to be made to check for updates."
 					), _autoRefreshCache
 				);
+
 				_webRequestTimeout = EditorGUILayout.IntField("Default Web Request Timeout (s)", _webRequestTimeout);
 
 				EditorGUILayout.BeginHorizontal(_horizontalGroup);
@@ -550,6 +548,7 @@ namespace Mapbox.Editor {
 				"Choose a starting scene to see each location-based prefab in action, or go to the prefabs folder and add them to your existing scene.",
 				_bodyStyle
 			);
+
 			EditorGUILayout.EndHorizontal();
 
 			int rowCount = 4;

@@ -8,7 +8,6 @@
 	using System.Collections;
 	using System.Linq;
 
-
 	public class CachingWebFileSource : IFileSource, IDisposable {
 
 #if MAPBOX_DEBUG_CACHE
@@ -20,7 +19,6 @@
 		private Func<string> _getMapsSkuToken;
 		private bool _autoRefreshCache;
 
-
 		public CachingWebFileSource(string accessToken, Func<string> getMapsSkuToken, bool autoRefreshCache) {
 #if MAPBOX_DEBUG_CACHE
 			_className = this.GetType().Name;
@@ -29,7 +27,6 @@
 			_getMapsSkuToken = getMapsSkuToken;
 			_autoRefreshCache = autoRefreshCache;
 		}
-
 
 		#region idisposable
 
@@ -61,7 +58,6 @@
 
 		#endregion
 
-
 		/// <summary>
 		/// Add an ICache instance
 		/// </summary>
@@ -77,7 +73,6 @@
 			return this;
 		}
 
-
 		/// <summary>
 		/// Clear all caches
 		/// </summary>
@@ -87,13 +82,11 @@
 			}
 		}
 
-
 		public void ReInit() {
 			foreach (ICache cache in _caches) {
 				cache.ReInit();
 			}
 		}
-
 
 		public IAsyncRequest Request(
 			string uri
@@ -118,7 +111,7 @@
 				}
 			}
 
-			UriBuilder uriBuilder = new UriBuilder(uri);
+			UriBuilder uriBuilder = new(uri);
 
 			if (!string.IsNullOrEmpty(_accessToken)) {
 				string accessTokenQuery = "access_token=" + _accessToken;
@@ -209,7 +202,6 @@
 			}
 		}
 
-
 		private IAsyncRequest requestTileAndCache(string url, string tilesetId, CanonicalTileId tileId, int timeout,
 			Action<Response> callback) {
 			return IAsyncRequestFactory.CreateRequest(
@@ -257,22 +249,17 @@
 			);
 		}
 
-
 		private class MemoryCacheAsyncRequest : IAsyncRequest {
 
 			public string RequestUrl { get; private set; }
-
 
 			public MemoryCacheAsyncRequest(string requestUrl) {
 				RequestUrl = requestUrl;
 			}
 
-
 			public bool IsCompleted => true;
 
-
 			public HttpRequestType RequestType => HttpRequestType.Get;
-
 
 			public void Cancel() {
 				// Empty. We can't cancel an instantaneous response.

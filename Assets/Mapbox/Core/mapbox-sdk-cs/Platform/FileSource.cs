@@ -54,7 +54,6 @@ namespace Mapbox.Platform {
 		private DateTime? XRateLimitReset;
 #pragma warning restore 0414
 
-
 		public FileSource(Func<string> getMapsSkuToken, string acessToken = null) {
 			_getMapsSkuToken = getMapsSkuToken;
 
@@ -82,7 +81,7 @@ namespace Mapbox.Platform {
 			, string tilesetId = null
 		) {
 			if (!string.IsNullOrEmpty(_accessToken)) {
-				UriBuilder uriBuilder = new UriBuilder(url);
+				UriBuilder uriBuilder = new(url);
 				string accessTokenQuery = "access_token=" + _accessToken;
 				string skuToken = "sku=" + _getMapsSkuToken();
 
@@ -110,7 +109,6 @@ namespace Mapbox.Platform {
 
 			return proxyResponse(url, callback, timeout, tileId, tilesetId);
 		}
-
 
 		// TODO: look at requests and implement throttling if needed
 		//private IEnumerator<IAsyncRequest> proxyResponse(string url, Action<Response> callback) {
@@ -166,7 +164,6 @@ namespace Mapbox.Platform {
 			return request;
 		}
 
-
 #if UNITY_5_3_OR_NEWER
 		/// <summary>
 		///     Block until all the requests are processed.
@@ -193,7 +190,6 @@ namespace Mapbox.Platform {
 			}
 		}
 #endif
-
 
 #if !UNITY_5_3_OR_NEWER
 		/// <summary>

@@ -44,7 +44,7 @@ namespace Mapbox.Map {
 		/// </code>
 		/// </example>
 		public static HashSet<CanonicalTileId> Get(Vector2dBounds bounds, int zoom) {
-			HashSet<CanonicalTileId> tiles = new HashSet<CanonicalTileId>();
+			HashSet<CanonicalTileId> tiles = new();
 
 			if (bounds.IsEmpty() ||
 			    bounds.South > Constants.LatitudeMax ||
@@ -70,7 +70,6 @@ namespace Mapbox.Map {
 			return tiles;
 		}
 
-
 		public static HashSet<UnwrappedTileId> GetWithWebMerc(Vector2dBounds bounds, int zoom) {
 			HashSet<UnwrappedTileId> tiles = new();
 			HashSet<CanonicalTileId> canonicalTiles = new();
@@ -83,6 +82,7 @@ namespace Mapbox.Map {
 			Vector2d swWebMerc = new(
 				Math.Max(bounds.SouthWest.x, -Constants.WebMercMax), Math.Max(bounds.SouthWest.y, -Constants.WebMercMax)
 			);
+
 			Vector2d neWebMerc = new(
 				Math.Min(bounds.NorthEast.x, Constants.WebMercMax), Math.Min(bounds.NorthEast.y, Constants.WebMercMax)
 			);
@@ -105,7 +105,6 @@ namespace Mapbox.Map {
 
 			return tiles;
 		}
-
 
 		/// <summary> Converts a coordinate to a tile identifier. </summary>
 		/// <param name="coord"> Geographic coordinate. </param>
@@ -133,7 +132,6 @@ namespace Mapbox.Map {
 
 			return new UnwrappedTileId(zoom, x, y);
 		}
-
 
 		/// <summary>
 		///  Converts a Web Mercator coordinate to a tile identifier. https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Derivation_of_tile_names

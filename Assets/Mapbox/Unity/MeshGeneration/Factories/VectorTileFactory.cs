@@ -84,6 +84,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories {
 
 			bool isPrimitiveTypeValidForBuidingIds = subLayer.coreOptions.geometryType == VectorPrimitiveType.Polygon ||
 			                                         subLayer.coreOptions.geometryType == VectorPrimitiveType.Custom;
+
 			bool isSourceValidForBuildingIds = _properties.sourceType != VectorSourceType.MapboxStreets;
 
 			subLayer.honorBuildingIdSetting = isPrimitiveTypeValidForBuidingIds && isSourceValidForBuildingIds;
@@ -141,6 +142,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories {
 			if (_layerBuilder.ContainsKey(subLayer.Key)) {
 				LayerVisualizerBase visualizer =
 					_layerBuilder[subLayer.Key].Find((obj) => obj.SubLayerProperties == subLayer);
+
 				return visualizer;
 			}
 
@@ -201,6 +203,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories {
 				useOptimizedStyle = _properties.useOptimizedStyle,
 				style = _properties.optimizedStyle
 			};
+
 			DataFetcher.FetchData(parameters);
 		}
 
@@ -275,9 +278,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories {
 			base.OnErrorOccurred(tile, e);
 		}
 
-		protected override void OnPostProcess(UnityTile tile) {
-
-		}
+		protected override void OnPostProcess(UnityTile tile) { }
 
 		public override void UnbindEvents() {
 			base.UnbindEvents();

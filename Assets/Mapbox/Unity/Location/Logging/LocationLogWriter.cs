@@ -6,7 +6,6 @@ namespace Mapbox.Unity.Location {
 	using System.Text;
 	using UnityEngine;
 
-
 	/// <summary>
 	/// Writes location data into Application.persistentDataPath
 	/// </summary>
@@ -28,12 +27,10 @@ namespace Mapbox.Unity.Location {
 
 		}
 
-
 		private bool _disposed;
 		private FileStream _fileStream;
 		private TextWriter _textWriter;
 		private long _lineCount = 0;
-
 
 		#region idisposable
 
@@ -41,12 +38,10 @@ namespace Mapbox.Unity.Location {
 			Dispose(false);
 		}
 
-
 		public void Dispose() {
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
-
 
 		protected virtual void Dispose(bool disposeManagedResources) {
 			if (!_disposed) {
@@ -73,7 +68,6 @@ namespace Mapbox.Unity.Location {
 
 		#endregion
 
-
 		public void Write(Location location) {
 			string[] lineTokens = new string[] {
 				location.IsLocationServiceEnabled.ToString(), location.IsLocationServiceInitializing.ToString(),
@@ -97,7 +91,6 @@ namespace Mapbox.Unity.Location {
 			_textWriter.WriteLine(logMsg);
 			_textWriter.Flush();
 		}
-
 
 		private string nullableAsStr<T>(T? val, string formatString = null) where T : struct {
 			if (null == val && null == formatString) {

@@ -9,10 +9,8 @@
 		[JsonProperty("attribution")]
 		public string Attribution { get; set; }
 
-
 		[JsonProperty("autoscale")]
 		public bool AutoScale { get; set; }
-
 
 		private double[] _bounds;
 
@@ -30,10 +28,8 @@
 			}
 		}
 
-
 		[JsonIgnore]
 		public Vector2dBounds BoundsParsed { get; private set; }
-
 
 		private double[] _center;
 
@@ -50,7 +46,6 @@
 
 		[JsonIgnore]
 		public Vector2d CenterParsed { get; private set; }
-
 
 		private long? _created;
 
@@ -72,33 +67,26 @@
 			}
 		}
 
-
 		/// <summary>Concatenated tilesets don't have a created property </summary>
 		[JsonIgnore]
 		public DateTime? CreatedUtc { get; private set; }
 
-
 		[JsonProperty("description")]
 		public string Description { get; set; }
-
 
 		/// <summary>Can be empty</summary>
 		[JsonProperty("format")]
 		public string Format { get; set; }
 
-
 		/// <summary>Can be empty (for concatenated tilesets)</summary>
 		[JsonProperty("id")]
 		public string Id { get; set; }
 
-
 		[JsonProperty("maxzoom")]
 		public int MaxZoom { get; set; }
 
-
 		[JsonProperty("minzoom")]
 		public int MinZoom { get; set; }
-
 
 		private long? _modified;
 
@@ -120,40 +108,31 @@
 			}
 		}
 
-
 		/// <summary>Unmodified tilesets don't have a modfied property </summary>
 		[JsonIgnore]
 		public DateTime? ModifiedUtc { get; private set; }
 
-
 		[JsonProperty("name")]
 		public string Name { get; set; }
-
 
 		[JsonProperty("private")]
 		public bool Private { get; set; }
 
-
 		[JsonProperty("scheme")]
 		public string Scheme { get; set; }
-
 
 		/// <summary>Can be empty</summary>
 		[JsonProperty("source")]
 		public string Source { get; set; }
 
-
 		[JsonProperty("tilejson")]
 		public string TileJSONVersion { get; set; }
-
 
 		[JsonProperty("tiles")]
 		public string[] Tiles { get; set; }
 
-
 		[JsonProperty("vector_layers")]
 		public TileJSONObjectVectorLayer[] VectorLayers { get; set; }
-
 
 		/// <summary>Can be empty (for concatenated tilesets)</summary>
 		[JsonProperty("webpage")]

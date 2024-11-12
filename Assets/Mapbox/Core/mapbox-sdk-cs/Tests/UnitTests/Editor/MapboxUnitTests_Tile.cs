@@ -4,11 +4,9 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-
 // TODO: figure out how run tests outside of Unity with .NET framework, something like '#if !UNITY'
 
 #if UNITY_5_6_OR_NEWER
-
 
 namespace Mapbox.MapboxSdkCs.UnitTest {
 
@@ -20,12 +18,10 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 	using UnityEngine.TestTools;
 #endif
 
-
 	[TestFixture]
 	internal class TileTest {
 
 		private FileSource _fs;
-
 
 		[SetUp]
 		public void SetUp() {
@@ -39,7 +35,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			_fs = new FileSource();
 #endif
 		}
-
 
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]
@@ -67,7 +62,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 
 			Assert.Greater(tile.Data.Length, 1000);
 		}
-
 
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]

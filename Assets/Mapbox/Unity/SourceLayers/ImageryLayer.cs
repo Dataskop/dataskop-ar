@@ -37,14 +37,11 @@ namespace Mapbox.Unity.Map {
 
 		public ImagerySourceType LayerSource => _layerProperty.sourceType;
 
-		public ImageryLayer() {
-
-		}
+		public ImageryLayer() { }
 
 		public ImageryLayer(ImageryLayerProperties properties) {
 			_layerProperty = properties;
 		}
-
 
 		public void SetLayerSource(string imageSource) {
 			if (!string.IsNullOrEmpty(imageSource)) {

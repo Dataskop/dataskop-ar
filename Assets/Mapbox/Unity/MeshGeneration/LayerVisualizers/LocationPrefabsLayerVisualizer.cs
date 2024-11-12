@@ -186,6 +186,7 @@ namespace Mapbox.Unity.MeshGeneration.Interfaces {
 						Key = propertyName,
 						PropertyValue = concatenatedString
 					};
+
 					AddFilterToItem(item, filter);
 				}
 			}
@@ -210,6 +211,7 @@ namespace Mapbox.Unity.MeshGeneration.Interfaces {
 					Key = propertyName,
 					Min = item.density
 				};
+
 				AddFilterToItem(item, filter);
 			}
 		}
@@ -231,6 +233,7 @@ namespace Mapbox.Unity.MeshGeneration.Interfaces {
 					Key = propertyName,
 					PropertyValue = item.nameString
 				};
+
 				AddFilterToItem(item, filter);
 			}
 		}
@@ -340,6 +343,7 @@ namespace Mapbox.Unity.MeshGeneration.Interfaces {
 								coordinate, tile.CurrentZoom, tile.TileScale, layer.Extent
 							).ToVector3xz()
 						);
+
 						feature.Points.Add(latLonPoint);
 
 						//pass valid feature.Data to modifiers

@@ -28,7 +28,6 @@ namespace Mapbox.Unity.Map {
 			return new GeometryExtrusionWithAtlasOptions(this);
 		}
 
-
 		/// <summary>
 		/// Disable mesh extrusion for the features in this layer.
 		/// </summary>
@@ -208,9 +207,7 @@ namespace Mapbox.Unity.Map {
 		public float maximumHeight = 0f;
 		public float extrusionScaleFactor = 1f;
 
-		public GeometryExtrusionWithAtlasOptions() {
-
-		}
+		public GeometryExtrusionWithAtlasOptions() { }
 
 		public GeometryExtrusionWithAtlasOptions(GeometryExtrusionOptions extrusionOptions,
 			UVModifierOptions uvOptions) {

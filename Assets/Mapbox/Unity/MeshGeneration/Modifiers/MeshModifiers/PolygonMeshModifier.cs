@@ -111,6 +111,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 							(float)(((sub[j].x + md.PositionInTile.x) / tile.TileScale + _size.x / 2) / _size.x),
 							(float)(((sub[j].z + md.PositionInTile.z) / tile.TileScale + _size.x / 2) / _size.x)
 						);
+
 						md.UV[0].Add(fromBottomLeft);
 					}
 					else if (_options.texturingType == UvMapType.Tiled) {
@@ -136,6 +137,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 				_textureDirection = Quaternion.FromToRotation(
 					md.Vertices[0] - md.Vertices[1], Constants.Math.Vector3Right
 				);
+
 				_textureUvCoordinates[0] = new Vector2(0, 0);
 				_firstVert = md.Vertices[0];
 
@@ -190,7 +192,6 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 
 			md.Triangles.Add(triList);
 		}
-
 
 		private bool IsClockwise(IList<Vector3> vertices) {
 			double sum = 0.0;

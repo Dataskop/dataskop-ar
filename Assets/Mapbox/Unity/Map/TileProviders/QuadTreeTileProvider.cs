@@ -78,6 +78,7 @@ namespace Mapbox.Unity.Map.TileProviders {
 				Math.Max(bounds.SouthWest.x, -Utils.Constants.WebMercMax),
 				Math.Max(bounds.SouthWest.y, -Utils.Constants.WebMercMax)
 			);
+
 			Vector2d neWebMerc = new(
 				Math.Min(bounds.NorthEast.x, Utils.Constants.WebMercMax),
 				Math.Min(bounds.NorthEast.y, Utils.Constants.WebMercMax)

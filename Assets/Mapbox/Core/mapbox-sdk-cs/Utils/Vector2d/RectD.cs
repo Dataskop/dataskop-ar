@@ -21,6 +21,7 @@
 		public bool Contains(Vector2d point) {
 			bool flag = Size.x < 0.0 && point.x <= Min.x && point.x > Min.x + Size.x ||
 			            Size.x >= 0.0 && point.x >= Min.x && point.x < Min.x + Size.x;
+
 			return flag && (Size.y < 0.0 && point.y <= Min.y && point.y > Min.y + Size.y ||
 			                Size.y >= 0.0 && point.y >= Min.y && point.y < Min.y + Size.y);
 		}

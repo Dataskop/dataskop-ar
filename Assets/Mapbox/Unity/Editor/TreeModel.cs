@@ -60,7 +60,7 @@ namespace Mapbox.Editor {
 		}
 
 		public IList<int> GetAncestors(int id) {
-			List<int> parents = new List<int>();
+			List<int> parents = new();
 			TreeElement T = Find(id);
 
 			if (T != null) {
@@ -87,7 +87,7 @@ namespace Mapbox.Editor {
 			Stack<TreeElement> stack = new();
 			stack.Push(searchFromThis);
 
-			List<int> parentsBelow = new List<int>();
+			List<int> parentsBelow = new();
 
 			while (stack.Count > 0) {
 				TreeElement current = stack.Pop();
@@ -242,36 +242,39 @@ namespace Mapbox.Editor {
 
 	}
 
-
 	#region Tests
 
 	internal class TreeModelTests {
 
 		[Test]
 		public static void TestTreeModelCanAddElements() {
-			TreeElement root = new TreeElement {
+			TreeElement root = new() {
 				name = "Root",
 				depth = -1
 			};
-			List<TreeElement> listOfElements = new List<TreeElement>();
+
+			List<TreeElement> listOfElements = new();
 			listOfElements.Add(root);
 
-			TreeModel<TreeElement> model = new TreeModel<TreeElement>(listOfElements);
+			TreeModel<TreeElement> model = new(listOfElements);
 			model.AddElement(
 				new TreeElement {
 					name = "Element"
 				}, root, 0
 			);
+
 			model.AddElement(
 				new TreeElement {
 					name = "Element " + root.children.Count
 				}, root, 0
 			);
+
 			model.AddElement(
 				new TreeElement {
 					name = "Element " + root.children.Count
 				}, root, 0
 			);
+
 			model.AddElement(
 				new TreeElement {
 					name = "Sub Element"
@@ -282,6 +285,7 @@ namespace Mapbox.Editor {
 			string[] namesInCorrectOrder = {
 				"Root", "Element 2", "Element 1", "Sub Element", "Element"
 			};
+
 			Assert.AreEqual(namesInCorrectOrder.Length, listOfElements.Count, "Result count does not match");
 
 			for (int i = 0; i < namesInCorrectOrder.Length; ++i) {
@@ -294,29 +298,33 @@ namespace Mapbox.Editor {
 
 		[Test]
 		public static void TestTreeModelCanRemoveElements() {
-			TreeElement root = new TreeElement {
+			TreeElement root = new() {
 				name = "Root",
 				depth = -1
 			};
-			List<TreeElement> listOfElements = new List<TreeElement>();
+
+			List<TreeElement> listOfElements = new();
 			listOfElements.Add(root);
 
-			TreeModel<TreeElement> model = new TreeModel<TreeElement>(listOfElements);
+			TreeModel<TreeElement> model = new(listOfElements);
 			model.AddElement(
 				new TreeElement {
 					name = "Element"
 				}, root, 0
 			);
+
 			model.AddElement(
 				new TreeElement {
 					name = "Element " + root.children.Count
 				}, root, 0
 			);
+
 			model.AddElement(
 				new TreeElement {
 					name = "Element " + root.children.Count
 				}, root, 0
 			);
+
 			model.AddElement(
 				new TreeElement {
 					name = "Sub Element"
@@ -333,6 +341,7 @@ namespace Mapbox.Editor {
 			string[] namesInCorrectOrder = {
 				"Root", "Element 2", "Element"
 			};
+
 			Assert.AreEqual(namesInCorrectOrder.Length, listOfElements.Count, "Result count does not match");
 
 			for (int i = 0; i < namesInCorrectOrder.Length; ++i) {

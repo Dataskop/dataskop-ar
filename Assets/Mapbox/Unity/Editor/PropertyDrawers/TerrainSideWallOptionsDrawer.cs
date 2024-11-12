@@ -25,11 +25,13 @@
 					new Rect(position.x, position.y, position.width, lineHeight),
 					property.FindPropertyRelative("wallHeight")
 				);
+
 				position.y += lineHeight;
 				EditorGUI.PropertyField(
 					new Rect(position.x, position.y, position.width, lineHeight),
 					property.FindPropertyRelative("wallMaterial")
 				);
+
 				EditorGUI.indentLevel--;
 			}
 

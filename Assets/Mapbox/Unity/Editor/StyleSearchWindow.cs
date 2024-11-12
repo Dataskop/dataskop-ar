@@ -64,6 +64,7 @@
 				"User styles are bound to usernames, enter your Mapbox Username to search for your personal styles.",
 				MessageType.Info
 			);
+
 			_username = EditorGUILayout.TextField("Mapbox Username: ", _username);
 
 			scrollPos = EditorGUILayout.BeginScrollView(scrollPos, st);
@@ -102,8 +103,7 @@
 					if (_isSearching) {
 						GUI.enabled = false;
 
-						if (GUILayout.Button("Searching...")) {
-						}
+						if (GUILayout.Button("Searching...")) { }
 
 						GUI.enabled = true;
 					}
@@ -143,6 +143,7 @@
 				new(Utils.Constants.BaseAPI + string.Format("styles/v1/{0}?access_token={1}", _username, token)) {
 					downloadHandler = new DownloadHandlerBuffer()
 				};
+
 			yield return webRequest.SendWebRequest();
 
 			while (!webRequest.isDone) yield return 0;
@@ -173,6 +174,7 @@
 			if (json.Contains("This API requires a token with styles:list scope")) {
 				_errorString =
 					"The Mapbox Access Token you're using at the moment doesn't have \"styles: list\" scope this feature requires.\r\n\r\nYou can create a new token from link below and check \"styles: list\" in the Token Scopes list to enable this feature.";
+
 				_isSearching = false;
 				return;
 			}
@@ -190,6 +192,7 @@
 			foreach (object style in styleArray) {
 				Dictionary<string, object> styleData =
 					JsonConvert.DeserializeObject<Dictionary<string, object>>(style.ToString(), settings);
+
 				string id = string.Format("mapbox://styles/{0}/{1}", _username, styleData["id"]);
 				_styles.Add(
 					new Style() {

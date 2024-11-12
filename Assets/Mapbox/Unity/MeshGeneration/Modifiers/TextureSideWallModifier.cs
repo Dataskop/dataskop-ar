@@ -107,6 +107,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 			//facade texture to decorate this building
 			_currentFacade =
 				_options.atlasInfo.Textures[UnityEngine.Random.Range(0, _options.atlasInfo.Textures.Count)];
+
 			//rect is a struct so we're caching this
 			_currentTextureRect = _currentFacade.TextureRect;
 
@@ -191,6 +192,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 								_currentFacade.ColumnCount,
 								Math.Floor(currentWallLength / _singleColumnLength)
 							) / _currentFacade.ColumnCount;
+
 						wallSegmentLength = stepRatio * _scaledPreferredWallLength;
 						start += wallSegmentDirection * wallSegmentLength;
 						wallSegmentSecondVertex = start;
@@ -239,6 +241,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 				-(wallSegmentFirstVertex.z - wallSegmentSecondVertex.z), 0,
 				wallSegmentFirstVertex.x - wallSegmentSecondVertex.x
 			).normalized;
+
 			//height of the left/right edges
 			currentY1 = wallSegmentFirstVertex.y;
 			currentY2 = wallSegmentSecondVertex.y;
@@ -272,6 +275,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 							_currentTextureRect.yMax - _shortRowHeightDelta
 						)
 					);
+
 					md.UV[0].Add(new Vector2(rightOfEdgeUv, _currentTextureRect.yMax - _shortRowHeightDelta));
 				}
 				else {
@@ -279,12 +283,14 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 					md.UV[0].Add(
 						new Vector2(_currentTextureRect.xMin + _narrowWallWidthDelta, _currentTextureRect.yMax)
 					);
+
 					md.UV[0].Add(
 						new Vector2(
 							_currentTextureRect.xMin,
 							_currentTextureRect.yMax - _shortRowHeightDelta
 						)
 					);
+
 					md.UV[0].Add(
 						new Vector2(
 							_currentTextureRect.xMin + _narrowWallWidthDelta,
@@ -347,6 +353,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 							_currentFacade.topOfMidUv - _currentFacade.midUvHeight * _midUvInCurrentStep
 						)
 					);
+
 					md.UV[0].Add(
 						new Vector2(
 							rightOfEdgeUv,
@@ -362,12 +369,14 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 							_currentFacade.topOfMidUv
 						)
 					);
+
 					md.UV[0].Add(
 						new Vector2(
 							_currentTextureRect.xMin,
 							_currentFacade.topOfMidUv - _currentFacade.midUvHeight * _midUvInCurrentStep
 						)
 					);
+
 					md.UV[0].Add(
 						new Vector2(
 							_currentTextureRect.xMin + _narrowWallWidthDelta,
@@ -409,18 +418,21 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 					wallSegmentFirstVertex.z
 				)
 			);
+
 			md.Vertices.Add(
 				new Vector3(
 					wallSegmentSecondVertex.x, wallSegmentSecondVertex.y - leftOver,
 					wallSegmentSecondVertex.z
 				)
 			);
+
 			md.Vertices.Add(
 				new Vector3(
 					wallSegmentFirstVertex.x, wallSegmentFirstVertex.y - leftOver - finalTopHeight,
 					wallSegmentFirstVertex.z
 				)
 			);
+
 			md.Vertices.Add(
 				new Vector3(
 					wallSegmentSecondVertex.x,
@@ -471,18 +483,21 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 					wallSegmentFirstVertex.z
 				)
 			);
+
 			md.Vertices.Add(
 				new Vector3(
 					wallSegmentSecondVertex.x, wallSegmentSecondVertex.y - hf + finalFirstHeight,
 					wallSegmentSecondVertex.z
 				)
 			);
+
 			md.Vertices.Add(
 				new Vector3(
 					wallSegmentFirstVertex.x, wallSegmentFirstVertex.y - hf,
 					wallSegmentFirstVertex.z
 				)
 			);
+
 			md.Vertices.Add(
 				new Vector3(
 					wallSegmentSecondVertex.x, wallSegmentSecondVertex.y - hf,
@@ -510,6 +525,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 				md.UV[0].Add(
 					new Vector2(_currentTextureRect.xMin + _narrowWallWidthDelta, _currentFacade.topOfBottomUv)
 				);
+
 				md.UV[0].Add(new Vector2(_currentTextureRect.xMin, _currentTextureRect.yMin));
 				md.UV[0].Add(new Vector2(_currentTextureRect.xMin + _narrowWallWidthDelta, _currentTextureRect.yMin));
 			}
@@ -525,8 +541,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 			triIndex += 4;
 		}
 
-		private void CalculateEdgeList(MeshData md, UnityTile tile, float preferredEdgeSectionLength) {
-		}
+		private void CalculateEdgeList(MeshData md, UnityTile tile, float preferredEdgeSectionLength) { }
 
 		private void GenerateRoofMesh(MeshData md, float minHeight, float maxHeight) {
 			_counter = md.Vertices.Count;
@@ -551,6 +566,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 						md.Vertices[i] = new Vector3(md.Vertices[i].x, minmax.min + maxHeight, md.Vertices[i].z);
 					}
 				}
+
 					break;
 				case ExtrusionType.MaxHeight:
 				{
@@ -562,6 +578,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 
 					height += minmax.max - minmax.min;
 				}
+
 					break;
 				case ExtrusionType.RangeHeight:
 					for (int i = 0; i < _counter; i++) {

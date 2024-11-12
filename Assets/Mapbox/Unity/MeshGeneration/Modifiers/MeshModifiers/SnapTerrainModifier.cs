@@ -25,6 +25,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 						(float)((md.Vertices[i].x + md.PositionInTile.x + scaledX / 2) / scaledX),
 						(float)((md.Vertices[i].z + md.PositionInTile.z + scaledY / 2) / scaledY)
 					);
+
 					md.Vertices[i] += new Vector3(0, h, 0);
 				}
 			}
@@ -37,6 +38,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 							(float)((sub[i].x + md.PositionInTile.x + scaledX / 2) / scaledX),
 							(float)((sub[i].z + md.PositionInTile.z + scaledY / 2) / scaledY)
 						);
+
 						sub[i] += new Vector3(0, h, 0);
 					}
 				}

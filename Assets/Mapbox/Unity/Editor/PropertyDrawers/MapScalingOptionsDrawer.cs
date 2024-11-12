@@ -31,7 +31,7 @@
 			}
 
 			// Draw label.
-			GUIContent scalingTypeLabel = new GUIContent {
+			GUIContent scalingTypeLabel = new() {
 				text = label.text,
 				tooltip = "Scale of map in game units."
 			};

@@ -11,9 +11,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 
 		public abstract Type ModifierType { get; }
 
-		public virtual void UpdateProperty(LayerVisualizerBase layerVisualizer) {
-
-		}
+		public virtual void UpdateProperty(LayerVisualizerBase layerVisualizer) { }
 
 		public override bool HasChanged
 		{
@@ -36,21 +34,13 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 		[SerializeField]
 		public bool Active = true;
 
-		public virtual void SetProperties(ModifierProperties properties) {
+		public virtual void SetProperties(ModifierProperties properties) { }
 
-		}
+		public virtual void Initialize() { }
 
-		public virtual void Initialize() {
+		public virtual void FeaturePreProcess(VectorFeatureUnity feature) { }
 
-		}
-
-		public virtual void FeaturePreProcess(VectorFeatureUnity feature) {
-
-		}
-
-		public virtual void UnbindProperties() {
-
-		}
+		public virtual void UnbindProperties() { }
 
 		public virtual void UpdateModifier(object sender, EventArgs layerArgs) {
 			NotifyUpdateModifier(

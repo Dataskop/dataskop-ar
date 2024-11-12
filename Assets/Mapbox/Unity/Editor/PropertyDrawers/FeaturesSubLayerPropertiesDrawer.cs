@@ -86,6 +86,7 @@
 						text = displayNames[index],
 						tooltip = ((VectorSourceType)Enum.Parse(typeof(VectorSourceType), name)).Description()
 					};
+
 					index++;
 				}
 
@@ -104,6 +105,7 @@
 			sourceTypeValue = (VectorSourceType)Enum.Parse(
 				typeof(VectorSourceType), names[sourceTypeProperty.enumValueIndex]
 			);
+
 			SerializedProperty sourceOptionsProperty = property.FindPropertyRelative("sourceOptions");
 			SerializedProperty layerSourceProperty = sourceOptionsProperty.FindPropertyRelative("layerSource");
 			SerializedProperty layerSourceId = layerSourceProperty.FindPropertyRelative("Id");
@@ -238,6 +240,7 @@
 						selectedLayers = new int[1] {
 							SelectionIndex
 						};
+
 						layerTreeView.SetSelection(selectedLayers);
 					}
 				}
@@ -281,6 +284,7 @@
 					selectedLayers = new int[1] {
 						subLayerArray.arraySize - 1 + FeatureSubLayerTreeView.uniqueIdFeature
 					};
+
 					layerTreeView.SetSelection(selectedLayers);
 					subLayerProperties = null; // setting this to null so that the if block is not called again
 
@@ -297,6 +301,7 @@
 
 							VectorLayerProperties vectorLayerProperties =
 								(VectorLayerProperties)EditorHelper.GetTargetObjectOfProperty(property);
+
 							VectorSubLayerProperties vectorSubLayerProperties =
 								(VectorSubLayerProperties)EditorHelper.GetTargetObjectOfProperty(subLayer);
 
@@ -366,6 +371,7 @@
 				id = i + FeatureSubLayerTreeView.uniqueIdFeature;
 				type = ((PresetFeatureType)subLayer.FindPropertyRelative("presetFeatureType").enumValueIndex)
 					.ToString();
+
 				FeatureTreeElement element = new(name, 0, id);
 				element.Name = name;
 				element.name = name;
@@ -392,8 +398,10 @@
 		private void SetSubLayerProps(SerializedProperty subLayer) {
 			subLayer.FindPropertyRelative("coreOptions.sublayerName").stringValue =
 				subLayerProperties.coreOptions.sublayerName;
+
 			subLayer.FindPropertyRelative("presetFeatureType").enumValueIndex =
 				(int)subLayerProperties.presetFeatureType;
+
 			// Set defaults here because SerializedProperty copies the previous element.
 			SerializedProperty subLayerCoreOptions = subLayer.FindPropertyRelative("coreOptions");
 			CoreVectorLayerProperties coreOptions = subLayerProperties.coreOptions;
@@ -408,8 +416,10 @@
 			subLayerlineGeometryOptions.FindPropertyRelative("Width").floatValue = lineGeometryOptions.Width;
 			subLayerlineGeometryOptions.FindPropertyRelative("CapType").enumValueIndex =
 				(int)lineGeometryOptions.CapType;
+
 			subLayerlineGeometryOptions.FindPropertyRelative("JoinType").enumValueIndex =
 				(int)lineGeometryOptions.JoinType;
+
 			subLayerlineGeometryOptions.FindPropertyRelative("MiterLimit").floatValue = lineGeometryOptions.MiterLimit;
 			subLayerlineGeometryOptions.FindPropertyRelative("RoundLimit").floatValue = lineGeometryOptions.RoundLimit;
 
@@ -417,11 +427,14 @@
 			GeometryExtrusionOptions extrusionOptions = subLayerProperties.extrusionOptions;
 			subLayerExtrusionOptions.FindPropertyRelative("extrusionType").enumValueIndex =
 				(int)extrusionOptions.extrusionType;
+
 			subLayerExtrusionOptions.FindPropertyRelative("extrusionGeometryType").enumValueIndex =
 				(int)extrusionOptions.extrusionGeometryType;
+
 			subLayerExtrusionOptions.FindPropertyRelative("propertyName").stringValue = extrusionOptions.propertyName;
 			subLayerExtrusionOptions.FindPropertyRelative("extrusionScaleFactor").floatValue =
 				extrusionOptions.extrusionScaleFactor;
+
 			subLayerExtrusionOptions.FindPropertyRelative("maximumHeight").floatValue = extrusionOptions.maximumHeight;
 
 			SerializedProperty subLayerFilterOptions = subLayer.FindPropertyRelative("filterOptions");
@@ -455,10 +468,13 @@
 			SerializedProperty palette = subLayerGeometryMaterialOptions.FindPropertyRelative("colorPalette");
 			SerializedProperty lightStyleOpacity =
 				subLayerGeometryMaterialOptions.FindPropertyRelative("lightStyleOpacity");
+
 			SerializedProperty darkStyleOpacity =
 				subLayerGeometryMaterialOptions.FindPropertyRelative("darkStyleOpacity");
+
 			SerializedProperty colorStyleColor =
 				subLayerGeometryMaterialOptions.FindPropertyRelative("colorStyleColor");
+
 			SerializedProperty customStyleOptions =
 				subLayerGeometryMaterialOptions.FindPropertyRelative("customStyleOptions");
 
@@ -475,6 +491,7 @@
 
 			SerializedProperty customTopMatArray =
 				customMats.GetArrayElementAtIndex(0).FindPropertyRelative("Materials");
+
 			SerializedProperty customSideMatArray =
 				customMats.GetArrayElementAtIndex(1).FindPropertyRelative("Materials");
 
@@ -493,13 +510,16 @@
 			customSideMat.objectReferenceValue = materialOptions.customStyleOptions.materials[1].Materials[0];
 			customStyleOptions.FindPropertyRelative("atlasInfo").objectReferenceValue =
 				materialOptions.customStyleOptions.atlasInfo;
+
 			customStyleOptions.FindPropertyRelative("colorPalette").objectReferenceValue =
 				materialOptions.customStyleOptions.colorPalette;
 
 			subLayer.FindPropertyRelative("buildingsWithUniqueIds").boolValue =
 				subLayerProperties.buildingsWithUniqueIds;
+
 			subLayer.FindPropertyRelative("moveFeaturePositionTo").enumValueIndex =
 				(int)subLayerProperties.moveFeaturePositionTo;
+
 			subLayer.FindPropertyRelative("MeshModifiers").ClearArray();
 			subLayer.FindPropertyRelative("GoModifiers").ClearArray();
 
@@ -549,6 +569,7 @@
 			SerializedProperty filterOptions = layerProperty.FindPropertyRelative("filterOptions");
 			filterOptions.FindPropertyRelative("_selectedLayerName").stringValue =
 				subLayerCoreOptions.FindPropertyRelative("layerName").stringValue;
+
 			GUILayout.Space(-_lineHeight);
 			EditorGUILayout.PropertyField(filterOptions, new GUIContent("Filters"));
 			//*********************** FILTERS SECTION ENDS ***********************************//
@@ -621,6 +642,7 @@
 					layerNameLabel, new GUIContent("No layers found: Invalid TilesetId / No Internet."),
 					(GUIStyle)"minipopUp"
 				);
+
 				return;
 			}
 
@@ -659,6 +681,7 @@
 					tileJsonData.commonLayersKey
 				}, StringSplitOptions.None
 			)[0].Trim();
+
 			property.FindPropertyRelative("layerName").stringValue = parsedString;
 		}
 

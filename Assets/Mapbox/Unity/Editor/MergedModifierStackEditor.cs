@@ -35,6 +35,7 @@
 				facs.GetArrayElementAtIndex(ind).objectReferenceValue = EditorGUILayout.ObjectField(
 					facs.GetArrayElementAtIndex(i).objectReferenceValue, typeof(MeshModifier), false
 				) as ScriptableObject;
+
 				EditorGUILayout.EndVertical();
 
 				if (GUILayout.Button(_magnifier, (GUIStyle)"minibuttonleft", GUILayout.Width(30))) {

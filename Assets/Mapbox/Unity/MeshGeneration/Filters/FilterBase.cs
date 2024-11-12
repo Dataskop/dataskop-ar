@@ -18,9 +18,7 @@ namespace Mapbox.Unity.MeshGeneration.Filters {
 			return true;
 		}
 
-		public virtual void Initialize() {
-
-		}
+		public virtual void Initialize() { }
 
 	}
 

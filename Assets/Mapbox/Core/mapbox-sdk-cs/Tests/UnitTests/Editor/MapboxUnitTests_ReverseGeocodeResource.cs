@@ -10,7 +10,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 	using Mapbox.Utils;
 	using NUnit.Framework;
 
-
 	[TestFixture]
 	internal class ReverseGeocodeResourceTest {
 
@@ -18,7 +17,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 		private Vector2d _queryLocation = new(10, 10);
 		private string _expectedQueryString = "10.00000,10.00000";
 		private Geocoding.ReverseGeocodeResource _reverseGeocodeResource;
-
 
 		[SetUp]
 		public void SetUp() {
@@ -52,12 +50,14 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			_reverseGeocodeResource.Types = new string[] {
 				"country"
 			};
+
 			Assert.AreEqual(_baseUrl + _expectedQueryString + ".json?types=country", _reverseGeocodeResource.GetUrl());
 
 			// With multiple types
 			_reverseGeocodeResource.Types = new string[] {
 				"country", "region"
 			};
+
 			// ToLower is need to make test pass on OSX
 			Assert.AreEqual(
 				(_baseUrl + _expectedQueryString + ".json?types=country%2Cregion").ToLower(),

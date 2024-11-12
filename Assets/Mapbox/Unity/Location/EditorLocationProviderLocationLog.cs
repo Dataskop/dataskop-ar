@@ -23,10 +23,8 @@
 		[SerializeField]
 		private TextAsset _locationLogFile;
 
-
 		private LocationLogReader _logReader;
 		private IEnumerator<Location> _locationEnumerator;
-
 
 #if UNITY_EDITOR
 		protected override void Awake() {
@@ -35,7 +33,6 @@
 			_locationEnumerator = _logReader.GetLocations();
 		}
 #endif
-
 
 		private void OnDestroy() {
 			if (null != _locationEnumerator) {
@@ -48,7 +45,6 @@
 				_logReader = null;
 			}
 		}
-
 
 		protected override void SetLocation() {
 			if (null == _locationEnumerator) {

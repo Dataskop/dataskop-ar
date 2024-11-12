@@ -25,6 +25,7 @@
 
 				bool isPrimitiveTypeValidForBuidingIds = primitiveTypeProp == VectorPrimitiveType.Polygon ||
 				                                         primitiveTypeProp == VectorPrimitiveType.Custom;
+
 				bool isSourceValidForBuildingIds = sourceType != VectorSourceType.MapboxStreets;
 
 				layerProperty.FindPropertyRelative("honorBuildingIdSetting").boolValue =
@@ -53,6 +54,7 @@
 				if (combineMeshesProperty.boolValue == false) {
 					SerializedProperty featurePositionProperty =
 						layerProperty.FindPropertyRelative("moveFeaturePositionTo");
+
 					GUIContent dropDownLabel = new() {
 						text = "Feature Position",
 						tooltip = "Position to place feature in the tile. "
@@ -159,6 +161,7 @@
 					tooltip = "Modifiers that manipulate the GameObject after mesh generation."
 				}
 			);
+
 			SerializedProperty gofac = property.FindPropertyRelative("GoModifiers");
 
 			for (int i = 0; i < gofac.arraySize; i++) {
@@ -171,6 +174,7 @@
 						gofac.GetArrayElementAtIndex(i).objectReferenceValue, typeof(GameObjectModifier),
 						false
 					) as ScriptableObject;
+
 				EditorGUILayout.EndVertical();
 
 				if (GUILayout.Button(new GUIContent("x"), GUILayout.Width(30))) {

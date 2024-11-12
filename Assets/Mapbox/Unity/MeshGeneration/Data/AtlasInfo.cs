@@ -68,8 +68,10 @@ namespace Mapbox.Unity.MeshGeneration.Data {
 
 					tex.FirstFloorHeight = tex.PreferredEdgeSectionLength *
 					                       (tex.TextureRect.height * tex.BottomSectionRatio / tex.TextureRect.width);
+
 					tex.TopFloorHeight = tex.PreferredEdgeSectionLength *
 					                     (tex.TextureRect.height * tex.TopSectionRatio / tex.TextureRect.width);
+
 					tex.FloorHeight = tex.PreferredEdgeSectionLength *
 					                  ((1 - tex.TopSectionRatio - tex.BottomSectionRatio) *
 					                   (tex.TextureRect.height / tex.TextureRect.width));
@@ -79,6 +81,7 @@ namespace Mapbox.Unity.MeshGeneration.Data {
 				foreach (AtlasEntity tex in Textures) {
 					tex.BottomSectionRatio = tex.FirstFloorHeight / tex.PreferredEdgeSectionLength *
 						tex.TextureRect.width / tex.TextureRect.height;
+
 					tex.TopSectionRatio = tex.TopFloorHeight / tex.PreferredEdgeSectionLength * tex.TextureRect.width /
 					                      tex.TextureRect.height;
 				}

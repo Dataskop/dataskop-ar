@@ -138,7 +138,6 @@ namespace Mapbox.Editor {
 			}
 		}
 
-
 		// For updating depth values below any given element e.g after reparenting elements
 		public static void UpdateDepthValues<T>(T root) where T : TreeElement {
 			if (root == null) {
@@ -189,7 +188,6 @@ namespace Mapbox.Editor {
 
 	}
 
-
 	internal class TreeElementUtilityTests {
 
 		private class TestElement : TreeElement {
@@ -226,6 +224,7 @@ namespace Mapbox.Editor {
 			string[] namesInCorrectOrder = {
 				"root", "A", "B", "Bchild", "Bchildchild", "C"
 			};
+
 			Assert.AreEqual(namesInCorrectOrder.Length, result.Count, "Result count is not match");
 
 			for (int i = 0; i < namesInCorrectOrder.Length; ++i) {
@@ -235,11 +234,10 @@ namespace Mapbox.Editor {
 			TreeElementUtility.ValidateDepthValues(result);
 		}
 
-
 		[Test]
 		public static void TestListToTreeWorks() {
 			// Arrange
-			List<TestElement> list = new List<TestElement>();
+			List<TestElement> list = new();
 			list.Add(new TestElement("root", -1));
 			list.Add(new TestElement("A", 0));
 			list.Add(new TestElement("B", 0));
@@ -260,7 +258,7 @@ namespace Mapbox.Editor {
 		[Test]
 		public static void TestListToTreeThrowsExceptionIfRootIsInvalidDepth() {
 			// Arrange
-			List<TestElement> list = new List<TestElement>();
+			List<TestElement> list = new();
 			list.Add(new TestElement("root", 0));
 			list.Add(new TestElement("A", 1));
 			list.Add(new TestElement("B", 1));
@@ -284,22 +282,22 @@ namespace Mapbox.Editor {
 		[Test]
 		public static void FindCommonAncestorsWithinListWorks() {
 			// Arrange
-			List<TestElement> list = new List<TestElement>();
+			List<TestElement> list = new();
 			list.Add(new TestElement("root", -1));
 			list.Add(new TestElement("A", 0));
-			TestElement b0 = new TestElement("B", 0);
-			TestElement b1 = new TestElement("Bchild", 1);
-			TestElement b2 = new TestElement("Bchildchild", 2);
+			TestElement b0 = new("B", 0);
+			TestElement b1 = new("Bchild", 1);
+			TestElement b2 = new("Bchildchild", 2);
 			list.Add(b0);
 			list.Add(b1);
 			list.Add(b2);
 
-			TestElement c0 = new TestElement("C", 0);
+			TestElement c0 = new("C", 0);
 			list.Add(c0);
 
-			TestElement f0 = new TestElement("F", 0);
-			TestElement f1 = new TestElement("Fchild", 1);
-			TestElement f2 = new TestElement("Fchildchild", 2);
+			TestElement f0 = new("F", 0);
+			TestElement f1 = new("Fchild", 1);
+			TestElement f2 = new("Fchildchild", 2);
 			list.Add(f0);
 			list.Add(f1);
 			list.Add(f2);
@@ -311,9 +309,11 @@ namespace Mapbox.Editor {
 			TestElement[] input = {
 				b1
 			};
+
 			TestElement[] expectedResult = {
 				b1
 			};
+
 			TestElement[] result = TreeElementUtility.FindCommonAncestorsWithinList(input).ToArray();
 			Assert.IsTrue(ArrayUtility.ArrayEquals(expectedResult, result), "Single input should return single output");
 
@@ -321,9 +321,11 @@ namespace Mapbox.Editor {
 			input = new[] {
 				b1, b2
 			};
+
 			expectedResult = new[] {
 				b1
 			};
+
 			result = TreeElementUtility.FindCommonAncestorsWithinList(input).ToArray();
 			Assert.IsTrue(ArrayUtility.ArrayEquals(expectedResult, result), "Common ancestor should only be b1 ");
 
@@ -331,9 +333,11 @@ namespace Mapbox.Editor {
 			input = new[] {
 				b0, b2, f0, f2, c0
 			};
+
 			expectedResult = new[] {
 				b0, f0, c0
 			};
+
 			result = TreeElementUtility.FindCommonAncestorsWithinList(input).ToArray();
 			Assert.IsTrue(
 				ArrayUtility.ArrayEquals(expectedResult, result), "Common ancestor should only be b0, f0, c0"

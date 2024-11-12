@@ -107,6 +107,7 @@ namespace Dataskop.UI {
 
 					VisualElement companyProjectsBox =
 						groupOfProjectsTemplateContainer.Q<VisualElement>("company-projects-box");
+
 					companyProjectsBox.Add(projectTemplateContainer);
 				}
 

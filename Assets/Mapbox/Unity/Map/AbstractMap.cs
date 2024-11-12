@@ -155,7 +155,6 @@ namespace Mapbox.Unity.Map {
 		/// <value>The initial zoom.</value>
 		public int InitialZoom => _initialZoom;
 
-
 		public Transform Root => transform;
 
 		/// <summary>
@@ -206,6 +205,7 @@ namespace Mapbox.Unity.Map {
 			_options.locationOptions.latitudeLongitude = string.Format(
 				CultureInfo.InvariantCulture, "{0},{1}", latLon.x, latLon.y
 			);
+
 			_options.locationOptions.zoom = zoom;
 
 			SetUpMap();
@@ -847,6 +847,7 @@ namespace Mapbox.Unity.Map {
 			Vector3 worldPos = Conversions.GeoToWorldPosition(
 				latitudeLongitude, CenterMercator, WorldRelativeScale * scaleFactor
 			).ToVector3xz();
+
 			return Root.TransformPoint(worldPos);
 		}
 
@@ -952,6 +953,7 @@ namespace Mapbox.Unity.Map {
 			_options.locationOptions.latitudeLongitude = string.Format(
 				"{0}, {1}", centerLatitudeLongitude.x, centerLatitudeLongitude.y
 			);
+
 			_centerLatitudeLongitude = centerLatitudeLongitude;
 		}
 

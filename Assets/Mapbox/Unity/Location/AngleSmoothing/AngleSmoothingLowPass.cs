@@ -4,7 +4,6 @@ namespace Mapbox.Unity.Location {
 	using System.Linq;
 	using UnityEngine;
 
-
 	/// <summary>
 	/// Smoothing via low pass filter
 	/// </summary>
@@ -17,15 +16,11 @@ namespace Mapbox.Unity.Location {
 		[Range(0.01f, 0.9f)]
 		private double _smoothingFactor = 0.5;
 
-
-		public AngleSmoothingLowPass() : base() {
-		}
-
+		public AngleSmoothingLowPass() : base() { }
 
 		public AngleSmoothingLowPass(double smoothingFactor) : base() {
 			_smoothingFactor = smoothingFactor;
 		}
-
 
 		public override double Calculate() {
 			// reverse order, latest in _angles is at [0]

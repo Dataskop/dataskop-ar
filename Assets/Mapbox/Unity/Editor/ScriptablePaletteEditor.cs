@@ -91,6 +91,7 @@ public class ScriptablePaletteEditor : Editor {
 		EditorGUILayout.LabelField(
 			"Layer colors can be overriden by enabling any of the overrides below.", wrapTextStyle
 		);
+
 		EditorGUILayout.LabelField(
 			"If a layer's color is overridden, it will be set directly from the defined override color.", wrapTextStyle
 		);

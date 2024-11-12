@@ -19,21 +19,15 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 			return null;
 		}
 
-		public virtual void Initialize() {
-
-		}
+		public virtual void Initialize() { }
 
 		public void UnregisterTile(UnityTile tile) {
 			OnUnregisterTile(tile);
 		}
 
-		public virtual void OnUnregisterTile(UnityTile tile) {
+		public virtual void OnUnregisterTile(UnityTile tile) { }
 
-		}
-
-		public virtual void Clear() {
-
-		}
+		public virtual void Clear() { }
 
 	}
 

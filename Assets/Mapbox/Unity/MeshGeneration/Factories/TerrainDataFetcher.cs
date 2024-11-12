@@ -22,9 +22,7 @@ public class ImageDataFetcherParameters : DataFetcherParameters {
 
 }
 
-public class TerrainDataFetcherParameters : DataFetcherParameters {
-
-}
+public class TerrainDataFetcherParameters : DataFetcherParameters { }
 
 public class VectorDataFetcherParameters : DataFetcherParameters {
 
@@ -58,7 +56,7 @@ public class TerrainDataFetcher : DataFetcher {
 			return;
 		}
 
-		RawPngRasterTile pngRasterTile = new RawPngRasterTile();
+		RawPngRasterTile pngRasterTile = new();
 		pngRasterTile.Initialize(
 			_fileSource, terrainDataParameters.canonicalTileId, terrainDataParameters.tilesetId, () =>
 			{

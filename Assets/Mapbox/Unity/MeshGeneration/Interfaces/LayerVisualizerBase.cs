@@ -22,33 +22,21 @@ namespace Mapbox.Unity.MeshGeneration.Interfaces {
 
 		public event EventHandler LayerVisualizerHasChanged;
 
-		public virtual void Initialize() {
+		public virtual void Initialize() { }
 
-		}
+		public virtual void InitializeStack() { }
 
-		public virtual void InitializeStack() {
+		public virtual void SetProperties(VectorSubLayerProperties properties) { }
 
-		}
-
-		public virtual void SetProperties(VectorSubLayerProperties properties) {
-
-		}
-
-		public virtual void Clear() {
-
-		}
+		public virtual void Clear() { }
 
 		public void UnregisterTile(UnityTile tile) {
 			OnUnregisterTile(tile);
 		}
 
-		public virtual void OnUnregisterTile(UnityTile tile) {
+		public virtual void OnUnregisterTile(UnityTile tile) { }
 
-		}
-
-		public virtual void UnbindSubLayerEvents() {
-
-		}
+		public virtual void UnbindSubLayerEvents() { }
 
 		protected virtual void OnUpdateLayerVisualizer(EventArgs e) {
 			EventHandler handler = LayerVisualizerHasChanged;

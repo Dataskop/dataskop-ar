@@ -146,7 +146,7 @@ namespace Mapbox.Map {
 		}
 
 		private void NotifyNext(T next) {
-			List<Utils.IObserver<T>> copy = new List<Utils.IObserver<T>>(observers);
+			List<Utils.IObserver<T>> copy = new(observers);
 
 			foreach (Utils.IObserver<T> observer in copy) {
 				observer.OnNext(next);
@@ -182,7 +182,7 @@ namespace Mapbox.Map {
 			);
 
 			foreach (CanonicalTileId id in cover) {
-				T tile = new T();
+				T tile = new();
 
 				Tile.Parameters param;
 				param.Id = id;

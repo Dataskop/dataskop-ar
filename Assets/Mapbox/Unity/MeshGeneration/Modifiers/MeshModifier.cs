@@ -39,9 +39,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 			Run(feature, md);
 		}
 
-		public virtual void Run(VectorFeatureUnity feature, MeshData md, UnityTile tile = null) {
-
-		}
+		public virtual void Run(VectorFeatureUnity feature, MeshData md, UnityTile tile = null) { }
 
 	}
 

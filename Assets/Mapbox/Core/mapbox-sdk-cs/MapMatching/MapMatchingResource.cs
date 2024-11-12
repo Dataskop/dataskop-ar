@@ -22,14 +22,11 @@ namespace Mapbox.MapMatching {
 		private uint[] _radiuses;
 		private long[] _timestamps;
 
-
 		/// <summary> Gets the API endpoint as a partial URL path. </summary>
 		public override string ApiEndpoint => _apiEndpoint;
 
-
 		/// <summary>A directions profile ID.</summary>
 		public Profile Profile = Profile.MapboxDriving;
-
 
 		/// <summary> Coordinate to visit in order; there can be between 2 and 100 coordinates. </summary>
 		public Vector2d[] Coordinates
@@ -49,14 +46,12 @@ namespace Mapbox.MapMatching {
 			}
 		}
 
-
 		/// <summary>
 		/// <para>Format of the returned geometry.</para>
 		/// <para>Allowed values are: geojson (as LineString ), polyline with precision 5,  polyline6 (polyline with precision 6).</para>
 		/// <para>The default value is polyline.</para>
 		/// </summary>
 		public Nullable<Geometries> Geometries;
-
 
 		/// <summary>
 		/// <para>A list of uints in meters indicating the assumed precision of the used tracking device.</para>
@@ -92,7 +87,6 @@ namespace Mapbox.MapMatching {
 			}
 		}
 
-
 		/// <summary>
 		/// <para>Whether to return steps and turn-by-turn instructions.</para>
 		/// <para>Can be  true or false.</para>
@@ -100,14 +94,12 @@ namespace Mapbox.MapMatching {
 		/// </summary>
 		public bool? Steps;
 
-
 		/// <summary>
 		/// <para>Type of returned overview geometry.</para>
 		/// <para>Can be full (the most detailed geometry available), simplified (a simplified version of the full geometry), or none (no overview geometry).</para>
 		/// <para>The default is  simplified.</para>
 		/// </summary>
 		public Nullable<Overview> Overview;
-
 
 		/// <summary>
 		/// <para>Timestamps corresponding to each coordinate provided in the request.</para>
@@ -137,7 +129,6 @@ namespace Mapbox.MapMatching {
 			}
 		}
 
-
 		/// <summary>
 		/// <para>Whether or not to return additional metadata along the route.</para>
 		/// <para>Possible values are: duration, distance and speed.</para>
@@ -145,7 +136,6 @@ namespace Mapbox.MapMatching {
 		/// <para>Combine via '|'.</para>
 		/// </summary>
 		public Nullable<Annotations> Annotations;
-
 
 		/// <summary>
 		/// <para>Whether or not to transparently remove clusters and re-sample traces for improved map matching results.</para>
@@ -155,13 +145,11 @@ namespace Mapbox.MapMatching {
 		/// </summary>
 		public bool? Tidy;
 
-
 		/// <summary>
 		/// <para>Language of returned turn-by-turn text instructions.</para>
 		/// <para>The default is English.</para>
 		/// </summary>
 		public Nullable<InstructionLanguages> Language;
-
 
 		public override string GetUrl() {
 			if (null == _coordinates) {
@@ -210,7 +198,6 @@ namespace Mapbox.MapMatching {
 				+ ".json"
 				+ EncodeQueryString(options);
 		}
-
 
 		/// <summary>
 		/// Convert Annotations (several could be combined) into a string of their descriptions.

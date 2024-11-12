@@ -19,12 +19,10 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 	using UnityEngine.TestTools;
 #endif
 
-
 	[TestFixture]
 	internal class MapTest {
 
 		private FileSource _fs;
-
 
 		[SetUp]
 		public void SetUp() {
@@ -38,7 +36,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			_fs = new FileSource();
 #endif
 		}
-
 
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]
@@ -69,7 +66,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			map.Unsubscribe(mapObserver);
 		}
 
-
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]
 		public IEnumerator RasterHelsinki()
@@ -99,7 +95,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 
 			map.Unsubscribe(mapObserver);
 		}
-
 
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]
@@ -158,7 +153,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			map.Unsubscribe(mapObserver);
 		}
 
-
 		[Test]
 		public void SetVector2dBoundsZoom() {
 			Map<RasterTile> map1 = new(_fs);
@@ -171,7 +165,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 
 			Assert.AreEqual(map1.Tiles.Count, map2.Tiles.Count);
 		}
-
 
 		[Test]
 		public void TileMax() {
@@ -186,7 +179,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			map.Update();
 			Assert.AreEqual(16, map.Tiles.Count);
 		}
-
 
 		[Test]
 		public void Zoom() {

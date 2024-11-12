@@ -98,6 +98,7 @@ namespace Dataskop.Entities.Visualizations {
 						0.01f,
 						barFrame.localScale.y
 					);
+
 					break;
 				}
 				case MeasurementType.Bool:
@@ -108,6 +109,7 @@ namespace Dataskop.Entities.Visualizations {
 						0.01f,
 						barFrame.localScale.y
 					);
+
 					break;
 				}
 			}

@@ -25,7 +25,6 @@ namespace Mapbox.Unity.MeshGeneration.Interfaces {
 
 	}
 
-
 	public class VectorLayerVisualizer : LayerVisualizerBase {
 
 		private VectorSubLayerProperties _layerProperties;
@@ -245,9 +244,11 @@ namespace Mapbox.Unity.MeshGeneration.Interfaces {
 					uvModOptions.texturingType = _layerProperties.materialOptions.style == StyleTypes.Custom
 						? _layerProperties.materialOptions.customStyleOptions.texturingType
 						: _layerProperties.materialOptions.texturingType;
+
 					uvModOptions.atlasInfo = _layerProperties.materialOptions.style == StyleTypes.Custom
 						? _layerProperties.materialOptions.customStyleOptions.atlasInfo
 						: _layerProperties.materialOptions.atlasInfo;
+
 					uvModOptions.style = _layerProperties.materialOptions.style;
 					poly.SetProperties(uvModOptions);
 
@@ -266,6 +267,7 @@ namespace Mapbox.Unity.MeshGeneration.Interfaces {
 							GeometryExtrusionWithAtlasOptions atlasOptions = new(
 								_layerProperties.extrusionOptions, uvModOptions
 							);
+
 							atlasMod.SetProperties(atlasOptions);
 							_layerProperties.extrusionOptions.PropertyHasChanged += UpdateVector;
 						}
@@ -295,9 +297,11 @@ namespace Mapbox.Unity.MeshGeneration.Interfaces {
 						    : _layerProperties.materialOptions.texturingType == UvMapType.AtlasWithColorPalette) {
 						MapboxStylesColorModifier colorPaletteMod =
 							AddOrCreateGameObjectModifier<MapboxStylesColorModifier>();
+
 						colorPaletteMod.m_scriptablePalette = isCustomStyle
 							? _layerProperties.materialOptions.customStyleOptions.colorPalette
 							: _layerProperties.materialOptions.colorPalette;
+
 						_layerProperties.materialOptions.PropertyHasChanged += UpdateVector;
 						//TODO: Add SetProperties Method to MapboxStylesColorModifier
 					}
@@ -434,7 +438,6 @@ namespace Mapbox.Unity.MeshGeneration.Interfaces {
 			}
 		}
 
-
 		public override void Create(VectorTileLayer layer, UnityTile tile,
 			Action<UnityTile, LayerVisualizerBase> callback) {
 			if (!_activeCoroutines.ContainsKey(tile)) {
@@ -465,14 +468,17 @@ namespace Mapbox.Unity.MeshGeneration.Interfaces {
 				case LayerFilterCombinerOperationType.Any:
 					tempLayerProperties.layerFeatureFilterCombiner =
 						LayerFilterComparer.AnyOf(tempLayerProperties.layerFeatureFilters);
+
 					break;
 				case LayerFilterCombinerOperationType.All:
 					tempLayerProperties.layerFeatureFilterCombiner =
 						LayerFilterComparer.AllOf(tempLayerProperties.layerFeatureFilters);
+
 					break;
 				case LayerFilterCombinerOperationType.None:
 					tempLayerProperties.layerFeatureFilterCombiner =
 						LayerFilterComparer.NoneOf(tempLayerProperties.layerFeatureFilters);
+
 					break;
 				default:
 					break;

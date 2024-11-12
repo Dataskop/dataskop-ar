@@ -71,6 +71,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 					meshData.Vertices[originalVertexCount - 1].z
 				)
 			);
+
 			meshData.Tangents.Add(meshData.Tangents[originalVertexCount - 1]);
 			wallUv.Add(new Vector2(0, -hf));
 			meshData.Normals.Add(meshData.Normals[originalVertexCount - 1]);
@@ -213,6 +214,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 						md.Vertices[current].x - md.Vertices[next].x, 0,
 						md.Vertices[current].z - md.Vertices[next].z
 					);
+
 					v1.Normalize();
 					v1 *= -_offset;
 					n1 = new Vector3(-v1.z, 0, v1.x);
@@ -221,6 +223,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 						(float)(md.Vertices[next].x + n1.x), 0,
 						(float)(md.Vertices[next].z + n1.z)
 					);
+
 					pij2 = new Vector3(
 						(float)(md.Vertices[current].x + n1.x), 0,
 						(float)(md.Vertices[current].z + n1.z)
@@ -238,6 +241,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 						(float)(md.Vertices[current].x + n2.x), 0,
 						(float)(md.Vertices[current].z + n2.z)
 					);
+
 					pjk2 = new Vector3(
 						(float)(md.Vertices[prev].x + n2.x), 0,
 						(float)(md.Vertices[prev].z + n2.z)
@@ -323,6 +327,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 					old_points[j].x - old_points[i].x, 0,
 					old_points[j].z - old_points[i].z
 				);
+
 				v1.Normalize();
 				v1 *= offset;
 				Vector3 n1 = new(-v1.z, 0, v1.x);
@@ -331,6 +336,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 					(float)(old_points[i].x + n1.x), 0,
 					(float)(old_points[i].z + n1.z)
 				);
+
 				Vector3 pij2 = new(
 					(float)(old_points[j].x + n1.x), 0,
 					(float)(old_points[j].z + n1.z)
@@ -340,6 +346,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 					old_points[k].x - old_points[j].x, 0,
 					old_points[k].z - old_points[j].z
 				);
+
 				v2.Normalize();
 				v2 *= offset;
 				Vector3 n2 = new(-v2.z, 0, v2.x);
@@ -348,6 +355,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 					(float)(old_points[j].x + n2.x), 0,
 					(float)(old_points[j].z + n2.z)
 				);
+
 				Vector3 pjk2 = new(
 					(float)(old_points[k].x + n2.x), 0,
 					(float)(old_points[k].z + n2.z)
@@ -361,6 +369,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers {
 					out lines_intersect, out segments_intersect,
 					out poi, out close1, out close2
 				);
+
 				Debug.Assert(
 					lines_intersect,
 					"Edges " + i + "-->" + j + " and " +

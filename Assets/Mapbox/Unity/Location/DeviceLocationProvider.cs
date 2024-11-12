@@ -7,7 +7,6 @@ namespace Mapbox.Unity.Location {
 	using System;
 	using System.Linq;
 
-
 	/// <summary>
 	/// The DeviceLocationProvider is responsible for providing real world location and heading data,
 	/// served directly from native hardware and OS. 
@@ -26,7 +25,6 @@ namespace Mapbox.Unity.Location {
 		)]
 		public float _desiredAccuracyInMeters = 1.0f;
 
-
 		/// <summary>
 		/// The minimum distance (measured in meters) a device must move laterally before Input.location property is updated. 
 		/// Higher values like 500 imply less overhead.
@@ -37,23 +35,19 @@ namespace Mapbox.Unity.Location {
 		)]
 		public float _updateDistanceInMeters = 0.0f;
 
-
 		[SerializeField]
 		[Tooltip(
 			"The minimum time interval between location updates, in milliseconds. It's reasonable to not go below 500ms."
 		)]
 		public long _updateTimeInMilliSeconds = 500;
 
-
 		[SerializeField]
 		[Tooltip("Smoothing strategy to be applied to the UserHeading.")]
 		public AngleSmoothingAbstractBase _userHeadingSmoothing;
 
-
 		[SerializeField]
 		[Tooltip("Smoothing strategy to applied to the DeviceOrientation.")]
 		public AngleSmoothingAbstractBase _deviceOrientationSmoothing;
-
 
 		[Serializable]
 		public struct DebuggingInEditor {
@@ -74,7 +68,6 @@ namespace Mapbox.Unity.Location {
 		[Space(20)]
 		public DebuggingInEditor _editorDebuggingOnly;
 
-
 		private IMapboxLocationService _locationService;
 		private Coroutine _pollRoutine;
 		private double _lastLocationTimestamp;
@@ -86,7 +79,6 @@ namespace Mapbox.Unity.Location {
 		private int _maxLastPositions = 5;
 		/// <summary>minimum needed distance between oldest and newest position before UserHeading is calculated</summary>
 		private double _minDistanceOldestNewestPosition = 1.5;
-
 
 		// Android 6+ permissions have to be granted during runtime
 		// these are the callbacks for requesting location permission
@@ -106,7 +98,6 @@ namespace Mapbox.Unity.Location {
 			_gotPermissionRequestResponse = true;
 		}
 #endif
-
 
 		protected virtual void Awake() {
 #if UNITY_EDITOR
@@ -145,7 +136,6 @@ namespace Mapbox.Unity.Location {
 			}
 		}
 
-
 		/// <summary>
 		/// Enable location and compass services.
 		/// Sends continuous location and heading updates based on 
@@ -167,6 +157,7 @@ namespace Mapbox.Unity.Location {
 					"Remote device not connected via 'Unity Remote'. Waiting ..." + Environment.NewLine +
 					"If Unity seems to be stuck here make sure 'Unity Remote' is running and restart Unity with your device already connected."
 				);
+
 				yield return _wait1sec;
 			}
 #endif
@@ -261,6 +252,7 @@ namespace Mapbox.Unity.Location {
 				Vector2d previousLocation = new(
 					_currentLocation.LatitudeLongitude.x, _currentLocation.LatitudeLongitude.y
 				);
+
 				_currentLocation.LatitudeLongitude = new Vector2d(latitude, longitude);
 
 				_currentLocation.Accuracy = (float)Math.Floor(lastData.horizontalAccuracy);
@@ -268,6 +260,7 @@ namespace Mapbox.Unity.Location {
 				// do an additional check if location has changed
 				_currentLocation.IsLocationUpdated = timestamp > _lastLocationTimestamp ||
 				                                     !_currentLocation.LatitudeLongitude.Equals(previousLocation);
+
 				_currentLocation.Timestamp = timestamp;
 				_lastLocationTimestamp = timestamp;
 

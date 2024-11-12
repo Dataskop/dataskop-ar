@@ -2,9 +2,7 @@
 
 	using UnityEngine;
 
-	public interface ITileProviderOptions {
-
-	}
+	public interface ITileProviderOptions { }
 
 	public interface ICameraBoundsExtentOptions : ITileProviderOptions {
 
@@ -14,8 +12,7 @@
 
 	public class ExtentOptions : ITileProviderOptions {
 
-		public virtual void SetOptions(ExtentOptions extentOptions) {
-		}
+		public virtual void SetOptions(ExtentOptions extentOptions) { }
 
 	}
 

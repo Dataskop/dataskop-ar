@@ -47,6 +47,7 @@ namespace Mapbox.Unity.Map {
 				0,
 				(float)(rect.Center.y - map.CenterMercator.y) * scale * scaleFactor
 			);
+
 			tile.transform.localPosition = position;
 		}
 

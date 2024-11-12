@@ -25,6 +25,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 		public void Deserialize() {
 			Vector2dBounds deserializedVector2dBounds =
 				JsonConvert.DeserializeObject<Vector2dBounds>(geoCoordinateBoundsStr, JsonConverters.Converters);
+
 			Assert.AreEqual(geoCoordinateBoundsObj.ToString(), deserializedVector2dBounds.ToString());
 		}
 
@@ -32,6 +33,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 		public void Serialize() {
 			string serializedVector2dBounds =
 				JsonConvert.SerializeObject(geoCoordinateBoundsObj, JsonConverters.Converters);
+
 			Assert.AreEqual(geoCoordinateBoundsStr, serializedVector2dBounds);
 		}
 

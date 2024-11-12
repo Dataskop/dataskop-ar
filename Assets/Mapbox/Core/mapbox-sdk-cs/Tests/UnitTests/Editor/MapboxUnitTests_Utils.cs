@@ -9,7 +9,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 	using System.Collections.Generic;
 	using Map;
 
-
 	internal static class Utils {
 
 		internal class VectorMapObserver : Mapbox.Utils.IObserver<VectorTile> {

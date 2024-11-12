@@ -77,6 +77,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			_directionResource.Bearings = new BearingFilter[] {
 				new(90, 45), new(90, 30)
 			};
+
 			Assert.AreEqual(
 				"https://api.mapbox.com/directions/v5/mapbox/driving/10.00000,10.00000;20.00000,20.00000.json?alternatives=false&bearings=90%2C45%3B90%2C30"
 					.ToLower(), _directionResource.GetUrl().ToLower()
@@ -86,6 +87,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			_directionResource.Bearings = new BearingFilter[] {
 				new(90, 45), new(null, null)
 			};
+
 			Assert.AreEqual(
 				"https://api.mapbox.com/directions/v5/mapbox/driving/10.00000,10.00000;20.00000,20.00000.json?alternatives=false&bearings=90%2C45%3B"
 					.ToLower(), _directionResource.GetUrl().ToLower()
@@ -109,6 +111,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 			_directionResource.Radiuses = new double[] {
 				30, 30
 			};
+
 			Assert.AreEqual(
 				"https://api.mapbox.com/directions/v5/mapbox/driving/10.00000,10.00000;20.00000,20.00000.json?alternatives=false&bearings=90%2C45%3B&continue_straight=false&overview=full&radiuses=30%2C30"
 					.ToLower(), _directionResource.GetUrl().ToLower()

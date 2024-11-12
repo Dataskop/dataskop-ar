@@ -6,9 +6,7 @@ using UnityEngine;
 
 namespace Mapbox.Unity.Map.Interfaces {
 
-	public interface IMap : IMapReadable, IMapWritable, IUnifiedMap {
-
-	}
+	public interface IMap : IMapReadable, IMapWritable, IUnifiedMap { }
 
 	public interface IMapReadable {
 

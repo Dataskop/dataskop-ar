@@ -4,7 +4,6 @@ namespace Mapbox.Unity.Location {
 	using System;
 	using UnityEngine;
 
-
 	/// <summary>
 	/// Base class for implementing different smoothing strategies
 	/// </summary>
@@ -17,29 +16,24 @@ namespace Mapbox.Unity.Location {
 		[Range(5, 20)]
 		public int _measurements = 5;
 
-
 		public AngleSmoothingAbstractBase() {
 			_angles = new CircularBuffer<double>(_measurements);
 		}
-
 
 		/// <summary>
 		/// Internal storage for latest 'n' values. Latest value at [0], <see cref="Mapbox.Utils.CircularBuffer{T}"/>
 		/// </summary>
 		protected CircularBuffer<double> _angles;
 
-
 		/// <summary>
 		/// For conversions from degrees to radians needed for Math functions.
 		/// </summary>
 		protected readonly double DEG2RAD = Math.PI / 180.0d;
 
-
 		/// <summary>
 		/// For conversions from radians to degrees.
 		/// </summary>
 		protected readonly double RAD2DEG = 180.0d / Math.PI;
-
 
 		/// <summary>
 		/// Add angle to list of angles used for calculation.
@@ -51,13 +45,11 @@ namespace Mapbox.Unity.Location {
 			_angles.Add(angle);
 		}
 
-
 		/// <summary>
 		/// Calculate smoothed angle from previously added angles.
 		/// </summary>
 		/// <returns>Smoothed angle</returns>
 		public abstract double Calculate();
-
 
 		[System.Diagnostics.Conditional("UNITY_EDITOR")]
 		protected void debugLogAngle(double raw, double smoothed) {

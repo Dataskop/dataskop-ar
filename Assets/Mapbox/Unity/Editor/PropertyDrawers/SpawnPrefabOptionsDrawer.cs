@@ -30,6 +30,7 @@ namespace Mapbox.Unity.Map {
 				new Rect(position.x, position.y, position.width, lineHeight), prefabContent,
 				property.FindPropertyRelative("prefab").objectReferenceValue, typeof(GameObject), false
 			);
+
 			position.y += lineHeight;
 			EditorGUI.PropertyField(
 				new Rect(position.x, position.y, position.width, lineHeight),

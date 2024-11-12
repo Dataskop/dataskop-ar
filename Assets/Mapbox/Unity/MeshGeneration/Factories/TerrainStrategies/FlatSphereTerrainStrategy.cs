@@ -44,6 +44,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 						(float)tile.Rect.Min.x, (float)tile.Rect.Min.x + (float)tile.Rect.Size.x,
 						x / (_sampleCount - 1)
 					);
+
 					float yy = Mathf.Lerp(
 						(float)tile.Rect.Max.y, (float)tile.Rect.Max.y + (float)tile.Rect.Size.y,
 						y / (_sampleCount - 1)
@@ -95,9 +96,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 			tile.transform.localPosition = Constants.Math.Vector3Zero;
 		}
 
-		public override void UnregisterTile(UnityTile tile) {
-
-		}
+		public override void UnregisterTile(UnityTile tile) { }
 
 	}
 

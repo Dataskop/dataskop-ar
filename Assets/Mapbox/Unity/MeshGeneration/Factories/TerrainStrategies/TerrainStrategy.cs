@@ -18,21 +18,13 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 			_elevationOptions = elOptions;
 		}
 
-		public virtual void RegisterTile(UnityTile tile) {
+		public virtual void RegisterTile(UnityTile tile) { }
 
-		}
+		public virtual void PostProcessTile(UnityTile tile) { }
 
-		public virtual void PostProcessTile(UnityTile tile) {
+		public virtual void UnregisterTile(UnityTile tile) { }
 
-		}
-
-		public virtual void UnregisterTile(UnityTile tile) {
-
-		}
-
-		public virtual void DataErrorOccurred(UnityTile tile, TileErrorEventArgs e) {
-
-		}
+		public virtual void DataErrorOccurred(UnityTile tile, TileErrorEventArgs e) { }
 
 	}
 

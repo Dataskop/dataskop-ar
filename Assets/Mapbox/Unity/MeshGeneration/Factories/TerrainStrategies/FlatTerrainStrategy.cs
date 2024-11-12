@@ -66,10 +66,12 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 			verts[1] = tile.TileScale * new Vector3(
 				(float)(tile.Rect.Max.x - tile.Rect.Center.x), 0, (float)(tile.Rect.Min.y - tile.Rect.Center.y)
 			);
+
 			verts[2] = tile.TileScale * (tile.Rect.Max - tile.Rect.Center).ToVector3xz();
 			verts[3] = tile.TileScale * new Vector3(
 				(float)(tile.Rect.Min.x - tile.Rect.Center.x), 0, (float)(tile.Rect.Max.y - tile.Rect.Center.y)
 			);
+
 			norms[0] = Constants.Math.Vector3Up;
 			norms[1] = Constants.Math.Vector3Up;
 			norms[2] = Constants.Math.Vector3Up;
@@ -81,11 +83,13 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 			int[] trilist = new int[6] {
 				0, 1, 2, 0, 2, 3
 			};
+
 			unityMesh.triangles = trilist;
 
 			Vector2[] uvlist = new Vector2[4] {
 				new(0, 1), new(1, 1), new(1, 0), new(0, 0)
 			};
+
 			unityMesh.uv = uvlist;
 			_cachedQuad = new MeshDataArray() {
 				Vertices = verts,
@@ -103,10 +107,12 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 			verts[1] = tile.TileScale * new Vector3(
 				(float)(tile.Rect.Max.x - tile.Rect.Center.x), 0, (float)(tile.Rect.Min.y - tile.Rect.Center.y)
 			);
+
 			verts[2] = tile.TileScale * (tile.Rect.Max - tile.Rect.Center).ToVector3xz();
 			verts[3] = tile.TileScale * new Vector3(
 				(float)(tile.Rect.Min.x - tile.Rect.Center.x), 0, (float)(tile.Rect.Max.y - tile.Rect.Center.y)
 			);
+
 			norms[0] = Constants.Math.Vector3Up;
 			norms[1] = Constants.Math.Vector3Up;
 			norms[2] = Constants.Math.Vector3Up;
@@ -129,6 +135,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 				norm = Vector3.Cross(
 					verts[4 * (i + 1) + 1] - verts[4 * (i + 1) + 2], verts[4 * (i + 1)] - verts[4 * (i + 1) + 1]
 				).normalized;
+
 				norms[4 * (i + 1)] = norm;
 				norms[4 * (i + 1) + 1] = norm;
 				norms[4 * (i + 1) + 2] = norm;
@@ -146,6 +153,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories.TerrainStrategies {
 				2,
 				3
 			};
+
 			unityMesh.SetTriangles(trilist, 0);
 
 			trilist = new List<int>(8);

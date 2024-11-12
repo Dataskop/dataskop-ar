@@ -139,7 +139,6 @@ namespace Mapbox.Unity.MeshGeneration.Filters {
 			};
 		}
 
-
 		public static ILayerFeatureFilterComparer PropertyContainsValue(string property, params object[] values) {
 			return new LayerPropertyContainsFilterComparer {
 				Key = property,
@@ -325,6 +324,7 @@ namespace Mapbox.Unity.MeshGeneration.Filters {
 						.Select(p => p.Trim())
 						.Where(p => !string.IsNullOrEmpty(p))
 						.ToArray();
+
 					filterComparer = LayerFilterComparer.PropertyContainsValue(Key, matchList);
 					break;
 				case LayerFilterOperationType.IsInRange:

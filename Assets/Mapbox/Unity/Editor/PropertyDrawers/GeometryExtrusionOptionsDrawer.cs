@@ -40,7 +40,7 @@
 				isGUIContentSet = true;
 			}
 
-			GUIContent extrusionTypeLabel = new GUIContent {
+			GUIContent extrusionTypeLabel = new() {
 				text = "Extrusion Type",
 				tooltip = "Type of geometry extrusion"
 			};
@@ -60,10 +60,11 @@
 			SerializedProperty maxHeightProperty = property.FindPropertyRelative("maximumHeight");
 
 			SerializedProperty extrusionGeometryType = property.FindPropertyRelative("extrusionGeometryType");
-			GUIContent extrusionGeometryGUI = new GUIContent {
+			GUIContent extrusionGeometryGUI = new() {
 				text = "Geometry Type",
 				tooltip = EnumExtensions.Description((ExtrusionGeometryType)extrusionGeometryType.enumValueIndex)
 			};
+
 			EditorGUI.indentLevel++;
 
 			EditorGUI.BeginChangeCheck();
@@ -101,6 +102,7 @@
 							text = "Height"
 						}
 					);
+
 					break;
 				default:
 					break;
@@ -162,6 +164,7 @@
 								tileJsonData.optionalPropertiesString
 							}, System.StringSplitOptions.None
 						)[0].Trim();
+
 						_propertyNameContent[extIdx] = new GUIContent {
 							text = _propertyNamesList[extIdx],
 							tooltip =
@@ -170,7 +173,7 @@
 					}
 
 					//display popup
-					GUIContent propertyNameLabel = new GUIContent {
+					GUIContent propertyNameLabel = new() {
 						text = "Property Name",
 						tooltip =
 							"The name of the property in the selected Mapbox layer that will be used for extrusion"
@@ -189,6 +192,7 @@
 							tileJsonData.optionalPropertiesString
 						}, System.StringSplitOptions.None
 					)[0].Trim();
+
 					descriptionString =
 						tileJsonData.LayerPropertyDescriptionDictionary[selectedLayerName][parsedString];
 
@@ -213,6 +217,7 @@
 								tileJsonData.optionalPropertiesString
 							}, System.StringSplitOptions.None
 						)[0].Trim();
+
 						_propertyNameContent[extIdx] = new GUIContent {
 							text = _propertyNamesList[extIdx],
 							tooltip =
@@ -221,7 +226,7 @@
 					}
 
 					//display popup
-					GUIContent propertyNameLabel = new GUIContent {
+					GUIContent propertyNameLabel = new() {
 						text = "Property Name",
 						tooltip =
 							"The name of the property in the selected Mapbox layer that will be used for extrusion"
@@ -240,6 +245,7 @@
 							tileJsonData.optionalPropertiesString
 						}, System.StringSplitOptions.None
 					)[0].Trim();
+
 					descriptionString = "Unavailable in Selected Layer.";
 
 				}
@@ -252,10 +258,11 @@
 			descriptionString =
 				string.IsNullOrEmpty(descriptionString) ? "No description available" : descriptionString;
 
-			GUIContent propertyDescriptionPrefixLabel = new GUIContent {
+			GUIContent propertyDescriptionPrefixLabel = new() {
 				text = "Property Description",
 				tooltip = "Factual information about the selected property"
 			};
+
 			EditorGUILayout.LabelField(
 				propertyDescriptionPrefixLabel, new GUIContent(descriptionString), (GUIStyle)"wordWrappedLabel"
 			);
@@ -264,10 +271,11 @@
 		private void DrawWarningMessage(Rect position) {
 			GUIStyle labelStyle = new(EditorStyles.popup);
 			labelStyle.fontStyle = FontStyle.Bold;
-			GUIContent layerNameLabel = new GUIContent {
+			GUIContent layerNameLabel = new() {
 				text = "Property Name",
 				tooltip = "The name of the property in the selected Mapbox layer that will be used for extrusion"
 			};
+
 			EditorGUILayout.LabelField(layerNameLabel, new GUIContent("No properties found in layer"), labelStyle);
 			return;
 		}

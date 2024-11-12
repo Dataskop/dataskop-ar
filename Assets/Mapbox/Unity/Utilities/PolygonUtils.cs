@@ -3,7 +3,6 @@ namespace Mapbox.Utils {
 	using System.Collections.Generic;
 	using VectorTile.Geometry;
 
-
 	public static class PolygonUtils {
 
 		/// <summary>

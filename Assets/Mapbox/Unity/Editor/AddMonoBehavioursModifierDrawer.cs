@@ -16,8 +16,8 @@ namespace Mapbox.Editor {
 			EditorGUI.BeginProperty(position, label, property);
 
 			position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
-			Rect scriptRect = new Rect(position.x, position.y, position.width, position.height - _offset);
-			Rect helpRect = new Rect(position.x, position.y + _offset / 2, position.width, _offset);
+			Rect scriptRect = new(position.x, position.y, position.width, position.height - _offset);
+			Rect helpRect = new(position.x, position.y + _offset / 2, position.width, _offset);
 			SerializedProperty typeStringProperty = property.FindPropertyRelative("_typeString");
 			SerializedProperty monoscriptProperty = property.FindPropertyRelative("_script");
 

@@ -3,7 +3,6 @@
 	using System;
 	using System.Linq;
 
-
 	/// <summary>
 	/// <para>Smooths angles via a exponential moving average (EMA).</para>
 	/// <para>https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average</para>
@@ -14,7 +13,6 @@
 		public AngleSmoothingEMA() : base() {
 			_alpha = 2.0d / (double)(_measurements + 1);
 		}
-
 
 		private double _alpha;
 
