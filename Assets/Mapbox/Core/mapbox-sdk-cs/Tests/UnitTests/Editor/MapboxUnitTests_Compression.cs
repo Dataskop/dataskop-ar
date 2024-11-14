@@ -98,6 +98,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest {
 
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]
+		[Ignore("test ignored: Decompress function does not do anything.")]
 		public IEnumerator Decompress() {
 #else
 		[Test]
