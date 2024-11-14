@@ -116,6 +116,7 @@ namespace Dataskop.UI {
 				}
 
 				ProjectsContainer.Add(groupOfProjectsTemplateContainer);
+
 			}
 
 			if (ProjectsContainer.childCount != 0) {

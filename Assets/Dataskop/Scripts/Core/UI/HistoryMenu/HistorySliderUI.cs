@@ -9,10 +9,8 @@ namespace Dataskop.UI {
 
 		private readonly Label currentTimeLabel;
 		private readonly VisualElement dragger;
-
 		private readonly VisualElement historyContainer;
 		private readonly SliderInt historySlider;
-
 		private string currentAttributeId;
 		private string currentDeviceId;
 
@@ -62,48 +60,37 @@ namespace Dataskop.UI {
 		}
 
 		private void ClearTicks() {
-			// Get all tick elements and remove them
+			
 			List<VisualElement> ticks = historySlider.Query(className: "slider-tick").ToList();
 
 			foreach (VisualElement tick in ticks) {
 				tick.RemoveFromHierarchy();
 			}
+			
 		}
 
 		private void GenerateTicks(int dataPointsCount) {
-			// Clear existing ticks
+
 			ClearTicks();
 
-			// Get the total height of the slider track where ticks will be placed
 			float sliderTrackHeight = historySlider.resolvedStyle.height;
-
-			// Determine the interval for displaying ticks to avoid clutter for large data points
 			int tickInterval = Mathf.CeilToInt(dataPointsCount / 20f);
-
-			// Calculate the space between ticks
 			float tickSpacing = sliderTrackHeight / (dataPointsCount / (float)tickInterval);
 
-			// Generate ticks
 			for (int i = 0; i <= dataPointsCount; i += tickInterval) {
 
 				VisualElement tick = new();
 				tick.AddToClassList("slider-tick");
 
-				// Set the size of the tick
-				tick.style.width = 20; // The width of the tick mark, stretching out from the slider
-				tick.style.height = 2; // The height of the tick mark
+				tick.style.width = 20;
+				tick.style.height = 2;
 
-				// Calculate the vertical position of the tick
 				float tickPosition = -9 + tickSpacing * ((float)i / tickInterval);
 
-				// The position is calculated from the bottom (sliderTrackHeight - position - half height of tick)
-				// to correctly align with the vertical slider's orientation
 				tick.style.top = sliderTrackHeight - tickPosition + tick.style.height.value.value / 2 -
 				                 dragger.resolvedStyle.height / 2;
 
 				tick.style.left = 50;
-
-				// Add the tick to the slider container
 				historySlider.Add(tick);
 
 			}

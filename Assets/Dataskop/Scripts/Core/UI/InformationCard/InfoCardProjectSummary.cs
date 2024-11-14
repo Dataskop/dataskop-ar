@@ -27,7 +27,8 @@ namespace Dataskop.UI {
 		private Label ProjectMeasurements { get; set; }
 
 		private void Awake() {
-			ProjectSummaryContainer = infoCardDoc.rootVisualElement.Q<VisualElement>("ProjectData");
+
+			ProjectSummaryContainer = infoCardDoc.rootVisualElement.Q<VisualElement>("ProjectSummary");
 			ProjectName = ProjectSummaryContainer.Q<Label>("NameValue");
 			ProjectDescription = ProjectSummaryContainer.Q<Label>("DescriptionValue");
 			ProjectCreationDate = ProjectSummaryContainer.Q<Label>("CreationDateValue");
@@ -35,9 +36,11 @@ namespace Dataskop.UI {
 			ProjectDevicesNearbyLabel = ProjectSummaryContainer.Q<Label>("DevicesNearby");
 			ProjectDevicesNearbyValue = ProjectSummaryContainer.Q<Label>("DevicesNearbyValue");
 			ProjectMeasurements = ProjectSummaryContainer.Q<Label>("MeasurementsValue");
+
 		}
 
 		public void OnProjectLoaded(Project project) {
+
 			ProjectName.text = project.Information.Name;
 			ProjectDescription.text = project.Information.Description;
 			ProjectCreationDate.text = project.Information.CreatedDate.ToShortDateString();
@@ -52,10 +55,13 @@ namespace Dataskop.UI {
 			}
 
 			ProjectMeasurements.text = string.Join(", ", array);
+
 		}
 
 		public void OnNearbyDevicesUpdated(int devicesNearbyCount) {
+
 			ProjectDevicesNearbyValue.text = devicesNearbyCount.ToString("00");
+
 		}
 
 	}

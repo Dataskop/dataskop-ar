@@ -240,7 +240,7 @@ namespace Mapbox.Unity.MeshGeneration.Data {
 
 				// HACK: compute height values for terrain. We could probably do this without a texture2d.
 				if (_heightTexture == null) {
-					_heightTexture = new Texture2D(0, 0);
+					_heightTexture = new Texture2D(1, 1);
 				}
 
 				_heightTexture.LoadImage(data);
@@ -284,7 +284,7 @@ namespace Mapbox.Unity.MeshGeneration.Data {
 				}
 
 				if (_rasterData == null) {
-					_rasterData = new Texture2D(0, 0, TextureFormat.RGB24, useMipMap);
+					_rasterData = new Texture2D(1, 1, TextureFormat.RGB24, useMipMap);
 					_rasterData.wrapMode = TextureWrapMode.Clamp;
 				}
 

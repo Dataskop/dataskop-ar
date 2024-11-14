@@ -68,11 +68,9 @@ namespace Dataskop.Interaction {
 		public void Initialize() {
 
 			if (AppOptions.DemoMode) {
-				ARTrackedImageManager arManager =
-					(ARTrackedImageManager)FindObjectOfType(typeof(ARTrackedImageManager), true);
-
+				ARTrackedImageManager arManager = FindFirstObjectByType<ARTrackedImageManager>();
 				arManager.enabled = true;
-				DemoBoxHandler demoBoxHandler = (DemoBoxHandler)FindObjectOfType(typeof(DemoBoxHandler), true);
+				DemoBoxHandler demoBoxHandler = FindFirstObjectByType<DemoBoxHandler>();
 				demoBoxHandler.enabled = true;
 				calibrationFinished?.Invoke();
 				return;

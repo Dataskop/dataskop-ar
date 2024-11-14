@@ -4,6 +4,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using UnityEngine;
+
 namespace Mapbox.Map {
 
 	using System.Collections.ObjectModel;

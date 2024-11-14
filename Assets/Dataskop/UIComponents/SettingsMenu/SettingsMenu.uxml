@@ -1,99 +1,73 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance"
-         engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd"
-         editor-extension-mode="False">
-    <ui:Template name="DatePicker"
-                 src="project://database/Assets/Dataskop/UIComponents/SettingsMenu/DatePicker.uxml?fileID=9197481963319205126&amp;guid=ff8ada5c85d7d534e9c96a582d116af9&amp;type=3#DatePicker"/>
-    <Style src="project://database/Assets/Dataskop/UIComponents/SettingsMenu/SettingsMenuStyles.uss?fileID=7433441132597879392&amp;guid=3ea82a0a9c67db041b4dad349eb75bbd&amp;type=3#SettingsMenuStyles"/>
-    <ui:VisualElement name="MenuContainer" class="settings-menu-close"
-                      style="width: 520px; height: auto; position: absolute; align-items: center; background-color: rgba(229, 229, 229, 0.78); border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; left: 101%; top: 15%;">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="DatePicker" src="project://database/Assets/Dataskop/UIComponents/SettingsMenu/DatePicker.uxml?fileID=9197481963319205126&amp;guid=ff8ada5c85d7d534e9c96a582d116af9&amp;type=3#DatePicker" />
+    <Style src="project://database/Assets/Dataskop/UIComponents/SettingsMenu/SettingsMenuStyles.uss?fileID=7433441132597879392&amp;guid=3ea82a0a9c67db041b4dad349eb75bbd&amp;type=3#SettingsMenuStyles" />
+    <ui:VisualElement name="MenuContainer" class="settings-menu-close" style="width: 520px; height: auto; position: absolute; align-items: center; background-color: rgba(229, 229, 229, 0.78); border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; left: 101%; top: 15%;">
         <ui:VisualElement name="TitleContainer" class="titlecontainer">
-            <ui:Label text="MENU_TITLE" name="MenuTitle" class="title" style="padding-right: 1px; margin-left: 2px; margin-right: 2px;"/>
-            <ui:Button display-tooltip-when-elided="true" name="SortButton"
-                       style="background-color: rgba(142, 142, 142, 0); position: absolute; right: 10px; top: auto; width: 60px; height: 60px; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; border-top-left-radius: 8px; border-bottom-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; bottom: auto; background-image: url(&quot;project://database/Assets/Dataskop/Images/Icons/sort.png?fileID=21300000&amp;guid=edeb774978eea8a4fb472e3d32eaeb37&amp;type=3#sort&quot;); -unity-background-image-tint-color: rgb(0, 80, 150); visibility: visible; display: none;"/>
+            <ui:Label text="MENU_TITLE" name="MenuTitle" class="title" style="padding-right: 1px; margin-left: 2px; margin-right: 2px;" />
+            <ui:Button display-tooltip-when-elided="true" name="SortButton" style="background-color: rgba(142, 142, 142, 0); position: absolute; right: 10px; top: auto; width: 60px; height: 60px; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; border-top-left-radius: 8px; border-bottom-left-radius: 8px; border-top-right-radius: 8px; border-bottom-right-radius: 8px; bottom: auto; background-image: url(&quot;project://database/Assets/Dataskop/Images/Icons/sort.png?fileID=21300000&amp;guid=edeb774978eea8a4fb472e3d32eaeb37&amp;type=3#sort&quot;); -unity-background-image-tint-color: rgb(0, 80, 150); visibility: visible; display: none;" />
         </ui:VisualElement>
-        <ui:VisualElement name="Splitter" class="splitter"
-                          style="height: 4px; border-top-left-radius: 2px; border-bottom-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; width: 96%; background-color: rgb(123, 123, 123);"/>
-        <ui:ScrollView name="ProjectSelectionContainer" class="project-selection-container"
-                       style="width: 100%; height: auto; max-height: 800px; position: relative; display: none;"/>
-        <ui:VisualElement name="SettingsMenuContainer" class="settings-menu-container" style="display: flex; background-color: rgba(0, 0, 0, 0);">
-            <ui:Instance template="DatePicker" name="DatePicker" class="option-container"
-                         style="flex-direction: row; height: auto; justify-content: center; display: none;"/>
+        <ui:VisualElement name="Splitter" class="splitter" style="height: 4px; border-top-left-radius: 2px; border-bottom-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; width: 96%; background-color: rgb(123, 123, 123);" />
+        <ui:ScrollView name="ProjectSelectionContainer" class="project-selection-container" style="max-height: 500px;" />
+        <ui:VisualElement name="SettingsMenuContainer" class="settings-menu-container" style="display: none; background-color: rgba(0, 0, 0, 0);">
+            <ui:Instance template="DatePicker" name="DatePicker" class="option-container" style="flex-direction: row; height: auto; justify-content: center; display: none;" />
             <ui:VisualElement name="AmountContainer" class="option-container" style="justify-content: space-between; flex-direction: row;">
-                <ui:Label text="Fetch Amount" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label"
-                          style="flex-wrap: wrap;"/>
-                <ui:TextField name="AmountInput" max-length="4" value="2000" class="text-input"/>
+                <ui:Label text="Fetch Amount" display-tooltip-when-elided="true" enable-rich-text="false" class="option-label" style="flex-wrap: wrap;" />
+                <ui:TextField name="AmountInput" max-length="4" value="2000" class="text-input" />
             </ui:VisualElement>
-            <ui:VisualElement name="Splitter" class="splitter"/>
+            <ui:VisualElement name="Splitter" class="splitter" />
             <ui:VisualElement name="CooldownContainer" class="option-container" style="justify-content: space-between; flex-direction: row;">
-                <ui:Label text="Interval (s)" display-tooltip-when-elided="true" class="option-label"/>
-                <ui:TextField name="CooldownInput" value="10" class="text-input"/>
+                <ui:Label text="Interval (s)" display-tooltip-when-elided="true" class="option-label" />
+                <ui:TextField name="CooldownInput" value="10" class="text-input" />
             </ui:VisualElement>
-            <ui:VisualElement name="Splitter" class="splitter"/>
+            <ui:VisualElement name="Splitter" class="splitter" />
             <ui:VisualElement name="OptionContainer_Occlusion" class="option-container" style="justify-content: center; flex-direction: row;">
-                <ui:Button display-tooltip-when-elided="true" name="Option_Occlusion" class="option-toggle-button-container"
-                           style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 20px; padding-bottom: 0; padding-left: 0; width: 100%; overflow: visible;">
-                    <ui:Label text="Occlusion" display-tooltip-when-elided="true" class="option-label"/>
+                <ui:Button display-tooltip-when-elided="true" name="Option_Occlusion" class="option-toggle-button-container" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 20px; padding-bottom: 0; padding-left: 0; width: 100%; overflow: visible;">
+                    <ui:Label text="Occlusion" display-tooltip-when-elided="true" class="option-label" />
                     <ui:VisualElement name="Toggler" class="toggle-button-background toggler-off">
-                        <ui:VisualElement name="Knob" class="toggle-button-knob knob-off"/>
+                        <ui:VisualElement name="Knob" class="toggle-button-knob knob-off" />
                     </ui:VisualElement>
                 </ui:Button>
             </ui:VisualElement>
-            <ui:VisualElement name="Splitter" class="splitter"/>
+            <ui:VisualElement name="Splitter" class="splitter" />
             <ui:VisualElement name="OptionContainer_Minimap" class="option-container" style="width: 90%;">
-                <ui:Button display-tooltip-when-elided="true" name="Option_Minimap" class="option-toggle-button-container"
-                           style="width: 100%; overflow: visible; padding-right: 20px;">
-                    <ui:Label text="Minimap" display-tooltip-when-elided="true" class="option-label"/>
+                <ui:Button display-tooltip-when-elided="true" name="Option_Minimap" class="option-toggle-button-container" style="width: 100%; overflow: visible; padding-right: 20px;">
+                    <ui:Label text="Minimap" display-tooltip-when-elided="true" class="option-label" />
                     <ui:VisualElement name="Toggler" class="toggle-button-background toggler-off toggler-on">
-                        <ui:VisualElement name="Knob" class="toggle-button-knob knob-off knob-on" style="overflow: visible;"/>
+                        <ui:VisualElement name="Knob" class="toggle-button-knob knob-off knob-on" style="overflow: visible;" />
                     </ui:VisualElement>
                 </ui:Button>
             </ui:VisualElement>
-            <ui:VisualElement name="Splitter" class="splitter"/>
+            <ui:VisualElement name="Splitter" class="splitter" />
             <ui:VisualElement name="OptionContainer_ResetCalibration" class="option-container">
-                <ui:Button text="Reset Calibration" display-tooltip-when-elided="true" name="ResetCalibrationButton" class="option-button"
-                           style="color: rgb(238, 0, 8);"/>
+                <ui:Button text="Reset Calibration" display-tooltip-when-elided="true" name="ResetCalibrationButton" class="option-button" style="color: rgb(238, 0, 8);" />
             </ui:VisualElement>
-            <ui:VisualElement name="Splitter" class="splitter"/>
+            <ui:VisualElement name="Splitter" class="splitter" />
             <ui:VisualElement name="OptionContainer_Logout" class="option-container" style="-unity-text-align: upper-left;">
-                <ui:Button text="Logout" display-tooltip-when-elided="true" name="LogoutButton" class="option-button" style="color: rgb(238, 0, 8);"/>
+                <ui:Button text="Logout" display-tooltip-when-elided="true" name="LogoutButton" class="option-button" style="color: rgb(238, 0, 8);" />
             </ui:VisualElement>
-            <ui:VisualElement name="Splitter" class="splitter"/>
+            <ui:VisualElement name="Splitter" class="splitter" />
             <ui:VisualElement name="appinfo">
-                <ui:Label text="DataskopAR - v1.0.130123" display-tooltip-when-elided="true" name="Version"
-                          style="font-size: 11px; letter-spacing: 10px; -unity-font-style: bold; color: rgb(0, 0, 0);"/>
+                <ui:Label text="DataskopAR - v1.0.130123" display-tooltip-when-elided="true" name="Version" style="font-size: 11px; letter-spacing: 10px; -unity-font-style: bold; color: rgb(0, 0, 0);" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="AppButtonsContainer" class="app-buttons-container" style="position: absolute;">
-        <ui:Button display-tooltip-when-elided="true" name="SettingsMenuButton" class="app-button"
-                   style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; -unity-background-scale-mode: stretch-to-fill;">
-            <ui:IMGUIContainer name="Icon" picking-mode="Ignore" class="button-icon"
-                               style="background-image: url(&quot;project://database/Assets/Dataskop/Images/Icons/settings.png?fileID=21300000&amp;guid=3804e06c39831e347a1b14bd8c27ac9d&amp;type=3#settings&quot;);"/>
+        <ui:Button display-tooltip-when-elided="true" name="SettingsMenuButton" class="app-button" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; -unity-background-scale-mode: stretch-to-fill;">
+            <ui:IMGUIContainer name="Icon" picking-mode="Ignore" class="button-icon" style="background-image: url(&quot;project://database/Assets/Dataskop/Images/Icons/settings.png?fileID=21300000&amp;guid=3804e06c39831e347a1b14bd8c27ac9d&amp;type=3#settings&quot;);" />
         </ui:Button>
-        <ui:Button display-tooltip-when-elided="true" name="ProjectSelectorButton" class="app-button"
-                   style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; visibility: hidden;">
-            <ui:IMGUIContainer name="Icon" picking-mode="Ignore" class="button-icon"
-                               style="background-image: url(&quot;project://database/Assets/Dataskop/Images/Icons/layers.png?fileID=21300000&amp;guid=75ce9a85f62a3cc488ca084e37b7d189&amp;type=3#layers&quot;);"/>
+        <ui:Button display-tooltip-when-elided="true" name="ProjectSelectorButton" class="app-button" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; visibility: hidden;">
+            <ui:IMGUIContainer name="Icon" picking-mode="Ignore" class="button-icon" style="background-image: url(&quot;project://database/Assets/Dataskop/Images/Icons/layers.png?fileID=21300000&amp;guid=75ce9a85f62a3cc488ca084e37b7d189&amp;type=3#layers&quot;);" />
         </ui:Button>
-        <ui:Button display-tooltip-when-elided="true" name="HistoryButton" class="history-button app-button"
-                   style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; align-items: center; visibility: hidden;">
-            <ui:VisualElement name="Icon"
-                              style="width: 80%; height: 80%; background-image: url(&quot;project://database/Assets/Dataskop/Images/Icons/history_2.png?fileID=21300000&amp;guid=05f81af70211b944ca68708381346964&amp;type=3#history_2&quot;); background-color: rgba(27, 27, 27, 0); -unity-background-image-tint-color: rgb(0, 80, 150); font-size: 22px; color: rgba(255, 255, 255, 0.22); align-items: center; justify-content: center;"/>
+        <ui:Button display-tooltip-when-elided="true" name="HistoryButton" class="history-button app-button" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; align-items: center; visibility: hidden;">
+            <ui:VisualElement name="Icon" style="width: 80%; height: 80%; background-image: url(&quot;project://database/Assets/Dataskop/Images/Icons/history_2.png?fileID=21300000&amp;guid=05f81af70211b944ca68708381346964&amp;type=3#history_2&quot;); background-color: rgba(27, 27, 27, 0); -unity-background-image-tint-color: rgb(0, 80, 150); font-size: 22px; color: rgba(255, 255, 255, 0.22); align-items: center; justify-content: center;" />
         </ui:Button>
     </ui:VisualElement>
-    <ui:VisualElement name="Dialog" class="settings-menu-container option-container"
-                      style="flex-grow: 1; position: absolute; top: 30%; width: 600px; height: 350px; left: auto; align-self: center; background-color: rgb(156, 156, 156); border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; padding-top: 25px; padding-right: 25px; padding-bottom: 25px; padding-left: 25px; display: none;">
-        <ui:VisualElement
-                style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Dataskop/Images/Icons/alert.png?fileID=2800000&amp;guid=6fe7ad4363d6fe744966294110d7dde9&amp;type=3#alert&quot;); width: 40px; height: auto; -unity-background-image-tint-color: rgb(255, 229, 0); -unity-background-scale-mode: scale-to-fit;"/>
-        <ui:Label tabindex="-1"
-                  text="You are about to request data&lt;br&gt;that could take a long time to load.&lt;br&gt;&lt;br&gt;Do you want to continue?"
-                  parse-escape-sequences="true" display-tooltip-when-elided="true" class="option-label"
-                  style="-unity-text-align: upper-center; width: 90%; display: flex;"/>
+    <ui:VisualElement name="Dialog" class="settings-menu-container option-container" style="flex-grow: 1; position: absolute; top: 30%; width: 600px; height: 350px; left: auto; align-self: center; background-color: rgb(156, 156, 156); border-top-left-radius: 12px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 12px; padding-top: 25px; padding-right: 25px; padding-bottom: 25px; padding-left: 25px; display: none;">
+        <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Dataskop/Images/Icons/alert.png?fileID=2800000&amp;guid=6fe7ad4363d6fe744966294110d7dde9&amp;type=3#alert&quot;); width: 40px; height: auto; -unity-background-image-tint-color: rgb(255, 229, 0); -unity-background-scale-mode: scale-to-fit;" />
+        <ui:Label tabindex="-1" text="You are about to request data&lt;br&gt;that could take a long time to load.&lt;br&gt;&lt;br&gt;Do you want to continue?" parse-escape-sequences="true" display-tooltip-when-elided="true" class="option-label" style="-unity-text-align: upper-center; width: 90%; display: flex;" />
         <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between; width: 80%;">
-            <ui:Button text="Cancel" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CancelButton" class="option-button"
-                       style="width: 33%;"/>
-            <ui:Button text="Proceed" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ProceedButton" class="option-button"
-                       style="width: 33%;"/>
+            <ui:Button text="Cancel" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CancelButton" class="option-button" style="width: 33%;" />
+            <ui:Button text="Proceed" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ProceedButton" class="option-button" style="width: 33%;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

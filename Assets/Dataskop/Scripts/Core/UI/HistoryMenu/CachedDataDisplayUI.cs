@@ -35,7 +35,7 @@ namespace Dataskop.UI {
 			currentEndRangeLabel = cachedRangeContainer.Q<Label>("LabelMinValue");
 			currentStartRangeLabel = cachedRangeContainer.Q<Label>("LabelMaxValue");
 
-			slider = cachedRangeContainer.Q<MinMaxSlider>("MinMaxSlider");
+			slider = cachedRangeContainer.Q<MinMaxSlider>("FilterSlider");
 
 			topDragger = cachedRangeContainer.Q<VisualElement>("unity-thumb-max");
 			bottomDragger = cachedRangeContainer.Q<VisualElement>("unity-thumb-min");
