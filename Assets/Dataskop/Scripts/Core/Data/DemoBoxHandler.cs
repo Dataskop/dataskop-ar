@@ -24,17 +24,15 @@ namespace Dataskop.Data {
 
 		private void OnDisable() {
 			ShouldTrackImages = false;
-			imageManager.trackedImagesChanged -= OnTrackedImagesChanged;
 		}
 
 		private void ActivateTracking(Project loadedProject) {
 			ShouldTrackImages = true;
 			imageManager.enabled = true;
-			imageManager.trackedImagesChanged += OnTrackedImagesChanged;
 			ARImageObjects = new Dictionary<ARTrackedImage, Device>();
 		}
 
-		private void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs e) {
+		public void OnTrackedImagesChanged(ARTrackablesChangedEventArgs<ARTrackedImage> e) {
 
 			if (!ShouldTrackImages) {
 				return;

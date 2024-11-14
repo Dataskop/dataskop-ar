@@ -33,6 +33,7 @@ namespace Dataskop.UI {
 		}
 
 		private void OnEnable() {
+
 			IsActive = false;
 			historySlider =
 				new HistorySliderUI(historyUIDocument.rootVisualElement.Q<VisualElement>("HistoryContainer"));
@@ -40,15 +41,18 @@ namespace Dataskop.UI {
 			cachedDataDisplay.Init(historyUIDocument.rootVisualElement.Q<VisualElement>("CachedDataDisplay"));
 			historySlider.SliderValueChanged += OnHistorySliderMoved;
 			cachedDataDisplay.OnFilterRequested += OnFilterRequestSent;
+
 		}
 
 		public void OnHistoryButtonPressed() {
+
 			if (IsActive) {
 				HideHistory();
 			}
 			else {
 				ShowHistory();
 			}
+
 		}
 
 		public void ShowHistory() {

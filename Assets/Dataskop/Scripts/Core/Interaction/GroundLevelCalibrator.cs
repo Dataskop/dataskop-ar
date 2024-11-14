@@ -20,14 +20,12 @@ namespace Dataskop.Interaction {
 		public float GroundLevelYPosition { get; set; }
 
 		private void OnEnable() {
-			arPlaneManager.planesChanged += OnArPlanesChanged;
 			map.OnUpdated += OnMapUpdated;
 			inputHandler.WorldPointerUpped += OnPointerInteractionReceived;
 		}
 
 		private void OnDisable() {
 			map.OnUpdated -= OnMapUpdated;
-			arPlaneManager.planesChanged -= OnArPlanesChanged;
 			inputHandler.WorldPointerUpped -= OnPointerInteractionReceived;
 		}
 
@@ -52,7 +50,7 @@ namespace Dataskop.Interaction {
 
 		}
 
-		private void OnArPlanesChanged(ARPlanesChangedEventArgs e) {
+		public void OnArPlanesChanged(ARTrackablesChangedEventArgs<ARPlane> e) {
 
 			if (!IsEnabled) {
 				return;
