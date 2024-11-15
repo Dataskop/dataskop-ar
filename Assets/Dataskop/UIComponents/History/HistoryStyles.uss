@@ -80,40 +80,17 @@
 }
 
 .white-label {
-    rotate: 90deg;
-    -unity-font-style: bold;
-    font-size: 16px;
     -unity-font: url("project://database/Assets/Dataskop/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular");
     color: rgb(255, 255, 255);
-    text-shadow: 1px 1px 0 rgb(0, 0, 0);
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 0;
-    padding-top: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-    padding-left: 0;
-    position: relative;
-    align-self: center;
-    top: 0;
-    left: 35px;
+    -unity-font-style: bold;
+    rotate: 90deg;
 }
 
-.min-max-label {
-    left: auto;
+.filter-dragger {
     position: absolute;
-    top: 35px;
-    bottom: auto;
-    right: auto;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 0;
+    padding-left: 20px;
     background-color: rgb(37, 89, 176);
     border-top-left-radius: 50px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
     border-bottom-left-radius: 50px;
-    display: flex;
+    margin-top: 25px;
 }

@@ -78,7 +78,7 @@ namespace Dataskop.UI {
 		}
 
 		public void UpdateMinMaxSlider(DateTime latestResultTime, DateTime firstResultTime) {
-			slider.lowLimit = 1;
+			slider.lowLimit = 0;
 			TimeRange overAllRange = new(ClampTimeStamp(firstResultTime), ClampTimeStamp(latestResultTime));
 			slider.highLimit = (int)overAllRange.Span.TotalDays + 1;
 			earliestDate = firstResultTime;
@@ -107,8 +107,8 @@ namespace Dataskop.UI {
 		}
 
 		public void SetFilterLabelTexts(string startLabel, string endLabel) {
-			currentStartRangeLabel.text = startLabel;
-			currentEndRangeLabel.text = endLabel;
+			currentStartRangeLabel.text = startLabel[..6];
+			currentEndRangeLabel.text = endLabel[..6];
 		}
 
 		public void ClearCacheDisplay() {
