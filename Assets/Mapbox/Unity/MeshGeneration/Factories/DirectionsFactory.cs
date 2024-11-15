@@ -33,7 +33,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories {
 
 		protected virtual void Awake() {
 			if (_map == null) {
-				_map = FindObjectOfType<AbstractMap>();
+				_map = FindFirstObjectByType<AbstractMap>();
 			}
 
 			_directions = MapboxAccess.Instance.Directions;

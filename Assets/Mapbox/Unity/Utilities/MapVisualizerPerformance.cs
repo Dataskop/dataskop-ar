@@ -21,7 +21,7 @@
 		protected virtual void Awake() {
 			TotalTime = 0;
 			_currentTest = 1;
-			_map = FindObjectOfType<AbstractMap>();
+			_map = FindFirstObjectByType<AbstractMap>();
 			_mapVisualizer = _map.MapVisualizer;
 
 			_mapVisualizer.OnMapVisualizerStateChanged += (s) =>
