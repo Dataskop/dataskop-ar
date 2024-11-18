@@ -328,18 +328,17 @@ namespace Dataskop.Entities.Visualizations {
 			ClearVisObjects();
 
 			if (CurrentRange.Count < 1) {
+				visObjectsContainer.localPosition = Vector3.zero;
 				noResultsIndicator.SetActive(true);
 				focusedDataDisplay.Hide();
 				hoverDataDisplay.Hide();
 				return;
 			}
-			
+
 			noResultsIndicator.SetActive(false);
 			PreviousIndex = DataPoint.FocusedIndex;
 
 			VisObjects = new IVisObject[CurrentRange.Count];
-
-			visObjectsContainer.localPosition = VisOrigin.position;
 
 			GameObject visObject = Instantiate(
 				visObjectPrefab, VisOrigin.position, visObjectsContainer.localRotation,
