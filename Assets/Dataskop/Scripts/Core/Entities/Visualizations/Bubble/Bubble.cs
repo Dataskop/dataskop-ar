@@ -106,6 +106,8 @@ namespace Dataskop.Entities.Visualizations {
 			if (CurrentRange.Count < 1) {
 				noResultsIndicator.SetActive(true);
 				VisObjects = Array.Empty<IVisObject>();
+				focusedDataDisplay.Hide();
+				hoverDataDisplay.Hide();
 				return;
 			}
 
@@ -327,9 +329,11 @@ namespace Dataskop.Entities.Visualizations {
 
 			if (CurrentRange.Count < 1) {
 				noResultsIndicator.SetActive(true);
+				focusedDataDisplay.Hide();
+				hoverDataDisplay.Hide();
 				return;
 			}
-
+			
 			noResultsIndicator.SetActive(false);
 			PreviousIndex = DataPoint.FocusedIndex;
 
@@ -354,6 +358,7 @@ namespace Dataskop.Entities.Visualizations {
 			);
 
 			OnTimeSeriesToggled(true);
+			focusedDataDisplay.Show();
 
 		}
 

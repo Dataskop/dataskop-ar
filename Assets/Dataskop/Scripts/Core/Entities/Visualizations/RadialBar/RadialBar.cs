@@ -145,15 +145,17 @@ namespace Dataskop.Entities.Visualizations {
 			ClearVisObjects();
 
 			if (CurrentRanges.Length == 0) {
+				focusedDataDisplay.Hide();
 				return;
 			}
 
 			if (!CurrentRanges.All(x => x.Count > 0)) {
 				noResultsIndicator.SetActive(true);
 				VisObjects = Array.Empty<IVisObject>();
+				focusedDataDisplay.Hide();
 				return;
 			}
-
+			
 			noResultsIndicator.SetActive(false);
 
 			VisObjects = new IVisObject[1];
@@ -179,6 +181,7 @@ namespace Dataskop.Entities.Visualizations {
 			);
 
 			OnTimeSeriesToggled(true);
+			focusedDataDisplay.Show();
 		}
 
 		public void OnMeasurementResultsUpdated(int newIndex) {
