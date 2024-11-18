@@ -74,3 +74,6 @@ crashlytics-build.properties
 # Additional files
 [Aa]ssets/Resources/Mapbox/MapboxConfiguration.txt
 [Aa]ssets/Resources/Mapbox/MapboxConfiguration.txt.meta
+
+# Samsung (Android) Build Cache Files
+.utmp/
