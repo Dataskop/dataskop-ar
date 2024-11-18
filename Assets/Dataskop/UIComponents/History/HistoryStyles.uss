@@ -15,15 +15,15 @@
 }
 
 .unity-base-slider__dragger {
-    width: 60px;
+    width: 50px;
     height: 20px;
     border-radius: 3px;
     background-color: rgb(255, 255, 255);
     border-width: 0;
-    border-left-width: 0;
-    border-right-width: 0;
-    border-top-width: 0;
-    border-bottom-width: 0;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
     border-left-color: rgb(37, 89, 176);
     border-right-color: rgb(37, 89, 176);
     border-top-color: rgb(37, 89, 176);
@@ -36,7 +36,7 @@
     justify-content: flex-end;
     transition: transform 0.3s, box-shadow 0.3s;
     align-self: center;
-    margin-left: 0;
+    margin-left: 15px;
     margin-right: 0;
     margin-top: 0;
     margin-bottom: 0;
@@ -46,16 +46,6 @@
     padding-bottom: 0;
     position: absolute;
     left: 0;
-}
-
-.unity-base-slider__dragger:hover {
-    background-color: rgb(230, 230, 250);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.unity-base-slider__dragger:active {
-    background-color: rgb(210, 210, 230);
-    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .history-slider-container {
@@ -80,40 +70,55 @@
 }
 
 .white-label {
-    rotate: 90deg;
-    -unity-font-style: bold;
-    font-size: 16px;
     -unity-font: url("project://database/Assets/Dataskop/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular");
     color: rgb(255, 255, 255);
-    text-shadow: 1px 1px 0 rgb(0, 0, 0);
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 0;
-    padding-top: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-    padding-left: 0;
-    position: relative;
-    align-self: center;
-    top: 0;
-    left: 35px;
+    -unity-font-style: bold;
+    font-size: 18px;
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    -unity-font-definition: url("project://database/Assets/Dataskop/Fonts/OpenSans-Bold.ttf?fileID=12800000&guid=7dfc2e1472ac84e1bb749a8a9f934483&type=3#OpenSans-Bold");
 }
 
-.min-max-label {
-    left: auto;
+.filter-dragger {
     position: absolute;
-    top: 35px;
-    bottom: auto;
-    right: auto;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 0;
     background-color: rgb(37, 89, 176);
     border-top-left-radius: 50px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
     border-bottom-left-radius: 50px;
-    display: flex;
+    font-size: 16px;
+    rotate: -270deg;
+    width: 80px;
+    padding-left: 25px;
+    flex-grow: 1;
+    -unity-font-definition: url("project://database/Assets/Dataskop/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular");
+    -unity-text-align: middle-right;
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+}
+
+.unity-min-max-slider__min-thumb {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-color: rgb(37, 89, 176);
+    top: 1px;
+    border-radius: 3px;
+}
+
+.unity-min-max-slider__max-thumb {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-color: rgb(37, 89, 176);
+    top: 1px;
+    border-radius: 3px;
+}
+
+.unity-min-max-slider__dragger {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-color: rgb(37, 89, 176);
 }

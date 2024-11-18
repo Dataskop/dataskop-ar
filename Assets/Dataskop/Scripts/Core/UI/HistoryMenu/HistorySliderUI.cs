@@ -60,13 +60,13 @@ namespace Dataskop.UI {
 		}
 
 		private void ClearTicks() {
-			
+
 			List<VisualElement> ticks = historySlider.Query(className: "slider-tick").ToList();
 
 			foreach (VisualElement tick in ticks) {
 				tick.RemoveFromHierarchy();
 			}
-			
+
 		}
 
 		private void GenerateTicks(int dataPointsCount) {

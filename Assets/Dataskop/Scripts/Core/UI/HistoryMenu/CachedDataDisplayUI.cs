@@ -8,7 +8,7 @@ namespace Dataskop.UI {
 
 		public event Action<TimeRange> OnFilterRequested;
 
-		private const int sliderHeight = 580;
+		private const int sliderHeight = 480;
 
 		private VisualElement bottomDragger;
 		private VisualElement cachedRangeContainer;
@@ -78,9 +78,9 @@ namespace Dataskop.UI {
 		}
 
 		public void UpdateMinMaxSlider(DateTime latestResultTime, DateTime firstResultTime) {
-			slider.lowLimit = 1;
+			slider.lowLimit = 0;
 			TimeRange overAllRange = new(ClampTimeStamp(firstResultTime), ClampTimeStamp(latestResultTime));
-			slider.highLimit = (int)overAllRange.Span.TotalDays + 1;
+			slider.highLimit = (int)overAllRange.Span.TotalDays;
 			earliestDate = firstResultTime;
 			latestDate = latestResultTime;
 		}
@@ -95,9 +95,9 @@ namespace Dataskop.UI {
 			DateTime clampedStartTime = ClampTimeStamp(rangeStartTime);
 			DateTime clampedEndTime = ClampTimeStamp(rangeEndTime);
 			TimeRange cachedData = new(ClampTimeStamp(latestResultTime), clampedStartTime);
-			slider.maxValue = 1 + (int)cachedData.Span.TotalDays + 1;
+			slider.maxValue = (int)cachedData.Span.TotalDays + 1;
 			TimeRange rangeToLatestResult = new(clampedEndTime, ClampTimeStamp(latestResultTime));
-			slider.minValue = 1 + (int)rangeToLatestResult.Span.TotalDays;
+			slider.minValue = (int)rangeToLatestResult.Span.TotalDays;
 
 		}
 
@@ -107,8 +107,8 @@ namespace Dataskop.UI {
 		}
 
 		public void SetFilterLabelTexts(string startLabel, string endLabel) {
-			currentStartRangeLabel.text = startLabel;
-			currentEndRangeLabel.text = endLabel;
+			currentStartRangeLabel.text = startLabel[..6];
+			currentEndRangeLabel.text = endLabel[..6];
 		}
 
 		public void ClearCacheDisplay() {
@@ -152,15 +152,17 @@ namespace Dataskop.UI {
 				}
 			};
 
-			rect.style.left = Math.Clamp(rect.style.left.value.value, 10, 590);
-			rect.style.width = Math.Clamp(rect.style.width.value.value, 0, 590 - rect.style.left.value.value);
+			rect.style.left = Math.Clamp(rect.style.left.value.value, 10, sliderHeight);
+			rect.style.width = Math.Clamp(rect.style.width.value.value, 0, sliderHeight - rect.style.left.value.value);
 			cachedRangesDisplay.Add(rect);
 
 		}
 
 		private TimeRange GetTimeRangeOfFilter(Vector2 newValue) {
-			DateTime topDate = earliestDate.Add(new TimeSpan((int)slider.highLimit - (int)newValue.y, 0, 0, 0));
-			DateTime bottomDate = latestDate.Subtract(new TimeSpan((int)newValue.x, 0, 0, 0));
+			DateTime topDate =
+				earliestDate.Add(new TimeSpan((int)slider.highLimit - (int)Mathf.Round(newValue.y), 0, 0, 0));
+
+			DateTime bottomDate = latestDate.Subtract(new TimeSpan((int)Mathf.Round(newValue.x), 0, 0, 0));
 			return new TimeRange(topDate, bottomDate);
 		}
 

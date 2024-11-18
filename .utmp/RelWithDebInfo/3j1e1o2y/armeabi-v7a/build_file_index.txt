@@ -1,2 +1,0 @@
-D:\Work\Projects\Dataskop\Unity\dataskop-ar\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
-D:\Work\Projects\Dataskop\Unity\dataskop-ar\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\FramePacing\CMakeLists.txt
