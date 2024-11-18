@@ -74,6 +74,9 @@
     color: rgb(255, 255, 255);
     -unity-font-style: bold;
     font-size: 18px;
+    -unity-text-outline-width: 1px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    -unity-font-definition: url("project://database/Assets/Dataskop/Fonts/OpenSans-Bold.ttf?fileID=12800000&guid=7dfc2e1472ac84e1bb749a8a9f934483&type=3#OpenSans-Bold");
 }
 
 .filter-dragger {
@@ -89,4 +92,33 @@
     -unity-font-definition: url("project://database/Assets/Dataskop/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular");
     -unity-text-align: middle-right;
     -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+}
+
+.unity-min-max-slider__min-thumb {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-color: rgb(37, 89, 176);
+    top: 1px;
+    border-radius: 3px;
+}
+
+.unity-min-max-slider__max-thumb {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-color: rgb(37, 89, 176);
+    top: 1px;
+    border-radius: 3px;
+}
+
+.unity-min-max-slider__dragger {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-color: rgb(37, 89, 176);
 }
