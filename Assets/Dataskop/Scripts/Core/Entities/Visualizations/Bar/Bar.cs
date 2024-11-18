@@ -90,6 +90,8 @@ namespace Dataskop.Entities.Visualizations {
 			if (CurrentRange.Count < 1) {
 				noResultsIndicator.SetActive(true);
 				VisObjects = Array.Empty<IVisObject>();
+				focusedDataDisplay.Hide();
+				hoverDataDisplay.Hide();
 				return;
 			}
 
@@ -325,7 +327,10 @@ namespace Dataskop.Entities.Visualizations {
 			ClearVisObjects();
 
 			if (CurrentRange.Count < 1) {
+				visObjectsContainer.localPosition = Vector3.zero;
 				noResultsIndicator.SetActive(true);
+				focusedDataDisplay.Hide();
+				hoverDataDisplay.Hide();
 				return;
 			}
 
@@ -333,8 +338,6 @@ namespace Dataskop.Entities.Visualizations {
 			PreviousIndex = DataPoint.FocusedIndex;
 
 			VisObjects = new IVisObject[CurrentRange.Count];
-
-			visObjectsContainer.localPosition = VisOrigin.position;
 
 			GameObject visObject = Instantiate(
 				visObjectPrefab, VisOrigin.position, visObjectsContainer.localRotation,
@@ -353,6 +356,7 @@ namespace Dataskop.Entities.Visualizations {
 			);
 
 			OnTimeSeriesToggled(true);
+			focusedDataDisplay.Show();
 
 		}
 
