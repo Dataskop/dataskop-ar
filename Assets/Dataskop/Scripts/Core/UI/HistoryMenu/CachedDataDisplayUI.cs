@@ -152,8 +152,8 @@ namespace Dataskop.UI {
 				}
 			};
 
-			rect.style.left = Math.Clamp(rect.style.left.value.value, 10, 590);
-			rect.style.width = Math.Clamp(rect.style.width.value.value, 0, 590 - rect.style.left.value.value);
+			rect.style.left = Math.Clamp(rect.style.left.value.value, 10, sliderHeight);
+			rect.style.width = Math.Clamp(rect.style.width.value.value, 0, sliderHeight - rect.style.left.value.value);
 			cachedRangesDisplay.Add(rect);
 
 		}
