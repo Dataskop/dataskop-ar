@@ -83,14 +83,15 @@
     -unity-font: url("project://database/Assets/Dataskop/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular");
     color: rgb(255, 255, 255);
     -unity-font-style: bold;
-    rotate: 90deg;
 }
 
 .filter-dragger {
     position: absolute;
-    padding-left: 20px;
+    padding-left: 25px;
     background-color: rgb(37, 89, 176);
     border-top-left-radius: 50px;
     border-bottom-left-radius: 50px;
-    margin-top: 25px;
+    margin-top: 45px;
+    margin-left: 0;
+    font-size: 16px;
 }
