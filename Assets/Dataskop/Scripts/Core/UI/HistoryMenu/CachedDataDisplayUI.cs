@@ -8,7 +8,7 @@ namespace Dataskop.UI {
 
 		public event Action<TimeRange> OnFilterRequested;
 
-		private const int sliderHeight = 580;
+		private const int sliderHeight = 480;
 
 		private VisualElement bottomDragger;
 		private VisualElement cachedRangeContainer;
@@ -159,23 +159,15 @@ namespace Dataskop.UI {
 		}
 
 		private TimeRange GetTimeRangeOfFilter(Vector2 newValue) {
-			DateTime topDate = earliestDate.Add(new TimeSpan((int)slider.highLimit - (int)Mathf.Round(newValue.y), 0, 0, 0));
+			DateTime topDate =
+				earliestDate.Add(new TimeSpan((int)slider.highLimit - (int)Mathf.Round(newValue.y), 0, 0, 0));
+
 			DateTime bottomDate = latestDate.Subtract(new TimeSpan((int)Mathf.Round(newValue.x), 0, 0, 0));
 			return new TimeRange(topDate, bottomDate);
 		}
 
 		private DateTime ClampTimeStamp(DateTime timeStamp) {
 			return new DateTime(timeStamp.Year, timeStamp.Month, timeStamp.Day);
-		}
-
-		private Vector2 ClampedSliderValues(Vector2 newValue) {
-
-			if (Mathf.Abs(newValue.x - newValue.y) < 1) {
-				
-			}
-
-			return newValue;
-
 		}
 
 	}

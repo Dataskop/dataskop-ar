@@ -15,15 +15,15 @@
 }
 
 .unity-base-slider__dragger {
-    width: 60px;
+    width: 50px;
     height: 20px;
     border-radius: 3px;
     background-color: rgb(255, 255, 255);
     border-width: 0;
-    border-left-width: 0;
-    border-right-width: 0;
-    border-top-width: 0;
-    border-bottom-width: 0;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
     border-left-color: rgb(37, 89, 176);
     border-right-color: rgb(37, 89, 176);
     border-top-color: rgb(37, 89, 176);
@@ -36,7 +36,7 @@
     justify-content: flex-end;
     transition: transform 0.3s, box-shadow 0.3s;
     align-self: center;
-    margin-left: 0;
+    margin-left: 15px;
     margin-right: 0;
     margin-top: 0;
     margin-bottom: 0;
