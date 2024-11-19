@@ -8,7 +8,7 @@ namespace Dataskop.UI {
 
 		public event Action<TimeRange> OnFilterRequested;
 
-		private const int sliderHeight = 480;
+		private const int sliderHeight = 380;
 
 		private VisualElement bottomDragger;
 		private VisualElement cachedRangeContainer;

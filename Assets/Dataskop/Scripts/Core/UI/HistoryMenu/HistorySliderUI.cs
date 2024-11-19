@@ -82,15 +82,15 @@ namespace Dataskop.UI {
 				VisualElement tick = new();
 				tick.AddToClassList("slider-tick");
 
-				tick.style.width = 20;
+				tick.style.width = 18;
 				tick.style.height = 2;
 
-				float tickPosition = -9 + tickSpacing * ((float)i / tickInterval);
+				float tickPosition = tickSpacing * ((float)i / tickInterval);
 
 				tick.style.top = sliderTrackHeight - tickPosition + tick.style.height.value.value / 2 -
 				                 dragger.resolvedStyle.height / 2;
 
-				tick.style.left = 50;
+				tick.style.left = 5;
 				historySlider.Add(tick);
 
 			}
