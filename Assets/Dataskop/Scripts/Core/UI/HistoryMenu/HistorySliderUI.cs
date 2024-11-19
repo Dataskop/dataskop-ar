@@ -42,7 +42,7 @@ namespace Dataskop.UI {
 		}
 
 		public void UpdateTimeLabel(string text) {
-			currentTimeLabel.text = text;
+			currentTimeLabel.text = $"{text[..10]}\n{text[11..]}";
 		}
 
 		public void SetLimits(int low, int high) {
@@ -61,7 +61,7 @@ namespace Dataskop.UI {
 
 		private void ClearTicks() {
 
-			List<VisualElement> ticks = historySlider.Query(className: "slider-tick").ToList();
+			List<VisualElement> ticks = historyContainer.Query(className: "slider-tick").ToList();
 
 			foreach (VisualElement tick in ticks) {
 				tick.RemoveFromHierarchy();
@@ -75,23 +75,24 @@ namespace Dataskop.UI {
 
 			float sliderTrackHeight = historySlider.resolvedStyle.height;
 			int tickInterval = Mathf.CeilToInt(dataPointsCount / 20f);
-			float tickSpacing = sliderTrackHeight / (dataPointsCount / (float)tickInterval);
+			float tickSpacing = (sliderTrackHeight - 3) / (dataPointsCount / (float)tickInterval);
 
 			for (int i = 0; i <= dataPointsCount; i += tickInterval) {
 
 				VisualElement tick = new();
 				tick.AddToClassList("slider-tick");
-
-				tick.style.width = 18;
-				tick.style.height = 2;
+				tick.style.width = 12;
+				tick.style.height = 3;
+				tick.style.left = 16;
+				tick.pickingMode = PickingMode.Ignore;
 
 				float tickPosition = tickSpacing * ((float)i / tickInterval);
-
-				tick.style.top = sliderTrackHeight - tickPosition + tick.style.height.value.value / 2 -
+				tick.style.top = 106 + sliderTrackHeight - tickSpacing * (1f / tickInterval) - tickPosition +
+				                 tick.style.height.value.value / 2 -
 				                 dragger.resolvedStyle.height / 2;
 
-				tick.style.left = 5;
-				historySlider.Add(tick);
+				historyContainer.hierarchy.Add(tick);
+				tick.SendToBack();
 
 			}
 

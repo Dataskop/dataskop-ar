@@ -131,7 +131,7 @@ namespace Dataskop.UI {
 			double unitsToLatestResult = rangeToLatestResult.Span.Days;
 			int numberUnitsCurrentRect = (int)Mathf.Clamp((int)rangeInUnits, 1, highLimit);
 			float calculatedWidth = Mathf.Round(sliderHeight / highLimit * numberUnitsCurrentRect);
-			float startPosition = 10 + ((int)unitsToLatestResult > 0 ? sliderHeight / highLimit : 0) +
+			float startPosition = ((int)unitsToLatestResult > 0 ? sliderHeight / highLimit : 0) +
 			                      sliderHeight / highLimit * (int)unitsToLatestResult;
 
 			VisualElement rect = new() {
@@ -152,7 +152,7 @@ namespace Dataskop.UI {
 				}
 			};
 
-			rect.style.left = Math.Clamp(rect.style.left.value.value, 10, sliderHeight);
+			rect.style.left = Math.Clamp(rect.style.left.value.value, 0, sliderHeight);
 			rect.style.width = Math.Clamp(rect.style.width.value.value, 0, sliderHeight - rect.style.left.value.value);
 			cachedRangesDisplay.Add(rect);
 
