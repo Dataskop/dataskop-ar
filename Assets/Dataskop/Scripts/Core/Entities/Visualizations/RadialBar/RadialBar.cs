@@ -160,8 +160,6 @@ namespace Dataskop.Entities.Visualizations {
 
 			VisObjects = new IVisObject[1];
 
-			visObjectsContainer.localPosition = VisOrigin.position;
-
 			GameObject visObject = Instantiate(
 				visObjectPrefab, VisOrigin.position, visObjectsContainer.localRotation,
 				visObjectsContainer

@@ -6,6 +6,8 @@ namespace Dataskop.Entities.Visualizations {
 
 	public class RadialBarVisObject : MonoBehaviour, IVisObject {
 
+		private static readonly int Arc2 = Shader.PropertyToID("_Arc2");
+
 		[Header("References")]
 		[SerializeField] private SpriteRenderer visRenderer;
 		[SerializeField] private Collider visCollider;
@@ -81,9 +83,7 @@ namespace Dataskop.Entities.Visualizations {
 			RadialSegments = new GameObject[data.Length];
 
 			for (int i = 0; i < RadialSegments.Length; i++) {
-				RadialSegments[i] = Instantiate(
-					radialSegmentPrefab, transform.position, Quaternion.identity, transform
-				);
+				RadialSegments[i] = Instantiate(radialSegmentPrefab, transform);
 
 				RadialSegments[i].transform.localScale = new Vector2(1 + 0.1f * (i + 1), 1 + 0.1f * (i + 1));
 				SpriteRenderer sr = RadialSegments[i].GetComponent<SpriteRenderer>();
@@ -93,7 +93,7 @@ namespace Dataskop.Entities.Visualizations {
 					data[i].Result.ReadAsFloat(), data[i].Attribute.Minimum, data[i].Attribute.Maximum
 				);
 
-				sr.material.SetInt("_Arc2", angle);
+				sr.material.SetInt(Arc2, angle);
 			}
 
 		}
