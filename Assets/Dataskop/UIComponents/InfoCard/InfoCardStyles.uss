@@ -349,3 +349,28 @@ VisualElement {
     padding-left: 15px;
     min-height: 0;
 }
+
+.unity-progress-bar{
+    margin: 0;
+}
+
+.unity-progress-bar__container{
+    min-height: 4px;
+    max-height: 4px;
+}
+
+.unity-progress-bar__background{
+    border-width: 0px;
+    background-color: rgb(37, 89, 176);
+}
+
+.unity-progress-bar__progress{
+    margin: 0px;
+    background-color: rgb(255,255,255);
+    top: -1px;
+    left: -1px;
+    height: 6px;
+}
+
+
+
