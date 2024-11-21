@@ -83,9 +83,7 @@ namespace Dataskop.Entities.Visualizations {
 			RadialSegments = new GameObject[data.Length];
 
 			for (int i = 0; i < RadialSegments.Length; i++) {
-				RadialSegments[i] = Instantiate(
-					radialSegmentPrefab, transform.position, Quaternion.identity, transform
-				);
+				RadialSegments[i] = Instantiate(radialSegmentPrefab, transform);
 
 				RadialSegments[i].transform.localScale = new Vector2(1 + 0.1f * (i + 1), 1 + 0.1f * (i + 1));
 				SpriteRenderer sr = RadialSegments[i].GetComponent<SpriteRenderer>();
