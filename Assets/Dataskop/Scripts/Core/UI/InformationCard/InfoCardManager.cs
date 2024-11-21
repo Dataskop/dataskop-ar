@@ -19,6 +19,7 @@ namespace Dataskop.UI {
 		[SerializeField] private InfoCardProjectDataUI infoCardProjectDataUI;
 		[SerializeField] private InfoCardDataUI infoCardDataUI;
 		[SerializeField] private InfoCardRefetchProgress infoCardRefetchProgress;
+		[SerializeField] private InfoCardProjectSummary infoCardProjectSummary;
 		[SerializeField] private InfoCardMap infoCardMap;
 		[SerializeField] private DataManager dataManager;
 		[SerializeField] private InputHandler inputHandler;
@@ -58,7 +59,6 @@ namespace Dataskop.UI {
 
 			dataManager.HasLoadedProjectData += OnProjectDataUpdated;
 			dataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
-			dataManager.OnRefetchTimerProgressed += OnRefetchTimerProgressed;
 			ErrorHandler.OnErrorReceived += OnErrorReceived;
 
 			infoCardNotificationUI.Init(InfoCard);
@@ -67,6 +67,9 @@ namespace Dataskop.UI {
 			infoCardDataUI.Init(InfoCard);
 			infoCardMap.Init(InfoCard);
 			infoCardRefetchProgress.Init(InfoCard);
+			infoCardProjectSummary.Init(InfoCard);
+
+			dataManager.OnRefetchTimerProgressed += OnRefetchTimerProgressed;
 
 		}
 
@@ -87,9 +90,11 @@ namespace Dataskop.UI {
 		}
 
 		public void OnMeasurementResultsUpdated() {
+
 			infoCardProjectDataUI.UpdateLastUpdatedDisplay(
 				dataManager.SelectedProject?.GetLastUpdatedTime() ?? new DateTime()
 			);
+
 		}
 
 		public void OnSidePanelOpened() {

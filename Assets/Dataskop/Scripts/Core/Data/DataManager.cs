@@ -488,7 +488,7 @@ namespace Dataskop.Data {
 				}
 
 				if (FetchTimer != null) {
-					OnRefetchTimerProgressed?.Invoke(fetchInterval, FetchTimer.Elapsed.Milliseconds);
+					OnRefetchTimerProgressed?.Invoke(fetchInterval, (int)FetchTimer.Elapsed.TotalMilliseconds);
 				}
 
 				await Task.Yield();

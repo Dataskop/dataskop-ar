@@ -1153,6 +1153,7 @@ MonoBehaviour:
   infoCardProjectDataUI: {fileID: 614059766}
   infoCardDataUI: {fileID: 614059767}
   infoCardRefetchProgress: {fileID: 614059772}
+  infoCardProjectSummary: {fileID: 614059771}
   infoCardMap: {fileID: 614059769}
   dataManager: {fileID: 284049158}
   inputHandler: {fileID: 1561813931}
