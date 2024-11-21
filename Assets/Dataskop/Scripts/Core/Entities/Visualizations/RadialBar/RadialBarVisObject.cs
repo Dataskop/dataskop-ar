@@ -6,6 +6,8 @@ namespace Dataskop.Entities.Visualizations {
 
 	public class RadialBarVisObject : MonoBehaviour, IVisObject {
 
+		private static readonly int Arc2 = Shader.PropertyToID("_Arc2");
+
 		[Header("References")]
 		[SerializeField] private SpriteRenderer visRenderer;
 		[SerializeField] private Collider visCollider;
@@ -93,7 +95,7 @@ namespace Dataskop.Entities.Visualizations {
 					data[i].Result.ReadAsFloat(), data[i].Attribute.Minimum, data[i].Attribute.Maximum
 				);
 
-				sr.material.SetInt("_Arc2", angle);
+				sr.material.SetInt(Arc2, angle);
 			}
 
 		}
