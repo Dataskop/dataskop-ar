@@ -197,7 +197,6 @@ VisualElement {
 
 .refresh-button {
     color: rgb(37, 89, 176);
-    -unity-background-image-tint-color: rgb(37, 89, 176);
     background-color: rgb(245, 245, 245);
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
@@ -211,6 +210,25 @@ VisualElement {
     border-left-color: rgb(37, 89, 176);
     border-right-color: rgb(37, 89, 176);
     border-top-color: rgb(37, 89, 176);
+}
+
+.refresh-button-image {
+    -unity-background-image-tint-color: rgb(37, 89, 176);
+}
+
+.refresh-button-image-action__color {
+    transition-duration: 0.45s;
+    transition-timing-function: ease;
+    transition-delay: 0s;
+    transition-property: -unity-background-image-tint-color;
+    -unity-background-image-tint-color: rgb(219, 105, 11);
+}
+
+.refresh-button-image-action__spin {
+    transition-property: rotate;
+    transition-duration: 0.45s;
+    transition-timing-function: linear;
+    rotate: 720deg;
 }
 
 .tab-label {
@@ -348,4 +366,26 @@ VisualElement {
     padding-right: 15px;
     padding-left: 15px;
     min-height: 0;
+}
+
+.unity-progress-bar {
+    margin: 0;
+}
+
+.unity-progress-bar__container {
+    min-height: 4px;
+    max-height: 4px;
+}
+
+.unity-progress-bar__background {
+    border-width: 0;
+    background-color: rgb(37, 89, 176);
+}
+
+.unity-progress-bar__progress {
+    margin: 0;
+    background-color: rgb(255, 255, 255);
+    top: -1px;
+    left: -1px;
+    height: 6px;
 }

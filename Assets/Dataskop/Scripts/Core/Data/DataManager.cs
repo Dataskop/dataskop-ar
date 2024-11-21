@@ -25,6 +25,7 @@ namespace Dataskop.Data {
 		[SerializeField] private int fetchInterval;
 
 		private readonly ApiRequestHandler requestHandler = new();
+		private bool shouldRefetch;
 
 		private IReadOnlyCollection<Company> Companies { get; set; }
 
@@ -40,7 +41,15 @@ namespace Dataskop.Data {
 
 		private Stopwatch FetchTimer { get; set; }
 
-		public bool ShouldRefetch { get; set; }
+		public bool ShouldRefetch
+		{
+			get => shouldRefetch;
+			set
+			{
+				shouldRefetch = value;
+				RefetchStateUpdated?.Invoke(ShouldRefetch);
+			}
+		}
 
 		private void Awake() {
 			FetchAmount = PlayerPrefs.HasKey("fetchAmount") ? PlayerPrefs.GetInt("fetchAmount") : 2000;
@@ -63,6 +72,12 @@ namespace Dataskop.Data {
 		public event Action HasUpdatedMeasurementResults;
 
 		public event Action<TimeRange> HasDateFiltered;
+
+		public event Action<bool> RefetchStateUpdated;
+
+		public event Action<int, int> RefetchTimerProgressed;
+
+		public event Action RefetchTimerElapsed;
 
 		public void Initialize() {
 
@@ -468,12 +483,19 @@ namespace Dataskop.Data {
 		private async void RefetchDataTimer() {
 
 			while (ShouldRefetch) {
+
 				if (FetchTimer?.ElapsedMilliseconds > fetchInterval) {
+					RefetchTimerElapsed?.Invoke();
 					OnRefetchTimerElapsed();
 					FetchTimer?.Restart();
 				}
 
+				if (FetchTimer != null) {
+					RefetchTimerProgressed?.Invoke(fetchInterval, (int)FetchTimer.Elapsed.TotalMilliseconds);
+				}
+
 				await Task.Yield();
+
 			}
 
 		}

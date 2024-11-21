@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Dataskop.Data;
 using Dataskop.Entities;
 using Dataskop.Interaction;
+using Dataskop.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -17,6 +18,8 @@ namespace Dataskop.UI {
 		[SerializeField] private InfoCardLocatorUI infoCardLocatorUI;
 		[SerializeField] private InfoCardProjectDataUI infoCardProjectDataUI;
 		[SerializeField] private InfoCardDataUI infoCardDataUI;
+		[SerializeField] private InfoCardRefetchProgress infoCardRefetchProgress;
+		[SerializeField] private InfoCardProjectSummary infoCardProjectSummary;
 		[SerializeField] private InfoCardMap infoCardMap;
 		[SerializeField] private DataManager dataManager;
 		[SerializeField] private InputHandler inputHandler;
@@ -63,18 +66,24 @@ namespace Dataskop.UI {
 			infoCardLocatorUI.Init(InfoCard);
 			infoCardDataUI.Init(InfoCard);
 			infoCardMap.Init(InfoCard);
+			infoCardRefetchProgress.Init(InfoCard);
+			infoCardProjectSummary.Init(InfoCard);
+
+			dataManager.RefetchTimerProgressed += OnRefetchTimerProgressed;
+			dataManager.RefetchTimerElapsed += OnRefetchTimerElapsed;
 
 		}
 
-		public void OnProjectLoaded(Project _) {
-			infoCardProjectDataUI.UpdateVisibility();
+		public void OnProjectLoaded(Project project) {
+			infoCardProjectSummary.OnProjectLoaded(project);
+			infoCardProjectDataUI.ShowAll();
 		}
 
 		public void OnUserAreaLocated(LocationArea locationArea) {
 			infoCardLocatorUI.OnUserAreaLocated(locationArea);
 		}
 
-		public void OnProjectDataUpdated(Project selectedProject) {
+		private void OnProjectDataUpdated(Project selectedProject) {
 			infoCardProjectDataUI.UpdateProjectNameDisplay(
 				selectedProject == null ? "N/A" : selectedProject.Information.Name
 			);
@@ -82,10 +91,12 @@ namespace Dataskop.UI {
 			infoCardProjectDataUI.UpdateLastUpdatedDisplay(selectedProject?.GetLastUpdatedTime() ?? new DateTime());
 		}
 
-		public void OnMeasurementResultsUpdated() {
+		private void OnMeasurementResultsUpdated() {
+
 			infoCardProjectDataUI.UpdateLastUpdatedDisplay(
 				dataManager.SelectedProject?.GetLastUpdatedTime() ?? new DateTime()
 			);
+
 		}
 
 		public void OnSidePanelOpened() {
@@ -116,6 +127,14 @@ namespace Dataskop.UI {
 				SetCallToActionState(false);
 			}
 
+		}
+
+		private void OnRefetchTimerProgressed(int refetchTimer, int currentProgress) {
+			infoCardRefetchProgress.OnNewValueReceived(MathExtensions.Map01(currentProgress, 0, refetchTimer));
+		}
+
+		private void OnRefetchTimerElapsed() {
+			infoCardProjectDataUI.OnRefetchTimerElapsed();
 		}
 
 		private void SetCallToActionState(bool newState) {
