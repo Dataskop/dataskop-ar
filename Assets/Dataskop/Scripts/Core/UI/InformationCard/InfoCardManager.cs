@@ -69,7 +69,8 @@ namespace Dataskop.UI {
 			infoCardRefetchProgress.Init(InfoCard);
 			infoCardProjectSummary.Init(InfoCard);
 
-			dataManager.OnRefetchTimerProgressed += OnRefetchTimerProgressed;
+			dataManager.RefetchTimerProgressed += OnRefetchTimerProgressed;
+			dataManager.RefetchTimerElapsed += OnRefetchTimerElapsed;
 
 		}
 
@@ -127,8 +128,12 @@ namespace Dataskop.UI {
 
 		}
 
-		public void OnRefetchTimerProgressed(int refetchTimer, int currentProgress) {
+		private void OnRefetchTimerProgressed(int refetchTimer, int currentProgress) {
 			infoCardRefetchProgress.OnNewValueReceived(MathExtensions.Map01(currentProgress, 0, refetchTimer));
+		}
+
+		private void OnRefetchTimerElapsed() {
+			infoCardProjectDataUI.OnRefetchTimerElapsed();
 		}
 
 		private void SetCallToActionState(bool newState) {

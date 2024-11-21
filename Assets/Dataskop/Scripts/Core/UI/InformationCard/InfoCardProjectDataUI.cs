@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
@@ -37,6 +38,19 @@ namespace Dataskop.UI {
 		internal void UpdateVisibility() {
 			ComponentRoot.Q<Label>("LastUpdated").visible = true;
 			ComponentRoot.Q<Button>("UpdateProject").visible = true;
+		}
+
+		internal void OnRefetchTimerElapsed() {
+			IMGUIContainer updateIcon = ComponentRoot.Q<IMGUIContainer>("UpdateProjectIcon");
+			StartCoroutine(UpdateIconAnim(updateIcon));
+		}
+
+		private IEnumerator UpdateIconAnim(IMGUIContainer icon) {
+			icon.AddToClassList("refresh-button-image-action__color");
+			icon.AddToClassList("refresh-button-image-action__spin");
+			yield return new WaitForSeconds(0.5f);
+			icon.RemoveFromClassList("refresh-button-image-action__color");
+			icon.RemoveFromClassList("refresh-button-image-action__spin");
 		}
 
 	}

@@ -13,10 +13,6 @@ namespace Dataskop.Data {
 
 	public class DataManager : MonoBehaviour {
 
-		public event Action<bool> OnRefetchStateUpdated;
-
-		public event Action<int, int> OnRefetchTimerProgressed;
-
 		[Header("Events")]
 		public UnityEvent<IReadOnlyCollection<Company>> projectListLoaded;
 		public UnityEvent<Project> projectLoaded;
@@ -51,7 +47,7 @@ namespace Dataskop.Data {
 			set
 			{
 				shouldRefetch = value;
-				OnRefetchStateUpdated?.Invoke(ShouldRefetch);
+				RefetchStateUpdated?.Invoke(ShouldRefetch);
 			}
 		}
 
@@ -76,6 +72,12 @@ namespace Dataskop.Data {
 		public event Action HasUpdatedMeasurementResults;
 
 		public event Action<TimeRange> HasDateFiltered;
+
+		public event Action<bool> RefetchStateUpdated;
+
+		public event Action<int, int> RefetchTimerProgressed;
+
+		public event Action RefetchTimerElapsed;
 
 		public void Initialize() {
 
@@ -483,12 +485,13 @@ namespace Dataskop.Data {
 			while (ShouldRefetch) {
 
 				if (FetchTimer?.ElapsedMilliseconds > fetchInterval) {
+					RefetchTimerElapsed?.Invoke();
 					OnRefetchTimerElapsed();
 					FetchTimer?.Restart();
 				}
 
 				if (FetchTimer != null) {
-					OnRefetchTimerProgressed?.Invoke(fetchInterval, (int)FetchTimer.Elapsed.TotalMilliseconds);
+					RefetchTimerProgressed?.Invoke(fetchInterval, (int)FetchTimer.Elapsed.TotalMilliseconds);
 				}
 
 				await Task.Yield();
