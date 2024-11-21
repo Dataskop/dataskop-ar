@@ -155,7 +155,7 @@ namespace Dataskop.Entities.Visualizations {
 				focusedDataDisplay.Hide();
 				return;
 			}
-			
+
 			noResultsIndicator.SetActive(false);
 
 			VisObjects = new IVisObject[1];

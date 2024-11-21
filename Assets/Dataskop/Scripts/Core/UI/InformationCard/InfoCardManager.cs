@@ -55,11 +55,6 @@ namespace Dataskop.UI {
 			CallToAction.visible = false;
 
 			infoCardStateManager.Init(InfoCard);
-			inputHandler.InfoCardPointerUpped += OnPointerInteraction;
-
-			dataManager.HasLoadedProjectData += OnProjectDataUpdated;
-			dataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
-			ErrorHandler.OnErrorReceived += OnErrorReceived;
 
 			infoCardNotificationUI.Init(InfoCard);
 			infoCardProjectDataUI.Init(InfoCard);
@@ -69,6 +64,10 @@ namespace Dataskop.UI {
 			infoCardRefetchProgress.Init(InfoCard);
 			infoCardProjectSummary.Init(InfoCard);
 
+			inputHandler.InfoCardPointerUpped += OnPointerInteraction;
+			dataManager.HasLoadedProjectData += OnProjectDataUpdated;
+			dataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
+			ErrorHandler.OnErrorReceived += OnErrorReceived;
 			dataManager.RefetchTimerProgressed += OnRefetchTimerProgressed;
 			dataManager.RefetchTimerElapsed += OnRefetchTimerElapsed;
 

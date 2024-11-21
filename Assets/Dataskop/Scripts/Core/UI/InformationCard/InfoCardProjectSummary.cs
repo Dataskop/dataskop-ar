@@ -45,7 +45,8 @@ namespace Dataskop.UI {
 			ProjectDescription.text = project.Information.Description;
 			ProjectCreationDate.text = project.Information.CreatedDate.ToShortDateString();
 			ProjectTotalDevices.text = project.Devices.Count.ToString("00");
-			ProjectDevicesNearbyLabel.text = $"Devices near you (within {dataPointsManager.NearbyDevicesDistance}m radius):";
+			ProjectDevicesNearbyLabel.text =
+				$"Devices near you (within {dataPointsManager.NearbyDevicesDistance}m radius):";
 
 			string[] array = new string[project.Properties.Attributes.Count];
 

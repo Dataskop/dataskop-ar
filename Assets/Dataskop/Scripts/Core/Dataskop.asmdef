@@ -1,24 +1,24 @@
 {
-    "name": "Dataskop",
-    "rootNamespace": "Dataskop",
-    "references": [
-        "GUID:6055be8ebefd69e48b49212b09b47b2f",
-        "GUID:a9420e37d7990b54abdef6688edbe313",
-        "GUID:92703082f92b41ba80f0d6912de66115",
-        "GUID:75469ad4d38634e559750d17036d5f7c",
-        "GUID:c4e49ec6cb1b97841b1d1efcebecf1e7",
-        "GUID:dc960734dc080426fa6612f1c5fe95f3"
-    ],
-    "includePlatforms": [],
-    "excludePlatforms": [],
-    "allowUnsafeCode": true,
-    "overrideReferences": true,
-    "precompiledReferences": [
-        "Newtonsoft.Json.dll",
-        "zxing.unity.dll"
-    ],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "Dataskop",
+  "rootNamespace": "Dataskop",
+  "references": [
+    "GUID:6055be8ebefd69e48b49212b09b47b2f",
+    "GUID:a9420e37d7990b54abdef6688edbe313",
+    "GUID:92703082f92b41ba80f0d6912de66115",
+    "GUID:75469ad4d38634e559750d17036d5f7c",
+    "GUID:c4e49ec6cb1b97841b1d1efcebecf1e7",
+    "GUID:dc960734dc080426fa6612f1c5fe95f3"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": true,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "Newtonsoft.Json.dll",
+    "zxing.unity.dll"
+  ],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

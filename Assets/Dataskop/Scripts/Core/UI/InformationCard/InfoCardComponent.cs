@@ -11,20 +11,20 @@ namespace Dataskop.UI {
 
 		public virtual void HideAll() {
 			ComponentRoot.style.visibility = new StyleEnum<Visibility>(Visibility.Hidden);
-			
+
 			foreach (VisualElement c in ComponentRoot.Children()) {
 				c.style.visibility = new StyleEnum<Visibility>(Visibility.Hidden);
 			}
 		}
 
 		public virtual void ShowAll() {
-			
+
 			ComponentRoot.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
-			
+
 			foreach (VisualElement c in ComponentRoot.Children()) {
 				c.style.visibility = new StyleEnum<Visibility>(Visibility.Visible);
 			}
-			
+
 		}
 
 	}
