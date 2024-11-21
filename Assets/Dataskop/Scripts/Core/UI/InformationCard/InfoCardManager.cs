@@ -76,6 +76,7 @@ namespace Dataskop.UI {
 
 		public void OnProjectLoaded(Project _) {
 			infoCardProjectDataUI.UpdateVisibility();
+			infoCardRefetchProgress.Show();
 		}
 
 		public void OnUserAreaLocated(LocationArea locationArea) {

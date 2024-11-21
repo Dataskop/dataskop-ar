@@ -10,11 +10,11 @@ namespace Dataskop.UI {
 		public abstract void Init(VisualElement infoCard);
 
 		public virtual void Hide() {
-			ComponentRoot.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
+			ComponentRoot.visible = false;
 		}
 
 		public virtual void Show() {
-			ComponentRoot.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
+			ComponentRoot.visible = true;
 		}
 
 	}
