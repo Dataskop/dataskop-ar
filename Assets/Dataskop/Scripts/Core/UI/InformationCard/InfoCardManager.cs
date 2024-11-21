@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Dataskop.Data;
 using Dataskop.Entities;
 using Dataskop.Interaction;
+using Dataskop.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -17,6 +18,7 @@ namespace Dataskop.UI {
 		[SerializeField] private InfoCardLocatorUI infoCardLocatorUI;
 		[SerializeField] private InfoCardProjectDataUI infoCardProjectDataUI;
 		[SerializeField] private InfoCardDataUI infoCardDataUI;
+		[SerializeField] private InfoCardRefetchProgress infoCardRefetchProgress;
 		[SerializeField] private InfoCardMap infoCardMap;
 		[SerializeField] private DataManager dataManager;
 		[SerializeField] private InputHandler inputHandler;
@@ -56,6 +58,7 @@ namespace Dataskop.UI {
 
 			dataManager.HasLoadedProjectData += OnProjectDataUpdated;
 			dataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
+			dataManager.OnRefetchTimerProgressed += OnRefetchTimerProgressed;
 			ErrorHandler.OnErrorReceived += OnErrorReceived;
 
 			infoCardNotificationUI.Init(InfoCard);
@@ -63,6 +66,7 @@ namespace Dataskop.UI {
 			infoCardLocatorUI.Init(InfoCard);
 			infoCardDataUI.Init(InfoCard);
 			infoCardMap.Init(InfoCard);
+			infoCardRefetchProgress.Init(InfoCard);
 
 		}
 
@@ -116,6 +120,10 @@ namespace Dataskop.UI {
 				SetCallToActionState(false);
 			}
 
+		}
+
+		public void OnRefetchTimerProgressed(int refetchTimer, int currentProgress) {
+			infoCardRefetchProgress.OnNewValueReceived(MathExtensions.Map01(currentProgress, 0, refetchTimer));
 		}
 
 		private void SetCallToActionState(bool newState) {

@@ -13,6 +13,10 @@ namespace Dataskop.Data {
 
 	public class DataManager : MonoBehaviour {
 
+		public event Action<bool> OnRefetchStateUpdated;
+
+		public event Action<int, int> OnRefetchTimerProgressed;
+
 		[Header("Events")]
 		public UnityEvent<IReadOnlyCollection<Company>> projectListLoaded;
 		public UnityEvent<Project> projectLoaded;
@@ -25,6 +29,7 @@ namespace Dataskop.Data {
 		[SerializeField] private int fetchInterval;
 
 		private readonly ApiRequestHandler requestHandler = new();
+		private bool shouldRefetch;
 
 		private IReadOnlyCollection<Company> Companies { get; set; }
 
@@ -40,7 +45,15 @@ namespace Dataskop.Data {
 
 		private Stopwatch FetchTimer { get; set; }
 
-		public bool ShouldRefetch { get; set; }
+		public bool ShouldRefetch
+		{
+			get => shouldRefetch;
+			set
+			{
+				shouldRefetch = value;
+				OnRefetchStateUpdated?.Invoke(ShouldRefetch);
+			}
+		}
 
 		private void Awake() {
 			FetchAmount = PlayerPrefs.HasKey("fetchAmount") ? PlayerPrefs.GetInt("fetchAmount") : 2000;
@@ -468,12 +481,18 @@ namespace Dataskop.Data {
 		private async void RefetchDataTimer() {
 
 			while (ShouldRefetch) {
+
 				if (FetchTimer?.ElapsedMilliseconds > fetchInterval) {
 					OnRefetchTimerElapsed();
 					FetchTimer?.Restart();
 				}
 
+				if (FetchTimer != null) {
+					OnRefetchTimerProgressed?.Invoke(fetchInterval, FetchTimer.Elapsed.Milliseconds);
+				}
+
 				await Task.Yield();
+
 			}
 
 		}

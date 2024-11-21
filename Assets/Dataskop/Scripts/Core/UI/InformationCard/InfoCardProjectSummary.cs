@@ -5,10 +5,11 @@ using UnityEngine.UIElements;
 
 namespace Dataskop.UI {
 
-	public class InfoCardProjectSummary : MonoBehaviour {
+	public class InfoCardProjectSummary : InfoCardComponent {
 
-		[SerializeField] private UIDocument infoCardDoc;
 		[SerializeField] private DataPointsManager dataPointsManager;
+
+		protected override VisualElement ComponentRoot { get; set; }
 
 		private VisualElement ProjectSummaryContainer { get; set; }
 
@@ -26,9 +27,9 @@ namespace Dataskop.UI {
 
 		private Label ProjectMeasurements { get; set; }
 
-		private void Awake() {
-
-			ProjectSummaryContainer = infoCardDoc.rootVisualElement.Q<VisualElement>("ProjectSummary");
+		public override void Init(VisualElement infoCard) {
+			ComponentRoot = infoCard;
+			ProjectSummaryContainer = ComponentRoot.Q<VisualElement>("ProjectSummary");
 			ProjectName = ProjectSummaryContainer.Q<Label>("NameValue");
 			ProjectDescription = ProjectSummaryContainer.Q<Label>("DescriptionValue");
 			ProjectCreationDate = ProjectSummaryContainer.Q<Label>("CreationDateValue");
@@ -36,7 +37,6 @@ namespace Dataskop.UI {
 			ProjectDevicesNearbyLabel = ProjectSummaryContainer.Q<Label>("DevicesNearby");
 			ProjectDevicesNearbyValue = ProjectSummaryContainer.Q<Label>("DevicesNearbyValue");
 			ProjectMeasurements = ProjectSummaryContainer.Q<Label>("MeasurementsValue");
-
 		}
 
 		public void OnProjectLoaded(Project project) {
@@ -45,8 +45,7 @@ namespace Dataskop.UI {
 			ProjectDescription.text = project.Information.Description;
 			ProjectCreationDate.text = project.Information.CreatedDate.ToShortDateString();
 			ProjectTotalDevices.text = project.Devices.Count.ToString("00");
-			ProjectDevicesNearbyLabel.text =
-				"Devices near you (within " + dataPointsManager.NearbyDevicesDistance + "m radius):";
+			ProjectDevicesNearbyLabel.text = $"Devices near you (within {dataPointsManager.NearbyDevicesDistance}m radius):";
 
 			string[] array = new string[project.Properties.Attributes.Count];
 
@@ -59,9 +58,7 @@ namespace Dataskop.UI {
 		}
 
 		public void OnNearbyDevicesUpdated(int devicesNearbyCount) {
-
 			ProjectDevicesNearbyValue.text = devicesNearbyCount.ToString("00");
-
 		}
 
 	}
