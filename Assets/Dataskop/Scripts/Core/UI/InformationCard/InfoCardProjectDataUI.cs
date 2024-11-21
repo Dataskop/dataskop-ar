@@ -35,11 +35,6 @@ namespace Dataskop.UI {
 				$"Last Updated: {lastUpdateTime.ToShortDateString()} {lastUpdateTime.ToLongTimeString()}";
 		}
 
-		internal void UpdateVisibility() {
-			ComponentRoot.Q<Label>("LastUpdated").visible = true;
-			ComponentRoot.Q<Button>("UpdateProject").visible = true;
-		}
-
 		internal void OnRefetchTimerElapsed() {
 			IMGUIContainer updateIcon = ComponentRoot.Q<IMGUIContainer>("UpdateProjectIcon");
 			StartCoroutine(UpdateIconAnim(updateIcon));

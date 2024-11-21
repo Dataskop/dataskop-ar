@@ -74,16 +74,16 @@ namespace Dataskop.UI {
 
 		}
 
-		public void OnProjectLoaded(Project _) {
-			infoCardProjectDataUI.UpdateVisibility();
-			infoCardRefetchProgress.Show();
+		public void OnProjectLoaded(Project project) {
+			infoCardProjectSummary.OnProjectLoaded(project);
+			infoCardProjectDataUI.ShowAll();
 		}
 
 		public void OnUserAreaLocated(LocationArea locationArea) {
 			infoCardLocatorUI.OnUserAreaLocated(locationArea);
 		}
 
-		public void OnProjectDataUpdated(Project selectedProject) {
+		private void OnProjectDataUpdated(Project selectedProject) {
 			infoCardProjectDataUI.UpdateProjectNameDisplay(
 				selectedProject == null ? "N/A" : selectedProject.Information.Name
 			);
@@ -91,7 +91,7 @@ namespace Dataskop.UI {
 			infoCardProjectDataUI.UpdateLastUpdatedDisplay(selectedProject?.GetLastUpdatedTime() ?? new DateTime());
 		}
 
-		public void OnMeasurementResultsUpdated() {
+		private void OnMeasurementResultsUpdated() {
 
 			infoCardProjectDataUI.UpdateLastUpdatedDisplay(
 				dataManager.SelectedProject?.GetLastUpdatedTime() ?? new DateTime()
