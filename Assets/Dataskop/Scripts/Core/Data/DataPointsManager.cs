@@ -102,10 +102,9 @@ namespace Dataskop.Data {
 			hasHistoryEnabled = false;
 		}
 
-		public void OnHistoryViewChanged(bool enable) {
+		public void OnHistoryButtonPressed(bool enable) {
 
 			hasHistoryEnabled = enable;
-			DataManager.ShouldRefetch = !enable;
 
 			foreach (DataPoint dp in DataPoints) {
 				dp.ToggleHistory(enable);

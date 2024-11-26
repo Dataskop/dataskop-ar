@@ -20,7 +20,7 @@ namespace Dataskop.UI {
 			ComponentRoot = InfoCard.Q<VisualElement>("MetaInformation");
 
 			ComponentRoot.Q<Button>("UpdateProject")
-				.RegisterCallback<ClickEvent>(e => { updateMeasurementsButtonPressed?.Invoke(); });
+				.RegisterCallback<ClickEvent>(e => { OnRefetchButtonPressed(); });
 		}
 
 		internal void UpdateProjectNameDisplay(string projectName) {
@@ -38,6 +38,11 @@ namespace Dataskop.UI {
 		internal void OnRefetchTimerElapsed() {
 			IMGUIContainer updateIcon = ComponentRoot.Q<IMGUIContainer>("UpdateProjectIcon");
 			StartCoroutine(UpdateIconAnim(updateIcon));
+		}
+
+		private void OnRefetchButtonPressed() {
+			StartCoroutine(UpdateIconAnim(ComponentRoot.Q<IMGUIContainer>("UpdateProjectIcon")));
+			updateMeasurementsButtonPressed?.Invoke();
 		}
 
 		private IEnumerator UpdateIconAnim(IMGUIContainer icon) {

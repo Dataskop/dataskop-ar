@@ -372,6 +372,7 @@ namespace Dataskop.Data {
 		private async Task UpdateDeviceMeasurements() {
 
 			foreach (Device d in SelectedProject.Devices) {
+
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
 					MeasurementResult latestResult = md.LatestMeasurementResult;
@@ -461,6 +462,7 @@ namespace Dataskop.Data {
 
 					}
 
+					/*
 					Debug.Log($"Result Ranges in {md.DeviceId} - {md.AttributeId} ({md.ID}):");
 
 					foreach (MeasurementResultRange m in md.MeasurementResults) {
@@ -470,6 +472,7 @@ namespace Dataskop.Data {
 					}
 
 					Debug.Log(" ----- ");
+					*/
 
 				}
 
@@ -482,16 +485,20 @@ namespace Dataskop.Data {
 
 		private async void RefetchDataTimer() {
 
-			while (ShouldRefetch) {
+			while (true) {
 
-				if (FetchTimer?.ElapsedMilliseconds > fetchInterval) {
-					RefetchTimerElapsed?.Invoke();
-					OnRefetchTimerElapsed();
-					FetchTimer?.Restart();
-				}
+				if (ShouldRefetch) {
 
-				if (FetchTimer != null) {
-					RefetchTimerProgressed?.Invoke(fetchInterval, (int)FetchTimer.Elapsed.TotalMilliseconds);
+					if (FetchTimer?.ElapsedMilliseconds > fetchInterval) {
+						RefetchTimerElapsed?.Invoke();
+						OnRefetchTimerElapsed();
+						FetchTimer?.Restart();
+					}
+
+					if (FetchTimer != null) {
+						RefetchTimerProgressed?.Invoke(fetchInterval, (int)FetchTimer.Elapsed.TotalMilliseconds);
+					}
+
 				}
 
 				await Task.Yield();
@@ -505,6 +512,7 @@ namespace Dataskop.Data {
 		}
 
 		public async void OnRefetchButtonPressed() {
+			FetchTimer.Restart();
 			await UpdateProjectMeasurements();
 		}
 
@@ -519,6 +527,19 @@ namespace Dataskop.Data {
 		public async void OnDateFilterPressed(TimeRange timeRange) {
 			ShouldRefetch = false;
 			await FilterByDate(timeRange);
+		}
+
+		public void OnHistoryButtonPressed(bool enable) {
+
+			ShouldRefetch = !enable;
+
+			if (ShouldRefetch == false) {
+				FetchTimer.Stop();
+			}
+			else {
+				FetchTimer.Start();
+			}
+
 		}
 
 	}
