@@ -32,7 +32,7 @@ namespace Dataskop.UI {
 			lastUpdateTime = lastUpdateTime.ToLocalTime();
 			Label lastUpdatedLabel = ComponentRoot.Q<Label>("LastUpdated");
 			lastUpdatedLabel.text =
-				$"Last Updated: {lastUpdateTime.ToShortDateString()} {lastUpdateTime.ToLongTimeString()}";
+				$"Latest Project Measurement: {lastUpdateTime.ToShortDateString()} {lastUpdateTime.ToLongTimeString()}";
 		}
 
 		internal void OnRefetchTimerElapsed() {
