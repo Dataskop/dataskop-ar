@@ -122,6 +122,11 @@ namespace Dataskop.Entities {
 
 		public void OnMeasurementResultsUpdated() {
 
+			// Do nothing when currently viewing Measurement Range is not the latest.
+			if (CurrentMeasurementRange != MeasurementDefinition.GetLatestRange()) {
+				return;
+			}
+
 			CurrentMeasurementRange = MeasurementDefinition.GetLatestRange();
 
 			int indexOfPreviousResult = CurrentMeasurementRange.IndexOf(FocusedMeasurement);

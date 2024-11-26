@@ -372,6 +372,7 @@ namespace Dataskop.Data {
 		private async Task UpdateDeviceMeasurements() {
 
 			foreach (Device d in SelectedProject.Devices) {
+
 				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
 					MeasurementResult latestResult = md.LatestMeasurementResult;
@@ -461,6 +462,7 @@ namespace Dataskop.Data {
 
 					}
 
+					/*
 					Debug.Log($"Result Ranges in {md.DeviceId} - {md.AttributeId} ({md.ID}):");
 
 					foreach (MeasurementResultRange m in md.MeasurementResults) {
@@ -470,6 +472,7 @@ namespace Dataskop.Data {
 					}
 
 					Debug.Log(" ----- ");
+					*/
 
 				}
 
@@ -527,6 +530,7 @@ namespace Dataskop.Data {
 		}
 
 		public void OnHistoryButtonPressed(bool enable) {
+
 			ShouldRefetch = !enable;
 
 			if (ShouldRefetch == false) {
