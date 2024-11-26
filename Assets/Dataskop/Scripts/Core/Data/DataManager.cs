@@ -7,7 +7,6 @@ using Dataskop.UI;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
-using Debug = UnityEngine.Debug;
 
 namespace Dataskop.Data {
 
@@ -44,11 +43,7 @@ namespace Dataskop.Data {
 		public bool ShouldRefetch
 		{
 			get => shouldRefetch;
-			set
-			{
-				shouldRefetch = value;
-				RefetchStateUpdated?.Invoke(ShouldRefetch);
-			}
+			set { shouldRefetch = value; }
 		}
 
 		private void Awake() {
@@ -72,8 +67,6 @@ namespace Dataskop.Data {
 		public event Action HasUpdatedMeasurementResults;
 
 		public event Action<TimeRange> HasDateFiltered;
-
-		public event Action<bool> RefetchStateUpdated;
 
 		public event Action<int, int> RefetchTimerProgressed;
 
