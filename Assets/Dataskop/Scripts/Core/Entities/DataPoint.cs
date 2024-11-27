@@ -12,7 +12,6 @@ namespace Dataskop.Entities {
 		[SerializeField] private SpriteRenderer mapIconBorder;
 		[SerializeField] private SpriteRenderer visIcon;
 		[SerializeField] private Sprite[] visIcons;
-		[SerializeField] private GameObject noResultsIndicator;
 
 		[Header("Values")]
 		[SerializeField] private Color mapSelectionColor;
