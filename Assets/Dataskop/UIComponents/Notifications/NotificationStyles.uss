@@ -36,7 +36,7 @@
 }
 
 .notification-animation {
-    translate: -680px 0;
+    translate: -660px 0;
     transition-property: translate;
     transition-duration: 1s;
     transition-timing-function: ease-in-out-elastic;
