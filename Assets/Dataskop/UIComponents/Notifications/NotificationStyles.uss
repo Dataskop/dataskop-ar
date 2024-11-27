@@ -27,8 +27,8 @@
     border-right-color: rgb(219, 105, 11);
     border-top-color: rgb(219, 105, 11);
     border-bottom-color: rgb(219, 105, 11);
-    border-left-width: 4px;
-    border-right-width: 4px;
+    border-left-width: 0;
+    border-right-width: 0;
     border-top-width: 0;
     border-bottom-width: 4px;
     background-color: rgb(245, 245, 245);
@@ -54,10 +54,6 @@
     color: rgb(255, 255, 255);
 }
 
-.notification--black .icon {
-    -unity-background-image-tint-color: rgb(0, 0, 0);
-}
-
 .notification--white {
     background-color: rgb(236, 239, 244);
 }
@@ -66,16 +62,12 @@
     color: rgb(46, 52, 64);
 }
 
-.notification--white .icon {
-    -unity-background-image-tint-color: rgb(255, 255, 255);
-}
-
 .notification__text {
     padding: 0;
     margin-left: 10px;
     -unity-font-style: normal;
     font-size: 28px;
-    -unity-font: url('project://database/Assets/Dataskop/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
+    -unity-font: url("project://database/Assets/Dataskop/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular");
     width: 80%;
     -unity-font-definition: initial;
 }
