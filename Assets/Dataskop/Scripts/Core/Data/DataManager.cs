@@ -40,19 +40,13 @@ namespace Dataskop.Data {
 
 		private Stopwatch FetchTimer { get; set; }
 
-		public bool ShouldRefetch
-		{
-			get => shouldRefetch;
-			set { shouldRefetch = value; }
-		}
-
 		private void Awake() {
 			FetchAmount = PlayerPrefs.HasKey("fetchAmount") ? PlayerPrefs.GetInt("fetchAmount") : 2000;
 			fetchInterval = PlayerPrefs.HasKey("fetchInterval") ? PlayerPrefs.GetInt("fetchInterval") : 10000;
 		}
 
 		private void OnDisable() {
-			ShouldRefetch = false;
+			shouldRefetch = false;
 			FetchTimer?.Stop();
 		}
 
@@ -150,7 +144,7 @@ namespace Dataskop.Data {
 				return;
 			}
 
-			ShouldRefetch = false;
+			shouldRefetch = false;
 			LoadingIndicator.Show();
 
 			SelectedProject = GetAvailableProjects(Companies).FirstOrDefault(project => project.ID == projectId);
@@ -242,7 +236,7 @@ namespace Dataskop.Data {
 
 			if (!LoadingIndicator.IsLoading) {
 				LoadingIndicator.Show();
-				ShouldRefetch = false;
+				shouldRefetch = false;
 			}
 
 			SelectedProject = GetAvailableProjects(Companies)
@@ -332,7 +326,7 @@ namespace Dataskop.Data {
 				}
 			);
 
-			ShouldRefetch = true;
+			shouldRefetch = true;
 			FetchTimer = new Stopwatch();
 			FetchTimer.Start();
 			RefetchDataTimer();
@@ -480,7 +474,7 @@ namespace Dataskop.Data {
 
 			while (true) {
 
-				if (ShouldRefetch) {
+				if (shouldRefetch) {
 
 					if (FetchTimer?.ElapsedMilliseconds > fetchInterval) {
 						RefetchTimerElapsed?.Invoke();
@@ -518,15 +512,15 @@ namespace Dataskop.Data {
 		}
 
 		public async void OnDateFilterPressed(TimeRange timeRange) {
-			ShouldRefetch = false;
+			shouldRefetch = false;
 			await FilterByDate(timeRange);
 		}
 
 		public void OnHistoryButtonPressed(bool enable) {
 
-			ShouldRefetch = !enable;
+			shouldRefetch = !enable;
 
-			if (ShouldRefetch == false) {
+			if (shouldRefetch == false) {
 				FetchTimer.Stop();
 			}
 			else {
