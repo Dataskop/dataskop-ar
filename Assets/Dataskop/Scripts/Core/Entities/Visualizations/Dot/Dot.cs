@@ -54,6 +54,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisHistoryConfiguration VisHistoryConfiguration { get; set; }
 
+		public MeasurementResult LatestResultBeforeUpdate { get; private set; }
+
 		public bool IsSelected { get; private set; }
 
 		public Transform VisOrigin { get; set; }

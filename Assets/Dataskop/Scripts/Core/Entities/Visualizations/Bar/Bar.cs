@@ -74,6 +74,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisualizationType Type { get; set; }
 
+		public MeasurementResult LatestResultBeforeUpdate { get; private set; }
+
 		public void Initialize(DataPoint dp) {
 
 			DataPoint = dp;

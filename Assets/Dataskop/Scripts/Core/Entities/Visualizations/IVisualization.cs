@@ -35,6 +35,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisualizationType Type { get; set; }
 
+		public MeasurementResult LatestResultBeforeUpdate { get; }
+
 		public event Action SwipedDown;
 
 		public event Action SwipedUp;
