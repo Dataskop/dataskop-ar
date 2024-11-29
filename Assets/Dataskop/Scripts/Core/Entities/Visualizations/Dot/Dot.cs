@@ -126,6 +126,7 @@ namespace Dataskop.Entities.Visualizations {
 			*/
 
 			OnFocusedIndexChanged(DataPoint.FocusedIndex);
+			LatestResultBeforeUpdate = VisObjects[0].CurrentData.Result;
 
 		}
 
