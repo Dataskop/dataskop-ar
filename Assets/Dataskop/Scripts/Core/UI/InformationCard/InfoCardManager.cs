@@ -36,7 +36,7 @@ namespace Dataskop.UI {
 
 		private VisualElement MapTab { get; set; }
 
-		private Label CallToAction { get; set; }
+		private VisualElement CallToAction { get; set; }
 
 		private void Awake() {
 
@@ -51,7 +51,7 @@ namespace Dataskop.UI {
 			MapTab = InfoCard.Q<VisualElement>("MapTab");
 			MapTab.RegisterCallback<ClickEvent>(_ => OnMapTabPressed());
 
-			CallToAction = InfoCard.Q<Label>("CallToAction");
+			CallToAction = InfoCard.Q<VisualElement>("CTA");
 			CallToAction.visible = false;
 
 			infoCardStateManager.Init(InfoCard);

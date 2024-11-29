@@ -144,16 +144,29 @@
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
     border-bottom-left-radius: 8px;
+
+    -unity-font-definition: url("project://database/Assets/Dataskop/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular");
+    font-size: 28px;
+    -unity-text-align: middle-center;
+    text-overflow: clip;
+    white-space: normal;
+}
+
+.unity-base-text-field__input{
+    -unity-text-align: middle-center;
+    font-size: 22px;
+    text-overflow: ellipsis;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
     border-bottom-width: 6px;
+    border-top-width: 0;
     border-left-width: 0;
     border-right-width: 0;
     border-left-color: rgb(114, 114, 114);
     border-right-color: rgb(114, 114, 114);
     border-top-color: rgb(114, 114, 114);
     border-bottom-color: rgb(114, 114, 114);
-    -unity-font-definition: url("project://database/Assets/Dataskop/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular");
-    font-size: 28px;
-    -unity-text-align: middle-center;
-    text-overflow: clip;
-    white-space: normal;
+    height: 100%;
 }
