@@ -111,6 +111,9 @@ namespace Dataskop.Entities.Visualizations {
 		public void Delete() {
 			Destroy(gameObject);
 		}
+		public void SetLatestState(bool state) { }
+
+		public void SetNewState(bool state) { }
 
 		private void SetBubbleSize(float value, float minAttributeValue, float maxAttributeValue) {
 

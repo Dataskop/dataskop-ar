@@ -12,6 +12,7 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private SpriteRenderer visRenderer;
 		[SerializeField] private Collider visCollider;
 		[SerializeField] private GameObject radialSegmentPrefab;
+		[SerializeField] private GameObject liveIndicator;
 
 		private bool isSelected;
 
@@ -105,6 +106,10 @@ namespace Dataskop.Entities.Visualizations {
 		public void Delete() {
 			Destroy(gameObject);
 		}
+
+		public void SetLatestState(bool state) { }
+
+		public void SetNewState(bool state) { }
 
 		private int GetMappedAngle(float value, float min, float max) {
 			return 360 - (int)MathExtensions.Map(value, min, max, 0, 360);

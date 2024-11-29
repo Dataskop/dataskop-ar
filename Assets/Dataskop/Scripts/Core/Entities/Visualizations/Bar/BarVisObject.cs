@@ -130,6 +130,10 @@ namespace Dataskop.Entities.Visualizations {
 			return barFrame.localScale;
 		}
 
+		public void SetLatestState(bool state) { }
+
+		public void SetNewState(bool state) { }
+
 		private void Rotate(bool isRotated) {
 			transform.localRotation = isRotated ?
 				Quaternion.Euler(0, 0, -90) :

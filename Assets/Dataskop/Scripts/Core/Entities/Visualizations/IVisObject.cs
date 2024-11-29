@@ -41,6 +41,10 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void Delete();
 
+		public void SetLatestState(bool state);
+
+		public void SetNewState(bool state);
+
 	}
 
 }

@@ -110,6 +110,10 @@ namespace Dataskop.Entities.Visualizations {
 			Destroy(gameObject);
 		}
 
+		public void SetLatestState(bool state) { }
+
+		public void SetNewState(bool state) { }
+
 		private void OnAnimationFinished() {
 			animationCoroutine = null;
 		}
