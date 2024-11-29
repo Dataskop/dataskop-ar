@@ -15,7 +15,7 @@
                 <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
                     <ui:Label display-tooltip-when-elided="true" name="LastUpdated" text="Last Update: -" class="meta-info-text" style="font-size: 26px; color: rgb(60, 60, 60); -unity-font-definition: initial; -unity-font: url(&quot;project://database/Assets/Dataskop/Fonts/OpenSans-Regular.ttf?fileID=12800000&amp;guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&amp;type=3#OpenSans-Regular&quot;);" />
                     <ui:Button display-tooltip-when-elided="true" name="UpdateProject" class="refresh-button" style="width: 50px; height: 50px; align-items: center; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; justify-content: center; align-self: flex-end;">
-                        <ui:IMGUIContainer name="UpdateProjectIcon" class="refresh-button-image" style="background-image: url(&quot;project://database/Assets/Dataskop/Images/Icons/refresh_1024px.png?fileID=21300000&amp;guid=c76b05f6d283e804dba8cf6ecb94d3b0&amp;type=3#refresh_1024px&quot;); width: 75%; height: 75%;" />
+                        <ui:IMGUIContainer name="UpdateProjectIcon" class="refresh-button-image" style="background-image: url(&quot;project://database/Assets/Dataskop/Images/Icons/new/sync-outline.png?fileID=21300000&amp;guid=f0ed4add487aebd4da0d77f40aa876b0&amp;type=3#sync-outline&quot;); width: 75%; height: 75%;" />
                     </ui:Button>
                 </ui:VisualElement>
                 <ui:ProgressBar value="0.33" high-value="1" name="RefetchTimerProgressBar" style="margin-top: 4px; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
