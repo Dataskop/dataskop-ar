@@ -666,7 +666,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   loadingIndicator: {fileID: 1499203927}
-  fetchAmount: 2000
+  fetchAmount: 500
   fetchInterval: 15000
 --- !u!4 &284049159
 Transform:
