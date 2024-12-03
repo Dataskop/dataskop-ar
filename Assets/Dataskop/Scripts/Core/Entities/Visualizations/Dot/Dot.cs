@@ -126,6 +126,7 @@ namespace Dataskop.Entities.Visualizations {
 			*/
 
 			OnFocusedIndexChanged(DataPoint.FocusedIndex);
+			LatestResultTime = DataPoint.MeasurementDefinition.LatestMeasurementResult.Timestamp;
 
 		}
 
@@ -308,6 +309,7 @@ namespace Dataskop.Entities.Visualizations {
 				ClearHistoryVisObjects();
 				groundLine.enabled = true;
 				hoverDataDisplay.Hide();
+				LatestResultTime = DataPoint.MeasurementDefinition.LatestMeasurementResult.Timestamp;
 
 			}
 
@@ -488,7 +490,8 @@ namespace Dataskop.Entities.Visualizations {
 				Attribute = DataPoint.Attribute,
 				AuthorSprite = result.Author != string.Empty
 					? DataPoint.AuthorRepository.AuthorSprites[result.Author]
-					: null
+					: null,
+				IsNew = result.Timestamp > LatestResultTime
 			};
 
 			if (target.CurrentData.Result != result) {
@@ -496,6 +499,7 @@ namespace Dataskop.Entities.Visualizations {
 			}
 
 			target.ChangeState(state);
+			target.SetNewState(result.Timestamp > LatestResultTime);
 
 			if (target.IsFocused) {
 

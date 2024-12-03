@@ -12,6 +12,7 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private Sprite hoveredSprite;
 		[SerializeField] private Sprite selectedSprite;
 		[SerializeField] private Sprite historicSprite;
+		[SerializeField] private SpriteRenderer newIndicatorRenderer;
 
 		[Header("Values")]
 		[SerializeField] private AnimationCurve animationCurveSelect;
@@ -106,7 +107,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void SetNewState(bool isNew) {
 			IsNew = isNew;
-			//TODO: Apply style for whatever happens when it is new.
+			newIndicatorRenderer.enabled = isNew;
 		}
 
 		public void Delete() {
