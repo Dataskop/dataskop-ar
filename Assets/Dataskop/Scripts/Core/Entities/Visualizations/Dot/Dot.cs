@@ -412,6 +412,7 @@ namespace Dataskop.Entities.Visualizations {
 
 			}
 
+			visObject.SetNewState(false);
 			VisObjectHovered?.Invoke(index);
 
 		}
