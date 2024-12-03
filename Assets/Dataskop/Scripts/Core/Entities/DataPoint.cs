@@ -121,21 +121,15 @@ namespace Dataskop.Entities {
 
 		public void OnMeasurementResultsUpdated() {
 
+			int indexOfPreviousResult = CurrentMeasurementRange.IndexOf(FocusedMeasurement);
+
 			// Do nothing when currently viewing Measurement Range is not the latest.
-			if (CurrentMeasurementRange != MeasurementDefinition.GetLatestRange()) {
+			if (!MeasurementDefinition.GetLatestRange().Contains(CurrentMeasurementRange[indexOfPreviousResult])) {
 				return;
 			}
 
 			CurrentMeasurementRange = MeasurementDefinition.GetLatestRange();
-
-			int indexOfPreviousResult = CurrentMeasurementRange.IndexOf(FocusedMeasurement);
-
-			if (Vis.HasHistoryEnabled) {
-				SetIndex(indexOfPreviousResult);
-			}
-			else {
-				SetIndex(FocusedIndex != 0 ? indexOfPreviousResult : 0);
-			}
+			SetIndex(FocusedIndex != 0 ? indexOfPreviousResult : 0);
 
 		}
 
