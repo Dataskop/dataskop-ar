@@ -30,6 +30,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public bool IsFocused { get; private set; }
 
+		public bool IsNew { get; private set; }
+
 		public VisObjectData CurrentData { get; private set; }
 
 		public Collider VisCollider => visCollider;
@@ -60,6 +62,7 @@ namespace Dataskop.Entities.Visualizations {
 			switch (newState) {
 
 				case VisObjectState.Deselected:
+
 					if (isSelected) {
 						PlayDeselectionAnimation();
 						isSelected = false;
@@ -101,6 +104,11 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
+		public void SetNewState(bool isNew) {
+			IsNew = isNew;
+			//TODO: Apply style for whatever happens when it is new.
+		}
+
 		public void Delete() {
 
 			if (animationCoroutine != null) {
@@ -111,8 +119,6 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public void SetLatestState(bool state) { }
-
-		public void SetNewState(bool state) { }
 
 		private void OnAnimationFinished() {
 			animationCoroutine = null;

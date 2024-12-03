@@ -15,6 +15,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public Color32 Color { get; set; }
 
+		public bool IsNew { get; set; }
+
 	}
 
 }

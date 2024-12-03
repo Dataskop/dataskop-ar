@@ -37,7 +37,9 @@ namespace Dataskop.Entities.Visualizations {
 
 		public int Index { get; set; }
 
-		public bool IsFocused { get; set; }
+		public bool IsFocused { get; private set; }
+
+		public bool IsNew { get; private set; }
 
 		public Collider VisCollider => visCollider;
 

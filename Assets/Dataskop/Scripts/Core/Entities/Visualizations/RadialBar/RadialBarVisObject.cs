@@ -20,6 +20,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public bool IsFocused { get; private set; }
 
+		public bool IsNew { get; private set; }
+
 		public Collider VisCollider => visCollider;
 
 		public Transform VisObjectTransform => transform;

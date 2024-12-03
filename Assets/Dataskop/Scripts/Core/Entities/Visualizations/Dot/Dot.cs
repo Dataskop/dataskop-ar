@@ -54,8 +54,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisHistoryConfiguration VisHistoryConfiguration { get; set; }
 
-		public MeasurementResult LatestResultBeforeUpdate { get; private set; }
-
 		public bool IsSelected { get; private set; }
 
 		public Transform VisOrigin { get; set; }
@@ -75,6 +73,8 @@ namespace Dataskop.Entities.Visualizations {
 		private IVisObjectStyle VisObjectStyle { get; set; }
 
 		private MeasurementResultRange CurrentRange => DataPoint.CurrentMeasurementRange;
+
+		public DateTime LatestResultTime { get; private set; }
 
 		public void Initialize(DataPoint dp) {
 
@@ -126,7 +126,6 @@ namespace Dataskop.Entities.Visualizations {
 			*/
 
 			OnFocusedIndexChanged(DataPoint.FocusedIndex);
-			LatestResultBeforeUpdate = VisObjects[0].CurrentData.Result;
 
 		}
 

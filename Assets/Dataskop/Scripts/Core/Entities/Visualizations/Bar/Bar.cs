@@ -73,8 +73,7 @@ namespace Dataskop.Entities.Visualizations {
 		public Vector3 Offset { get; private set; }
 
 		public VisualizationType Type { get; set; }
-
-		public MeasurementResult LatestResultBeforeUpdate { get; private set; }
+		public DateTime LatestResultTime { get; private set; }
 
 		public void Initialize(DataPoint dp) {
 

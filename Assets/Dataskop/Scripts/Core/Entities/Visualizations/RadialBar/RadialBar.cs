@@ -57,11 +57,11 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisualizationType Type { get; set; }
 
-		public MeasurementResult LatestResultBeforeUpdate { get; private set; }
-
 		private float Scale { get; set; }
 
 		private MeasurementResultRange[] CurrentRanges { get; set; }
+
+		public DateTime LatestResultTime { get; set; }
 
 		public void Initialize(DataPoint dp) {
 
