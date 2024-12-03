@@ -7,6 +7,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		[Header("References")]
 		[SerializeField] private SpriteRenderer visRenderer;
+		[SerializeField] private SpriteRenderer newIndicatorRenderer;
 		[SerializeField] private SphereCollider visCollider;
 		[SerializeField] private Sprite defaultSprite;
 		[SerializeField] private Sprite hoveredSprite;
@@ -113,9 +114,13 @@ namespace Dataskop.Entities.Visualizations {
 		public void Delete() {
 			Destroy(gameObject);
 		}
+
 		public void SetLatestState(bool state) { }
 
-		public void SetNewState(bool state) { }
+		public void SetNewState(bool isNew) {
+			IsNew = isNew;
+			newIndicatorRenderer.enabled = isNew;
+		}
 
 		private void SetBubbleSize(float value, float minAttributeValue, float maxAttributeValue) {
 
@@ -124,7 +129,6 @@ namespace Dataskop.Entities.Visualizations {
 			);
 
 			Vector3 newBubbleScale = new(newSize, newSize, newSize);
-
 			Transform visTransform = visRenderer.transform;
 
 			if (scaleRoutine != null) {

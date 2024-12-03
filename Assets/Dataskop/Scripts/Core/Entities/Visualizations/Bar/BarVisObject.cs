@@ -11,6 +11,7 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private BoxCollider visCollider;
 		[SerializeField] private MeshRenderer barFillMeshRenderer;
 		[SerializeField] private MeshRenderer barFrameMeshRenderer;
+		[SerializeField] private SpriteRenderer newIndicatorRenderer;
 		[SerializeField] private Transform barFill;
 		[SerializeField] private Transform barFrame;
 		[SerializeField] private Material defaultFrameMaterial;
@@ -134,7 +135,10 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void SetLatestState(bool state) { }
 
-		public void SetNewState(bool state) { }
+		public void SetNewState(bool isNew) {
+			IsNew = isNew;
+			newIndicatorRenderer.enabled = isNew;
+		}
 
 		private void Rotate(bool isRotated) {
 			transform.localRotation = isRotated ?

@@ -7,12 +7,12 @@ namespace Dataskop.Entities.Visualizations {
 
 		[Header("References")]
 		[SerializeField] private SpriteRenderer visRenderer;
+		[SerializeField] private SpriteRenderer newIndicatorRenderer;
 		[SerializeField] private Collider visCollider;
 		[SerializeField] private Sprite defaultSprite;
 		[SerializeField] private Sprite hoveredSprite;
 		[SerializeField] private Sprite selectedSprite;
 		[SerializeField] private Sprite historicSprite;
-		[SerializeField] private SpriteRenderer newIndicatorRenderer;
 
 		[Header("Values")]
 		[SerializeField] private AnimationCurve animationCurveSelect;
