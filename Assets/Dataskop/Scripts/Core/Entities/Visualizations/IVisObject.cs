@@ -8,7 +8,7 @@ namespace Dataskop.Entities.Visualizations {
 		public int Index { get; set; }
 
 		public bool IsFocused { get; }
-		
+
 		public bool IsNew { get; }
 
 		public Collider VisCollider { get; }
