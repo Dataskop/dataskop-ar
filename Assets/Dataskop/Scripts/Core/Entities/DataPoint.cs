@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dataskop.Data;
 using Dataskop.Entities.Visualizations;
 using Dataskop.Interaction;
@@ -65,9 +66,7 @@ namespace Dataskop.Entities {
 
 		public AuthorRepository AuthorRepository { get; set; }
 
-		private void Awake() {
-			VisualizationTypeChanged += OnVisChanged;
-		}
+		public Dictionary<MeasurementDefinition, DateTime> LastKnownResultTimes { get; private set; }
 
 		public event Action<int> FocusedIndexChanged;
 
@@ -78,6 +77,11 @@ namespace Dataskop.Entities {
 		public event Action<VisualizationType> VisualizationTypeChanged;
 
 		public event Action MeasurementRangeChanged;
+
+		private void Awake() {
+			VisualizationTypeChanged += OnVisChanged;
+			LastKnownResultTimes = new Dictionary<MeasurementDefinition, DateTime>();
+		}
 
 		/// <summary>
 		/// Sets and replaces the current visualization form with another.
@@ -121,21 +125,15 @@ namespace Dataskop.Entities {
 
 		public void OnMeasurementResultsUpdated() {
 
+			int indexOfPreviousResult = CurrentMeasurementRange.IndexOf(FocusedMeasurement);
+
 			// Do nothing when currently viewing Measurement Range is not the latest.
-			if (CurrentMeasurementRange != MeasurementDefinition.GetLatestRange()) {
+			if (!MeasurementDefinition.GetLatestRange().Contains(CurrentMeasurementRange[indexOfPreviousResult])) {
 				return;
 			}
 
 			CurrentMeasurementRange = MeasurementDefinition.GetLatestRange();
-
-			int indexOfPreviousResult = CurrentMeasurementRange.IndexOf(FocusedMeasurement);
-
-			if (Vis.HasHistoryEnabled) {
-				SetIndex(indexOfPreviousResult);
-			}
-			else {
-				SetIndex(FocusedIndex != 0 ? indexOfPreviousResult : 0);
-			}
+			SetIndex(FocusedIndex != 0 ? indexOfPreviousResult : 0);
 
 		}
 
@@ -155,7 +153,12 @@ namespace Dataskop.Entities {
 
 			if (Vis != null && Vis.VisOption.Style.IsTimeSeries) {
 				Vis.OnTimeSeriesToggled(newState);
+
+				if (!newState) {
+					SetLatestResultTimes();
+				}
 			}
+
 		}
 
 		private void IncreaseMeasurementIndex() {
@@ -246,6 +249,10 @@ namespace Dataskop.Entities {
 					throw new ArgumentOutOfRangeException(nameof(state), state, null);
 			}
 
+		}
+
+		public void SetLatestResultTimes() {
+			LastKnownResultTimes = Device.GetLatestResultTimes();
 		}
 
 		private void SetMapIconColor(Color color) {

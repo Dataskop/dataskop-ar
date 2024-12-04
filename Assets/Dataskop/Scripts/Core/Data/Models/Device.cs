@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -32,6 +33,10 @@ namespace Dataskop.Data {
 
 		public MeasurementDefinition GetMeasurementDefinitionByAttributeId(string attributeId) {
 			return MeasurementDefinitions.First(item => item.AttributeId == attributeId);
+		}
+
+		public Dictionary<MeasurementDefinition, DateTime> GetLatestResultTimes() {
+			return MeasurementDefinitions.ToDictionary(md => md, md => md.LatestMeasurementResult.Timestamp);
 		}
 
 		private Position GetPosition() {

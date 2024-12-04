@@ -184,10 +184,10 @@ namespace Dataskop.Data {
 				: Array.Empty<TimeRange>();
 		}
 
-		public IReadOnlyList<MeasurementResultRange> ReplaceMeasurementResultRange(int index,
-			MeasurementResultRange newRange) {
-			MeasurementResults.ToList()[index] = newRange;
-			return MeasurementResults;
+		public void ReplaceMeasurementResultRange(int index, MeasurementResultRange newRange) {
+			List<MeasurementResultRange> currentRanges = MeasurementResults.ToList();
+			currentRanges[index] = newRange;
+			MeasurementResults = currentRanges;
 		}
 
 		private void SortRanges() {

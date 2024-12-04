@@ -11,6 +11,7 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private BoxCollider visCollider;
 		[SerializeField] private MeshRenderer barFillMeshRenderer;
 		[SerializeField] private MeshRenderer barFrameMeshRenderer;
+		[SerializeField] private SpriteRenderer newIndicatorRenderer;
 		[SerializeField] private Transform barFill;
 		[SerializeField] private Transform barFrame;
 		[SerializeField] private Material defaultFrameMaterial;
@@ -28,7 +29,9 @@ namespace Dataskop.Entities.Visualizations {
 
 		public int Index { get; set; }
 
-		public bool IsFocused { get; set; }
+		public bool IsFocused { get; private set; }
+
+		public bool IsNew { get; private set; }
 
 		public Collider VisCollider => visCollider;
 
@@ -128,6 +131,13 @@ namespace Dataskop.Entities.Visualizations {
 
 		public Vector3 GetCurrentScale() {
 			return barFrame.localScale;
+		}
+
+		public void SetLatestState(bool state) { }
+
+		public void SetNewState(bool isNew) {
+			IsNew = isNew;
+			newIndicatorRenderer.enabled = isNew;
 		}
 
 		private void Rotate(bool isRotated) {
