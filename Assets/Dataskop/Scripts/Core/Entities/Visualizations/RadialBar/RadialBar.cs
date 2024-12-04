@@ -61,8 +61,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		private MeasurementResultRange[] CurrentRanges { get; set; }
 
-		public DateTime LatestResultTime { get; set; }
-
 		public void Initialize(DataPoint dp) {
 
 			DataPoint = dp;

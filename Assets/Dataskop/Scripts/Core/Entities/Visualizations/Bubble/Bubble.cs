@@ -80,8 +80,6 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisualizationType Type { get; set; }
 
-		public DateTime LatestResultTime { get; private set; }
-
 		public void Initialize(DataPoint dp) {
 
 			DataPoint = dp;
@@ -127,7 +125,6 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjects[DataPoint.FocusedIndex].VisCollider.enabled = true;
 
 			OnFocusedIndexChanged(DataPoint.FocusedIndex);
-			LatestResultTime = DataPoint.MeasurementDefinition.LatestMeasurementResult.Timestamp;
 		}
 
 		public void OnFocusedIndexChanged(int index) {
@@ -306,7 +303,6 @@ namespace Dataskop.Entities.Visualizations {
 
 				ClearHistoryVisObjects();
 				hoverDataDisplay.Hide();
-				LatestResultTime = DataPoint.MeasurementDefinition.LatestMeasurementResult.Timestamp;
 
 			}
 
@@ -479,6 +475,7 @@ namespace Dataskop.Entities.Visualizations {
 
 			target.Index = index;
 			target.SetFocus(focused);
+			DateTime lastKnownTime = DataPoint.LastKnownResultTimes[result.MeasurementDefinition];
 
 			VisObjectData data = new() {
 				Result = result,
@@ -487,7 +484,7 @@ namespace Dataskop.Entities.Visualizations {
 				AuthorSprite = result.Author != string.Empty
 					? DataPoint.AuthorRepository.AuthorSprites[result.Author]
 					: null,
-				IsNew = result.Timestamp > LatestResultTime
+				IsNew = result.Timestamp > lastKnownTime
 			};
 
 			if (target.CurrentData.Result != result) {
@@ -495,7 +492,7 @@ namespace Dataskop.Entities.Visualizations {
 			}
 
 			target.ChangeState(state);
-			target.SetNewState(result.Timestamp > LatestResultTime);
+			target.SetNewState(result.Timestamp > lastKnownTime);
 
 			if (target.IsFocused) {
 

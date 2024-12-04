@@ -243,6 +243,7 @@ namespace Dataskop.Data {
 						dataPointInstance.AuthorRepository = AuthorRepository;
 						dataPointInstance.FocusedIndexChangedByTap += OnIndexChangeRequested;
 						dataPointInstance.FocusedMeasurement = definition.LatestMeasurementResult;
+						dataPointInstance.SetLatestResultTimes();
 
 						//Move the DataPoint to its location
 						if (AppOptions.DemoMode) {
@@ -270,6 +271,7 @@ namespace Dataskop.Data {
 						SetDataPointVisualization(
 							dataPointInstance, DataAttributeManager.SelectedAttribute.VisOptions.First()
 						);
+
 					}
 
 				}
@@ -279,15 +281,11 @@ namespace Dataskop.Data {
 		}
 
 		private void PlaceDataPoint(Vector2d newPosition, Transform dataPointTransform) {
-
 			dataPointTransform.localPosition = map.GeoToWorldPosition(newPosition);
-
 		}
 
 		public void PlaceDataPoint(Vector3 newPosition, Transform dataPointTransform) {
-
 			dataPointTransform.localPosition = newPosition;
-
 		}
 
 		public MeasurementResult GetLatestResult() {
