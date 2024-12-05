@@ -58,9 +58,9 @@ namespace Dataskop.UI {
 		private void OnEnable() {
 			NotificationHandler.notificationAdded += OnNotificationAdded;
 			Root = notificationUiDocument.rootVisualElement;
-			NotificationEl = Root.Q<VisualElement>("notification-box");
-			IconElement = Root.Q<VisualElement>("icon");
-			MessageTextElement = Root.Q<Label>("text");
+			NotificationEl = Root.Q<VisualElement>("Container");
+			IconElement = Root.Q<VisualElement>("Icon");
+			MessageTextElement = Root.Q<Label>("Message");
 		}
 
 		private void OnDisable() {

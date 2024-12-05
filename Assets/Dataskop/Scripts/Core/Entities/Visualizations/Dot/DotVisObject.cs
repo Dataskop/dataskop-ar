@@ -7,6 +7,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		[Header("References")]
 		[SerializeField] private SpriteRenderer visRenderer;
+		[SerializeField] private SpriteRenderer newIndicatorRenderer;
 		[SerializeField] private Collider visCollider;
 		[SerializeField] private Sprite defaultSprite;
 		[SerializeField] private Sprite hoveredSprite;
@@ -29,6 +30,8 @@ namespace Dataskop.Entities.Visualizations {
 		public int Index { get; set; }
 
 		public bool IsFocused { get; private set; }
+
+		public bool IsNew { get; private set; }
 
 		public VisObjectData CurrentData { get; private set; }
 
@@ -60,6 +63,7 @@ namespace Dataskop.Entities.Visualizations {
 			switch (newState) {
 
 				case VisObjectState.Deselected:
+
 					if (isSelected) {
 						PlayDeselectionAnimation();
 						isSelected = false;
@@ -101,6 +105,11 @@ namespace Dataskop.Entities.Visualizations {
 
 		}
 
+		public void SetNewState(bool isNew) {
+			IsNew = isNew;
+			newIndicatorRenderer.enabled = isNew;
+		}
+
 		public void Delete() {
 
 			if (animationCoroutine != null) {
@@ -109,6 +118,8 @@ namespace Dataskop.Entities.Visualizations {
 
 			Destroy(gameObject);
 		}
+
+		public void SetLatestState(bool state) { }
 
 		private void OnAnimationFinished() {
 			animationCoroutine = null;

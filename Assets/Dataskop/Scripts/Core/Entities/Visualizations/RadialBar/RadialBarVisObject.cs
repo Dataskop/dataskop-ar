@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Dataskop.Utils;
 using UnityEngine;
 
@@ -12,12 +13,15 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private SpriteRenderer visRenderer;
 		[SerializeField] private Collider visCollider;
 		[SerializeField] private GameObject radialSegmentPrefab;
+		[SerializeField] private GameObject liveIndicator;
 
 		private bool isSelected;
 
 		public int Index { get; set; }
 
 		public bool IsFocused { get; private set; }
+
+		public bool IsNew { get; private set; }
 
 		public Collider VisCollider => visCollider;
 
@@ -105,6 +109,10 @@ namespace Dataskop.Entities.Visualizations {
 		public void Delete() {
 			Destroy(gameObject);
 		}
+
+		public void SetLatestState(bool state) { }
+
+		public void SetNewState(bool state) { }
 
 		private int GetMappedAngle(float value, float min, float max) {
 			return 360 - (int)MathExtensions.Map(value, min, max, 0, 360);

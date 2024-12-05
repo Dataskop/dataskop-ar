@@ -73,7 +73,6 @@
 }
 
 .vis-icon {
-    background-image: url('project://database/Assets/Dataskop/Images/Icons/dot.png?fileID=21300000&guid=4c74a81bd135803479253037f7998f34&type=3#dot');
     width: 80%;
     height: 80%;
     -unity-background-image-tint-color: rgb(37, 89, 176);

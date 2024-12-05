@@ -711,7 +711,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   loadingIndicator: {fileID: 1499203927}
-  fetchAmount: 2000
+  fetchAmount: 500
   fetchInterval: 15000
 --- !u!4 &284049159
 Transform:
@@ -1463,10 +1463,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notificationUiDocument: {fileID: 620153296}
   notificationIcons:
-  - {fileID: 21300000, guid: db91e26dc24535e4196888618949a0de, type: 3}
-  - {fileID: 21300000, guid: b9cb3df53b698964e87dfbc8b984e7f9, type: 3}
-  - {fileID: 21300000, guid: 6fe7ad4363d6fe744966294110d7dde9, type: 3}
-  - {fileID: 21300000, guid: 4a30c3071e8d73845a8a3894b5052fc0, type: 3}
+  - {fileID: 21300000, guid: a67c471d4b434e44bb4266cd8a4168cd, type: 3}
+  - {fileID: 21300000, guid: 97a689ea6d6aff540a51d498e20b9829, type: 3}
+  - {fileID: 21300000, guid: a26f963e70f0e1848a280ffa6d3fb337, type: 3}
+  - {fileID: 21300000, guid: 1beaaba75118aff4e879019cc75ecb98, type: 3}
   iconColors:
     check:
       serializedVersion: 2
@@ -1494,7 +1494,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PanelSettings: {fileID: 11400000, guid: e619be7751d431446a2d7c5fc3798ff0, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 361d622372cd19744a136ddd16a613b5, type: 3}
+  sourceAsset: {fileID: 9197481963319205126, guid: bdec2b0b391aac240b19865580cfd666, type: 3}
   m_SortingOrder: 10
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920

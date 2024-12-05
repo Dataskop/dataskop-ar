@@ -408,6 +408,7 @@ namespace Dataskop.Entities.Visualizations {
 
 			}
 
+			visObject.SetNewState(false);
 			VisObjectHovered?.Invoke(index);
 
 		}
@@ -479,6 +480,7 @@ namespace Dataskop.Entities.Visualizations {
 
 			target.Index = index;
 			target.SetFocus(focused);
+			DateTime lastKnownTime = DataPoint.LastKnownResultTimes[result.MeasurementDefinition];
 
 			VisObjectData data = new() {
 				Result = result,
@@ -486,7 +488,8 @@ namespace Dataskop.Entities.Visualizations {
 				Attribute = DataPoint.Attribute,
 				AuthorSprite = result.Author != string.Empty
 					? DataPoint.AuthorRepository.AuthorSprites[result.Author]
-					: null
+					: null,
+				IsNew = result.Timestamp > lastKnownTime
 			};
 
 			if (target.CurrentData.Result != result) {
@@ -494,6 +497,7 @@ namespace Dataskop.Entities.Visualizations {
 			}
 
 			target.ChangeState(state);
+			target.SetNewState(result.Timestamp > lastKnownTime);
 
 			if (target.IsFocused) {
 

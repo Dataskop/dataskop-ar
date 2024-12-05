@@ -73,9 +73,7 @@ namespace Dataskop.Entities.Visualizations {
 			VisOrigin.root.localPosition = Offset;
 			HasHistoryEnabled = false;
 
-			CurrentRanges = DataPoint.Device.MeasurementDefinitions
-				.Select(md => md.MeasurementResults.First())
-				.ToArray();
+			GetCurrentRanges();
 
 			if (CurrentRanges.Length == 0) {
 				return;
@@ -100,30 +98,38 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjects[DataPoint.FocusedIndex].HasHovered += OnVisObjectHovered;
 			VisObjects[DataPoint.FocusedIndex].HasSelected += OnVisObjectSelected;
 			VisObjects[DataPoint.FocusedIndex].HasDeselected += OnVisObjectDeselected;
-			//VisObjects[DataPoint.FocusedIndex].VisCollider.enabled = true;
 
 			OnFocusedIndexChanged(DataPoint.FocusedIndex);
 		}
 
 		public void OnTimeSeriesToggled(bool isActive) {
 			// This visualization currently does not support Time Series at all.
-			return;
 		}
 
 		public void OnFocusedIndexChanged(int index) {
 
+			GetCurrentRanges();
 			index = 0;
+
 			MeasurementResult[] focusedResult = CurrentRanges.Select(mrr => mrr.First()).ToArray();
 
 			UpdateVisObject(
 				VisObjects[index], index, focusedResult, true,
 				IsSelected ? VisObjectState.Selected : VisObjectState.Deselected
 			);
+
+		}
+
+		private void GetCurrentRanges() {
+			CurrentRanges = DataPoint.Device.MeasurementDefinitions
+				.Select(md => md.MeasurementResults.First())
+				.ToArray();
 		}
 
 		public void OnSwipeInteraction(PointerInteraction pointerInteraction) {
 
 			if (pointerInteraction.startingGameObject != null) {
+
 				if (!VisObjects.Contains(pointerInteraction.startingGameObject.GetComponent<IVisObject>())) {
 					return;
 				}
@@ -183,12 +189,10 @@ namespace Dataskop.Entities.Visualizations {
 		}
 
 		public void OnMeasurementResultsUpdated(int newIndex) {
-			return;
+			OnFocusedIndexChanged(0); //Overwrite index to always take the latest/first.
 		}
 
-		public void ApplyStyle(VisualizationStyle style) {
-			return;
-		}
+		public void ApplyStyle(VisualizationStyle style) { }
 
 		public void Despawn() {
 			ClearVisObjects();
@@ -196,79 +200,11 @@ namespace Dataskop.Entities.Visualizations {
 			Destroy(gameObject);
 		}
 
-		private void OnVisObjectHovered(int index) {
+		private void OnVisObjectHovered(int index) { }
 
-			/*
+		private void OnVisObjectSelected(int index) { }
 
-			index = 0;
-			IVisObject visObject = VisObjects[index];
-
-			if (index == DataPoint.FocusedIndex) {
-
-				if (!IsSelected) {
-
-					if (visObject == null) {
-						return;
-					}
-
-					visObject.ChangeState(VisObjectState.Hovered);
-					focusedDataDisplay.Hover(true);
-				}
-
-			}
-			else {
-
-				visObject.ChangeState(VisObjectState.Hovered);
-
-			}
-
-			VisObjectHovered?.Invoke(index);
-
-			*/
-
-		}
-
-		private void OnVisObjectSelected(int index) {
-
-			/*
-			index = 0;
-			IsSelected = true;
-
-			if (index == DataPoint.FocusedIndex) {
-				focusedDataDisplay.Select();
-				focusedDataDisplay.SetDisplayData(VisObjects[index].CurrentData);
-				VisObjects[index].ChangeState(VisObjectState.Selected);
-			}
-
-			VisObjectSelected?.Invoke(index);
-			*/
-
-		}
-
-		private void OnVisObjectDeselected(int index) {
-
-			/*
-			index = 0;
-
-			if (index == DataPoint?.FocusedIndex) {
-
-				if (VisObjects[index] == null) {
-					return;
-				}
-
-				if (IsSelected) {
-					IsSelected = false;
-				}
-
-				VisObjects[index].ChangeState(VisObjectState.Deselected);
-				focusedDataDisplay.Deselect(true);
-
-			}
-
-			VisObjectDeselected?.Invoke(index);
-			*/
-
-		}
+		private void OnVisObjectDeselected(int index) { }
 
 		private void UpdateVisObject(IVisObject target, int index, MeasurementResult[] results, bool focused,
 			VisObjectState state) {

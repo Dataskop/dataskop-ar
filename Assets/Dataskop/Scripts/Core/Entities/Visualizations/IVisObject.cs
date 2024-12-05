@@ -9,6 +9,8 @@ namespace Dataskop.Entities.Visualizations {
 
 		public bool IsFocused { get; }
 
+		public bool IsNew { get; }
+
 		public Collider VisCollider { get; }
 
 		public Transform VisObjectTransform { get; }
@@ -40,6 +42,10 @@ namespace Dataskop.Entities.Visualizations {
 		public void SetFocus(bool isFocused);
 
 		public void Delete();
+
+		public void SetLatestState(bool state);
+
+		public void SetNewState(bool state);
 
 	}
 
