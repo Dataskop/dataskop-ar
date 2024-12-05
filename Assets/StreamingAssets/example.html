@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Sensor Visualization</title>
+    <script src="./libs/d3.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #chart {
+            width: 100%;
+            height: 300px;
+        }
+        #interactionButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #messageDisplay {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div id="chart"></div>
+
+<button id="interactionButton">Send Message to Unity</button>
+<div id="messageDisplay">No message sent yet</div>
+
+<script>
+    // Function to generate fake sensor data
+    function generateFakeSensorData(count = 5) {
+        const sensorTypes = ['Temperature', 'Humidity', 'Pressure', 'Light', 'Wind Speed'];
+        return Array.from({ length: count }, (_, index) => ({
+            sensor: sensorTypes[index % sensorTypes.length],
+            value: Math.random() * 100, // Random value between 0 and 100
+            timestamp: new Date().toISOString()
+        }));
+    }
+
+    // Function to receive data from Unity
+    function updateSensorData(jsonData) {
+        let data;
+
+        try {
+            // Check if jsonData is undefined, null, or empty
+            if (!jsonData || jsonData === 'undefined' || jsonData === 'null') {
+                console.warn('No data received. Using fake data.');
+                data = generateFakeSensorData();
+            } else {
+                // Try to parse the JSON data
+                const parsedData = JSON.parse(jsonData);
+
+                // Check if parsed data has items and is not empty
+                if (parsedData && parsedData.items && parsedData.items.length > 0) {
+                    data = parsedData.items;
+                } else {
+                    console.warn('Received empty data. Using fake data.');
+                    data = generateFakeSensorData();
+                }
+            }
+
+            // Visualize data
+            visualizeSensorData(data);
+
+            // Send a message back to Unity
+            Unity.call('DATA:Visualization complete with ' + data.length + ' data points');
+        } catch (error) {
+            console.error('Error processing data:', error);
+
+            // Fallback to fake data if any error occurs
+            data = generateFakeSensorData();
+            visualizeSensorData(data);
+
+            Unity.call('DATA:Error processing data. Used fake data.');
+        }
+    }
+
+    function visualizeSensorData(data) {
+        // Clear any existing chart
+        d3.select("#chart").selectAll("*").remove();
+
+        // Create SVG
+        const svg = d3.select("#chart")
+            .append("svg")
+            .attr("width", "100%")
+            .attr("height", "300");
+
+        // Create a color scale
+        const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+        // Add data visualization
+        svg.selectAll("circle")
+            .data(data)
+            .enter()
+            .append("circle")
+            .attr("cx", (d, i) => (i * 70) + 50)
+            .attr("cy", 150)
+            .attr("r", d => Math.max(20, d.value))
+            .attr("fill", (d, i) => colorScale(i))
+            .append("title")  // Add tooltip
+            .text(d => `${d.sensor}: ${d.value.toFixed(2)}`);
+
+        // Add labels
+        svg.selectAll("text")
+            .data(data)
+            .enter()
+            .append("text")
+            .attr("x", (d, i) => (i * 70) + 50)
+            .attr("y", 250)
+            .attr("text-anchor", "middle")
+            .text(d => d.sensor)
+            .attr("fill", "black");
+    }
+
+    // Function to send a message to Unity
+    function sendMessageToUnity() {
+        // Send a message back to Unity
+        Unity.call('UserInteraction:ButtonClicked');
+
+        // Update message display
+        document.getElementById('messageDisplay').textContent = 'Message sent to Unity!';
+    }
+
+    // Add event listener to the button
+    document.getElementById('interactionButton').addEventListener('click', sendMessageToUnity);
+
+    window.addEventListener('load', () => {
+        updateSensorData(null);
+    });
+</script>
+</body>
+</html>
