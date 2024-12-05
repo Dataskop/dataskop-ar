@@ -1,28 +1,30 @@
 fileFormatVersion: 2
 guid: d6467263296c74b919030e7bfae469ca
-timeCreated: 1516304615
-licenseType: Pro
 PluginImporter:
   externalObjects: {}
-  serializedVersion: 2
+  serializedVersion: 3
   iconMap: {}
   executionOrder: {}
+  defineConstraints: []
   isPreloaded: 0
   isOverridable: 0
+  isExplicitlyReferenced: 0
+  validateReferences: 1
   platformData:
-  - first:
-      Android: Android
-    second:
+    Android:
       enabled: 1
       settings: {}
-  - first:
-      Any: 
-    second:
+    Any:
       enabled: 0
-      settings: {}
-  - first:
-      Editor: Editor
-    second:
+      settings:
+        Exclude Android: 0
+        Exclude Editor: 1
+        Exclude Linux64: 1
+        Exclude OSXUniversal: 1
+        Exclude Win: 1
+        Exclude Win64: 1
+        Exclude iOS: 1
+    Editor:
       enabled: 0
       settings:
         DefaultValueInitialized: true
