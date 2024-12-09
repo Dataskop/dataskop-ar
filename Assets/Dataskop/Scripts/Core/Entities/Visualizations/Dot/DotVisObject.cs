@@ -127,6 +127,10 @@ namespace Dataskop.Entities.Visualizations {
 
 		private void PlaySelectionAnimation() {
 
+			if (isSelected) {
+				return;
+			}
+
 			if (animationCoroutine != null) {
 				StopCoroutine(animationCoroutine);
 				visRenderer.transform.localScale = animationTarget;
