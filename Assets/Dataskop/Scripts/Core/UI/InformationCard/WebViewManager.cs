@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.IO;
 using System.Collections;
+using Dataskop.Entities;
 
 namespace Dataskop.UI
 {
@@ -46,8 +47,8 @@ namespace Dataskop.UI
                     ld: HandleWebViewLoaded // When page is fully loaded
                 );
 
-                webViewObject.SetMargins(0, Screen.height / 2, 0, 0);
-                webViewObject.SetVisibility(true);
+                webViewObject.SetMargins(150, (int)(Screen.height / 2), 150, 30);
+                //webViewObject.SetVisibility(true);
 
                 StartCoroutine(LoadWebViewContent());
 
@@ -74,6 +75,7 @@ namespace Dataskop.UI
         public void SendSensorDataToWebView(object[] sensorData)
         {
             var jsonData = JsonUtility.ToJson(new Serialization<object>(sensorData));
+            Debug.Log($"FLO: Sending sensor data to WebView: {jsonData}");
             webViewObject.EvaluateJS($"updateSensorData('{jsonData}')");
         }
 
@@ -165,6 +167,24 @@ namespace Dataskop.UI
         public void ToggleWebViewVisibility(bool isVisible)
         {
             webViewObject.SetVisibility(isVisible);
+        }
+
+        public void onInformationCardStateChanged(InfoCardState state)
+        {
+            if (state == InfoCardState.Fullscreen)
+            {
+                ToggleWebViewVisibility(true);
+            } else {
+                ToggleWebViewVisibility(false);
+            }
+        }
+
+        public void onDataPointSelected(DataPoint dataPoint)
+        {
+            if (dataPoint != null)
+            {
+                SendSensorDataToWebView(dataPoint.CurrentMeasurementRange.ToArray());
+            }
         }
     }
 }

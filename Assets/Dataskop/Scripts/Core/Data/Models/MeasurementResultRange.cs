@@ -70,6 +70,11 @@ namespace Dataskop {
 			list.RemoveAt(index);
 		}
 
+		public MeasurementResult[] ToArray()
+		{
+			return list.ToArray();
+		}
+
 		#endregion
 
 		public TimeRange GetTimeRange() {
