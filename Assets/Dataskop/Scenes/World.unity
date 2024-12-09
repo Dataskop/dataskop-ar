@@ -575,7 +575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc7886e66bca01744ad2a69346594577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  htmlFileName: example.html
+  htmlFileName: linechart2.html
 --- !u!4 &272703958
 Transform:
   m_ObjectHideFlags: 0

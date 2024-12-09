@@ -18,10 +18,13 @@ namespace Dataskop.UI
 #else
                 Debug.LogError("WebView is not supported on this platform");
 #endif
+            // Ensure visibility is explicitly set
+            Debug.Log("FLO: WebView Initialization Started");
         }
 
         private void InitializeWebView()
         {
+            Debug.Log("FLO: InitializeWebView called");
             try
             {
                 // Create WebView object
@@ -47,6 +50,7 @@ namespace Dataskop.UI
                 webViewObject.SetVisibility(true);
 
                 StartCoroutine(LoadWebViewContent());
+
             }
             catch (System.Exception e)
             {
@@ -58,12 +62,11 @@ namespace Dataskop.UI
         {
             // Construct full path to HTML file in StreamingAssets
             var htmlPath = Path.Combine(Application.streamingAssetsPath, htmlFileName);
+            Debug.Log($"FLO: Attempting to load HTML from: {htmlPath}");
 
             // For platforms that need file:// prefix
-            var fullPath = "file://" + htmlPath.Replace(" ", "%20");
-
-            webViewObject.LoadURL(fullPath);
-
+            webViewObject.LoadURL($"file://{htmlPath}");
+            
             // Wait a moment to ensure initialization
             yield return new WaitForSeconds(0.5f);
         }
