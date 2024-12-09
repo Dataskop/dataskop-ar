@@ -8,6 +8,7 @@ namespace Dataskop.UI
     public class WebViewManager : MonoBehaviour
     {
         private WebViewObject webViewObject;
+        private bool isDetailsTab = false;
 
         public string htmlFileName = "index.html";
 
@@ -171,12 +172,22 @@ namespace Dataskop.UI
 
         public void onInformationCardStateChanged(InfoCardState state)
         {
-            if (state == InfoCardState.Fullscreen)
+            if (state == InfoCardState.Fullscreen && isDetailsTab)
             {
                 ToggleWebViewVisibility(true);
             } else {
                 ToggleWebViewVisibility(false);
             }
+        }
+
+        public void onDetailsTabPressed()
+        {
+            isDetailsTab = true;
+        }
+
+        public void onMapTabPressed()
+        {
+            isDetailsTab = false;
         }
 
         public void onDataPointSelected(DataPoint dataPoint)
