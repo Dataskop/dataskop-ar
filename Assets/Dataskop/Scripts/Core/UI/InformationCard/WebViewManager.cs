@@ -2,12 +2,15 @@ using UnityEngine;
 using System.IO;
 using System.Collections;
 using Dataskop.Entities;
+using Newtonsoft.Json;
+using Dataskop.Data;
 
 namespace Dataskop.UI
 {
     public class WebViewManager : MonoBehaviour
     {
         private WebViewObject webViewObject;
+        private bool shouldShow = false;
         private bool isDetailsTab = false;
 
         public string htmlFileName = "index.html";
@@ -73,11 +76,22 @@ namespace Dataskop.UI
             yield return new WaitForSeconds(0.5f);
         }
 
-        public void SendSensorDataToWebView(object[] sensorData)
+        public void SendSensorDataToWebView(MeasurementResult[] sensorData)
         {
-            var jsonData = JsonUtility.ToJson(new Serialization<object>(sensorData));
-            Debug.Log($"FLO: Sending sensor data to WebView: {jsonData}");
-            webViewObject.EvaluateJS($"updateSensorData('{jsonData}')");
+            Debug.Log("Triggered SendSensorDataToWebView");
+
+            var jsonData = "";
+            try {
+				jsonData = JsonConvert.SerializeObject(sensorData);
+                Debug.Log("Serialized JSON: " + jsonData);
+			}
+			catch {
+                jsonData = null;
+                Debug.Log("FAILED 😭");
+			}
+            // var jsonData = JsonUtility.ToJson(new Serialization<object>(sensorData));       // TODO: FIX!!! 
+            // Debug.Log($"FLO: Sending sensor data to WebView: {jsonData}");
+            // webViewObject.EvaluateJS($"updateSensorData('{jsonData}')");
         }
 
         // Handle callback messages from JavaScript
@@ -174,8 +188,10 @@ namespace Dataskop.UI
         {
             if (state == InfoCardState.Fullscreen && isDetailsTab)
             {
+                shouldShow = true;
                 ToggleWebViewVisibility(true);
             } else {
+                shouldShow = false;
                 ToggleWebViewVisibility(false);
             }
         }
@@ -185,10 +201,12 @@ namespace Dataskop.UI
             switch (tab)
             {
                 case Tab.Details:
-                    ToggleWebViewVisibility(true);
+                    ToggleWebViewVisibility(shouldShow);
+                    isDetailsTab = true;
                     break;
                 case Tab.Map:
                     ToggleWebViewVisibility(false);
+                    isDetailsTab = false;
                     break;
             }
         }
