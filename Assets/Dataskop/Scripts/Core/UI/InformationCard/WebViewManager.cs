@@ -180,16 +180,19 @@ namespace Dataskop.UI
             }
         }
 
-        public void onDetailsTabPressed()
+        public void onInfoTabChanged(Tab tab)
         {
-            isDetailsTab = true;
+            switch (tab)
+            {
+                case Tab.Details:
+                    ToggleWebViewVisibility(true);
+                    break;
+                case Tab.Map:
+                    ToggleWebViewVisibility(false);
+                    break;
+            }
         }
-
-        public void onMapTabPressed()
-        {
-            isDetailsTab = false;
-        }
-
+        
         public void onDataPointSelected(DataPoint dataPoint)
         {
             if (dataPoint != null)

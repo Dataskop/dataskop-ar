@@ -1203,28 +1203,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83c7fd8d7b91e81439843cbc7a320bef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detailsTabPressed:
+  InfoCardTabChanged:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 272703957}
         m_TargetAssemblyTypeName: Dataskop.UI.WebViewManager, Dataskop
-        m_MethodName: onDetailsTabPressed
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  mapTabPressed:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 272703957}
-        m_TargetAssemblyTypeName: Dataskop.UI.WebViewManager, Dataskop
-        m_MethodName: onMapTabPressed
-        m_Mode: 1
+        m_MethodName: onInfoTabChanged
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3252,9 +3237,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 272703956}
-        m_TargetAssemblyTypeName: Dataskop.UI.HistoryControllerUI, Dataskop
-        m_MethodName: OnDataPointSelectionChanged
+      - m_Target: {fileID: 272703957}
+        m_TargetAssemblyTypeName: Dataskop.UI.WebViewManager, Dataskop
+        m_MethodName: onDataPointSelected
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -14,11 +14,7 @@ namespace Dataskop.UI {
 	{
 
 		[Header("Events")] public UnityEvent<Tab> InfoCardTabChanged;
-
-		[Header("Events")]
-		public UnityEvent detailsTabPressed;
-		public UnityEvent mapTabPressed;
-
+		
 		[Header("References")]
 		[SerializeField] private UIDocument informationCardUIDoc;
 		[SerializeField] private InfoCardStateManager infoCardStateManager;
