@@ -5,15 +5,11 @@ using Dataskop.Entities;
 using Dataskop.Interaction;
 using Dataskop.Utils;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UIElements;
 
 namespace Dataskop.UI {
 
-	public class InfoCardManager : MonoBehaviour
-	{
-
-		[Header("Events")] public UnityEvent<Tab> InfoCardTabChanged;
+	public class InfoCardManager : MonoBehaviour {
 
 		[Header("References")]
 		[SerializeField] private UIDocument informationCardUIDoc;
@@ -169,15 +165,12 @@ namespace Dataskop.UI {
 			MapContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 			DetailsContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
 			HighlightTab(DetailsTab);
-			InfoCardTabChanged?.Invoke(Tab.Details);
 		}
 
-		
 		private void OnMapTabPressed() {
 			DetailsContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.None);
 			MapContainer.style.display = new StyleEnum<DisplayStyle>(DisplayStyle.Flex);
 			HighlightTab(MapTab);
-			InfoCardTabChanged?.Invoke(Tab.Map);
 		}
 
 		private void HighlightTab(VisualElement pressedTab) {
@@ -203,12 +196,6 @@ namespace Dataskop.UI {
 
 		}
 
-	}
-
-	public enum Tab
-	{
-		Map,
-		Details
 	}
 
 }
