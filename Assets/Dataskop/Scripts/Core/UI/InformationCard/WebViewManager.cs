@@ -1,6 +1,8 @@
+using System;
 using UnityEngine;
 using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 using Dataskop.Entities;
 using Newtonsoft.Json;
 using Dataskop.Data;
@@ -76,7 +78,7 @@ namespace Dataskop.UI
             yield return new WaitForSeconds(0.5f);
         }
 
-        public void SendSensorDataToWebView(MeasurementResult[] sensorData)
+        public void SendSensorDataToWebView(DataObject[] sensorData)
         {
             Debug.Log("Triggered SendSensorDataToWebView");
 
@@ -215,8 +217,24 @@ namespace Dataskop.UI
         {
             if (dataPoint != null)
             {
-                SendSensorDataToWebView(dataPoint.CurrentMeasurementRange.ToArray());
+                List<DataObject> dataObjects = new List<DataObject>();
+                foreach (MeasurementResult mr in dataPoint.CurrentMeasurementRange)
+                {
+                    dataObjects.Add(new DataObject()
+                    {
+                        value = mr.ReadAsFloat(),
+                        time = mr.Timestamp
+                    });
+                }
+                SendSensorDataToWebView(dataObjects.ToArray());
             }
         }
+    }
+
+    [Serializable]
+    public class DataObject
+    {
+        public float value;
+        public DateTime time;
     }
 }
