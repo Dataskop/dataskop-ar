@@ -188,10 +188,13 @@ namespace Dataskop.UI
 
         public void onInformationCardStateChanged(InfoCardState state)
         {
-            if (state == InfoCardState.Fullscreen && isDetailsTab)
+            if (state == InfoCardState.Fullscreen)
             {
                 shouldShow = true;
-                ToggleWebViewVisibility(true);
+
+                if (isDetailsTab) {
+                    ToggleWebViewVisibility(true);
+                }
             } else {
                 shouldShow = false;
                 ToggleWebViewVisibility(false);
@@ -223,7 +226,8 @@ namespace Dataskop.UI
                     dataObjects.Add(new DataObject()
                     {
                         value = mr.ReadAsFloat(),
-                        time = mr.Timestamp
+                        time = mr.Timestamp,
+                        attributeId = mr.MeasurementDefinition.AttributeId
                     });
                 }
                 SendSensorDataToWebView(dataObjects.ToArray());
@@ -236,5 +240,6 @@ namespace Dataskop.UI
     {
         public float value;
         public DateTime time;
+        public string attributeId;
     }
 }
