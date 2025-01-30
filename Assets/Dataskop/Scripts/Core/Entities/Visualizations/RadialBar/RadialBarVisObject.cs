@@ -95,9 +95,15 @@ namespace Dataskop.Entities.Visualizations {
 				float min = Mathf.Abs(data[i].Attribute.Minimum);
 				float max = Mathf.Abs(data[i].Attribute.Maximum);
 				float mappedMax = min > max ? min : max;
+				float mappedMin = 0;
 
-				int angle = GetMappedAngle(Mathf.Abs(data[i].Result.ReadAsFloat()), 0, mappedMax);
-				Debug.Log($"{data[i].Attribute.ID}: {angle}");
+				if (data[i].Attribute.Minimum >= 0 && data[i].Attribute.Maximum >= 0 ||
+				    data[i].Attribute.Minimum <= 0 && data[i].Attribute.Maximum <= 0) {
+					mappedMax = Mathf.Abs(data[i].Attribute.Maximum);
+					mappedMin = Mathf.Abs(data[i].Attribute.Minimum);
+				}
+
+				int angle = GetMappedAngle(Mathf.Abs(data[i].Result.ReadAsFloat()), mappedMin, mappedMax);
 				RadialSegments[i].SetAngle(360 - angle, data[i].Result.ReadAsFloat() < 0);
 
 			}
