@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   positiveDisplay: {fileID: 9133313790539627427}
   negativeDisplay: {fileID: 8883678561144914107}
+  unfocusedOpacity: 0.5
 --- !u!1 &1961028316379454268
 GameObject:
   m_ObjectHideFlags: 0

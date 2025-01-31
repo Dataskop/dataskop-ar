@@ -9,9 +9,11 @@ namespace Dataskop.Entities.Visualizations {
 
 		private static readonly int Arc1 = Shader.PropertyToID("_Arc1");
 		private static readonly int Arc2 = Shader.PropertyToID("_Arc2");
+		private static readonly int Tint = Shader.PropertyToID("_Color");
 
 		[SerializeField] private SpriteRenderer positiveDisplay;
 		[SerializeField] private SpriteRenderer negativeDisplay;
+		[SerializeField] private float unfocusedOpacity;
 
 		public void SetColor(Color color) {
 
@@ -36,6 +38,26 @@ namespace Dataskop.Entities.Visualizations {
 		public void SetSortingOrder(int index) {
 			positiveDisplay.sortingOrder = index;
 			negativeDisplay.sortingOrder = index;
+		}
+
+		public void Focus() {
+			positiveDisplay.material.SetColor(
+				Tint, new Color(positiveDisplay.color.r, positiveDisplay.color.g, positiveDisplay.color.b, 1)
+			);
+
+			negativeDisplay.material.SetColor(
+				Tint, new Color(positiveDisplay.color.r, positiveDisplay.color.g, positiveDisplay.color.b, 1)
+			);
+		}
+
+		public void Unfocus() {
+			positiveDisplay.material.SetColor(
+				Tint, new Color(positiveDisplay.color.r, positiveDisplay.color.g, positiveDisplay.color.b, unfocusedOpacity)
+			);
+
+			negativeDisplay.material.SetColor(
+				Tint, new Color(positiveDisplay.color.r, positiveDisplay.color.g, positiveDisplay.color.b, unfocusedOpacity)
+			);
 		}
 
 	}

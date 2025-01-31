@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Dataskop.Utils;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private GameObject liveIndicator;
 
 		private bool isSelected;
+		private int currentDataIndex = 0;
 
 		public int Index { get; set; }
 
@@ -106,6 +108,13 @@ namespace Dataskop.Entities.Visualizations {
 				int angle = GetMappedAngle(Mathf.Abs(data[i].Result.ReadAsFloat()), mappedMin, mappedMax);
 				RadialSegments[i].SetAngle(360 - angle, data[i].Result.ReadAsFloat() < 0);
 
+				if (i == currentDataIndex) {
+					RadialSegments[i].Focus();
+				}
+				else {
+					RadialSegments[i].Unfocus();
+				}
+
 			}
 
 		}
@@ -121,6 +130,38 @@ namespace Dataskop.Entities.Visualizations {
 		public void SetLatestState(bool state) { }
 
 		public void SetNewState(bool state) { }
+
+		public void OnSwipe(Vector2 direction) {
+
+			if (direction.y > 0) {
+
+				if (currentDataIndex == 0) {
+					return;
+				}
+
+				currentDataIndex--;
+
+			}
+			else {
+
+				if (currentDataIndex == RadialSegments.Length - 1) {
+					return;
+				}
+
+				currentDataIndex++;
+
+			}
+
+			foreach (RadialBarAttributeSegment rs in RadialSegments) {
+				if (Array.IndexOf(RadialSegments, rs) == currentDataIndex) {
+					rs.Focus();
+				}
+				else {
+					rs.Unfocus();
+				}
+			}
+
+		}
 
 		private int GetMappedAngle(float value, float min, float max) {
 			return (int)MathExtensions.Map(value, min, max, 0, 180);
