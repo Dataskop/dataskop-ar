@@ -31,7 +31,7 @@ namespace Dataskop.Entities.Visualizations {
 		private RadialBarAttributeSegment[] RadialSegments { get; set; }
 
 		public event Action<int> HasHovered;
-
+		
 		public event Action<int> HasSelected;
 
 		public event Action<int> HasDeselected;
@@ -133,7 +133,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void OnSwipe(Vector2 direction) {
 
-			if (direction.y > 0) {
+			if (direction.x > 0) {
 
 				if (currentDataIndex == 0) {
 					return;
