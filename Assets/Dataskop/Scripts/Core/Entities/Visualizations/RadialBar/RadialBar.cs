@@ -138,14 +138,14 @@ namespace Dataskop.Entities.Visualizations {
 
 			RadialBarVisObject focusedObject = (RadialBarVisObject)FocusedVisObject;
 
-			switch (pointerInteraction.Direction.y) {
+			switch (pointerInteraction.Direction.x) {
 				case > 0.20f:
-					focusedDataDisplay.OnSwipe(Vector2.up);
-					focusedObject.OnSwipe(Vector2.up);
+					focusedDataDisplay.OnSwipe(Vector2.right);
+					focusedObject.OnSwipe(Vector2.right);
 					break;
 				case < -0.20f:
-					focusedDataDisplay.OnSwipe(Vector2.down);
-					focusedObject.OnSwipe(Vector2.down);
+					focusedDataDisplay.OnSwipe(Vector2.left);
+					focusedObject.OnSwipe(Vector2.left);
 					break;
 			}
 
