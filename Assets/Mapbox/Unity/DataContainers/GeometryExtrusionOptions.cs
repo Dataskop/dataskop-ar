@@ -1,22 +1,16 @@
 ﻿using Mapbox.Unity.SourceLayers;
 
-namespace Mapbox.Unity.Map
-{
+namespace Mapbox.Unity.Map {
+
 	using System;
-	using Mapbox.Unity.MeshGeneration.Modifiers;
-	using Mapbox.Unity.MeshGeneration.Data;
+	using MeshGeneration.Modifiers;
+	using MeshGeneration.Data;
 	using UnityEngine;
 
 	[Serializable]
-	public class GeometryExtrusionOptions : ModifierProperties, ISubLayerExtrusionOptions
-	{
-		public override Type ModifierType
-		{
-			get
-			{
-				return typeof(HeightModifier);
-			}
-		}
+	public class GeometryExtrusionOptions : ModifierProperties, ISubLayerExtrusionOptions {
+
+		public override Type ModifierType => typeof(HeightModifier);
 
 		[SerializeField]
 		private string _selectedLayerName;
@@ -30,19 +24,15 @@ namespace Mapbox.Unity.Map
 		[Tooltip("Scale factor to multiply the extrusion value of the feature.")]
 		public float extrusionScaleFactor = 1f;
 
-		public GeometryExtrusionWithAtlasOptions ToGeometryExtrusionWithAtlasOptions()
-		{
+		public GeometryExtrusionWithAtlasOptions ToGeometryExtrusionWithAtlasOptions() {
 			return new GeometryExtrusionWithAtlasOptions(this);
 		}
-
 
 		/// <summary>
 		/// Disable mesh extrusion for the features in this layer.
 		/// </summary>
-		public virtual void DisableExtrusion()
-		{
-			if (extrusionType != ExtrusionType.None)
-			{
+		public virtual void DisableExtrusion() {
+			if (extrusionType != ExtrusionType.None) {
 				extrusionType = ExtrusionType.None;
 				HasChanged = true;
 			}
@@ -54,10 +44,8 @@ namespace Mapbox.Unity.Map
 		/// of possible side effects.
 		/// </summary>
 		/// <param name="absoluteHeight">Fixed height value for all features in the layer.</param>
-		public virtual void SetAbsoluteHeight(float absoluteHeight)
-		{
-			if (maximumHeight != absoluteHeight)
-			{
+		public virtual void SetAbsoluteHeight(float absoluteHeight) {
+			if (maximumHeight != absoluteHeight) {
 				maximumHeight = absoluteHeight;
 				HasChanged = true;
 			}
@@ -70,11 +58,9 @@ namespace Mapbox.Unity.Map
 		/// </summary>
 		/// <param name="minHeight">Lower bound to be used for extrusion</param>
 		/// <param name="maxHeight">Top bound to be used for extrusion</param>
-		public virtual void SetHeightRange(float minHeight, float maxHeight)
-		{
+		public virtual void SetHeightRange(float minHeight, float maxHeight) {
 			if (minimumHeight != minHeight ||
-				maximumHeight != maxHeight)
-			{
+			    maximumHeight != maxHeight) {
 				minimumHeight = minHeight;
 				maximumHeight = maxHeight;
 				HasChanged = true;
@@ -85,10 +71,8 @@ namespace Mapbox.Unity.Map
 		/// Sets the extrusion multiplier which will be used only in the Y axis (height).
 		/// </summary>
 		/// <param name="multiplier">Multiplier value.</param>
-		public virtual void SetExtrusionMultiplier(float multiplier)
-		{
-			if (extrusionScaleFactor != multiplier)
-			{
+		public virtual void SetExtrusionMultiplier(float multiplier) {
+			if (extrusionScaleFactor != multiplier) {
 				extrusionScaleFactor = multiplier;
 				HasChanged = true;
 			}
@@ -101,13 +85,12 @@ namespace Mapbox.Unity.Map
 		/// <param name="geometryType">Option to create top and side polygons after extrusion.</param>
 		/// <param name="height">Extrusion value</param>
 		/// <param name="scaleFactor">Height multiplier</param>
-		public virtual void EnableAbsoluteExtrusion(ExtrusionGeometryType geometryType, float height, float scaleFactor = 1)
-		{
+		public virtual void EnableAbsoluteExtrusion(ExtrusionGeometryType geometryType, float height,
+			float scaleFactor = 1) {
 			if (extrusionType != ExtrusionType.AbsoluteHeight ||
-				extrusionGeometryType != geometryType ||
-				!Mathf.Approximately(maximumHeight, height) ||
-				!Mathf.Approximately(extrusionScaleFactor, scaleFactor))
-			{
+			    extrusionGeometryType != geometryType ||
+			    !Mathf.Approximately(maximumHeight, height) ||
+			    !Mathf.Approximately(extrusionScaleFactor, scaleFactor)) {
 				extrusionType = ExtrusionType.AbsoluteHeight;
 				extrusionGeometryType = geometryType;
 				maximumHeight = height;
@@ -123,13 +106,12 @@ namespace Mapbox.Unity.Map
 		/// <param name="geometryType">Option to create top and side polygons after extrusion.</param>
 		/// <param name="propertyAttribute">Name of the property to use for extrusion</param>
 		/// <param name="scaleFactor">Height multiplier</param>
-		public virtual void EnablePropertyExtrusion(ExtrusionGeometryType geometryType, string propertyAttribute = "height", float scaleFactor = 1)
-		{
+		public virtual void EnablePropertyExtrusion(ExtrusionGeometryType geometryType,
+			string propertyAttribute = "height", float scaleFactor = 1) {
 			if (extrusionType != ExtrusionType.PropertyHeight ||
-				extrusionGeometryType != geometryType ||
-				propertyName != propertyAttribute ||
-				!Mathf.Approximately(extrusionScaleFactor, scaleFactor))
-			{
+			    extrusionGeometryType != geometryType ||
+			    propertyName != propertyAttribute ||
+			    !Mathf.Approximately(extrusionScaleFactor, scaleFactor)) {
 				extrusionType = ExtrusionType.PropertyHeight;
 				extrusionGeometryType = geometryType;
 				propertyName = propertyAttribute;
@@ -146,13 +128,12 @@ namespace Mapbox.Unity.Map
 		/// <param name="extrusionGeometryType">Option to create top and side polygons after extrusion.</param>
 		/// <param name="propertyName">Name of the property to use for extrusion</param>
 		/// <param name="extrusionScaleFactor">Height multiplier</param>
-		public virtual void EnableMinExtrusion(ExtrusionGeometryType extrusionGeometryType, string propertyName = "height", float extrusionScaleFactor = 1)
-		{
+		public virtual void EnableMinExtrusion(ExtrusionGeometryType extrusionGeometryType,
+			string propertyName = "height", float extrusionScaleFactor = 1) {
 			if (extrusionType != ExtrusionType.MinHeight ||
-				this.extrusionGeometryType != extrusionGeometryType ||
-				this.propertyName != propertyName ||
-				!Mathf.Approximately(this.extrusionScaleFactor, extrusionScaleFactor))
-			{
+			    this.extrusionGeometryType != extrusionGeometryType ||
+			    this.propertyName != propertyName ||
+			    !Mathf.Approximately(this.extrusionScaleFactor, extrusionScaleFactor)) {
 				extrusionType = ExtrusionType.MinHeight;
 				this.extrusionGeometryType = extrusionGeometryType;
 				this.propertyName = propertyName;
@@ -169,14 +150,13 @@ namespace Mapbox.Unity.Map
 		/// <param name="extrusionGeometryType">Option to create top and side polygons after extrusion.</param>
 		/// <param name="propertyName">Name of the property to use for extrusion</param>
 		/// <param name="extrusionScaleFactor">Height multiplier</param>
-		void ISubLayerExtrusionOptions.EnableMaxExtrusion(ExtrusionGeometryType extrusionGeometryType, string propertyName, float extrusionScaleFactor)
-		{
+		void ISubLayerExtrusionOptions.EnableMaxExtrusion(ExtrusionGeometryType extrusionGeometryType,
+			string propertyName, float extrusionScaleFactor) {
 			if (extrusionType != ExtrusionType.MaxHeight ||
-				this.extrusionGeometryType != extrusionGeometryType ||
-				this.propertyName != propertyName ||
-				!Mathf.Approximately(this.extrusionScaleFactor, extrusionScaleFactor))
-			{
-				this.extrusionType = ExtrusionType.MaxHeight;
+			    this.extrusionGeometryType != extrusionGeometryType ||
+			    this.propertyName != propertyName ||
+			    !Mathf.Approximately(this.extrusionScaleFactor, extrusionScaleFactor)) {
+				extrusionType = ExtrusionType.MaxHeight;
 				this.extrusionGeometryType = extrusionGeometryType;
 				this.propertyName = propertyName;
 				this.extrusionScaleFactor = extrusionScaleFactor;
@@ -194,14 +174,13 @@ namespace Mapbox.Unity.Map
 		/// <param name="minHeight">Lower bound to be used for extrusion</param>
 		/// <param name="maxHeight">Top bound to be used for extrusion</param>
 		/// <param name="extrusionScaleFactor">Height multiplier</param>
-		public virtual void EnableRangeExtrusion(ExtrusionGeometryType extrusionGeometryType, float minHeight, float maxHeight, float extrusionScaleFactor = 1)
-		{
+		public virtual void EnableRangeExtrusion(ExtrusionGeometryType extrusionGeometryType, float minHeight,
+			float maxHeight, float extrusionScaleFactor = 1) {
 			if (extrusionType != ExtrusionType.RangeHeight ||
-				this.extrusionGeometryType != extrusionGeometryType ||
-				!Mathf.Approximately(minimumHeight, minHeight) ||
-				!Mathf.Approximately(maximumHeight, maxHeight) ||
-				!Mathf.Approximately(this.extrusionScaleFactor, extrusionScaleFactor))
-			{
+			    this.extrusionGeometryType != extrusionGeometryType ||
+			    !Mathf.Approximately(minimumHeight, minHeight) ||
+			    !Mathf.Approximately(maximumHeight, maxHeight) ||
+			    !Mathf.Approximately(this.extrusionScaleFactor, extrusionScaleFactor)) {
 				extrusionType = ExtrusionType.RangeHeight;
 				this.extrusionGeometryType = extrusionGeometryType;
 				minimumHeight = minHeight;
@@ -210,18 +189,14 @@ namespace Mapbox.Unity.Map
 				HasChanged = true;
 			}
 		}
+
 	}
 
 	[Serializable]
-	public class GeometryExtrusionWithAtlasOptions : ModifierProperties
-	{
-		public override Type ModifierType
-		{
-			get
-			{
-				return typeof(TextureSideWallModifier);
-			}
-		}
+	public class GeometryExtrusionWithAtlasOptions : ModifierProperties {
+
+		public override Type ModifierType => typeof(TextureSideWallModifier);
+
 		public UvMapType texturingType = UvMapType.Tiled;
 		public AtlasInfo atlasInfo;
 		public ExtrusionType extrusionType = ExtrusionType.None;
@@ -232,12 +207,10 @@ namespace Mapbox.Unity.Map
 		public float maximumHeight = 0f;
 		public float extrusionScaleFactor = 1f;
 
-		public GeometryExtrusionWithAtlasOptions()
-		{
+		public GeometryExtrusionWithAtlasOptions() { }
 
-		}
-		public GeometryExtrusionWithAtlasOptions(GeometryExtrusionOptions extrusionOptions, UVModifierOptions uvOptions)
-		{
+		public GeometryExtrusionWithAtlasOptions(GeometryExtrusionOptions extrusionOptions,
+			UVModifierOptions uvOptions) {
 			extrusionType = extrusionOptions.extrusionType;
 			extrusionGeometryType = extrusionOptions.extrusionGeometryType;
 			propertyName = extrusionOptions.propertyName;
@@ -249,8 +222,7 @@ namespace Mapbox.Unity.Map
 			atlasInfo = uvOptions.atlasInfo;
 		}
 
-		public GeometryExtrusionWithAtlasOptions(GeometryExtrusionOptions extrusionOptions)
-		{
+		public GeometryExtrusionWithAtlasOptions(GeometryExtrusionOptions extrusionOptions) {
 			extrusionType = extrusionOptions.extrusionType;
 			extrusionGeometryType = extrusionOptions.extrusionGeometryType;
 			propertyName = extrusionOptions.propertyName;
@@ -259,10 +231,11 @@ namespace Mapbox.Unity.Map
 			extrusionScaleFactor = extrusionOptions.extrusionScaleFactor;
 		}
 
-		public GeometryExtrusionWithAtlasOptions(UVModifierOptions uvOptions)
-		{
+		public GeometryExtrusionWithAtlasOptions(UVModifierOptions uvOptions) {
 			texturingType = uvOptions.texturingType;
 			atlasInfo = uvOptions.atlasInfo;
 		}
+
 	}
+
 }

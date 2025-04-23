@@ -1,18 +1,14 @@
-﻿
+﻿using Mapbox.Unity;
 
-using Mapbox.Unity;
+namespace Mapbox.Tokens {
 
-namespace Mapbox.Tokens
-{
-
-
-	using Mapbox.Platform;
+	using Platform;
 	using System;
 	using System.ComponentModel;
-	using Mapbox.VectorTile.Geometry;
+	using VectorTile.Geometry;
 
-	public enum MapboxTokenStatus
-	{
+	public enum MapboxTokenStatus {
+
 		/// <summary>The token is valid and active </summary>
 		[Description("The token is valid and active")]
 		TokenValid,
@@ -30,17 +26,15 @@ namespace Mapbox.Tokens
 		TokenRevoked,
 		/// <summary>inital value </summary>
 		StatusNotYetSet
-	}
 
+	}
 
 	/// <summary>
 	/// Wrapper class to retrieve details about a token
 	/// </summary>
-	public class MapboxTokenApi
-	{
+	public class MapboxTokenApi {
 
 		public MapboxTokenApi() { }
-
 
 		// use internal FileSource without(!) passing access token from config into constructor
 		// otherwise access token would be appended to url twice
@@ -49,11 +43,8 @@ namespace Mapbox.Tokens
 		// we will need another FileSource with the token from the config
 		private FileSource _fs;
 
-
-		public void Retrieve(Func<string> skuToken, string accessToken, Action<MapboxToken> callback)
-		{
-			if (_fs == null)
-			{
+		public void Retrieve(Func<string> skuToken, string accessToken, Action<MapboxToken> callback) {
+			if (_fs == null) {
 				_fs = new FileSource(skuToken);
 			}
 
@@ -61,20 +52,23 @@ namespace Mapbox.Tokens
 				Utils.Constants.BaseAPI + "tokens/v2?access_token=" + accessToken,
 				(Response response) =>
 				{
-					if (response.HasError)
-					{
-						callback(new MapboxToken()
-						{
-							HasError = true,
-							ErrorMessage = response.ExceptionsAsString
-						});
+					if (response.HasError) {
+						callback(
+							new MapboxToken() {
+								HasError = true,
+								ErrorMessage = response.ExceptionsAsString
+							}
+						);
+
 						return;
 
 					}
+
 					callback(MapboxToken.FromResponseData(response.Data));
 				}
 			);
 		}
 
 	}
+
 }

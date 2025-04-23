@@ -1,28 +1,10 @@
-using DataskopAR.Entities.Visualizations;
+using Dataskop.Entities.Visualizations;
 using NUnit.Framework;
 
-namespace DataskopAR.EditMode.Tests {
+namespace Dataskop.EditMode.Tests {
 
 	[TestFixture] [Category("Dataskop")]
 	public class BubbleUtilsTests {
-
-		[Test]
-		public void Radius_Is_At_Minimum_When_Value_Is_Less_Than_Lower_Input_Limit() {
-
-			// Arrange
-			float inputValue = 0;
-			float minValue = 1;
-			float maxValue = 2;
-			float minSize = 5;
-			float maxSize = 10;
-
-			// Act
-			float radius = BubbleUtils.CalculateRadius(inputValue, minValue, maxValue, minSize, maxSize);
-
-			// Assert
-			Assert.That(radius, Is.EqualTo(minSize));
-
-		}
 
 		[Test]
 		public void Radius_Is_At_Maximum_When_Value_Is_More_Than_Upper_Input_Limit() {
@@ -39,6 +21,24 @@ namespace DataskopAR.EditMode.Tests {
 
 			// Assert
 			Assert.That(radius, Is.EqualTo(maxSize));
+
+		}
+
+		[Test]
+		public void Radius_Is_At_Minimum_When_Value_Is_Less_Than_Lower_Input_Limit() {
+
+			// Arrange
+			float inputValue = 0;
+			float minValue = 1;
+			float maxValue = 2;
+			float minSize = 5;
+			float maxSize = 10;
+
+			// Act
+			float radius = BubbleUtils.CalculateRadius(inputValue, minValue, maxValue, minSize, maxSize);
+
+			// Assert
+			Assert.That(radius, Is.EqualTo(minSize));
 
 		}
 

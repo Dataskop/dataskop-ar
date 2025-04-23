@@ -1,22 +1,6 @@
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	public class MeasurementDefinitionInformation {
-
-#region Constructor
-
-		public MeasurementDefinitionInformation(string name, string uiShortName, string description, string info,
-			string createdDate, string updatedDate) {
-			Name = name;
-			UiShortName = uiShortName;
-			Description = description;
-			Info = info;
-			CreatedDate = createdDate;
-			UpdatedDate = updatedDate;
-		}
-
-#endregion
-
-#region Properties
 
 		public string Name { get; set; }
 
@@ -30,7 +14,15 @@ namespace DataskopAR.Data {
 
 		public string UpdatedDate { get; set; }
 
-#endregion
+		public MeasurementDefinitionInformation(string name, string uiShortName, string description, string info,
+			string createdDate, string updatedDate) {
+			Name = name;
+			UiShortName = uiShortName;
+			Description = description;
+			Info = info;
+			CreatedDate = createdDate;
+			UpdatedDate = updatedDate;
+		}
 
 	}
 

@@ -1,19 +1,13 @@
-using DataskopAR.Data;
+using Dataskop.Data;
 using UnityEngine.UIElements;
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public class InfoCardLocatorUI : InfoCardComponent {
-
-#region Properties
 
 		protected override VisualElement ComponentRoot { get; set; }
 
 		private VisualElement InfoCard { get; set; }
-
-#endregion
-
-#region Methods
 
 		public override void Init(VisualElement infoCard) {
 			InfoCard = infoCard;
@@ -35,8 +29,6 @@ namespace DataskopAR.UI {
 			area.text = locationArea.AreaName;
 
 		}
-
-#endregion
 
 	}
 

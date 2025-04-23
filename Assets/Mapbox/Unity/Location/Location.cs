@@ -1,14 +1,14 @@
-﻿namespace Mapbox.Unity.Location
-{
-	using Mapbox.Utils;
-    using System.Diagnostics;
+﻿namespace Mapbox.Unity.Location {
 
-    /// <summary>
-    /// Location contains heading, latitude, longitude, accuracy and a timestamp.
-    /// </summary>
-    [DebuggerDisplay("{LatitudeLongitude,nq} {Accuracy}m hdg:{UserHeading} orientation:{DeviceOrientation}")]
-	public struct Location
-	{
+	using Utils;
+	using System.Diagnostics;
+
+	/// <summary>
+	/// Location contains heading, latitude, longitude, accuracy and a timestamp.
+	/// </summary>
+	[DebuggerDisplay("{LatitudeLongitude,nq} {Accuracy}m hdg:{UserHeading} orientation:{DeviceOrientation}")]
+	public struct Location {
+
 		/// <summary>
 		/// The location, as descibed by a <see cref="T:Mapbox.Utils.Vector2d"/>. 
 		/// Location.x represents Latitude.
@@ -89,15 +89,18 @@
 		{
 			get
 			{
-				if (!SpeedMetersPerSecond.HasValue) { return null; }
+				if (!SpeedMetersPerSecond.HasValue) {
+					return null;
+				}
+
 				return SpeedMetersPerSecond * 3.6f;
 			}
 		}
+
 		/// <summary>
 		/// Name of the location provider. GPS or network or 'Null' if not supported by the active location provider.
 		/// </summary>
 		public string Provider;
-
 
 		/// <summary>
 		/// Name of the location provider script class in Unity
@@ -108,5 +111,7 @@
 		/// Has the heading changed since last update?
 		/// </summary>
 		public bool IsUserHeadingUpdated;
+
 	}
+
 }

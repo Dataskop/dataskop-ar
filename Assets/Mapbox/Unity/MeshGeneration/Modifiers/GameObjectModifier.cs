@@ -1,7 +1,7 @@
-namespace Mapbox.Unity.MeshGeneration.Modifiers
-{
-	using Mapbox.Unity.MeshGeneration.Data;
-	using Mapbox.Unity.MeshGeneration.Components;
+namespace Mapbox.Unity.MeshGeneration.Modifiers {
+
+	using Data;
+	using Components;
 	using System;
 
 	/// <summary>
@@ -17,26 +17,16 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 	/// Game object modifiers is the suggested way of customizing generated game object and we expect developers to
 	/// fully utilize this by creating their own custom game object modifiers.
 	/// </summary>
-	public class GameObjectModifier : ModifierBase
-	{
-		public virtual void Run(VectorEntity ve, UnityTile tile)
-		{
+	public class GameObjectModifier : ModifierBase {
 
-		}
+		public virtual void Run(VectorEntity ve, UnityTile tile) { }
 
-		public virtual void OnPoolItem(VectorEntity vectorEntity)
-		{
+		public virtual void OnPoolItem(VectorEntity vectorEntity) { }
 
-		}
+		public virtual void Clear() { }
 
-		public virtual void Clear()
-		{
+		public virtual void ClearCaches() { }
 
-		}
-
-		public virtual void ClearCaches()
-		{
-
-		}
 	}
+
 }

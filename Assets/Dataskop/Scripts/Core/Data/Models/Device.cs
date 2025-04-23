@@ -1,11 +1,23 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	public class Device {
 
-#region Constructors
+		public string ID { get; set; }
+
+		public string Label { get; set; }
+
+		public ICollection<MeasurementDefinition> MeasurementDefinitions { get; set; }
+
+		public DataAttribute[] Attributes { get; set; }
+
+		/// <summary>
+		/// Gets the position of a device on the earth.
+		/// </summary>
+		public Position Position => GetPosition();
 
 		public Device(string id, string label, ICollection<MeasurementDefinition> measurementDefinitions) {
 
@@ -15,25 +27,6 @@ namespace DataskopAR.Data {
 
 		}
 
-#endregion
-
-#region Properties
-
-		public string ID { get; set; }
-
-		public string Label { get; set; }
-
-		public ICollection<MeasurementDefinition> MeasurementDefinitions { get; set; }
-
-		/// <summary>
-		///     Gets the position of a device on the earth.
-		/// </summary>
-		public Position Position => GetPosition();
-
-#endregion
-
-#region Methods
-
 		public MeasurementDefinition GetMeasurementDefinitionByID(int id) {
 			return MeasurementDefinitions.First(item => item.ID == id);
 		}
@@ -42,36 +35,42 @@ namespace DataskopAR.Data {
 			return MeasurementDefinitions.First(item => item.AttributeId == attributeId);
 		}
 
+		public Dictionary<MeasurementDefinition, DateTime> GetLatestResultTimes() {
+			return MeasurementDefinitions.ToDictionary(md => md, md => md.LatestMeasurementResult.Timestamp);
+		}
+
 		private Position GetPosition() {
 
 			if (MeasurementDefinitions.Count == 0) {
 
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Warning,
-					Text = $"Device {ID} has no reported location!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Warning,
+						Text = $"Device {ID} has no reported location!",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 
 				return null;
 			}
 
-			MeasurementResult result = MeasurementDefinitions?.First().GetLatestMeasurementResult();
+			MeasurementResult result = MeasurementDefinitions?.First().LatestMeasurementResult;
 
 			if (result != null) {
-				return MeasurementDefinitions?.First().GetLatestMeasurementResult().Position;
+				return MeasurementDefinitions?.First().LatestMeasurementResult.Position;
 			}
 
-			NotificationHandler.Add(new Notification {
-				Category = NotificationCategory.Warning,
-				Text = $"Device {ID} has no reported location!",
-				DisplayDuration = NotificationDuration.Medium
-			});
+			NotificationHandler.Add(
+				new Notification {
+					Category = NotificationCategory.Warning,
+					Text = $"Device {ID} has no reported location!",
+					DisplayDuration = NotificationDuration.Medium
+				}
+			);
 
 			return null;
 
 		}
-
-#endregion
 
 	}
 

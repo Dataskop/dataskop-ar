@@ -2,33 +2,25 @@ using Mapbox.Utils;
 using TMPro;
 using UnityEngine;
 
-namespace DataskopAR {
+namespace Dataskop {
 
 	/// <summary>
-	///     Used for printing out simple debugging messages and values in a log window on the screen.
+	/// Used for printing out simple debugging messages and values in a log window on the screen.
 	/// </summary>
 	public class LogBook : MonoBehaviour {
 
-#region Fields
-
 		[SerializeField] private TMP_Text debugMesh;
-
-#endregion
-
-#region Properties
 
 		public static LogBook Instance { get; private set; }
 
-#endregion
-
-#region Methods
-
 		private void Awake() {
 
-			if (Instance != null && Instance != this)
+			if (Instance != null && Instance != this) {
 				Destroy(this);
-			else
+			}
+			else {
 				Instance = this;
+			}
 
 		}
 
@@ -63,8 +55,6 @@ namespace DataskopAR {
 		public void Clear() {
 			debugMesh.SetText("");
 		}
-
-#endregion
 
 	}
 

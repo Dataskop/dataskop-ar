@@ -1,13 +1,11 @@
 ﻿#nullable enable
 
-using DataskopAR.UI;
+using Dataskop.UI;
 using UnityEngine;
 
-namespace DataskopAR.Interaction {
+namespace Dataskop.Interaction {
 
 	public struct PointerInteraction {
-
-#region Fields
 
 		public int pointerId;
 
@@ -35,10 +33,6 @@ namespace DataskopAR.Interaction {
 
 		public float endTime;
 
-#endregion
-
-#region Properties
-
 		public float Distance => Mathf.Abs(Vector2.Distance(startPosition, endPosition));
 
 		public Vector2 Direction => (endPosition - startPosition).normalized;
@@ -49,16 +43,10 @@ namespace DataskopAR.Interaction {
 
 		public float DeltaTime => endTime - startTime;
 
-#endregion
-
-#region Methods
-
 		public new string ToString() {
 			return
 				$"StartPoint: {startPosition}\nEndPoint: {endPosition}\nDistance: {Distance}\nStart on: {startingGameObject}\nEnd on: {endingGameObject} \nDirection: {Direction}\nDownPhase: {isDownPhase}\nUpPhase: {isUpPhase}\nSwipe: {isSwipe}\nUI: {isUI}";
 		}
-
-#endregion
 
 	}
 

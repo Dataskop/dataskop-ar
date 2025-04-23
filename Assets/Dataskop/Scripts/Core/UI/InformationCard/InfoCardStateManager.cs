@@ -1,30 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
-using DataskopAR.Data;
-using DataskopAR.Interaction;
+using Dataskop.Entities;
+using Dataskop.Interaction;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public class InfoCardStateManager : MonoBehaviour {
-
-#region Events
 
 		[Header("Events")]
 		public UnityEvent<InfoCardState> infoCardStateChanged;
 
-#endregion
-
-#region Fields
-
 		[SerializeField] private float stickyTime;
 		private Coroutine stickyCoroutine;
-
-#endregion
-
-#region Properties
 
 		private Dictionary<InfoCardState, string> InfoCardStateTransitionClasses { get; set; }
 
@@ -35,10 +25,6 @@ namespace DataskopAR.UI {
 		private InfoCardState PreviousCardState { get; set; }
 
 		private bool IsLocked { get; set; }
-
-#endregion
-
-#region Methods
 
 		public void Init(VisualElement infoCard) {
 
@@ -63,30 +49,36 @@ namespace DataskopAR.UI {
 
 		public void OnSwipe(PointerInteraction pointerInteraction) {
 
-			if (!InfoCard.visible) return;
+			if (!InfoCard.visible) {
+				return;
+			}
 
 			SetPreviousState();
 
-			if (pointerInteraction.Direction.y > 0.20f)
+			if (pointerInteraction.Direction.y > 0.20f) {
 				CurrentCardState = CurrentCardState switch {
 					InfoCardState.Collapsed => InfoCardState.Short,
 					InfoCardState.Short => InfoCardState.Fullscreen,
 					_ => CurrentCardState
 				};
+			}
 
-			if (pointerInteraction.Direction.y < -0.20f)
+			if (pointerInteraction.Direction.y < -0.20f) {
 				CurrentCardState = CurrentCardState switch {
 					InfoCardState.Fullscreen => InfoCardState.Short,
 					InfoCardState.Short => InfoCardState.Collapsed,
 					_ => CurrentCardState
 				};
+			}
 
 			UpdateInformationCardState(CurrentCardState);
 		}
 
 		private void UpdateInformationCardState(InfoCardState infoCardState) {
 
-			if (infoCardState == PreviousCardState) return;
+			if (infoCardState == PreviousCardState) {
+				return;
+			}
 
 			InfoCard.ToggleInClassList(InfoCardStateTransitionClasses[PreviousCardState]);
 			InfoCard.ToggleInClassList(InfoCardStateTransitionClasses[infoCardState]);
@@ -110,8 +102,9 @@ namespace DataskopAR.UI {
 
 		public void OnDataPointSoftSelected(DataPoint softSelectedDataPoint) {
 
-			if (IsLocked)
+			if (IsLocked) {
 				return;
+			}
 
 			if (softSelectedDataPoint != null) {
 
@@ -152,8 +145,6 @@ namespace DataskopAR.UI {
 			HideInfo();
 			stickyCoroutine = null;
 		}
-
-#endregion
 
 	}
 

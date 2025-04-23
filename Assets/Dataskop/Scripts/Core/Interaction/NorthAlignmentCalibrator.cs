@@ -1,35 +1,21 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DataskopAR.Utils;
+using Dataskop.Utils;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
-namespace DataskopAR.Interaction {
+namespace Dataskop.Interaction {
 
 	/// <summary>
-	///     Responsible for aligning the AR Worlds forward axis to North of earth.
+	/// Responsible for aligning the AR Worlds forward axis to North of earth.
 	/// </summary>
 	public class NorthAlignmentCalibrator : MonoBehaviour, ICalibration {
-
-#region Properties
-
-		public bool IsEnabled { get; set; }
-
-#endregion
-
-#region Events
-
-		public event Action CalibrationCompleted;
 
 		[Header("Events")]
 		public UnityEvent<int, int> rotationSampleTaken;
 		public UnityEvent northRotationCompleted;
-
-#endregion
-
-#region Fields
 
 		[Header("References")]
 		[SerializeField] private Transform mapTransform;
@@ -40,9 +26,9 @@ namespace DataskopAR.Interaction {
 
 		private WaitForSeconds timeBetweenSteps;
 
-#endregion
+		public bool IsEnabled { get; set; }
 
-#region Methods
+		public event Action CalibrationCompleted;
 
 		public ICalibration Enable() {
 
@@ -50,6 +36,10 @@ namespace DataskopAR.Interaction {
 			IsEnabled = true;
 			return this;
 
+		}
+
+		public void Disable() {
+			IsEnabled = false;
 		}
 
 		private IEnumerator Rotate() {
@@ -83,12 +73,6 @@ namespace DataskopAR.Interaction {
 			float calcAngle = 360f - (Input.compass.trueHeading + mapToCamAngle);
 			return calcAngle;
 		}
-
-		public void Disable() {
-			IsEnabled = false;
-		}
-
-#endregion
 
 	}
 

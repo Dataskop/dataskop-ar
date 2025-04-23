@@ -3,27 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	public class VisualizationRepository : MonoBehaviour {
-
-#region Fields
 
 		[SerializeField] private GameObject dotVis;
 		[SerializeField] private GameObject bubbleVis;
 		[SerializeField] private GameObject barVis;
-		private readonly Dictionary<VisualizationType, GameObject> visTypeDict = new();
+		[SerializeField] private GameObject radialBarVis;
 		private readonly List<string> availableVisTypes = new();
-
-#endregion
-
-#region Methods
+		private readonly Dictionary<VisualizationType, GameObject> visTypeDict = new();
 
 		private void Start() {
 
 			visTypeDict.Add(VisualizationType.Dot, dotVis);
 			visTypeDict.Add(VisualizationType.Bubble, bubbleVis);
 			visTypeDict.Add(VisualizationType.Bar, barVis);
+			visTypeDict.Add(VisualizationType.RadialBar, radialBarVis);
 
 			foreach (VisualizationType visType in visTypeDict.Keys.ToList()) {
 				availableVisTypes.Add(visType.ToString());
@@ -47,8 +43,6 @@ namespace DataskopAR.Data {
 			Enum.TryParse(visName, out VisualizationType visType);
 			return GetVisualization(visType);
 		}
-
-#endregion
 
 	}
 

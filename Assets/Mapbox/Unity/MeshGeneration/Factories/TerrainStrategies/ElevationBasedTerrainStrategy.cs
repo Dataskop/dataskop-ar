@@ -1,4 +1,1 @@
-﻿public interface IElevationBasedTerrainStrategy
-{
-
-}
+﻿public interface IElevationBasedTerrainStrategy { }

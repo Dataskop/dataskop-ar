@@ -1,21 +1,15 @@
-using DataskopAR.Interaction;
+using Dataskop.Interaction;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace DataskopAR.EditMode.Tests {
+namespace Dataskop.EditMode.Tests {
 
 	[TestFixture] [Category("Dataskop")]
 	public class CalibratorTests {
 
-		[Test]
-		public void Calibrator_Phase_Is_Not_None_After_Initialization() {
-
-			Calibrator calibrator = CreateCalibrator();
-
-			calibrator.Initialize();
-
-			Assert.AreNotEqual(calibrator.CurrentPhase, CalibratorPhase.None);
-
+		// Test Fixtures
+		private static Calibrator CreateCalibrator() {
+			return Object.Instantiate(new GameObject()).AddComponent<Calibrator>();
 		}
 
 		[Test]
@@ -27,18 +21,22 @@ namespace DataskopAR.EditMode.Tests {
 			// Act
 			calibrator.Initialize();
 
-			while (calibrator.IsCalibrating) {
-				calibrator.OnCalibratorContinued();
-			}
+			while (calibrator.IsCalibrating) calibrator.OnCalibratorContinued();
 
 			// Assert
 			Assert.AreEqual(calibrator.CurrentPhase, CalibratorPhase.None);
 
 		}
 
-		// Test Fixtures
-		private static Calibrator CreateCalibrator() {
-			return Object.Instantiate(new GameObject()).AddComponent<Calibrator>();
+		[Test]
+		public void Calibrator_Phase_Is_Not_None_After_Initialization() {
+
+			Calibrator calibrator = CreateCalibrator();
+
+			calibrator.Initialize();
+
+			Assert.AreNotEqual(calibrator.CurrentPhase, CalibratorPhase.None);
+
 		}
 
 	}

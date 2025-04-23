@@ -1,35 +1,26 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public class InfoCardProjectDataUI : InfoCardComponent {
-
-#region Events
 
 		[Header("Events")]
 		public UnityEvent updateMeasurementsButtonPressed;
 
-#endregion
-
-#region Properties
-
 		protected override VisualElement ComponentRoot { get; set; }
 
 		private VisualElement InfoCard { get; set; }
-
-#endregion
-
-#region Methods
 
 		public override void Init(VisualElement infoCard) {
 			InfoCard = infoCard;
 			ComponentRoot = InfoCard.Q<VisualElement>("MetaInformation");
 
 			ComponentRoot.Q<Button>("UpdateProject")
-				.RegisterCallback<ClickEvent>(e => { updateMeasurementsButtonPressed?.Invoke(); });
+				.RegisterCallback<ClickEvent>(e => { OnRefetchButtonPressed(); });
 		}
 
 		internal void UpdateProjectNameDisplay(string projectName) {
@@ -40,15 +31,27 @@ namespace DataskopAR.UI {
 		internal void UpdateLastUpdatedDisplay(DateTime lastUpdateTime) {
 			lastUpdateTime = lastUpdateTime.ToLocalTime();
 			Label lastUpdatedLabel = ComponentRoot.Q<Label>("LastUpdated");
-			lastUpdatedLabel.text = $"Last Updated: {lastUpdateTime.ToShortDateString()} {lastUpdateTime.ToLongTimeString()}";
+			lastUpdatedLabel.text =
+				$"Latest Project Measurement: {lastUpdateTime.ToShortDateString()} {lastUpdateTime.ToLongTimeString()}";
 		}
 
-		internal void UpdateVisibility() {
-			ComponentRoot.Q<Label>("LastUpdated").visible = true;
-			ComponentRoot.Q<Button>("UpdateProject").visible = true;
+		internal void OnRefetchTimerElapsed() {
+			IMGUIContainer updateIcon = ComponentRoot.Q<IMGUIContainer>("UpdateProjectIcon");
+			StartCoroutine(UpdateIconAnim(updateIcon));
 		}
 
-#endregion
+		private void OnRefetchButtonPressed() {
+			StartCoroutine(UpdateIconAnim(ComponentRoot.Q<IMGUIContainer>("UpdateProjectIcon")));
+			updateMeasurementsButtonPressed?.Invoke();
+		}
+
+		private IEnumerator UpdateIconAnim(IMGUIContainer icon) {
+			icon.AddToClassList("refresh-button-image-action__color");
+			icon.AddToClassList("refresh-button-image-action__spin");
+			yield return new WaitForSeconds(0.5f);
+			icon.RemoveFromClassList("refresh-button-image-action__color");
+			icon.RemoveFromClassList("refresh-button-image-action__spin");
+		}
 
 	}
 

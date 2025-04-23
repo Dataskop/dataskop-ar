@@ -1,11 +1,11 @@
-﻿namespace Mapbox.Unity.Map
-{
+﻿namespace Mapbox.Unity.Map {
+
 	using System;
 	using System.Collections.Generic;
-	using Mapbox.Json;
+	using Json;
 
-	public class TileStats
-	{
+	public class TileStats {
+
 		[JsonProperty("account")]
 		public string account;
 
@@ -14,10 +14,11 @@
 
 		[JsonProperty("layers")]
 		public LayerStats[] layers;
+
 	}
 
-	public class LayerStats
-	{
+	public class LayerStats {
+
 		[JsonProperty("account")]
 		public string account;
 
@@ -35,10 +36,11 @@
 
 		[JsonProperty("attributes")]
 		public AttributeStats[] attributes;
+
 	}
 
-	public class AttributeStats
-	{
+	public class AttributeStats {
+
 		[JsonProperty("attribute")]
 		public string attribute;
 
@@ -47,5 +49,7 @@
 
 		[JsonProperty("values")]
 		public string[] values;
+
 	}
+
 }

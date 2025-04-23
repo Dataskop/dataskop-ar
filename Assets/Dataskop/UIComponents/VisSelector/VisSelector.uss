@@ -53,7 +53,7 @@
     margin-right: 10px;
     min-width: 200px;
     -unity-font-definition: initial;
-    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
+    -unity-font: url('project://database/Assets/Dataskop/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
     font-size: 28px;
 }
 
@@ -68,12 +68,11 @@
     border-bottom-color: rgb(219, 105, 11);
     color: rgb(219, 105, 11);
     -unity-font-definition: initial;
-    -unity-font: url('project://database/Assets/DataskopAR/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
+    -unity-font: url('project://database/Assets/Dataskop/Fonts/OpenSans-Regular.ttf?fileID=12800000&guid=bd1ea67ca2b5742d1a24fcbdc17c55e1&type=3#OpenSans-Regular');
     -unity-font-style: bold;
 }
 
 .vis-icon {
-    background-image: url('project://database/Assets/DataskopAR/Images/Icons/dot.png?fileID=21300000&guid=4c74a81bd135803479253037f7998f34&type=3#dot');
     width: 80%;
     height: 80%;
     -unity-background-image-tint-color: rgb(37, 89, 176);

@@ -3,32 +3,21 @@ using System.Collections;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using ZXing;
 
-namespace DataskopAR.Interaction {
+namespace Dataskop.Interaction {
 
 	public class ArQrReader : MonoBehaviour {
-
-#region Events
 
 		[Header("Events")]
 		public UnityEvent<QrResult> onQrCodeRead;
 
-#endregion
-
-#region Fields
-
 		[Header("References")]
 		[SerializeField] private ARCameraManager arCamManager;
 
-		private readonly WaitForSeconds qrReadCooldown = new(5f);
-
-#endregion
-
-#region Properties
+		private readonly WaitForSeconds qrReadCooldown = new(10f);
 
 		private BarcodeReader QrReader { get; set; }
 
@@ -38,52 +27,53 @@ namespace DataskopAR.Interaction {
 
 		private bool ShouldLookForQrCode { get; set; }
 
-#endregion
-
-#region Methods
+		private void Start() {
+			QrReader = new BarcodeReader();
+			ShouldLookForQrCode = true;
+		}
 
 		private void OnEnable() {
 			arCamManager.frameReceived += GetImageAsync;
 		}
 
-		private void Start() {
-			QrReader = new BarcodeReader();
-
-			if (SceneManager.GetActiveScene().buildIndex == 2) {
-				ShouldLookForQrCode = true;
-			}
-
+		private void OnDisable() {
+			arCamManager.frameReceived -= GetImageAsync;
 		}
 
 		private void GetImageAsync(ARCameraFrameEventArgs e) {
 
-			if (!ShouldLookForQrCode)
+			if (!ShouldLookForQrCode) {
 				return;
-
-			if (HasReadQrCode)
-				return;
-
-			if (Time.frameCount % 30 == 0) {
-
-				if (!arCamManager.TryAcquireLatestCpuImage(out XRCpuImage image)) {
-					return;
-				}
-
-				StartCoroutine(ProcessImage(image));
-				image.Dispose();
-
 			}
+
+			if (HasReadQrCode) {
+				return;
+			}
+
+			if (Time.frameCount % 60 != 0) {
+				return;
+			}
+
+			if (!arCamManager.TryAcquireLatestCpuImage(out XRCpuImage image)) {
+				return;
+			}
+
+			StartCoroutine(ProcessImage(image));
+			image.Dispose();
 
 		}
 
 		private IEnumerator ProcessImage(XRCpuImage image) {
 
-			XRCpuImage.AsyncConversion request = image.ConvertAsync(new XRCpuImage.ConversionParams {
-				inputRect = new RectInt(0, 0, image.width, image.height),
-				outputDimensions = new Vector2Int(image.width / 2, image.height / 2), //downsample by 2 to go fast
-				outputFormat = TextureFormat.RGB24,
-				transformation = XRCpuImage.Transformation.MirrorY
-			});
+			XRCpuImage.AsyncConversion request = image.ConvertAsync(
+				new XRCpuImage.ConversionParams {
+					inputRect = new RectInt(0, 0, image.width, image.height),
+					outputDimensions =
+						new Vector2Int(image.width / 2, image.height / 2), //downsample by 2 to save resources
+					outputFormat = TextureFormat.RGB24,
+					transformation = XRCpuImage.Transformation.MirrorY
+				}
+			);
 
 			while (!request.status.IsDone())
 				yield return null;
@@ -97,15 +87,18 @@ namespace DataskopAR.Interaction {
 			// get image data to apply it to the 2D Texture
 			NativeArray<byte> rawData = request.GetData<byte>();
 
-			if (ReadTexture == null)
-				ReadTexture = new Texture2D(request.conversionParams.outputDimensions.x, request.conversionParams.outputDimensions.y,
-					request.conversionParams.outputFormat, false);
+			if (ReadTexture == null) {
+				ReadTexture = new Texture2D(
+					request.conversionParams.outputDimensions.x, request.conversionParams.outputDimensions.y,
+					request.conversionParams.outputFormat, false
+				);
+			}
 
 			ReadTexture.LoadRawTextureData(rawData);
 			ReadTexture.Apply();
 
 			// don't care for the qr code if one has already been read during the wait for the async calls
-			if (!HasReadQrCode)
+			if (!HasReadQrCode) {
 				try {
 					Result result = QrReader.Decode(ReadTexture.GetPixels32(), ReadTexture.width, ReadTexture.height);
 
@@ -120,6 +113,7 @@ namespace DataskopAR.Interaction {
 				catch (Exception exception) {
 					Debug.LogError(exception.Message);
 				}
+			}
 
 			request.Dispose();
 
@@ -133,12 +127,6 @@ namespace DataskopAR.Interaction {
 			yield return qrReadCooldown;
 			HasReadQrCode = false;
 		}
-
-		private void OnDisable() {
-			arCamManager.frameReceived -= GetImageAsync;
-		}
-
-#endregion
 
 	}
 

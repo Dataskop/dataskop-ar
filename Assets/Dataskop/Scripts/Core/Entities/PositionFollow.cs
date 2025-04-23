@@ -1,10 +1,14 @@
 using UnityEngine;
 
-namespace DataskopAR.Entities {
+namespace Dataskop.Entities {
 
 	public class PositionFollow : MonoBehaviour {
 
-#region Methods
+		[SerializeField] private Transform targetTransform;
+
+		[SerializeField] private bool freezeX;
+		[SerializeField] private bool freezeY;
+		[SerializeField] private bool freezeZ;
 
 		private void FixedUpdate() {
 
@@ -16,18 +20,6 @@ namespace DataskopAR.Entities {
 			transform.position = new Vector3(xPos, yPos, zPos);
 
 		}
-
-#endregion
-
-#region Fields
-
-		[SerializeField] private Transform targetTransform;
-
-		[SerializeField] private bool freezeX;
-		[SerializeField] private bool freezeY;
-		[SerializeField] private bool freezeZ;
-
-#endregion
 
 	}
 

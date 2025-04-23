@@ -1,32 +1,27 @@
 using System;
+using Dataskop.Data;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public class SettingsMenuUI : MonoBehaviour {
-
-#region Constants
 
 		private const string MenuOpenAnimation = "settings-menu-open";
 		private const string TogglerAnimation = "toggler-on";
 		private const string KnobAnimation = "knob-on";
-		private const string DefaultAmount = "10";
-		private const string DefaultCooldown = "30";
+		private const string DefaultAmount = "2000";
+		private const string DefaultCooldown = "10";
 		private const string ProjectSelectionTitle = "Projects";
 		private const string SettingsTitle = "Settings";
-
-#endregion
-
-#region Fields
 
 		[Header("Events")]
 		public UnityEvent onToggleOcclusionButtonPressed;
 		public UnityEvent onToggleMinimapButtonPressed;
 		public UnityEvent onResetCalibrationButtonPressed;
 		public UnityEvent onLogoutButtonPressed;
-		public UnityEvent historyButtonPressed;
+		public UnityEvent<bool> historyButtonPressed;
 		public UnityEvent sidePanelOpened;
 		public UnityEvent<int> amountInputChanged;
 		public UnityEvent<int> cooldownInputChanged;
@@ -37,14 +32,9 @@ namespace DataskopAR.UI {
 		[Header("Values")]
 		[SerializeField] private Color selectedIconColor;
 		[SerializeField] private Color deselectedIconColor;
-
-		private bool isSettingsMenuActive;
-		private bool isProjectSelectorActive;
 		private bool isHistorySliderActive;
-
-#endregion
-
-#region Properties
+		private bool isProjectSelectorActive;
+		private bool isSettingsMenuActive;
 
 		private MenuView CurrentView { get; set; } = MenuView.Settings;
 
@@ -68,6 +58,8 @@ namespace DataskopAR.UI {
 
 		private Button ToggleMinimapButton { get; set; }
 
+		private Button ToggleDateFilterButton { get; set; }
+
 		private Button ResetCalibrationButton { get; set; }
 
 		private Button LogoutButton { get; set; }
@@ -88,11 +80,7 @@ namespace DataskopAR.UI {
 
 		private TextField CooldownInput { get; set; }
 
-#endregion
-
-#region Methods
-
-		private void OnEnable() {
+		private void Awake() {
 			Root = menuDocument.rootVisualElement;
 
 			MenuContainer = Root.Q<VisualElement>("MenuContainer");
@@ -116,11 +104,13 @@ namespace DataskopAR.UI {
 
 			HistoryIcon = HistoryButton.Q<VisualElement>("Icon");
 
-			ToggleOcclusionButton = SettingsMenuContainer.Q<Button>("Option_03");
+			ToggleOcclusionButton = SettingsMenuContainer.Q<Button>("Option_Occlusion");
 			ToggleOcclusionButton.RegisterCallback<ClickEvent>(_ => ToggleOcclusion());
 
-			ToggleMinimapButton = SettingsMenuContainer.Q<Button>("Option_05");
+			ToggleMinimapButton = SettingsMenuContainer.Q<Button>("Option_Minimap");
 			ToggleMinimapButton.RegisterCallback<ClickEvent>(_ => ToggleMinimap());
+
+			ToggleDateFilterButton = SettingsMenuContainer.Q<Button>("Option_DateFilter");
 
 			ResetCalibrationButton = SettingsMenuContainer.Q<Button>("ResetCalibrationButton");
 			ResetCalibrationButton.RegisterCallback<ClickEvent>(_ => ResetCalibrationPressed());
@@ -137,10 +127,23 @@ namespace DataskopAR.UI {
 
 			AmountInput = SettingsMenuContainer.Q<TextField>("AmountInput");
 			AmountInput.RegisterCallback<ChangeEvent<string>>(OnFetchAmountInputChanged);
+			AmountInput.SetValueWithoutNotify(
+				PlayerPrefs.HasKey("fetchAmount") ? PlayerPrefs.GetInt("fetchAmount").ToString()
+					: DefaultAmount
+			);
 
 			CooldownInput = SettingsMenuContainer.Q<TextField>("CooldownInput");
 			CooldownInput.RegisterCallback<ChangeEvent<string>>(OnFetchIntervalInputChanged);
+			CooldownInput.SetValueWithoutNotify(
+				PlayerPrefs.HasKey("fetchInterval")
+					? (PlayerPrefs.GetInt("fetchInterval") / 1000).ToString() : DefaultCooldown
+			);
+		}
 
+		private void OnDisable() {
+			SettingsMenuButton.UnregisterCallback<ClickEvent>(_ => ToggleMenu(MenuView.Settings));
+			ProjectSelectorButton.UnregisterCallback<ClickEvent>(_ => ToggleMenu(MenuView.Projects));
+			ResetCalibrationButton.UnregisterCallback<ClickEvent>(_ => ResetCalibrationPressed());
 		}
 
 		private void ToggleMenu(MenuView requestedView) {
@@ -239,7 +242,7 @@ namespace DataskopAR.UI {
 		private void ToggleHistoryView() {
 
 			isHistorySliderActive = !isHistorySliderActive;
-			historyButtonPressed?.Invoke();
+			historyButtonPressed?.Invoke(isHistorySliderActive);
 			HistoryIcon.style.unityBackgroundImageTintColor =
 				new StyleColor(isHistorySliderActive ? selectedIconColor : deselectedIconColor);
 
@@ -250,12 +253,13 @@ namespace DataskopAR.UI {
 
 		}
 
-		public void OnDataPointsResultsUpdated() {
-
-			if (isHistorySliderActive) {
-				ToggleHistoryView();
-			}
-
+		public void OnDateFiltered() {
+			isHistorySliderActive = true;
+			HistoryIcon.style.unityBackgroundImageTintColor = new StyleColor(selectedIconColor);
+			HistoryButton.style.borderBottomColor = selectedIconColor;
+			HistoryButton.style.borderLeftColor = selectedIconColor;
+			HistoryButton.style.borderRightColor = selectedIconColor;
+			HistoryButton.style.borderTopColor = selectedIconColor;
 		}
 
 		public void HideSettings() {
@@ -297,7 +301,8 @@ namespace DataskopAR.UI {
 			}
 
 			if (int.TryParse(e.newValue, out int value)) {
-				amountInputChanged?.Invoke(value);
+				int validValue = Mathf.Clamp(value, 1, 2000);
+				amountInputChanged?.Invoke(validValue);
 			}
 			else {
 				AmountInput.value = DefaultAmount;
@@ -312,7 +317,9 @@ namespace DataskopAR.UI {
 			}
 
 			if (int.TryParse(e.newValue, out int value)) {
-				cooldownInputChanged?.Invoke(value);
+				int milliseconds = value * 1000;
+				int validValue = Mathf.Clamp(milliseconds, 2000, 900000);
+				cooldownInputChanged?.Invoke(validValue);
 			}
 			else {
 				CooldownInput.value = DefaultCooldown;
@@ -329,16 +336,14 @@ namespace DataskopAR.UI {
 		}
 
 		public void OnProjectLoaded() {
+			isHistorySliderActive = false;
+			HistoryIcon.style.unityBackgroundImageTintColor = new StyleColor(deselectedIconColor);
+			HistoryButton.style.borderBottomColor = deselectedIconColor;
+			HistoryButton.style.borderLeftColor = deselectedIconColor;
+			HistoryButton.style.borderRightColor = deselectedIconColor;
+			HistoryButton.style.borderTopColor = deselectedIconColor;
 			HistoryButton.visible = true;
 		}
-
-		private void OnDisable() {
-			SettingsMenuButton.UnregisterCallback<ClickEvent>(_ => ToggleMenu(MenuView.Settings));
-			ProjectSelectorButton.UnregisterCallback<ClickEvent>(_ => ToggleMenu(MenuView.Projects));
-			ResetCalibrationButton.UnregisterCallback<ClickEvent>(_ => ResetCalibrationPressed());
-		}
-
-#endregion
 
 	}
 

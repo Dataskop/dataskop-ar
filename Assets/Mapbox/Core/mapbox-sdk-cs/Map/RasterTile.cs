@@ -4,8 +4,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Map
-{
+namespace Mapbox.Map {
+
 	/// <summary>
 	/// A raster tile from the Mapbox Style API, an encoded image representing a geographic
 	/// bounding box. Usually JPEG or PNG encoded.
@@ -31,8 +31,8 @@ namespace Mapbox.Map
 	///	}));
 	/// </code>
 	/// </example>
-	public class RasterTile : Tile
-	{
+	public class RasterTile : Tile {
+
 		private byte[] data;
 
 		/// <summary> Gets the raster tile raw data. </summary>
@@ -45,25 +45,19 @@ namespace Mapbox.Map
 		/// _sampleMaterial.mainTexture = texture;
 		/// </code>
 		/// </example>
-		public byte[] Data
-		{
-			get
-			{
-				return this.data;
-			}
-		}
+		public byte[] Data => data;
 
-		internal override TileResource MakeTileResource(string tilesetId)
-		{
+		internal override TileResource MakeTileResource(string tilesetId) {
 			return TileResource.MakeRaster(Id, tilesetId);
 		}
 
-		internal override bool ParseTileData(byte[] data)
-		{
+		internal override bool ParseTileData(byte[] data) {
 			// We do not parse raster tiles as they are
 			this.data = data;
 
 			return true;
 		}
+
 	}
+
 }

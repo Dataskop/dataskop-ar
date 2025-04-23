@@ -4,8 +4,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Platform
-{
+namespace Mapbox.Platform {
+
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
@@ -16,8 +16,8 @@ namespace Mapbox.Platform
 #endif
 
 	/// <summary> Abstract class representing a Mapbox resource URL. </summary>
-	public abstract class Resource
-	{
+	public abstract class Resource {
+
 		/// <summary> Gets the API endpoint, which is a partial URL path. </summary>
 		public abstract string ApiEndpoint { get; }
 
@@ -28,13 +28,11 @@ namespace Mapbox.Platform
 		/// <summary> Encodes a URI with a querystring. </summary>
 		/// <param name="values"> Querystring values. </param>
 		/// <returns> Encoded URL. </returns>
-		protected static String EncodeQueryString(IEnumerable<KeyValuePair<string, string>> values)
-		{
-			if (values != null)
-			{
+		protected static string EncodeQueryString(IEnumerable<KeyValuePair<string, string>> values) {
+			if (values != null) {
 				// we are seeing super weird crashes on some iOS devices:
 				// see 'ForwardGeocodeResource' for more details
-				var encodedValues = from p in values
+				IEnumerable<string> encodedValues = from p in values
 #if UNITY_IOS
 #if UNITY_2017_1_OR_NEWER
 									let k = UnityEngine.Networking.UnityWebRequest.EscapeURL(p.Key.Trim())
@@ -44,19 +42,19 @@ namespace Mapbox.Platform
 									let v = WWW.EscapeURL(p.Value)
 #endif
 #else
-									let k = Uri.EscapeDataString(p.Key.Trim())
-									let v = Uri.EscapeDataString(p.Value)
+					let k = Uri.EscapeDataString(p.Key.Trim())
+					let v = Uri.EscapeDataString(p.Value)
 #endif
-									orderby k
-									select string.IsNullOrEmpty(v) ? k : string.Format("{0}={1}", k, v);
-				if (encodedValues.Count() == 0)
-				{
+					orderby k
+					select string.IsNullOrEmpty(v) ? k : string.Format("{0}={1}", k, v);
+
+				if (encodedValues.Count() == 0) {
 					return string.Empty;
 				}
-				else
-				{
+				else {
 					return "?" + string.Join(
-						"&", encodedValues.ToArray());
+						"&", encodedValues.ToArray()
+					);
 				}
 			}
 
@@ -68,9 +66,10 @@ namespace Mapbox.Platform
 		/// <param name="separator"> Character to use for separating items in arry. Defaults to ",". </param>
 		/// <returns>Comma-separated string of options.</returns>
 		/// <typeparam name="U">Type in the array.</typeparam>
-		protected static string GetUrlQueryFromArray<U>(U[] items, string separator = ",")
-		{
+		protected static string GetUrlQueryFromArray<U>(U[] items, string separator = ",") {
 			return string.Join(separator, items.Select(item => item.ToString()).ToArray());
 		}
+
 	}
+
 }

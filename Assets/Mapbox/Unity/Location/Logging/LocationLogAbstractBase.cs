@@ -1,26 +1,20 @@
-namespace Mapbox.Unity.Location
-{
-
+namespace Mapbox.Unity.Location {
 
 	using System;
 	using System.ComponentModel;
 	using System.Globalization;
-	using Mapbox.VectorTile.ExtensionMethods;
-
+	using VectorTile.ExtensionMethods;
 
 	/// <summary>
 	/// Base class for reading/writing location logs
 	/// </summary>
-	public abstract class LocationLogAbstractBase
-	{
-
+	public abstract class LocationLogAbstractBase {
 
 		public readonly string Delimiter = ";";
 		protected readonly CultureInfo _invariantCulture = CultureInfo.InvariantCulture;
 
+		public enum LogfileColumns {
 
-		public enum LogfileColumns
-		{
 #if !ENABLE_WINMD_SUPPORT
 			[Description("location service enabled")]
 #endif
@@ -66,11 +60,11 @@ namespace Mapbox.Unity.Location
 #endif
 			Accuracy = 10,
 #if !ENABLE_WINMD_SUPPORT
-			[Description("user heading [°]")]
+			[Description("user heading [ï¿½]")]
 #endif
 			UserHeading = 11,
 #if !ENABLE_WINMD_SUPPORT
-			[Description("device orientation [°]")]
+			[Description("device orientation [ï¿½]")]
 #endif
 			DeviceOrientation = 12,
 #if !ENABLE_WINMD_SUPPORT
@@ -89,8 +83,8 @@ namespace Mapbox.Unity.Location
 			[Description("satellites in view")]
 #endif
 			SatellitesInView = 16
-		}
 
+		}
 
 		public string[] HeaderNames
 		{
@@ -99,16 +93,16 @@ namespace Mapbox.Unity.Location
 				Type enumType = typeof(LogfileColumns);
 				Array arrEnumVals = Enum.GetValues(enumType);
 				string[] hdrs = new string[arrEnumVals.Length];
-				for (int i = 0; i < arrEnumVals.Length; i++)
-				{
+
+				for (int i = 0; i < arrEnumVals.Length; i++) {
 					hdrs[i] = ((LogfileColumns)Enum.Parse(enumType, arrEnumVals.GetValue(i).ToString())).Description();
 
 				}
+
 				return hdrs;
 			}
 		}
 
-
-
 	}
+
 }

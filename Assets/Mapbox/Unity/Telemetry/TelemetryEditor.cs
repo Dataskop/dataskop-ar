@@ -3,9 +3,9 @@ namespace Mapbox.Unity.Telemetry {
 
 	using System.Collections.Generic;
 	using System.Collections;
-	using Mapbox.Json;
+	using Json;
 	using System;
-	using Mapbox.Unity.Utilities;
+	using Utilities;
 	using UnityEngine;
 	using System.Text;
 	using UnityEditor;
@@ -13,30 +13,29 @@ namespace Mapbox.Unity.Telemetry {
 
 	public class TelemetryEditor : ITelemetryLibrary {
 
-		string _url;
+		private string _url;
 
-		static ITelemetryLibrary _instance = new TelemetryEditor();
+		private static ITelemetryLibrary _instance = new TelemetryEditor();
 
-		public static ITelemetryLibrary Instance {
-			get { return _instance; }
-		}
+		public static ITelemetryLibrary Instance => _instance;
 
 		public void Initialize(string accessToken) {
-			_url = string.Format("{0}events/v2?access_token={1}", Mapbox.Utils.Constants.EventsAPI, accessToken);
+			_url = string.Format("{0}events/v2?access_token={1}", Utils.Constants.EventsAPI, accessToken);
 		}
 
 		public void SendTurnstile() {
-			var ticks = DateTime.Now.Ticks;
+			long ticks = DateTime.Now.Ticks;
+
 			if (ShouldPostTurnstile(ticks)) {
 				Runnable.Run(PostWWW(_url, GetPostBody()));
 			}
 		}
 
-		string GetPostBody() {
-			List<Dictionary<string, object>> eventList = new List<Dictionary<string, object>>();
-			Dictionary<string, object> jsonDict = new Dictionary<string, object>();
+		private string GetPostBody() {
+			List<Dictionary<string, object>> eventList = new();
+			Dictionary<string, object> jsonDict = new();
 
-			long unixTimestamp = (long)Mapbox.Utils.UnixTimestampUtils.To(DateTime.UtcNow);
+			long unixTimestamp = (long)Utils.UnixTimestampUtils.To(DateTime.UtcNow);
 
 			jsonDict.Add("event", "appUserTurnstile");
 			jsonDict.Add("created", unixTimestamp);
@@ -47,26 +46,29 @@ namespace Mapbox.Unity.Telemetry {
 			jsonDict.Add("sdkVersion", Constants.SDK_VERSION);
 			eventList.Add(jsonDict);
 
-			var jsonString = JsonConvert.SerializeObject(eventList);
+			string jsonString = JsonConvert.SerializeObject(eventList);
 			return jsonString;
 		}
 
-		bool ShouldPostTurnstile(long ticks) {
-			var date = new DateTime(ticks);
-			var longAgo = DateTime.Now.AddDays(-100).Ticks.ToString();
-			var lastDateString = PlayerPrefs.GetString(Constants.Path.TELEMETRY_TURNSTILE_LAST_TICKS_EDITOR_KEY, longAgo);
+		private bool ShouldPostTurnstile(long ticks) {
+			DateTime date = new(ticks);
+			string longAgo = DateTime.Now.AddDays(-100).Ticks.ToString();
+			string lastDateString = PlayerPrefs.GetString(
+				Constants.Path.TELEMETRY_TURNSTILE_LAST_TICKS_EDITOR_KEY, longAgo
+			);
+
 			long lastTicks = 0;
 			long.TryParse(lastDateString, out lastTicks);
-			var lastDate = new DateTime(lastTicks);
-			var timeSpan = date - lastDate;
+			DateTime lastDate = new(lastTicks);
+			TimeSpan timeSpan = date - lastDate;
 			return timeSpan.Days >= 1;
 		}
 
-		IEnumerator PostWWW(string url, string bodyJsonString) {
+		private IEnumerator PostWWW(string url, string bodyJsonString) {
 			byte[] bodyRaw = Encoding.UTF8.GetBytes(bodyJsonString);
 
 #if UNITY_2017_1_OR_NEWER
-			UnityWebRequest postRequest = new UnityWebRequest(url, "POST");
+			UnityWebRequest postRequest = new(url, "POST");
 			postRequest.SetRequestHeader("Content-Type", "application/json");
 
 			postRequest.downloadHandler = new DownloadHandlerBuffer();
@@ -74,9 +76,7 @@ namespace Mapbox.Unity.Telemetry {
 
 			yield return postRequest.SendWebRequest();
 
-			while (!postRequest.isDone) {
-				yield return null;
-			}
+			while (!postRequest.isDone) yield return null;
 
 			if (postRequest.result != UnityWebRequest.Result.ConnectionError) {
 #else
@@ -95,14 +95,16 @@ namespace Mapbox.Unity.Telemetry {
 				PlayerPrefs.SetString(Constants.Path.TELEMETRY_TURNSTILE_LAST_TICKS_EDITOR_KEY, "0");
 			}
 			else {
-				PlayerPrefs.SetString(Constants.Path.TELEMETRY_TURNSTILE_LAST_TICKS_EDITOR_KEY, DateTime.Now.Ticks.ToString());
+				PlayerPrefs.SetString(
+					Constants.Path.TELEMETRY_TURNSTILE_LAST_TICKS_EDITOR_KEY, DateTime.Now.Ticks.ToString()
+				);
 			}
 
 			postRequest.Dispose();
 		}
 
-		static string GetUserAgent() {
-			var userAgent = string.Format(
+		private static string GetUserAgent() {
+			string userAgent = string.Format(
 				"{0}/{1}/{2} MapboxEventsUnityEditor/{3}",
 				PlayerSettings.applicationIdentifier,
 				PlayerSettings.bundleVersion,
@@ -115,13 +117,16 @@ namespace Mapbox.Unity.Telemetry {
 #endif
 				Constants.SDK_VERSION
 			);
+
 			return userAgent;
 		}
 
 		private string GetSDKIdentifier() {
-			var sdkIdentifier = string.Format("MapboxEventsUnity{0}",
+			string sdkIdentifier = string.Format(
+				"MapboxEventsUnity{0}",
 				Application.platform
 			);
+
 			return sdkIdentifier;
 		}
 

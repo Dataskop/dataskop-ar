@@ -1,11 +1,11 @@
 using System;
 
-namespace DataskopAR.Utils {
+namespace Dataskop.Utils {
 
 	public static class RandomExtensions {
 
 		/// <summary>
-		///     Returns a random double between two doubles.
+		/// Returns a random double between two doubles.
 		/// </summary>
 		/// <param name="random">Object of Type random</param>
 		/// <param name="min">double value</param>

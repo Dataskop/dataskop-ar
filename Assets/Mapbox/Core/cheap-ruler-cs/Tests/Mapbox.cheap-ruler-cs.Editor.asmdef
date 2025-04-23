@@ -1,22 +1,22 @@
 {
-    "name": "Mapbox.cheap-ruler-cs.Editor",
-    "rootNamespace": "",
-    "references": [
-        "GUID:c4e49ec6cb1b97841b1d1efcebecf1e7",
-        "GUID:0acc523941302664db1f4e527237feb3"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": true,
-    "precompiledReferences": [
-        "nunit.framework.dll",
-        "Mapbox.Json.dll"
-    ],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "Mapbox.cheap-ruler-cs.Editor",
+  "rootNamespace": "",
+  "references": [
+    "GUID:c4e49ec6cb1b97841b1d1efcebecf1e7",
+    "GUID:0acc523941302664db1f4e527237feb3"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll",
+    "Mapbox.Json.dll"
+  ],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

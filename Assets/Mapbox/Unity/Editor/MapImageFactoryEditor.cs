@@ -1,24 +1,22 @@
-namespace Mapbox.Editor
-{
+namespace Mapbox.Editor {
+
 	using UnityEngine;
 	using UnityEditor;
-	using Mapbox.Unity.MeshGeneration.Factories;
+	using Unity.MeshGeneration.Factories;
 
 	[CustomEditor(typeof(MapImageFactory))]
-	public class MapImageFactoryEditor : FactoryEditor
-	{
+	public class MapImageFactoryEditor : FactoryEditor {
+
 		public SerializedProperty layerProperties;
 		private MonoScript script;
 
-		void OnEnable()
-		{
+		private void OnEnable() {
 			layerProperties = serializedObject.FindProperty("_properties");
 			script = MonoScript.FromScriptableObject((MapImageFactory)target);
 
 		}
 
-		public override void OnInspectorGUI()
-		{
+		public override void OnInspectorGUI() {
 			serializedObject.Update();
 
 			GUI.enabled = false;
@@ -31,5 +29,7 @@ namespace Mapbox.Editor
 
 			serializedObject.ApplyModifiedProperties();
 		}
+
 	}
+
 }

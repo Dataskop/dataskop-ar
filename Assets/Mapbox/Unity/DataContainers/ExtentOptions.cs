@@ -1,20 +1,19 @@
-﻿namespace Mapbox.Unity.Map
-{
+﻿namespace Mapbox.Unity.Map {
+
 	using UnityEngine;
 
-	public interface ITileProviderOptions
-	{
-	}
+	public interface ITileProviderOptions { }
 
-	public interface ICameraBoundsExtentOptions : ITileProviderOptions
-	{
+	public interface ICameraBoundsExtentOptions : ITileProviderOptions {
+
 		void SetOptions();
+
 	}
 
-	public class ExtentOptions : ITileProviderOptions
-	{
-		public virtual void SetOptions(ExtentOptions extentOptions)
-		{
-		}
+	public class ExtentOptions : ITileProviderOptions {
+
+		public virtual void SetOptions(ExtentOptions extentOptions) { }
+
 	}
+
 }

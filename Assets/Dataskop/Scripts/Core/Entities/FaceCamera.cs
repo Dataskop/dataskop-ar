@@ -1,19 +1,11 @@
 #nullable enable
 
-using DataskopAR.Utils;
+using Dataskop.Utils;
 using UnityEngine;
 
-namespace DataskopAR.Entities {
+namespace Dataskop.Entities {
 
 	public class FaceCamera : MonoBehaviour {
-
-#region Properties
-
-		private Transform? TargetTransform => targetCamera?.transform;
-
-#endregion
-
-#region Fields
 
 		[SerializeField] [Tooltip("How close the camera has to be to the object for it to face it.")]
 		private float faceThreshold;
@@ -21,9 +13,7 @@ namespace DataskopAR.Entities {
 		[SerializeField] private Camera? targetCamera;
 		[SerializeField] private bool isBackwards;
 
-#endregion
-
-#region Methods
+		private Transform? TargetTransform => targetCamera?.transform;
 
 		private void Awake() {
 			if (targetCamera == null) {
@@ -54,8 +44,6 @@ namespace DataskopAR.Entities {
 
 			transform.forward = isBackwards ? -diff.normalized : diff.normalized;
 		}
-
-#endregion
 
 	}
 

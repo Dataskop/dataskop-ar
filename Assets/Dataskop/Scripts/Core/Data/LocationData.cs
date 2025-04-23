@@ -1,12 +1,13 @@
 using System;
 using UnityEngine;
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	[CreateAssetMenu(fileName = "Location", menuName = "Locations/Add Location...", order = 1)]
 	public class LocationData : ScriptableObject {
 
-#region Subclasses
+		public string locationName;
+		public Area[] areas;
 
 		[Serializable]
 		public struct Area {
@@ -15,15 +16,6 @@ namespace DataskopAR.Data {
 			[Tooltip("Format: lat, lon")] public string[] boundaryPoints;
 
 		}
-
-#endregion
-
-#region Fields
-
-		public string locationName;
-		public Area[] areas;
-
-#endregion
 
 	}
 

@@ -1,21 +1,15 @@
-namespace Mapbox.MapboxSdkCs.UnitTest
-{
-
+namespace Mapbox.MapboxSdkCs.UnitTest {
 
 	using NUnit.Framework;
-	using Mapbox.Unity.Location;
-
+	using Unity.Location;
 
 	[TestFixture]
-	internal class AngleSmoothingTest
-	{
-
+	internal class AngleSmoothingTest {
 
 		[Test]
-		public void NoOp()
-		{
+		public void NoOp() {
 			//NoOp does nothing. should always return latest value
-			AngleSmoothingNoOp noop = new AngleSmoothingNoOp();
+			AngleSmoothingNoOp noop = new();
 			string opName = noop.GetType().Name + " ";
 			noop.Add(23);
 			Assert.AreEqual(23d, noop.Calculate(), opName + "did modify data");
@@ -27,12 +21,10 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 			Assert.AreEqual(359.99d, noop.Calculate(), opName + "did modify data");
 		}
 
-
 		[Test]
-		public void Average()
-		{
+		public void Average() {
 			// simple average
-			AngleSmoothingAverage avg = new AngleSmoothingAverage();
+			AngleSmoothingAverage avg = new();
 			string opName = avg.GetType().Name + " ";
 			avg.Add(355);
 			avg.Add(15);
@@ -50,13 +42,11 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 			Assert.AreEqual(140d, avg.Calculate(), opName + "internal default buffer of 5 did not roll over correctly");
 		}
 
-
 		[Test]
-		public void LowPass()
-		{
+		public void LowPass() {
 			//simple low pass filter
 			// parameter 1.0 => no smoothing: despite calucations going on last value should be returned
-			AngleSmoothingLowPass lp = new AngleSmoothingLowPass(1.0d);
+			AngleSmoothingLowPass lp = new(1.0d);
 			string opName = lp.GetType().Name + " ";
 			lp.Add(45);
 			lp.Add(90);
@@ -93,13 +83,11 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 			Assert.AreEqual(344.02d, lp.Calculate(), opName + "did not smooth back across '0' as expected");
 		}
 
-
 		[Test]
-		public void Weighted()
-		{
+		public void Weighted() {
 			// exponential moving average
 			// parameter 1.0 => no smoothing
-			AngleSmoothingEMA ema = new AngleSmoothingEMA();
+			AngleSmoothingEMA ema = new();
 			string opName = ema.GetType().Name + " ";
 			ema.Add(45);
 			ema.Add(90);
@@ -125,8 +113,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 			Assert.AreEqual(350.43d, ema.Calculate(), opName + "didn't smooth as expected back across 0");
 		}
 
-
-
-
 	}
+
 }

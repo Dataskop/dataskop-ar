@@ -1,9 +1,11 @@
-﻿namespace Mapbox.Unity.MeshGeneration.Modifiers
-{
-	using Mapbox.Unity.MeshGeneration.Data;
+﻿namespace Mapbox.Unity.MeshGeneration.Modifiers {
 
-	public interface IReplacementCriteria
-	{
+	using Data;
+
+	public interface IReplacementCriteria {
+
 		bool ShouldReplaceFeature(VectorFeatureUnity feature);
+
 	}
+
 }

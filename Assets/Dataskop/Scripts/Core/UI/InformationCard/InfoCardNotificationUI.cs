@@ -2,11 +2,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public class InfoCardNotificationUI : InfoCardComponent {
-
-#region Fields
 
 		[Header("Message Colors")]
 		[SerializeField] private Color tipColor;
@@ -18,19 +16,11 @@ namespace DataskopAR.UI {
 
 		private WaitForSeconds errorDecay;
 
-#endregion
-
-#region Properties
-
 		protected override VisualElement ComponentRoot { get; set; }
 
 		private VisualElement InfoCard { get; set; }
 
 		private Label ErrorLabel { get; set; }
-
-#endregion
-
-#region Methods
 
 		public override void Init(VisualElement infoCard) {
 			InfoCard = infoCard;
@@ -57,8 +47,6 @@ namespace DataskopAR.UI {
 			yield return errorDecay;
 			ErrorLabel.text = "";
 		}
-
-#endregion
 
 	}
 

@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using SQLite4Unity3d;
 
-namespace Mapbox.Platform.Cache
-{
+namespace Mapbox.Platform.Cache {
 
 	/// <summary>
 	/// Don't change the class name: sqlite-net uses it for table creation
 	/// </summary>
-	public class tiles
-	{
+	public class tiles {
 
 		public int tile_set { get; set; }
 
@@ -36,5 +34,7 @@ namespace Mapbox.Platform.Cache
 
 		/// <summary>Last-Modified header value of API response. Not all APIs populate it, will be -1 in that case. </summary>
 		public int? lastmodified { get; set; }
+
 	}
+
 }

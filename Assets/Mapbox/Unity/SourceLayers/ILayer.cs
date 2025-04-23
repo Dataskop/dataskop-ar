@@ -2,24 +2,26 @@ using System.Linq;
 using Mapbox.Unity.MeshGeneration.Data;
 using Mapbox.Unity.SourceLayers;
 
-namespace Mapbox.Unity.Map
-{
+namespace Mapbox.Unity.Map {
+
 	using System;
 	using System.Collections.Generic;
-	using Mapbox.Unity.MeshGeneration.Filters;
-	using Mapbox.Utils;
+	using MeshGeneration.Filters;
+	using Utils;
 	using UnityEngine;
 
-	public interface ILayer
-	{
+	public interface ILayer {
+
 		/// <summary>
 		/// Gets the type of feature from the `FEATURES` section.
 		/// </summary>
 		MapLayerType LayerType { get; }
+
 		/// <summary>
 		/// Boolean for setting the feature layer active or inactive.
 		/// </summary>
 		bool IsLayerActive { get; }
+
 		/// <summary>
 		/// Gets the source ID for the feature layer.
 		/// </summary>
@@ -29,17 +31,19 @@ namespace Mapbox.Unity.Map
 		/// Gets the `Data Source` for the `MAP LAYERS` section.
 		/// </summary>
 		void SetLayerSource(string source);
+
 		void Initialize();
 		void Initialize(LayerProperties properties);
 		void Update(LayerProperties properties);
 		void Remove();
+
 	}
 
-	public interface IVectorDataLayer : ILayer
-	{
-		#region Layer Level APIs
-		TileJsonData GetTileJsonData();
+	public interface IVectorDataLayer : ILayer {
 
+		#region Layer Level APIs
+
+		TileJsonData GetTileJsonData();
 
 		/// <summary>
 		/// Gets the `Data Source` for the `MAP LAYERS` section.
@@ -61,7 +65,8 @@ namespace Mapbox.Unity.Map
 		/// <param name="styleId">Style-Optimized style id.</param>
 		/// <param name="modifiedDate">Modified date.</param>
 		/// <param name="styleName">Style name.</param>
-		void SetLayerSourceWithOptimizedStyle(string vectorSource, string styleId, string modifiedDate, string styleName = null);
+		void SetLayerSourceWithOptimizedStyle(string vectorSource, string styleId, string modifiedDate,
+			string styleName = null);
 
 		/// <summary>
 		/// Sets the layer source as Style-optimized vector tiles
@@ -70,7 +75,8 @@ namespace Mapbox.Unity.Map
 		/// <param name="styleId">Style-Optimized style id.</param>
 		/// <param name="modifiedDate">Modified date.</param>
 		/// <param name="styleName">Style name.</param>
-		void SetLayerSourceWithOptimizedStyle(VectorSourceType vectorSource, string styleId, string modifiedDate, string styleName = null);
+		void SetLayerSourceWithOptimizedStyle(VectorSourceType vectorSource, string styleId, string modifiedDate,
+			string styleName = null);
 
 		/// <summary>
 		/// Enables coroutines for vector features. Processes the specified amount
@@ -83,6 +89,7 @@ namespace Mapbox.Unity.Map
 		/// Disables processing of vector features on coroutines.
 		/// </summary>
 		void DisableVectorFeatureProcessingWithCoroutines();
+
 		#endregion
 
 		#region LayerOperations
@@ -176,11 +183,10 @@ namespace Mapbox.Unity.Map
 		/// <param name="prefab"> A Game Object Prefab.</param>
 		/// <param name="LatLon">A Vector2d(Latitude Longitude) object</param>
 		void SpawnPrefabAtGeoLocation(GameObject prefab,
-											 Vector2d LatLon,
-											 Action<List<GameObject>> callback = null,
-											 bool scaleDownWithWorld = true,
-									  string locationItemName = "New Location");
-
+			Vector2d LatLon,
+			Action<List<GameObject>> callback = null,
+			bool scaleDownWithWorld = true,
+			string locationItemName = "New Location");
 
 		/// <summary>
 		/// Places a prefab at all locations specified by the LatLon array.
@@ -188,10 +194,10 @@ namespace Mapbox.Unity.Map
 		/// <param name="prefab"> A Game Object Prefab.</param>
 		/// <param name="LatLon">A Vector2d(Latitude Longitude) object</param>
 		void SpawnPrefabAtGeoLocation(GameObject prefab,
-											 Vector2d[] LatLon,
-											 Action<List<GameObject>> callback = null,
-											 bool scaleDownWithWorld = true,
-									  string locationItemName = "New Location");
+			Vector2d[] LatLon,
+			Action<List<GameObject>> callback = null,
+			bool scaleDownWithWorld = true,
+			string locationItemName = "New Location");
 
 		/// <summary>
 		/// Places the prefab for supplied categories.
@@ -203,11 +209,10 @@ namespace Mapbox.Unity.Map
 		/// <param name="locationItemName">Name of this location prefab item for future reference</param>
 		/// <param name="scaleDownWithWorld">Should the prefab scale up/down along with the map game object?</param>
 		void SpawnPrefabByCategory(GameObject prefab,
-										   LocationPrefabCategories categories = LocationPrefabCategories.AnyCategory,
-										   int density = 30, Action<List<GameObject>> callback = null,
-										   bool scaleDownWithWorld = true,
-								   string locationItemName = "New Location");
-
+			LocationPrefabCategories categories = LocationPrefabCategories.AnyCategory,
+			int density = 30, Action<List<GameObject>> callback = null,
+			bool scaleDownWithWorld = true,
+			string locationItemName = "New Location");
 
 		/// <summary>
 		/// Places the prefab at POI locations if its name contains the supplied string
@@ -218,23 +223,22 @@ namespace Mapbox.Unity.Map
 		/// <param name="scaleDownWithWorld">Should the prefab scale up/down along with the map game object?</param>
 		/// </summary>
 		void SpawnPrefabByName(GameObject prefab,
-									  string nameString,
-									  int density = 30,
-									  Action<List<GameObject>> callback = null,
-									  bool scaleDownWithWorld = true,
-											  string locationItemName = "New Location");
+			string nameString,
+			int density = 30,
+			Action<List<GameObject>> callback = null,
+			bool scaleDownWithWorld = true,
+			string locationItemName = "New Location");
+
 		#endregion
+
 	}
 
 	// TODO: Move interfaces into individual files.
 
-	public interface ISubLayerPolygonGeometryOptions
-	{
+	public interface ISubLayerPolygonGeometryOptions { }
 
-	}
+	public interface ISubLayerFiltering {
 
-	public interface ISubLayerFiltering
-	{
 		ILayerFilter AddStringFilterContains(string key, string property);
 		ILayerFilter AddNumericFilterEquals(string key, float value);
 		ILayerFilter AddNumericFilterLessThan(string key, float value);
@@ -249,15 +253,16 @@ namespace Mapbox.Unity.Map
 		void RemoveAllFilters();
 
 		IEnumerable<ILayerFilter> GetAllFilters();
-		IEnumerable<ILayerFilter> GetFiltersByQuery(System.Func<ILayerFilter, bool> query);
+		IEnumerable<ILayerFilter> GetFiltersByQuery(Func<ILayerFilter, bool> query);
 
 		LayerFilterCombinerOperationType GetFilterCombinerType();
 
 		void SetFilterCombinerType(LayerFilterCombinerOperationType layerFilterCombinerOperationType);
+
 	}
 
-	public interface ILayerFilter
-	{
+	public interface ILayerFilter {
+
 		bool FilterKeyContains(string key);
 		bool FilterKeyMatchesExact(string key);
 		bool FilterUsesOperationType(LayerFilterOperationType layerFilterOperationType);
@@ -269,12 +274,15 @@ namespace Mapbox.Unity.Map
 		bool FilterIsInRangeValueContains(float value);
 
 		string GetKey { get; }
+
 		LayerFilterOperationType GetFilterOperationType { get; }
 
 		string GetPropertyValue { get; }
+
 		float GetNumberValue { get; }
 
 		float GetMinValue { get; }
+
 		float GetMaxValue { get; }
 
 		void SetStringContains(string key, string property);
@@ -285,25 +293,28 @@ namespace Mapbox.Unity.Map
 
 	}
 
-	public interface IVectorSubLayer
-	{
+	public interface IVectorSubLayer {
+
 		/// <summary>
 		/// Gets `Filters` data from the feature.
 		/// </summary>
 		ISubLayerFiltering Filtering { get; }
+
 		/// <summary>
 		/// Gets `Modeling` data from the feature.
 		/// </summary>
 		ISubLayerModeling Modeling { get; }
+
 		/// <summary>
 		/// Gets `Texturing` data from the feature.
 		/// </summary>
 		ISubLayerTexturing Texturing { get; }
+
 		/// <summary>
 		/// Gets `Behavior Modifiers` data from the feature.
 		/// </summary>
 		ISubLayerBehaviorModifiers BehaviorModifiers { get; }
 
-
 	}
+
 }

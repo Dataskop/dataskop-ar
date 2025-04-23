@@ -1,15 +1,15 @@
-﻿namespace Mapbox.Unity.Utilities
-{
-	using Mapbox.Unity.Map;
+﻿namespace Mapbox.Unity.Utilities {
+
+	using Map;
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
 	using System.Diagnostics;
 	using UnityEngine;
 
-	public class MapVisualizerPerformance : MonoBehaviour
-	{
-		private Stopwatch _sw = new Stopwatch();
+	public class MapVisualizerPerformance : MonoBehaviour {
+
+		private Stopwatch _sw = new();
 		private AbstractMap _map;
 		private AbstractMapVisualizer _mapVisualizer;
 		public int TestCount = 10;
@@ -18,53 +18,50 @@
 		public float TotalTime = 0;
 		private float _firstRun;
 
-		protected virtual void Awake()
-		{
+		protected virtual void Awake() {
 			TotalTime = 0;
 			_currentTest = 1;
-			_map = FindObjectOfType<AbstractMap>();
+			_map = FindFirstObjectByType<AbstractMap>();
 			_mapVisualizer = _map.MapVisualizer;
 
 			_mapVisualizer.OnMapVisualizerStateChanged += (s) =>
 			{
-				if (s == ModuleState.Working)
-				{
+				if (s == ModuleState.Working) {
 					_sw.Reset();
 					_sw.Start();
 				}
-				else if (s == ModuleState.Finished)
-				{
+				else if (s == ModuleState.Finished) {
 					_sw.Stop();
-					if (_currentTest > 1)
-					{
+
+					if (_currentTest > 1) {
 						TotalTime += _sw.ElapsedMilliseconds;
 						UnityEngine.Debug.Log("Test " + _currentTest + ": " + _sw.ElapsedMilliseconds);
 					}
-					else
-					{
+					else {
 						_firstRun = _sw.ElapsedMilliseconds;
 					}
 
-					if (TestCount > _currentTest)
-					{
+					if (TestCount > _currentTest) {
 						_currentTest++;
 						Invoke("Run", 1f);
 					}
-					else
-					{
-						if (_currentTest > 1)
-						{
-							UnityEngine.Debug.Log("First Run:        " + _firstRun + " \r\nRest Average: " + TotalTime / (_currentTest - 1));
+					else {
+						if (_currentTest > 1) {
+							UnityEngine.Debug.Log(
+								"First Run:        " + _firstRun + " \r\nRest Average: " +
+								TotalTime / (_currentTest - 1)
+							);
 						}
 					}
 				}
 			};
 		}
 
-		public void Run()
-		{
+		public void Run() {
 			//TODO : FIX THIS ERROR	
 			//_map.Reset();
 		}
+
 	}
+
 }

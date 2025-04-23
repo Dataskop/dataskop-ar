@@ -1,141 +1,116 @@
 ﻿using System;
 
-namespace Mapbox.Editor
-{
+namespace Mapbox.Editor {
+
 	using UnityEngine;
 	using UnityEditor;
 	using Mapbox.Unity.Map;
-	using Mapbox.Platform.TilesetTileJSON;
+	using Platform.TilesetTileJSON;
 	using System.Collections.Generic;
-	using Mapbox.VectorTile.ExtensionMethods;
+	using VectorTile.ExtensionMethods;
 
 	[CustomEditor(typeof(AbstractMap))]
 	[CanEditMultipleObjects]
-	public class MapManagerEditor : Editor
-	{
+	public class MapManagerEditor : Editor {
+
 		private string objectId = "";
-		private Color previewButtonColor = new Color(0.7f, 1.0f, 0.7f);
+		private Color previewButtonColor = new(0.7f, 1.0f, 0.7f);
+
 		/// <summary>
 		/// Gets or sets a value indicating whether to show general section <see cref="T:Mapbox.Editor.MapManagerEditor"/>.
 		/// </summary>
 		/// <value><c>true</c> then show general section; otherwise hide, <c>false</c>.</value>
-		bool ShowGeneral
+		private bool ShowGeneral
 		{
-			get
-			{
-				return EditorPrefs.GetBool(objectId + "MapManagerEditor_showGeneral");
-			}
-			set
-			{
-				EditorPrefs.SetBool(objectId + "MapManagerEditor_showGeneral", value);
-			}
+			get => EditorPrefs.GetBool(objectId + "MapManagerEditor_showGeneral");
+			set => EditorPrefs.SetBool(objectId + "MapManagerEditor_showGeneral", value);
 		}
+
 		/// <summary>
 		/// Gets or sets a value to show or hide Image section<see cref="T:Mapbox.Editor.MapManagerEditor"/>.
 		/// </summary>
 		/// <value><c>true</c> if show image; otherwise, <c>false</c>.</value>
-		bool ShowImage
+		private bool ShowImage
 		{
-			get
-			{
-				return EditorPrefs.GetBool(objectId + "MapManagerEditor_showImage");
-			}
-			set
-			{
-				EditorPrefs.SetBool(objectId + "MapManagerEditor_showImage", value);
-			}
+			get => EditorPrefs.GetBool(objectId + "MapManagerEditor_showImage");
+			set => EditorPrefs.SetBool(objectId + "MapManagerEditor_showImage", value);
 		}
+
 		/// <summary>
 		/// Gets or sets a value to show or hide Terrain section <see cref="T:Mapbox.Editor.MapManagerEditor"/>
 		/// </summary>
 		/// <value><c>true</c> if show terrain; otherwise, <c>false</c>.</value>
-		bool ShowTerrain
+		private bool ShowTerrain
 		{
-			get
-			{
-				return EditorPrefs.GetBool(objectId + "MapManagerEditor_showTerrain");
-			}
-			set
-			{
-				EditorPrefs.SetBool(objectId + "MapManagerEditor_showTerrain", value);
-			}
+			get => EditorPrefs.GetBool(objectId + "MapManagerEditor_showTerrain");
+			set => EditorPrefs.SetBool(objectId + "MapManagerEditor_showTerrain", value);
 		}
 
 		/// <summary>
 		/// Gets or sets a value to show or hide Map Layers section <see cref="T:Mapbox.Editor.MapManagerEditor"/> show features.
 		/// </summary>
 		/// <value><c>true</c> if show features; otherwise, <c>false</c>.</value>
-		bool ShowMapLayers
+		private bool ShowMapLayers
 		{
-			get
-			{
-				return EditorPrefs.GetBool(objectId + "MapManagerEditor_showMapLayers");
-			}
-			set
-			{
-				EditorPrefs.SetBool(objectId + "MapManagerEditor_showMapLayers", value);
-			}
+			get => EditorPrefs.GetBool(objectId + "MapManagerEditor_showMapLayers");
+			set => EditorPrefs.SetBool(objectId + "MapManagerEditor_showMapLayers", value);
 		}
 
-		bool ShowPosition
+		private bool ShowPosition
 		{
-			get
-			{
-				return EditorPrefs.GetBool(objectId + "MapManagerEditor_showPosition");
-			}
-			set
-			{
-				EditorPrefs.SetBool(objectId + "MapManagerEditor_showPosition", value);
-			}
+			get => EditorPrefs.GetBool(objectId + "MapManagerEditor_showPosition");
+			set => EditorPrefs.SetBool(objectId + "MapManagerEditor_showPosition", value);
 		}
 
-		private GUIContent tilesetIdGui = new GUIContent
-		{
+		private GUIContent tilesetIdGui = new() {
 			text = "Tileset Id",
 			tooltip = "Id of the tileset."
 		};
 
-		bool _isGUIContentSet = false;
-		GUIContent[] _sourceTypeContent;
-		static float _lineHeight = EditorGUIUtility.singleLineHeight;
+		private bool _isGUIContentSet = false;
+		private GUIContent[] _sourceTypeContent;
+		private static float _lineHeight = EditorGUIUtility.singleLineHeight;
 
-		VectorLayerPropertiesDrawer _vectorLayerDrawer = new VectorLayerPropertiesDrawer();
+		private VectorLayerPropertiesDrawer _vectorLayerDrawer = new();
 
-		public override void OnInspectorGUI()
-		{
+		public override void OnInspectorGUI() {
 			objectId = serializedObject.targetObject.GetInstanceID().ToString();
 			serializedObject.Update();
 			EditorGUILayout.BeginVertical();
 			EditorGUILayout.Space();
 
-			var previewOptions = serializedObject.FindProperty("_previewOptions");
-			var prevProp = previewOptions.FindPropertyRelative("isPreviewEnabled");
-			var prev = prevProp.boolValue;
+			SerializedProperty previewOptions = serializedObject.FindProperty("_previewOptions");
+			SerializedProperty prevProp = previewOptions.FindPropertyRelative("isPreviewEnabled");
+			bool prev = prevProp.boolValue;
 
 			Color guiColor = GUI.color;
-			GUI.color = (prev) ? previewButtonColor : guiColor;
+			GUI.color = prev ? previewButtonColor : guiColor;
 
-			GUIStyle style = new GUIStyle("Button");
+			GUIStyle style = new("Button");
 			style.alignment = TextAnchor.MiddleCenter;
 
-			if (!Application.isPlaying)
-			{
+			if (!Application.isPlaying) {
 				prevProp.boolValue = GUILayout.Toggle(prevProp.boolValue, "Enable Preview", style);
 				GUI.color = guiColor;
 				EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 			}
 
-			ShowGeneral = EditorGUILayout.Foldout(ShowGeneral, new GUIContent { text = "GENERAL", tooltip = "Options related to map data" });
+			ShowGeneral = EditorGUILayout.Foldout(
+				ShowGeneral, new GUIContent {
+					text = "GENERAL",
+					tooltip = "Options related to map data"
+				}
+			);
 
-			if (ShowGeneral)
-			{
+			if (ShowGeneral) {
 				DrawMapOptions(serializedObject);
 			}
+
 			ShowSepartor();
 
 			ShowImage = EditorGUILayout.Foldout(ShowImage, "IMAGE");
-			if (ShowImage)
-			{
+
+			if (ShowImage) {
 				GUILayout.Space(-1.5f * _lineHeight);
 				ShowSection(serializedObject.FindProperty("_imagery"), "_layerProperty");
 			}
@@ -143,8 +118,8 @@ namespace Mapbox.Editor
 			ShowSepartor();
 
 			ShowTerrain = EditorGUILayout.Foldout(ShowTerrain, "TERRAIN");
-			if (ShowTerrain)
-			{
+
+			if (ShowTerrain) {
 				GUILayout.Space(-1.5f * _lineHeight);
 				ShowSection(serializedObject.FindProperty("_terrain"), "_layerProperty");
 			}
@@ -152,75 +127,71 @@ namespace Mapbox.Editor
 			ShowSepartor();
 
 			ShowMapLayers = EditorGUILayout.Foldout(ShowMapLayers, "MAP LAYERS");
-			if (ShowMapLayers)
-			{
+
+			if (ShowMapLayers) {
 				DrawMapLayerOptions();
 			}
+
 			EditorGUILayout.EndVertical();
 
 			EditorGUILayout.Space();
 
 			serializedObject.ApplyModifiedProperties();
-			var vectorDataProperty = serializedObject.FindProperty("_vectorData");
-			var layerProperty = vectorDataProperty.FindPropertyRelative("_layerProperty");
+			SerializedProperty vectorDataProperty = serializedObject.FindProperty("_vectorData");
+			SerializedProperty layerProperty = vectorDataProperty.FindPropertyRelative("_layerProperty");
 			_vectorLayerDrawer.PostProcessLayerProperties(layerProperty);
-			if (!Application.isPlaying)
-			{
-				if (prevProp.boolValue && !prev)
-				{
+
+			if (!Application.isPlaying) {
+				if (prevProp.boolValue && !prev) {
 					((AbstractMap)serializedObject.targetObject).EnableEditorPreview();
 				}
-				else if (prev && !prevProp.boolValue)
-				{
+				else if (prev && !prevProp.boolValue) {
 					((AbstractMap)serializedObject.targetObject).DisableEditorPreview();
 				}
 			}
 		}
 
-		void ShowSection(SerializedProperty property, string propertyName)
-		{
+		private void ShowSection(SerializedProperty property, string propertyName) {
 			EditorGUILayout.Space();
 			EditorGUILayout.PropertyField(property.FindPropertyRelative(propertyName));
 		}
 
-		void ShowSepartor()
-		{
+		private void ShowSepartor() {
 			EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 			EditorGUILayout.Space();
 		}
 
-		void DrawMapOptions(SerializedObject mapObject)
-		{
-			var property = mapObject.FindProperty("_options");
-			if (!((AbstractMap)serializedObject.targetObject).IsAccessTokenValid)
-			{
-				EditorGUILayout.HelpBox("Invalid Access Token. Please add a valid access token using the Mapbox  > Setup Menu", MessageType.Error);
+		private void DrawMapOptions(SerializedObject mapObject) {
+			SerializedProperty property = mapObject.FindProperty("_options");
+
+			if (!((AbstractMap)serializedObject.targetObject).IsAccessTokenValid) {
+				EditorGUILayout.HelpBox(
+					"Invalid Access Token. Please add a valid access token using the Mapbox  > Setup Menu",
+					MessageType.Error
+				);
 			}
 
 			EditorGUILayout.LabelField("Location ", GUILayout.Height(_lineHeight));
 
 			EditorGUILayout.PropertyField(property.FindPropertyRelative("locationOptions"));
 
+			SerializedProperty extentOptions = property.FindPropertyRelative("extentOptions");
+			SerializedProperty extentOptionsType = extentOptions.FindPropertyRelative("extentType");
 
-			var extentOptions = property.FindPropertyRelative("extentOptions");
-			var extentOptionsType = extentOptions.FindPropertyRelative("extentType");
-
-
-			if ((MapExtentType)extentOptionsType.enumValueIndex == MapExtentType.Custom)
-			{
-				var tileProviderProperty = mapObject.FindProperty("_tileProvider");
+			if ((MapExtentType)extentOptionsType.enumValueIndex == MapExtentType.Custom) {
+				SerializedProperty tileProviderProperty = mapObject.FindProperty("_tileProvider");
 				EditorGUI.BeginChangeCheck();
 				EditorGUILayout.PropertyField(extentOptionsType);
-				if (EditorGUI.EndChangeCheck())
-				{
+
+				if (EditorGUI.EndChangeCheck()) {
 					EditorHelper.CheckForModifiedProperty(extentOptions);
 				}
+
 				EditorGUI.indentLevel++;
 				EditorGUILayout.PropertyField(tileProviderProperty);
 				EditorGUI.indentLevel--;
 			}
-			else
-			{
+			else {
 				GUILayout.Space(-_lineHeight);
 				EditorGUILayout.PropertyField(extentOptions);
 			}
@@ -229,70 +200,68 @@ namespace Mapbox.Editor
 
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("_initializeOnStart"));
 
-			if (EditorGUI.EndChangeCheck())
-			{
+			if (EditorGUI.EndChangeCheck()) {
 				EditorHelper.CheckForModifiedProperty(property);
 			}
 
 			ShowPosition = EditorGUILayout.Foldout(ShowPosition, "Others");
-			if (ShowPosition)
-			{
+
+			if (ShowPosition) {
 				GUILayout.Space(-_lineHeight);
 
 				EditorGUI.BeginChangeCheck();
-				var placementOptions = property.FindPropertyRelative("placementOptions");
+				SerializedProperty placementOptions = property.FindPropertyRelative("placementOptions");
 				EditorGUILayout.PropertyField(placementOptions);
-				if (EditorGUI.EndChangeCheck())
-				{
+
+				if (EditorGUI.EndChangeCheck()) {
 					EditorHelper.CheckForModifiedProperty(placementOptions);
 				}
 
 				GUILayout.Space(-_lineHeight);
 
 				EditorGUI.BeginChangeCheck();
-				var scalingOptions = property.FindPropertyRelative("scalingOptions");
+				SerializedProperty scalingOptions = property.FindPropertyRelative("scalingOptions");
 				EditorGUILayout.PropertyField(scalingOptions);
-				if (EditorGUI.EndChangeCheck())
-				{
+
+				if (EditorGUI.EndChangeCheck()) {
 					EditorHelper.CheckForModifiedProperty(scalingOptions);
 				}
 
 				EditorGUI.BeginChangeCheck();
 				EditorGUILayout.PropertyField(property.FindPropertyRelative("loadingTexture"));
 				EditorGUILayout.PropertyField(property.FindPropertyRelative("tileMaterial"));
-				if (EditorGUI.EndChangeCheck())
-				{
+
+				if (EditorGUI.EndChangeCheck()) {
 					EditorHelper.CheckForModifiedProperty(property);
 				}
 			}
 		}
 
-		void DrawMapLayerOptions()
-		{
-			var vectorDataProperty = serializedObject.FindProperty("_vectorData");
-			var layerProperty = vectorDataProperty.FindPropertyRelative("_layerProperty");
-			var layerSourceProperty = layerProperty.FindPropertyRelative("sourceOptions");
-			var sourceTypeProperty = layerProperty.FindPropertyRelative("_sourceType");
+		private void DrawMapLayerOptions() {
+			SerializedProperty vectorDataProperty = serializedObject.FindProperty("_vectorData");
+			SerializedProperty layerProperty = vectorDataProperty.FindPropertyRelative("_layerProperty");
+			SerializedProperty layerSourceProperty = layerProperty.FindPropertyRelative("sourceOptions");
+			SerializedProperty sourceTypeProperty = layerProperty.FindPropertyRelative("_sourceType");
 			VectorSourceType sourceTypeValue = (VectorSourceType)sourceTypeProperty.enumValueIndex;
-			var layerSourceId = layerProperty.FindPropertyRelative("sourceOptions.layerSource.Id");
+			SerializedProperty layerSourceId = layerProperty.FindPropertyRelative("sourceOptions.layerSource.Id");
 			string layerString = layerSourceId.stringValue;
-			var isActiveProperty = layerSourceProperty.FindPropertyRelative("isActive");
+			SerializedProperty isActiveProperty = layerSourceProperty.FindPropertyRelative("isActive");
 
-			var displayNames = sourceTypeProperty.enumDisplayNames;
-			var names = sourceTypeProperty.enumNames;
+			string[] displayNames = sourceTypeProperty.enumDisplayNames;
+			string[] names = sourceTypeProperty.enumNames;
 			int count = sourceTypeProperty.enumDisplayNames.Length;
-			if (!_isGUIContentSet)
-			{
+
+			if (!_isGUIContentSet) {
 				_sourceTypeContent = new GUIContent[count];
 
-				var index = 0;
-				foreach (var name in names)
-				{
-					_sourceTypeContent[index] = new GUIContent
-					{
+				int index = 0;
+
+				foreach (string name in names) {
+					_sourceTypeContent[index] = new GUIContent {
 						text = displayNames[index],
-						tooltip = ((VectorSourceType)Enum.Parse(typeof(VectorSourceType), name)).Description(),
+						tooltip = ((VectorSourceType)Enum.Parse(typeof(VectorSourceType), name)).Description()
 					};
+
 					index++;
 				}
 				//
@@ -309,22 +278,24 @@ namespace Mapbox.Editor
 			}
 
 			EditorGUI.BeginChangeCheck();
-			sourceTypeProperty.enumValueIndex = EditorGUILayout.Popup(new GUIContent
-			{
-				text = "Data Source",
-				tooltip = "Source tileset for Vector Data"
-			}, sourceTypeProperty.enumValueIndex, _sourceTypeContent);
+			sourceTypeProperty.enumValueIndex = EditorGUILayout.Popup(
+				new GUIContent {
+					text = "Data Source",
+					tooltip = "Source tileset for Vector Data"
+				}, sourceTypeProperty.enumValueIndex, _sourceTypeContent
+			);
 
 			//sourceTypeValue = (VectorSourceType)sourceTypeProperty.enumValueIndex;
-			sourceTypeValue = ((VectorSourceType)Enum.Parse(typeof(VectorSourceType), names[sourceTypeProperty.enumValueIndex]));
+			sourceTypeValue = (VectorSourceType)Enum.Parse(
+				typeof(VectorSourceType), names[sourceTypeProperty.enumValueIndex]
+			);
 
-			switch (sourceTypeValue)
-			{
+			switch (sourceTypeValue) {
 				case VectorSourceType.MapboxStreets:
 				case VectorSourceType.MapboxStreetsV8:
 				case VectorSourceType.MapboxStreetsWithBuildingIds:
 				case VectorSourceType.MapboxStreetsV8WithBuildingIds:
-					var sourcePropertyValue = MapboxDefaultVector.GetParameters(sourceTypeValue);
+					Style sourcePropertyValue = MapboxDefaultVector.GetParameters(sourceTypeValue);
 					layerSourceId.stringValue = sourcePropertyValue.Id;
 					GUI.enabled = false;
 					EditorGUILayout.PropertyField(layerSourceProperty, tilesetIdGui);
@@ -343,17 +314,20 @@ namespace Mapbox.Editor
 					break;
 			}
 
-			if (sourceTypeValue != VectorSourceType.None)
-			{
-				var isStyleOptimized = layerProperty.FindPropertyRelative("useOptimizedStyle");
+			if (sourceTypeValue != VectorSourceType.None) {
+				SerializedProperty isStyleOptimized = layerProperty.FindPropertyRelative("useOptimizedStyle");
 				EditorGUILayout.PropertyField(isStyleOptimized);
 
-				if (isStyleOptimized.boolValue)
-				{
-					EditorGUILayout.PropertyField(layerProperty.FindPropertyRelative("optimizedStyle"), new GUIContent("Style Options"));
+				if (isStyleOptimized.boolValue) {
+					EditorGUILayout.PropertyField(
+						layerProperty.FindPropertyRelative("optimizedStyle"), new GUIContent("Style Options")
+					);
 				}
+
 				GUILayout.Space(-_lineHeight);
-				EditorGUILayout.PropertyField(layerProperty.FindPropertyRelative("performanceOptions"), new GUIContent("Perfomance Options"));
+				EditorGUILayout.PropertyField(
+					layerProperty.FindPropertyRelative("performanceOptions"), new GUIContent("Perfomance Options")
+				);
 			}
 
 			EditorGUILayout.Space();
@@ -361,10 +335,11 @@ namespace Mapbox.Editor
 
 			_vectorLayerDrawer.DrawUI(layerProperty);
 
-			if (EditorGUI.EndChangeCheck())
-			{
+			if (EditorGUI.EndChangeCheck()) {
 				EditorHelper.CheckForModifiedProperty(layerProperty);
 			}
 		}
+
 	}
+
 }

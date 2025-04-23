@@ -4,27 +4,26 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Directions
-{
-    using System;
-    using System.Text;
-    using Mapbox.Json;
-    using Mapbox.Platform;
-    using Mapbox.Utils.JsonConverters;
+namespace Mapbox.Directions {
 
-    /// <summary>
-    ///     Wrapper around the <see href="https://www.mapbox.com/api-documentation/navigation/#directions">
-    ///     Mapbox Directions API</see>. The Mapbox Directions API will show you how to get where
-    ///     you're going.
-    /// </summary>
-    public sealed class Directions
-	{
+	using System;
+	using System.Text;
+	using Json;
+	using Platform;
+	using Utils.JsonConverters;
+
+	/// <summary>
+	///     Wrapper around the <see href="https://www.mapbox.com/api-documentation/navigation/#directions">
+	///     Mapbox Directions API</see>. The Mapbox Directions API will show you how to get where
+	///     you're going.
+	/// </summary>
+	public sealed class Directions {
+
 		private readonly IFileSource fileSource;
 
 		/// <summary> Initializes a new instance of the <see cref="Directions" /> class. </summary>
 		/// <param name="fileSource"> Network access abstraction. </param>
-		public Directions(IFileSource fileSource)
-		{
+		public Directions(IFileSource fileSource) {
 			this.fileSource = fileSource;
 		}
 
@@ -36,18 +35,18 @@ namespace Mapbox.Directions
 		///     request. This handle can be completely ignored if there is no intention of ever
 		///     canceling the request.
 		/// </returns>
-		public IAsyncRequest Query(DirectionResource direction, Action<DirectionsResponse> callback)
-		{
-			return this.fileSource.Request(
+		public IAsyncRequest Query(DirectionResource direction, Action<DirectionsResponse> callback) {
+			return fileSource.Request(
 				direction.GetUrl(),
 				(Response response) =>
 				{
-					var str = Encoding.UTF8.GetString(response.Data);
+					string str = Encoding.UTF8.GetString(response.Data);
 
-					var data = Deserialize(str);
+					DirectionsResponse data = Deserialize(str);
 
 					callback(data);
-				});
+				}
+			);
 		}
 
 		/// <summary>
@@ -55,15 +54,14 @@ namespace Mapbox.Directions
 		/// </summary>
 		/// <param name="str">JSON String.</param>
 		/// <returns>A <see cref="DirectionsResponse"/>.</returns>
-		public DirectionsResponse Deserialize(string str)
-		{
+		public DirectionsResponse Deserialize(string str) {
 			return JsonConvert.DeserializeObject<DirectionsResponse>(str, JsonConverters.Converters);
 		}
 
-		public string Serialize(DirectionsResponse response)
-		{
+		public string Serialize(DirectionsResponse response) {
 			return JsonConvert.SerializeObject(response, JsonConverters.Converters);
 		}
 
 	}
+
 }

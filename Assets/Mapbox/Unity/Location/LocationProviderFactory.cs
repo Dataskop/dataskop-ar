@@ -5,7 +5,7 @@
 namespace Mapbox.Unity.Location {
 
 	using UnityEngine;
-	using Mapbox.Unity.Map;
+	using Map;
 	using System.Text.RegularExpressions;
 
 	/// <summary>
@@ -19,33 +19,31 @@ namespace Mapbox.Unity.Location {
 
 		[SerializeField]
 		[Tooltip("Provider using Unity's builtin 'Input.Location' service")]
-		AbstractLocationProvider _deviceLocationProviderUnity;
+		private AbstractLocationProvider _deviceLocationProviderUnity;
 
 		[SerializeField]
 		[Tooltip("Custom native Android location provider. If this is not set above provider is used")]
-		DeviceLocationProviderAndroidNative _deviceLocationProviderAndroid;
+		private DeviceLocationProviderAndroidNative _deviceLocationProviderAndroid;
 
-		[SerializeField]
-		AbstractLocationProvider _editorLocationProvider;
+		[SerializeField] private AbstractLocationProvider _editorLocationProvider;
 
-		[SerializeField]
-		AbstractLocationProvider _transformLocationProvider;
+		[SerializeField] private AbstractLocationProvider _transformLocationProvider;
 
-		[SerializeField]
-		bool _dontDestroyOnLoad;
+		[SerializeField] private bool _dontDestroyOnLoad;
 
 		/// <summary>
 		/// The singleton instance of this factory.
 		/// </summary>
 		private static LocationProviderFactory _instance;
 
-		public static LocationProviderFactory Instance {
-			get { return _instance; }
+		public static LocationProviderFactory Instance
+		{
+			get => _instance;
 
-			private set { _instance = value; }
+			private set => _instance = value;
 		}
 
-		ILocationProvider _defaultLocationProvider;
+		private ILocationProvider _defaultLocationProvider;
 
 		/// <summary>
 		/// The default location provider. 
@@ -64,31 +62,26 @@ namespace Mapbox.Unity.Location {
 		/// }
 		/// </code>
 		/// </example>
-		public ILocationProvider DefaultLocationProvider {
-			get { return _defaultLocationProvider; }
-			set { _defaultLocationProvider = value; }
+		public ILocationProvider DefaultLocationProvider
+		{
+			get => _defaultLocationProvider;
+			set => _defaultLocationProvider = value;
 		}
 
 		/// <summary>
 		/// Returns the serialized <see cref="T:Mapbox.Unity.Location.TransformLocationProvider"/>.
 		/// </summary>
-		public ILocationProvider TransformLocationProvider {
-			get { return _transformLocationProvider; }
-		}
+		public ILocationProvider TransformLocationProvider => _transformLocationProvider;
 
 		/// <summary>
 		/// Returns the serialized <see cref="T:Mapbox.Unity.Location.EditorLocationProvider"/>.
 		/// </summary>
-		public ILocationProvider EditorLocationProvider {
-			get { return _editorLocationProvider; }
-		}
+		public ILocationProvider EditorLocationProvider => _editorLocationProvider;
 
 		/// <summary>
 		/// Returns the serialized <see cref="T:Mapbox.Unity.Location.DeviceLocationProvider"/>
 		/// </summary>
-		public ILocationProvider DeviceLocationProvider {
-			get { return _deviceLocationProviderUnity; }
-		}
+		public ILocationProvider DeviceLocationProvider => _deviceLocationProviderUnity;
 
 		/// <summary>
 		/// Create singleton instance and inject the DefaultLocationProvider upon initialization of this component. 
@@ -114,7 +107,7 @@ namespace Mapbox.Unity.Location {
 		/// Depending on the platform, this method and calls to it will be stripped during compile.
 		/// </summary>
 		[System.Diagnostics.Conditional("UNITY_EDITOR")]
-		void InjectEditorLocationProvider() {
+		private void InjectEditorLocationProvider() {
 			DefaultLocationProvider = _editorLocationProvider;
 		}
 
@@ -123,11 +116,12 @@ namespace Mapbox.Unity.Location {
 		/// Depending on the platform, this method and calls to it will be stripped during compile.
 		/// </summary>
 		[System.Diagnostics.Conditional("NOT_UNITY_EDITOR")]
-		void InjectDeviceLocationProvider() {
+		private void InjectDeviceLocationProvider() {
 			int AndroidApiVersion = 0;
-			var regex = new Regex(@"(?<=API-)-?\d+");
+			Regex regex = new(@"(?<=API-)-?\d+");
 			Match match =
 				regex.Match(SystemInfo.operatingSystem); // eg 'Android OS 8.1.0 / API-27 (OPM2.171019.029/4657601)'
+
 			if (match.Success) {
 				int.TryParse(match.Groups[0].Value, out AndroidApiVersion);
 			}

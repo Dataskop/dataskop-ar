@@ -1,23 +1,13 @@
 #nullable enable
 using UnityEngine;
 
-namespace DataskopAR {
+namespace Dataskop {
 
 	public static class AccountManager {
 
-#region Constants
-
 		private const string APITokenKey = "API_TOKEN";
 
-#endregion
-
-#region Properties
-
 		public static bool IsLoggedIn => TryGetLoginToken() != null;
-
-#endregion
-
-#region Methods
 
 		private static bool HasToken() {
 			return PlayerPrefs.HasKey(APITokenKey);
@@ -38,12 +28,13 @@ namespace DataskopAR {
 
 		public static string? TryGetLoginToken() {
 			string? token = PlayerPrefs.GetString(APITokenKey, null);
-			if (token == null) return null;
+
+			if (token == null) {
+				return null;
+			}
 
 			return !string.IsNullOrEmpty(token) ? token : null;
 		}
-
-#endregion
 
 	}
 

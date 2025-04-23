@@ -4,19 +4,15 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.MapboxSdkCs.UnitTest
-{
+namespace Mapbox.MapboxSdkCs.UnitTest {
 
 	using System.Collections.Generic;
 	using Mapbox.Utils;
 	using NUnit.Framework;
 
-
 	/// <summary>Polyline utils test.</summary>
 	[TestFixture]
-	public class PolylineUtilsTest
-	{
-
+	public class PolylineUtilsTest {
 
 		/// <summary>
 		/// Tests the decode.
@@ -25,11 +21,11 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 		/// Sample values from https://developers.google.com/maps/documentation/utilities/polylinealgorithm.
 		/// </remarks>    
 		[Test]
-		public void TestDecode()
-		{
+		public void TestDecode() {
 			// _p~iF~ps|U_ulLnnqC_mqNvxq`@
 			List<Vector2d> path = PolylineUtils.Decode(
-			  "_p~iF~ps|U_ulLnnqC_mqNvxq`@");
+				"_p~iF~ps|U_ulLnnqC_mqNvxq`@"
+			);
 
 			// (38.5, -120.2), (40.7, -120.95), (43.252, -126.453)
 			Assert.AreEqual(-120.2, path[0].y);
@@ -40,13 +36,11 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 			Assert.AreEqual(43.252, path[2].x);
 		}
 
-
 		/// <summary>Tests the encode.</summary>
 		[Test]
-		public void TestEncode()
-		{
+		public void TestEncode() {
 			// (38.5, -120.2), (40.7, -120.95), (43.252, -126.453)
-			var path = new List<Vector2d>();
+			List<Vector2d> path = new();
 			path.Add(new Vector2d(38.5, -120.2));
 			path.Add(new Vector2d(40.7, -120.95));
 			path.Add(new Vector2d(43.252, -126.453));
@@ -55,6 +49,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 			Assert.AreEqual("_p~iF~ps|U_ulLnnqC_mqNvxq`@", PolylineUtils.Encode(path));
 		}
 
-
 	}
+
 }

@@ -4,12 +4,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Map
-{
+namespace Mapbox.Map {
+
 	using System;
 	using System.Collections.Generic;
-	using Mapbox.Platform;
-	using Mapbox.Utils;
+	using Platform;
+	using Utils;
 
 	/// <summary>
 	///     The Mapbox Map abstraction will take care of fetching and decoding
@@ -34,8 +34,8 @@ namespace Mapbox.Map
 	/// map.Update();
 	/// </code>
 	/// </example>
-	public sealed class Map<T> : Mapbox.Utils.IObservable<T> where T : Tile, new()
-	{
+	public sealed class Map<T> : Utils.IObservable<T> where T : Tile, new() {
+
 		/// <summary>
 		///     Arbitrary limit of tiles this class will handle simultaneously.
 		/// </summary>
@@ -46,18 +46,17 @@ namespace Mapbox.Map
 		private int zoom;
 		private string tilesetId;
 
-		private HashSet<T> tiles = new HashSet<T>();
-		private List<Mapbox.Utils.IObserver<T>> observers = new List<Mapbox.Utils.IObserver<T>>();
+		private HashSet<T> tiles = new();
+		private List<Utils.IObserver<T>> observers = new();
 
 		/// <summary>
 		///     Initializes a new instance of the <see cref="T:Mapbox.Map.Map`1"/> class.
 		/// </summary>
 		/// <param name="fs"> The data source abstraction. </param>
-		public Map(IFileSource fs)
-		{
+		public Map(IFileSource fs) {
 			this.fs = fs;
-			this.latLngBounds = new Vector2dBounds();
-			this.zoom = 0;
+			latLngBounds = new Vector2dBounds();
+			zoom = 0;
 		}
 
 		/// <summary>
@@ -72,26 +71,21 @@ namespace Mapbox.Map
 		/// </value>
 		public string TilesetId
 		{
-			get
-			{
-				return this.tilesetId;
-			}
+			get => tilesetId;
 
 			set
 			{
-				if (this.tilesetId == value)
-				{
+				if (tilesetId == value) {
 					return;
 				}
 
-				this.tilesetId = value;
+				tilesetId = value;
 
-				foreach (Tile tile in this.tiles)
-				{
+				foreach (Tile tile in tiles) {
 					tile.Cancel();
 				}
 
-				this.tiles.Clear();
+				tiles.Clear();
 			}
 		}
 
@@ -100,57 +94,33 @@ namespace Mapbox.Map
 		///     in a incomplete state.
 		/// </summary>
 		/// <value> The tiles. </value>
-		public HashSet<T> Tiles
-		{
-			get
-			{
-				return this.tiles;
-			}
-		}
+		public HashSet<T> Tiles => tiles;
 
 		/// <summary>Gets or sets a geographic bounding box.</summary>
 		/// <value>New geographic bounding box.</value>
 		public Vector2dBounds Vector2dBounds
 		{
-			get
-			{
-				return this.latLngBounds;
-			}
+			get => latLngBounds;
 
-			set
-			{
-				this.latLngBounds = value;
-			}
+			set => latLngBounds = value;
 		}
 
 		/// <summary>Gets or sets the central coordinate of the map.</summary>
 		/// <value>The central coordinate.</value>
 		public Vector2d Center
 		{
-			get
-			{
-				return this.latLngBounds.Center;
-			}
+			get => latLngBounds.Center;
 
-			set
-			{
-				this.latLngBounds.Center = value;
-			}
+			set => latLngBounds.Center = value;
 		}
 
 		/// <summary>Gets or sets the map zoom level.</summary>
 		/// <value>The new zoom level.</value>
 		public int Zoom
 		{
-			get
-			{
-				return this.zoom;
-			}
+			get => zoom;
 
-			set
-			{
-				this.zoom = Math.Max(0, Math.Min(20, value));
-			}
+			set => zoom = Math.Max(0, Math.Min(20, value));
 		}
 
 		/// <summary>
@@ -158,32 +128,27 @@ namespace Mapbox.Map
 		/// </summary>
 		/// <param name="bounds"> Coordinates bounds. </param>
 		/// <param name="zoom"> Zoom level. </param>
-		public void SetVector2dBoundsZoom(Vector2dBounds bounds, int zoom)
-		{
-			this.latLngBounds = bounds;
+		public void SetVector2dBoundsZoom(Vector2dBounds bounds, int zoom) {
+			latLngBounds = bounds;
 			this.zoom = zoom;
 		}
 
 		/// <summary> Add an <see cref="T:IObserver" /> to the observer list. </summary>
 		/// <param name="observer"> The object subscribing to events. </param>
-		public void Subscribe(Mapbox.Utils.IObserver<T> observer)
-		{
-			this.observers.Add(observer);
+		public void Subscribe(Utils.IObserver<T> observer) {
+			observers.Add(observer);
 		}
 
 		/// <summary> Remove an <see cref="T:IObserver" /> to the observer list. </summary>
 		/// <param name="observer"> The object unsubscribing to events. </param>
-		public void Unsubscribe(Mapbox.Utils.IObserver<T> observer)
-		{
-			this.observers.Remove(observer);
+		public void Unsubscribe(Utils.IObserver<T> observer) {
+			observers.Remove(observer);
 		}
 
-		private void NotifyNext(T next)
-		{
-			var copy = new List<Mapbox.Utils.IObserver<T>>(this.observers);
+		private void NotifyNext(T next) {
+			List<Utils.IObserver<T>> copy = new(observers);
 
-			foreach (Mapbox.Utils.IObserver<T> observer in copy)
-			{
+			foreach (Utils.IObserver<T> observer in copy) {
 				observer.OnNext(next);
 			}
 		}
@@ -191,46 +156,45 @@ namespace Mapbox.Map
 		/// <summary>
 		/// Request tiles after changing map properties.
 		/// </summary>
-		public void Update()
-		{
-			var cover = TileCover.Get(this.latLngBounds, this.zoom);
+		public void Update() {
+			HashSet<CanonicalTileId> cover = TileCover.Get(latLngBounds, zoom);
 
-			if (cover.Count > TileMax)
-			{
+			if (cover.Count > TileMax) {
 				return;
 			}
 
 			// Do not request tiles that we are already requesting
 			// but at the same time exclude the ones we don't need
 			// anymore, cancelling the network request.
-			this.tiles.RemoveWhere((T tile) =>
+			tiles.RemoveWhere(
+				(T tile) =>
 				{
-					if (cover.Remove(tile.Id))
-					{
+					if (cover.Remove(tile.Id)) {
 						return false;
 					}
-					else
-					{
+					else {
 						tile.Cancel();
-						this.NotifyNext(tile);
+						NotifyNext(tile);
 
 						return true;
 					}
-				});
+				}
+			);
 
-			foreach (CanonicalTileId id in cover)
-			{
-				var tile = new T();
+			foreach (CanonicalTileId id in cover) {
+				T tile = new();
 
 				Tile.Parameters param;
 				param.Id = id;
-				param.TilesetId = this.tilesetId;
-				param.Fs = this.fs;
+				param.TilesetId = tilesetId;
+				param.Fs = fs;
 
-				tile.Initialize(param, () => { this.NotifyNext(tile); });
+				tile.Initialize(param, () => { NotifyNext(tile); });
 
-				this.tiles.Add(tile);
+				tiles.Add(tile);
 			}
 		}
+
 	}
+
 }

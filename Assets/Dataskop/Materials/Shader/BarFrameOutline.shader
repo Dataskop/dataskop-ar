@@ -1,4 +1,4 @@
-Shader "DataskopAR/PillarFrameOutline"
+Shader "Dataskop/BarFrameOutline"
 {
     Properties
     {
@@ -15,7 +15,7 @@ Shader "DataskopAR/PillarFrameOutline"
         {
             "RenderType"="Transparent"
             "Queue"="Transparent"
-            "RenderPipeline"="UniversalRenderPipeline"
+            "RenderPipeline"="UniversalPipeline"
         }
 
         Blend SrcAlpha OneMinusSrcAlpha
@@ -47,11 +47,11 @@ Shader "DataskopAR/PillarFrameOutline"
 
             sampler2D _MainTex;
             CBUFFER_START(UnityPerMaterial)
-            float4 _MainTex_ST;
-            half4 _Color;
-            float _Rotation;
-            float _PlaneTransparency;
-            float _FrameTransparency;
+                float4 _MainTex_ST;
+                half4 _Color;
+                float _Rotation;
+                float _PlaneTransparency;
+                float _FrameTransparency;
             CBUFFER_END
 
             v2f vert(appdata v)

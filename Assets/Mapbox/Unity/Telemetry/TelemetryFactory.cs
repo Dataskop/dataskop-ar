@@ -1,9 +1,8 @@
-﻿namespace Mapbox.Unity.Telemetry
-{
-	public static class TelemetryFactory
-	{
-		public static ITelemetryLibrary GetTelemetryInstance()
-		{
+﻿namespace Mapbox.Unity.Telemetry {
+
+	public static class TelemetryFactory {
+
+		public static ITelemetryLibrary GetTelemetryInstance() {
 #if UNITY_EDITOR
 			return TelemetryEditor.Instance;
 #elif UNITY_IOS
@@ -16,5 +15,7 @@
 			return TelemetryFallback.Instance;
 #endif
 		}
+
 	}
+
 }

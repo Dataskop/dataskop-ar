@@ -1,22 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
-using DataskopAR.Data;
+using Dataskop.Data;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public class VisSelectorUI : MonoBehaviour {
 
-#region Constants
-
 		private const string GroundedClass = "grounded";
 		private const string ElevatedClass = "elevated";
-
-#endregion
-
-#region Fields
 
 		[Header("Events")]
 		public UnityEvent<string> onAttributeSelected;
@@ -35,37 +29,33 @@ namespace DataskopAR.UI {
 
 		private bool isStateLocked;
 
-#endregion
-
-#region Properties
-
 		private VisualElement VisSelectorRoot { get; set; }
 
 		private VisualElement VisOptionSelector { get; set; }
 
 		private VisualElement AttributeSelector { get; set; }
 
-		private ICollection<DataAttribute> AvailableAttributes { get; set; }
+		private IReadOnlyCollection<DataAttribute> AvailableAttributes { get; set; }
 
-		private ICollection<VisualizationOption> AvailableVisOptions { get; set; }
+		private IReadOnlyCollection<VisualizationOption> AvailableVisOptions { get; set; }
 
 		private List<Button> AttributeButtons { get; set; }
 
 		private List<Button> VisOptionButtons { get; set; }
 
-#endregion
-
-#region Methods
+		private void Start() {
+			VisSelectorRoot.AddToClassList(GroundedClass);
+		}
 
 		private void OnEnable() {
 			VisSelectorRoot = visSelectorUIDoc.rootVisualElement;
 			VisOptionSelector = VisSelectorRoot.Q<VisualElement>("vis-selector");
 			AttributeSelector = VisSelectorRoot.Q<VisualElement>("attribute-selector");
-			dataAttributeManager.selectedAttributeChanged += SelectExternalAttribute;
+			dataAttributeManager.SelectedAttributeChanged += SelectExternalAttribute;
 		}
 
-		private void Start() {
-			VisSelectorRoot.AddToClassList(GroundedClass);
+		private void OnDisable() {
+			dataAttributeManager.SelectedAttributeChanged -= SelectExternalAttribute;
 		}
 
 		private void SelectExternalAttribute(DataAttribute selectedAttribute) {
@@ -89,7 +79,9 @@ namespace DataskopAR.UI {
 				AttributeButtons.Add(newAttributeButton);
 			}
 
-			if (AttributeButtons.Count > 0) SelectAttributeButton(AttributeButtons[0]);
+			if (AvailableAttributes.Count > 0) {
+				SelectAttributeButton(AttributeButtons[0]);
+			}
 		}
 
 		private Button CreateAttributeElement(string attributeId, string attributeLabel) {
@@ -101,21 +93,27 @@ namespace DataskopAR.UI {
 			attributeButton.text = attributeLabel;
 			attributeButton.name = attributeId;
 
-			attributeButton.RegisterCallback<ClickEvent>(e => {
-				SelectAttributeButton(attributeButton);
-				SelectAttribute(attributeButton.name);
-			});
+			attributeButton.RegisterCallback<ClickEvent>(
+				e =>
+				{
+					SelectAttributeButton(attributeButton);
+					SelectAttribute(attributeButton.name);
+				}
+			);
 
 			return attributeButton;
 		}
 
 		private void SelectAttributeButton(Button selectedButton) {
 
-			foreach (Button b in AttributeButtons)
-				if (b == selectedButton)
+			foreach (Button b in AttributeButtons) {
+				if (b == selectedButton) {
 					b.AddToClassList("selected");
-				else
+				}
+				else {
 					b.RemoveFromClassList("selected");
+				}
+			}
 
 		}
 
@@ -164,16 +162,19 @@ namespace DataskopAR.UI {
 					.style.backgroundImage =
 				new StyleBackground(visualizationIcons.First(visIcon => visIcon.name == visOpt.Type));
 
-			visOptButton.RegisterCallback<ClickEvent>(e => {
-				SelectVisOptionButton(visOptButton);
-				SelectVisOption(visOpt);
-			});
+			visOptButton.RegisterCallback<ClickEvent>(
+				e =>
+				{
+					SelectVisOptionButton(visOptButton);
+					SelectVisOption(visOpt);
+				}
+			);
 
 			return visOptButton;
 		}
 
 		private void SelectVisOptionButton(Button selectedButton) {
-			foreach (Button b in VisOptionButtons)
+			foreach (Button b in VisOptionButtons) {
 				if (b == selectedButton) {
 					b.AddToClassList("selected");
 					b.Q<VisualElement>("icon").style.unityBackgroundImageTintColor = new StyleColor(selectedIconColor);
@@ -183,6 +184,7 @@ namespace DataskopAR.UI {
 					b.Q<VisualElement>("icon").style.unityBackgroundImageTintColor =
 						new StyleColor(deselectedIconColor);
 				}
+			}
 		}
 
 		private void SelectVisOption(VisualizationOption visOpt) {
@@ -191,7 +193,9 @@ namespace DataskopAR.UI {
 
 		public void ChangeVisSelectorPosition(InfoCardState infoCardState) {
 
-			if (isStateLocked) return;
+			if (isStateLocked) {
+				return;
+			}
 
 			switch (infoCardState) {
 				case InfoCardState.Short:
@@ -214,12 +218,6 @@ namespace DataskopAR.UI {
 			VisSelectorRoot.style.visibility =
 				new StyleEnum<Visibility>(isVisible ? Visibility.Visible : Visibility.Hidden);
 		}
-
-		private void OnDisable() {
-			dataAttributeManager.selectedAttributeChanged -= SelectExternalAttribute;
-		}
-
-#endregion
 
 	}
 

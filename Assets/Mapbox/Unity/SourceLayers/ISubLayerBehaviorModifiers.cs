@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using Mapbox.Unity.MeshGeneration.Modifiers;
 
-namespace Mapbox.Unity.Map
-{
-	public interface ISubLayerBehaviorModifiers
-	{
+namespace Mapbox.Unity.Map {
+
+	public interface ISubLayerBehaviorModifiers {
+
 		void IsBuildingIdsUnique(bool isUniqueIds);
 
 		void AddMeshModifier(MeshModifier modifier);
@@ -17,5 +17,7 @@ namespace Mapbox.Unity.Map
 		void AddGameObjectModifier(List<GameObjectModifier> modifiers);
 		List<GameObjectModifier> GetGameObjectModifier(Func<GameObjectModifier, bool> act);
 		void RemoveGameObjectModifier(GameObjectModifier modifier);
+
 	}
+
 }

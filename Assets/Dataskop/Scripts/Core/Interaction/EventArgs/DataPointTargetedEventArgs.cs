@@ -1,15 +1,15 @@
 ﻿using System;
-using DataskopAR.Data;
+using Dataskop.Entities;
 
-namespace DataskopAR.Interaction {
+namespace Dataskop.Interaction {
 
 	public class DataPointTargetedEventArgs : EventArgs {
+
+		public DataPoint DataPoint { get; }
 
 		public DataPointTargetedEventArgs(DataPoint d) {
 			DataPoint = d;
 		}
-
-		public DataPoint DataPoint { get; }
 
 	}
 

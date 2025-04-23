@@ -1,13 +1,17 @@
-﻿namespace Mapbox.Unity.Map
-{
-	public interface ISubLayerTexturing
-	{
+﻿namespace Mapbox.Unity.Map {
+
+	public interface ISubLayerTexturing {
+
 		ISubLayerDarkStyle DarkStyle { get; }
+
 		ISubLayerLightStyle LightStyle { get; }
+
 		ISubLayerColorStyle ColorStyle { get; }
 
 		ISubLayerRealisticStyle RealisticStyle { get; }
+
 		ISubLayerFantasyStyle FantasyStyle { get; }
+
 		ISubLayerSimpleStyle SimpleStyle { get; }
 
 		ISubLayerCustomStyle CustomStyle { get; }
@@ -23,8 +27,7 @@
 		/// </summary>
 		/// <returns>The style type.</returns>
 		StyleTypes GetStyleType();
+
 	}
 
 }
-
-

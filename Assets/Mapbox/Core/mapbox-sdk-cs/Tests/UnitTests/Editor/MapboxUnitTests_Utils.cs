@@ -4,79 +4,55 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.MapboxSdkCs.UnitTest
-{
+namespace Mapbox.MapboxSdkCs.UnitTest {
 
 	using System.Collections.Generic;
-	using Mapbox.Map;
+	using Map;
 
+	internal static class Utils {
 
-	internal static class Utils
-	{
-		internal class VectorMapObserver : Mapbox.Utils.IObserver<VectorTile>
-		{
-			private List<VectorTile> tiles = new List<VectorTile>();
+		internal class VectorMapObserver : Mapbox.Utils.IObserver<VectorTile> {
 
-			public List<VectorTile> Tiles
-			{
-				get
-				{
-					return tiles;
-				}
-			}
+			private List<VectorTile> tiles = new();
 
-			public void OnNext(VectorTile tile)
-			{
-				if (tile.CurrentState == Tile.State.Loaded)
-				{
+			public List<VectorTile> Tiles => tiles;
+
+			public void OnNext(VectorTile tile) {
+				if (tile.CurrentState == Tile.State.Loaded) {
 					tiles.Add(tile);
 				}
 			}
+
 		}
 
-		internal class RasterMapObserver : Mapbox.Utils.IObserver<RasterTile>
-		{
-			private List<byte[]> tiles = new List<byte[]>();
+		internal class RasterMapObserver : Mapbox.Utils.IObserver<RasterTile> {
 
-			public List<byte[]> Tiles
-			{
-				get
-				{
-					return tiles;
-				}
-			}
+			private List<byte[]> tiles = new();
 
-			public void OnNext(RasterTile tile)
-			{
-				if (tile.CurrentState == Tile.State.Loaded && !tile.HasError)
-				{
+			public List<byte[]> Tiles => tiles;
+
+			public void OnNext(RasterTile tile) {
+				if (tile.CurrentState == Tile.State.Loaded && !tile.HasError) {
 					tiles.Add(tile.Data);
 				}
 			}
+
 		}
 
-		internal class ClassicRasterMapObserver : Mapbox.Utils.IObserver<ClassicRasterTile>
-		{
-			private List<byte[]> tiles = new List<byte[]>();
+		internal class ClassicRasterMapObserver : Mapbox.Utils.IObserver<ClassicRasterTile> {
 
-			public List<byte[]> Tiles
-			{
-				get
-				{
-					return tiles;
-				}
-			}
+			private List<byte[]> tiles = new();
 
-			public void OnNext(ClassicRasterTile tile)
-			{
-				if (tile.CurrentState == Tile.State.Loaded && !tile.HasError)
-				{
+			public List<byte[]> Tiles => tiles;
+
+			public void OnNext(ClassicRasterTile tile) {
+				if (tile.CurrentState == Tile.State.Loaded && !tile.HasError) {
 					tiles.Add(tile.Data);
 				}
 			}
+
 		}
-
-
 
 	}
+
 }

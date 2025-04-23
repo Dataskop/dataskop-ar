@@ -1,16 +1,27 @@
 #nullable enable
 
 using System;
-using System.Threading.Tasks;
-using DataskopAR.UI;
+using Dataskop.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace DataskopAR.Interaction {
+namespace Dataskop.Interaction {
 
 	public class InputHandler : MonoBehaviour {
 
-#region Events
+		[Header("References")]
+		[SerializeField] private Camera mainCamera = null!;
+		[SerializeField] private float minimumSwipeDistance = 100f;
+
+		private bool isInteracting;
+
+		public Camera MainCamera => mainCamera;
+
+		private Vector2 TapPosition { get; set; }
+
+		private PointerInteraction CurrentPointerInteraction { get; set; }
+
+		private Ray PointerRay { get; set; }
 
 		public event Action<PointerInteraction>? WorldPointerDowned;
 
@@ -20,38 +31,15 @@ namespace DataskopAR.Interaction {
 
 		public event Action<PointerInteraction>? InfoCardPointerUpped;
 
-#endregion
-
-#region Fields
-
-		[Header("References")]
-		[SerializeField] private Camera mainCamera = null!;
-		[SerializeField] private float minimumSwipeDistance = 100f;
-
-		private bool isInteracting;
-
-#endregion
-
-#region Properties
-
-		private Vector2 TapPosition { get; set; }
-
-		private PointerInteraction CurrentPointerInteraction { get; set; }
-
-		private Ray PointerRay { get; set; }
-
-#endregion
-
-#region Methods
-
 		public void TapPositionInput(InputAction.CallbackContext ctx) {
 			TapPosition = ctx.ReadValue<Vector2>();
 		}
 
-		public async void OnPointerDownInWorld(WorldPointerEventArgs e) {
-			await Task.Delay(10);
+		public void OnPointerDownInWorld(WorldPointerEventArgs e) {
 
-			if (isInteracting) return;
+			if (isInteracting) {
+				return;
+			}
 
 			isInteracting = true;
 
@@ -67,10 +55,11 @@ namespace DataskopAR.Interaction {
 			WorldPointerDowned?.Invoke(CurrentPointerInteraction);
 		}
 
-		public async void OnPointerUpInWorld(WorldPointerEventArgs e) {
-			await Task.Delay(10);
+		public void OnPointerUpInWorld(WorldPointerEventArgs e) {
 
-			if (!CurrentPointerInteraction.isDownPhase) return;
+			if (!CurrentPointerInteraction.isDownPhase) {
+				return;
+			}
 
 			PointerInteraction currentPointerInteraction = CurrentPointerInteraction;
 
@@ -99,7 +88,9 @@ namespace DataskopAR.Interaction {
 
 		public void OnPointerDownOnUI(UIPointerEventArgs e) {
 
-			if (isInteracting) return;
+			if (isInteracting) {
+				return;
+			}
 
 			isInteracting = true;
 
@@ -122,9 +113,13 @@ namespace DataskopAR.Interaction {
 
 		public void OnPointerUpOnUI(UIPointerEventArgs e) {
 
-			if (CurrentPointerInteraction.pointerId != e.pointerId) return;
+			if (CurrentPointerInteraction.pointerId != e.pointerId) {
+				return;
+			}
 
-			if (!CurrentPointerInteraction.isDownPhase) return;
+			if (!CurrentPointerInteraction.isDownPhase) {
+				return;
+			}
 
 			PointerInteraction currentPointerInteraction = CurrentPointerInteraction;
 
@@ -162,7 +157,8 @@ namespace DataskopAR.Interaction {
 
 #if UNITY_EDITOR
 
-		private Ray ReticuleToWorldRay => mainCamera.ScreenPointToRay(new Vector3(MousePosition.x, MousePosition.y, -5));
+		private Ray ReticuleToWorldRay =>
+			mainCamera.ScreenPointToRay(new Vector3(MousePosition.x, MousePosition.y, -5));
 
 		private static Vector3 MousePosition => Mouse.current.position.ReadValue();
 
@@ -200,8 +196,6 @@ namespace DataskopAR.Interaction {
 		}
 
 #endif
-
-#endregion
 
 	}
 

@@ -2,29 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataskopAR {
+namespace Dataskop {
 
 	/// <summary>
-	///     Class for receiving Error Codes, keeping track of received errors and sending out an event when receiving Errors.
+	/// Class for receiving Error Codes, keeping track of received errors and sending out an event when
+	/// receiving Errors.
 	/// </summary>
 	public static class ErrorHandler {
 
-#region Properties
+		#region ErrorType enum
 
-		/// <summary>
-		///     Collected Errors
-		/// </summary>
-		public static Queue<Error> ErrorQueue { get; } = new();
+		public enum ErrorType {
 
-#endregion
+			Tip,
+			Warning,
+			Error
 
-#region Fields
+		}
 
-		public static event EventHandler<ErrorReceivedEventArgs> OnErrorReceived;
-
-#endregion
-
-#region Constants
+		#endregion
 
 		private static readonly List<Error> ErrorList = new() {
 			new Error {
@@ -65,12 +61,15 @@ namespace DataskopAR {
 			Type = ErrorType.Error
 		};
 
-#endregion
+		/// <summary>
+		/// Collected Errors
+		/// </summary>
+		public static Queue<Error> ErrorQueue { get; } = new();
 
-#region Methods
+		public static event EventHandler<ErrorReceivedEventArgs> OnErrorReceived;
 
 		/// <summary>
-		///     Throws an error with the given error code.
+		/// Throws an error with the given error code.
 		/// </summary>
 		/// <param name="errorCode">The error code for the error to be thrown.</param>
 		/// <param name="sender">The object of the cause of the error.</param>
@@ -78,13 +77,15 @@ namespace DataskopAR {
 			Error thrownError = GetError(errorCode);
 			thrownError.TimeStamp = DateTime.Now;
 			ErrorQueue.Enqueue(thrownError);
-			OnErrorReceived?.Invoke(sender, new ErrorReceivedEventArgs {
-				Error = thrownError
-			});
+			OnErrorReceived?.Invoke(
+				sender, new ErrorReceivedEventArgs {
+					Error = thrownError
+				}
+			);
 		}
 
 		/// <summary>
-		///     Throws an error with the given error code and an additional value.
+		/// Throws an error with the given error code and an additional value.
 		/// </summary>
 		/// <param name="errorCode">The error code for the error to be thrown.</param>
 		/// <param name="value">An additional value as float.</param>
@@ -94,13 +95,16 @@ namespace DataskopAR {
 			thrownError.TimeStamp = DateTime.Now;
 			thrownError.Value = value;
 			ErrorQueue.Enqueue(thrownError);
-			OnErrorReceived?.Invoke(sender, new ErrorReceivedEventArgs {
-				Error = thrownError
-			});
+			OnErrorReceived?.Invoke(
+				sender, new ErrorReceivedEventArgs {
+					Error = thrownError
+				}
+			);
 		}
 
 		/// <summary>
-		///     Gets the error for the given error code. Returns an "Error Not Found"-Error when wrong error code was entered.
+		/// Gets the error for the given error code. Returns an "Error Not Found"-Error when wrong error
+		/// code was entered.
 		/// </summary>
 		/// <param name="errorCode">The error code used to retrieve the corresponding error.</param>
 		/// <returns>The <see cref="Error" /> with the given error code.</returns>
@@ -113,15 +117,14 @@ namespace DataskopAR {
 		private static string GetAvailableErrorCodes() {
 			StringBuilder codeString = new();
 
-			foreach (Error error in ErrorList)
+			foreach (Error error in ErrorList) {
 				codeString.Append($" ({error.ErrorCode}) ");
+			}
 
 			return codeString.ToString();
 		}
 
-#endregion
-
-#region Sub-Classes
+		#region Nested type: Error
 
 		public struct Error {
 
@@ -141,13 +144,9 @@ namespace DataskopAR {
 
 		}
 
-		public enum ErrorType {
+		#endregion
 
-			Tip,
-			Warning,
-			Error
-
-		}
+		#region Nested type: ErrorReceivedEventArgs
 
 		public class ErrorReceivedEventArgs : EventArgs {
 
@@ -155,7 +154,7 @@ namespace DataskopAR {
 
 		}
 
-#endregion
+		#endregion
 
 	}
 

@@ -1,10 +1,14 @@
 using UnityEngine;
 
-namespace DataskopAR.Entities {
+namespace Dataskop.Entities {
 
 	public class RotationLock : MonoBehaviour {
 
-#region Methods
+		[SerializeField] private Transform targetTransform;
+
+		[SerializeField] private bool freezeX;
+		[SerializeField] private bool freezeY;
+		[SerializeField] private bool freezeZ;
 
 		private void FixedUpdate() {
 
@@ -15,18 +19,6 @@ namespace DataskopAR.Entities {
 			transform.rotation = Quaternion.Euler(xEuler, yEuler, zEuler);
 
 		}
-
-#endregion
-
-#region Fields
-
-		[SerializeField] private Transform targetTransform;
-
-		[SerializeField] private bool freezeX;
-		[SerializeField] private bool freezeY;
-		[SerializeField] private bool freezeZ;
-
-#endregion
 
 	}
 

@@ -10,9 +10,9 @@
 
 namespace Mapbox.Platform {
 
-	using Mapbox.Map;
-    using Mapbox.Unity.Utilities;
-    using System;
+	using Map;
+	using Unity.Utilities;
+	using System;
 
 	/// <summary> A handle to an asynchronous request. </summary>
 	public static class IAsyncRequestFactory {
@@ -21,7 +21,7 @@ namespace Mapbox.Platform {
 			string url
 			, Action<Response> callback
 			, int timeout
-			, HttpRequestType requestType= HttpRequestType.Get
+			, HttpRequestType requestType = HttpRequestType.Get
 		) {
 #if !UNITY
 			if (Environment.ProcessorCount > 2) {
@@ -30,10 +30,10 @@ namespace Mapbox.Platform {
 				return new HTTPRequestNonThreaded(url, callback, timeout);
 			}
 #else
-			return new Mapbox.Unity.Utilities.HTTPRequest(url, callback, timeout, requestType);
+			return new HTTPRequest(url, callback, timeout, requestType);
 #endif
 		}
 
-
 	}
+
 }

@@ -1,11 +1,15 @@
 using JetBrains.Annotations;
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	[UsedImplicitly]
 	public class VisualizationStyle {
 
-#region Constructor
+		public bool IsTimeSeries { get; set; }
+
+		public bool HasDropShadow { get; set; }
+
+		public bool HasGroundLine { get; set; }
 
 		public VisualizationStyle(bool timeSeries, bool dropShadow, bool groundLine) {
 
@@ -14,18 +18,6 @@ namespace DataskopAR.Data {
 			HasGroundLine = groundLine;
 
 		}
-
-#endregion
-
-#region Properties
-
-		public bool IsTimeSeries { get; set; }
-
-		public bool HasDropShadow { get; set; }
-
-		public bool HasGroundLine { get; set; }
-
-#endregion
 
 	}
 

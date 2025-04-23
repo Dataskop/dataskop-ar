@@ -1,13 +1,8 @@
-namespace Mapbox.Unity.Location
-{
-
+namespace Mapbox.Unity.Location {
 
 	using UnityEngine;
 
-
-	public interface IMapboxLocationService
-	{
-
+	public interface IMapboxLocationService {
 
 		bool isEnabledByUser { get; }
 
@@ -18,5 +13,7 @@ namespace Mapbox.Unity.Location
 		void Start(float desiredAccuracyInMeters, float updateDistanceInMeters);
 
 		void Stop();
+
 	}
+
 }

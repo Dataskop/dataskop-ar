@@ -4,17 +4,17 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Map
-{
+namespace Mapbox.Map {
+
 	using System;
-	using Mapbox.Utils;
+	using Utils;
 
 	/// <summary>
 	/// Data type to store  <see href="https://en.wikipedia.org/wiki/Web_Mercator"> Web Mercator</see> tile scheme.
 	/// <see href="http://www.maptiler.org/google-maps-coordinates-tile-bounds-projection/"> See tile IDs in action. </see>
 	/// </summary>
-	public struct CanonicalTileId : IEquatable<CanonicalTileId>
-	{
+	public struct CanonicalTileId : IEquatable<CanonicalTileId> {
+
 		/// <summary> The zoom level. </summary>
 		public readonly int Z;
 
@@ -31,36 +31,33 @@ namespace Mapbox.Map
 		/// <param name="z"> The z coordinate or the zoom level. </param>
 		/// <param name="x"> The x coordinate. </param>
 		/// <param name="y"> The y coordinate. </param>
-		public CanonicalTileId(int z, int x, int y)
-		{
-			this.Z = z;
-			this.X = x;
-			this.Y = y;
+		public CanonicalTileId(int z, int x, int y) {
+			Z = z;
+			X = x;
+			Y = y;
 		}
 
-		internal CanonicalTileId(UnwrappedTileId unwrapped)
-		{
-			var z = unwrapped.Z;
-			var x = unwrapped.X;
-			var y = unwrapped.Y;
+		internal CanonicalTileId(UnwrappedTileId unwrapped) {
+			int z = unwrapped.Z;
+			int x = unwrapped.X;
+			int y = unwrapped.Y;
 
-			var wrap = (x < 0 ? x - (1 << z) + 1 : x) / (1 << z);
+			int wrap = (x < 0 ? x - (1 << z) + 1 : x) / (1 << z);
 
-			this.Z = z;
-			this.X = x - wrap * (1 << z);
-			this.Y = y < 0 ? 0 : Math.Min(y, (1 << z) - 1);
+			Z = z;
+			X = x - wrap * (1 << z);
+			Y = y < 0 ? 0 : Math.Min(y, (1 << z) - 1);
 		}
 
 		/// <summary>
 		///     Get the cordinate at the top left of corner of the tile.
 		/// </summary>
 		/// <returns> The coordinate. </returns>
-		public Vector2d ToVector2d()
-		{
-			double n = Math.PI - ((2.0 * Math.PI * this.Y) / Math.Pow(2.0, this.Z));
+		public Vector2d ToVector2d() {
+			double n = Math.PI - 2.0 * Math.PI * Y / Math.Pow(2.0, Z);
 
 			double lat = 180.0 / Math.PI * Math.Atan(Math.Sinh(n));
-			double lng = (this.X / Math.Pow(2.0, this.Z) * 360.0) - 180.0;
+			double lng = X / Math.Pow(2.0, Z) * 360.0 - 180.0;
 
 			// FIXME: Super hack because of rounding issues.
 			return new Vector2d(lat - 0.0001, lng + 0.0001);
@@ -74,44 +71,39 @@ namespace Mapbox.Map
 		///     A <see cref="T:System.String"/> that represents the current
 		///     <see cref="T:Mapbox.Map.CanonicalTileId"/>.
 		/// </returns>
-		public override string ToString()
-		{
-			return this.Z + "/" + this.X + "/" + this.Y;
+		public override string ToString() {
+			return Z + "/" + X + "/" + Y;
 		}
 
-		#region Equality 
-		public bool Equals(CanonicalTileId other)
-		{
-			return this.X == other.X && this.Y == other.Y && this.Z == other.Z;
+		#region Equality
+
+		public bool Equals(CanonicalTileId other) {
+			return X == other.X && Y == other.Y && Z == other.Z;
 		}
-		
-		public override int GetHashCode()
-		{
+
+		public override int GetHashCode() {
 			return X ^ Y ^ Z;
 		}
 
-		public static bool operator ==(CanonicalTileId a, CanonicalTileId b)
-		{
+		public static bool operator ==(CanonicalTileId a, CanonicalTileId b) {
 			return a.X == b.X && a.Y == b.Y && a.Z == b.Z;
 		}
 
-		public static bool operator !=(CanonicalTileId a, CanonicalTileId b)
-		{
+		public static bool operator !=(CanonicalTileId a, CanonicalTileId b) {
 			return !(a == b);
 		}
 
-		public override bool Equals(object obj)
-		{
-			if (obj is CanonicalTileId)
-			{
-				return this.Equals((CanonicalTileId)obj);
+		public override bool Equals(object obj) {
+			if (obj is CanonicalTileId) {
+				return Equals((CanonicalTileId)obj);
 			}
-			else
-			{
+			else {
 				return false;
 			}
 		}
 
 		#endregion
+
 	}
+
 }

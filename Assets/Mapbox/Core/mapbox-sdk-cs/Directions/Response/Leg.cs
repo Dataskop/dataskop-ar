@@ -4,18 +4,15 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Directions
-{
-	using System.Collections.Generic;
-	using Mapbox.Json;
+namespace Mapbox.Directions {
 
+	using System.Collections.Generic;
+	using Json;
 
 	/// <summary>
 	/// A Leg from a Directions API call.
 	/// </summary>
-	public class Leg
-	{
-
+	public class Leg {
 
 		/// <summary>
 		/// Depending on the steps parameter, either an Array of RouteStep objects (true, default) or an empty array (false)
@@ -24,7 +21,6 @@ namespace Mapbox.Directions
 		[JsonProperty("steps")]
 		public List<Step> Steps { get; set; }
 
-
 		/// <summary>
 		/// Depending on the summary parameter, either a String summarizing the route (true, default) or an empty String (false).
 		/// </summary>
@@ -32,13 +28,11 @@ namespace Mapbox.Directions
 		[JsonProperty("summary")]
 		public string Summary { get; set; }
 
-
 		/// <summary>
 		/// Number indicating the estimated travel time in seconds.
 		/// </summary>
 		[JsonProperty("duration")]
 		public double Duration { get; set; }
-
 
 		/// <summary>
 		/// Number indicating the distance traveled in meters.
@@ -46,13 +40,12 @@ namespace Mapbox.Directions
 		[JsonProperty("distance")]
 		public double Distance { get; set; }
 
-
 		/// <summary>
 		/// An annotations object that contains additional details about each line segment along the route geometry. Each entry in an annotations field corresponds to a coordinate along the route geometry.
 		/// </summary>
 		[JsonProperty("annotation")]
 		public Annotation Annotation { get; set; }
 
-
 	}
+
 }

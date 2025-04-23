@@ -1,36 +1,28 @@
-namespace Mapbox.Unity.Location
-{
-
+namespace Mapbox.Unity.Location {
 
 	using System;
 	using System.Linq;
 	using UnityEngine;
 
-
 	/// <summary>
 	/// Smoothing via low pass filter
 	/// </summary>
-	public class AngleSmoothingLowPass : AngleSmoothingAbstractBase
-	{
-
+	public class AngleSmoothingLowPass : AngleSmoothingAbstractBase {
 
 		[SerializeField]
-		[Tooltip("Factor to change smoothing. The lower the factor the slower the angle changes. '1' would be no smoothing")]
+		[Tooltip(
+			"Factor to change smoothing. The lower the factor the slower the angle changes. '1' would be no smoothing"
+		)]
 		[Range(0.01f, 0.9f)]
 		private double _smoothingFactor = 0.5;
 
-
 		public AngleSmoothingLowPass() : base() { }
 
-
-		public AngleSmoothingLowPass(double smoothingFactor) : base()
-		{
+		public AngleSmoothingLowPass(double smoothingFactor) : base() {
 			_smoothingFactor = smoothingFactor;
 		}
 
-
-		public override double Calculate()
-		{
+		public override double Calculate() {
 			// reverse order, latest in _angles is at [0]
 			double[] angles = _angles.Reverse().ToArray();
 
@@ -44,8 +36,7 @@ namespace Mapbox.Unity.Location
 
 			debugLogAngle(angles[0], Math.Atan2(lastSin, lastCos) * RAD2DEG);
 
-			for (int i = 1; i < angles.Length; i++)
-			{
+			for (int i = 1; i < angles.Length; i++) {
 				double angle = angles[i];
 				lastSin = _smoothingFactor * Math.Sin(angle * DEG2RAD) + (1 - _smoothingFactor) * lastSin;
 				lastCos = _smoothingFactor * Math.Cos(angle * DEG2RAD) + (1 - _smoothingFactor) * lastCos;
@@ -62,8 +53,6 @@ namespace Mapbox.Unity.Location
 			return finalAngle;
 		}
 
-
-
-
 	}
+
 }

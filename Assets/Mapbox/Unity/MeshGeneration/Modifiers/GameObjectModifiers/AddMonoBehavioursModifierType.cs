@@ -1,5 +1,5 @@
-namespace Mapbox.Unity.MeshGeneration.Modifiers
-{
+namespace Mapbox.Unity.MeshGeneration.Modifiers {
+
 	using System;
 	using UnityEngine;
 
@@ -8,28 +8,28 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 #endif
 
 	[Serializable]
-	public class AddMonoBehavioursModifierType
-	{
-		[SerializeField]
-		string _typeString;
+	public class AddMonoBehavioursModifierType {
 
-		Type _type;
+		[SerializeField] private string _typeString;
+
+		private Type _type;
 
 #if UNITY_EDITOR
-		[SerializeField]
-		MonoScript _script;
+		[SerializeField] private MonoScript _script;
 #endif
 
 		public Type Type
 		{
 			get
 			{
-				if (_type == null)
-				{
+				if (_type == null) {
 					_type = Type.GetType(_typeString);
 				}
+
 				return _type;
 			}
 		}
+
 	}
+
 }

@@ -1,43 +1,44 @@
-﻿namespace Mapbox.Unity.MeshGeneration.Data
-{
+﻿namespace Mapbox.Unity.MeshGeneration.Data {
+
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
 	using UnityEngine;
 
-	public class ObjectPool<T>
-	{
+	public class ObjectPool<T> {
+
 		private Queue<T> _objects;
 		private Func<T> _objectGenerator;
 
-		public ObjectPool(Func<T> objectGenerator)
-		{
-			if (objectGenerator == null) throw new ArgumentNullException("objectGenerator");
+		public ObjectPool(Func<T> objectGenerator) {
+			if (objectGenerator == null) {
+				throw new ArgumentNullException("objectGenerator");
+			}
+
 			_objects = new Queue<T>();
 			_objectGenerator = objectGenerator;
 		}
 
-		public T GetObject()
-		{
-			if (_objects.Count > 0)
+		public T GetObject() {
+			if (_objects.Count > 0) {
 				return _objects.Dequeue();
+			}
+
 			return _objectGenerator();
 		}
 
-		public void Put(T item)
-		{
+		public void Put(T item) {
 			_objects.Enqueue(item);
 		}
 
-		public void Clear()
-		{
+		public void Clear() {
 			_objects.Clear();
 		}
 
-		public IEnumerable<T> GetQueue()
-		{
+		public IEnumerable<T> GetQueue() {
 			return _objects;
 		}
-	}
-}
 
+	}
+
+}

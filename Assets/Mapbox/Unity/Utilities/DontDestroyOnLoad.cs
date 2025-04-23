@@ -1,18 +1,15 @@
-﻿namespace Mapbox.Unity.Utilities
-{
+﻿namespace Mapbox.Unity.Utilities {
+
 	using UnityEngine;
 
-	public class DontDestroyOnLoad : MonoBehaviour
-	{
-		static DontDestroyOnLoad _instance;
+	public class DontDestroyOnLoad : MonoBehaviour {
 
-		[SerializeField]
-		bool _useSingleInstance;
+		private static DontDestroyOnLoad _instance;
 
-		protected virtual void Awake()
-		{
-			if (_instance != null && _useSingleInstance)
-			{
+		[SerializeField] private bool _useSingleInstance;
+
+		protected virtual void Awake() {
+			if (_instance != null && _useSingleInstance) {
 				Destroy(gameObject);
 				return;
 			}
@@ -20,5 +17,7 @@
 			_instance = this;
 			DontDestroyOnLoad(gameObject);
 		}
+
 	}
+
 }

@@ -1,7 +1,7 @@
-﻿namespace Mapbox.Unity.Map
-{
-	public interface IImageryLayer : ILayer
-	{
+﻿namespace Mapbox.Unity.Map {
+
+	public interface IImageryLayer : ILayer {
+
 		/// <summary>
 		/// Gets the `Data Source` for the `IMAGE` component.
 		/// </summary>
@@ -48,6 +48,7 @@
 		/// <param name="useCompression">Enables or disables Unity Texture2D compression.</param>
 		/// <param name="useMipMap">Enables or disables Unity Texture2D image mipmapping.</param>
 		void SetProperties(ImagerySourceType imageSource, bool useRetina, bool useCompression, bool useMipMap);
+
 	}
 
 }

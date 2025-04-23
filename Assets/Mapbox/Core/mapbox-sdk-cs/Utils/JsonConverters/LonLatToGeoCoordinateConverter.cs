@@ -4,33 +4,30 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Utils.JsonConverters
-{
+namespace Mapbox.Utils.JsonConverters {
+
 	using System;
-	using Mapbox.Json;
-	using Mapbox.Json.Converters;
-	using Mapbox.Json.Linq;
+	using Json;
+	using Json.Converters;
+	using Json.Linq;
 
 	/// <summary>
 	/// Bbox to geo coordinate bounds converter.
 	/// </summary>
-	public class LonLatToVector2dConverter : CustomCreationConverter<Vector2d>
-	{
+	public class LonLatToVector2dConverter : CustomCreationConverter<Vector2d> {
+
 		/// <summary>
 		/// Gets a value indicating whether this <see cref="T:Mapbox.LonLatToVector2dConverter"/> can write.
 		/// </summary>
 		/// <value><c>true</c> if can write; otherwise, <c>false</c>.</value>
-		public override bool CanWrite {
-			get { return true; }
-		}
+		public override bool CanWrite => true;
 
 		/// <summary>
 		/// Create the specified objectType.
 		/// </summary>
 		/// <param name="objectType">Object type.</param>
 		/// <returns>A <see cref="Vector2d"/>.</returns>
-		public override Vector2d Create(Type objectType)
-		{
+		public override Vector2d Create(Type objectType) {
 			throw new NotImplementedException();
 		}
 
@@ -40,8 +37,7 @@ namespace Mapbox.Utils.JsonConverters
 		/// <param name="objectType">Object type.</param>
 		/// <param name="val">Jarray representing a two length array of coordinates.</param>
 		/// <returns>A <see cref="Vector2d"/>.</returns>
-		public Vector2d Create(Type objectType, JArray val)
-		{
+		public Vector2d Create(Type objectType, JArray val) {
 			// Assumes long,lat order (like in geojson)
 			return new Vector2d(y: (double)val[0], x: (double)val[1]);
 		}
@@ -52,9 +48,8 @@ namespace Mapbox.Utils.JsonConverters
 		/// <param name="writer">A <see cref="JsonWriter"/>.</param>
 		/// <param name="value">The value to serialize.</param>
 		/// <param name="serializer">A <see cref="JsonSerializer"/>.</param>
-		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-		{
-			var val = (Vector2d)value;
+		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
+			Vector2d val = (Vector2d)value;
 
 			Array valAsArray = val.ToArray();
 
@@ -73,11 +68,13 @@ namespace Mapbox.Utils.JsonConverters
 		/// <param name="existingValue">Existing value.</param>
 		/// <param name="serializer">A <see cref="JsonSerializer"/>.</param>
 		/// <returns>An object.</returns>
-		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-		{
+		public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+			JsonSerializer serializer) {
 			JArray coordinates = JArray.Load(reader);
 
 			return Create(objectType, coordinates);
 		}
+
 	}
+
 }

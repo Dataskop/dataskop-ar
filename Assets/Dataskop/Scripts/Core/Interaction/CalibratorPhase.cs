@@ -1,4 +1,4 @@
-namespace DataskopAR.Interaction {
+namespace Dataskop.Interaction {
 
 	public enum CalibratorPhase {
 

@@ -1,15 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using DataskopAR.Data;
+using Dataskop.Data;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public class ProjectSelectorUI : MonoBehaviour {
-
-#region Fields
 
 		[Header("Events")]
 		public UnityEvent onProjectSelected;
@@ -26,10 +24,6 @@ namespace DataskopAR.UI {
 
 		private bool isDescending;
 
-#endregion
-
-#region Properties
-
 		private VisualElement MenuContainer { get; set; }
 
 		private ICollection<Button> ProjectButtons { get; set; }
@@ -43,10 +37,6 @@ namespace DataskopAR.UI {
 		private StyleColor DeselectedColor { get; set; }
 
 		private IReadOnlyCollection<Company> Companies { get; set; }
-
-#endregion
-
-#region Methods
 
 		private void Awake() {
 
@@ -107,12 +97,17 @@ namespace DataskopAR.UI {
 					ProjectButtons.Add(button);
 					button.text = project.Information.Name;
 
-					button.RegisterCallback<ClickEvent>(_ => {
-						onProjectSelected?.Invoke();
-						dataManager.LoadProject(project.ID);
-					});
+					button.RegisterCallback<ClickEvent>(
+						_ =>
+						{
+							onProjectSelected?.Invoke();
+							dataManager.LoadProject(project.ID);
+						}
+					);
 
-					VisualElement companyProjectsBox = groupOfProjectsTemplateContainer.Q<VisualElement>("company-projects-box");
+					VisualElement companyProjectsBox =
+						groupOfProjectsTemplateContainer.Q<VisualElement>("company-projects-box");
+
 					companyProjectsBox.Add(projectTemplateContainer);
 				}
 
@@ -121,6 +116,7 @@ namespace DataskopAR.UI {
 				}
 
 				ProjectsContainer.Add(groupOfProjectsTemplateContainer);
+
 			}
 
 			if (ProjectsContainer.childCount != 0) {
@@ -164,8 +160,6 @@ namespace DataskopAR.UI {
 			}
 
 		}
-
-#endregion
 
 	}
 

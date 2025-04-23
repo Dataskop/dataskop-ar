@@ -4,17 +4,17 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Directions
-{
-    using Mapbox.Json;
-    using Mapbox.Utils;
-    using Mapbox.Utils.JsonConverters;
+namespace Mapbox.Directions {
 
-    /// <summary>
-    /// A Waypoint from a Directions API call.
-    /// </summary>
-    public class Waypoint
-	{
+	using Json;
+	using Utils;
+	using Utils.JsonConverters;
+
+	/// <summary>
+	/// A Waypoint from a Directions API call.
+	/// </summary>
+	public class Waypoint {
+
 		/// <summary>
 		/// Gets or sets the name.
 		/// </summary>
@@ -29,5 +29,7 @@ namespace Mapbox.Directions
 		[JsonProperty("location")]
 		[JsonConverter(typeof(LonLatToVector2dConverter))]
 		public Vector2d Location { get; set; }
+
 	}
+
 }

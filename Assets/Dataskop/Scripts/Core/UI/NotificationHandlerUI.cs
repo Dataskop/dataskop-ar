@@ -1,20 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using DataskopAR.Data;
+using Dataskop.Data;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public class NotificationHandlerUI : MonoBehaviour {
 
-#region Constants
-
 		private const string MenuOpenAnimation = "notification-animation";
-
-#endregion
-
-#region Fields
 
 		[Header("References")]
 		[SerializeField] private UIDocument notificationUiDocument;
@@ -25,10 +19,6 @@ namespace DataskopAR.UI {
 
 		private Coroutine notificationCoroutine;
 
-#endregion
-
-#region Properties
-
 		private Dictionary<NotificationCategory, NotificationStyle> NotificationStyles { get; set; }
 
 		private VisualElement Root { get; set; }
@@ -38,18 +28,6 @@ namespace DataskopAR.UI {
 		private VisualElement IconElement { get; set; }
 
 		private Label MessageTextElement { get; set; }
-
-#endregion
-
-#region Methods
-
-		private void OnEnable() {
-			NotificationHandler.notificationAdded += OnNotificationAdded;
-			Root = notificationUiDocument.rootVisualElement;
-			NotificationEl = Root.Q<VisualElement>("notification-box");
-			IconElement = Root.Q<VisualElement>("icon");
-			MessageTextElement = Root.Q<Label>("text");
-		}
 
 		private void Start() {
 			NotificationStyles = new Dictionary<NotificationCategory, NotificationStyle> {
@@ -77,6 +55,18 @@ namespace DataskopAR.UI {
 			};
 		}
 
+		private void OnEnable() {
+			NotificationHandler.notificationAdded += OnNotificationAdded;
+			Root = notificationUiDocument.rootVisualElement;
+			NotificationEl = Root.Q<VisualElement>("Container");
+			IconElement = Root.Q<VisualElement>("Icon");
+			MessageTextElement = Root.Q<Label>("Message");
+		}
+
+		private void OnDisable() {
+			NotificationHandler.notificationAdded -= OnNotificationAdded;
+		}
+
 		private void OnNotificationAdded() {
 			notificationCoroutine ??= StartCoroutine(DisplayNotifications());
 		}
@@ -100,15 +90,11 @@ namespace DataskopAR.UI {
 
 		private void StyleNotification(Notification notification) {
 			IconElement.style.backgroundImage = new StyleBackground(NotificationStyles[notification.Category].Icon);
-			IconElement.style.unityBackgroundImageTintColor = new StyleColor(NotificationStyles[notification.Category].Color);
+			IconElement.style.unityBackgroundImageTintColor =
+				new StyleColor(NotificationStyles[notification.Category].Color);
+
 			MessageTextElement.text = notification.Text;
 		}
-
-		private void OnDisable() {
-			NotificationHandler.notificationAdded -= OnNotificationAdded;
-		}
-
-#endregion
 
 	}
 

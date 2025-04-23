@@ -4,18 +4,18 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.MapMatching
-{
-	using Mapbox.Directions;
-	using Mapbox.Json;
-    using Mapbox.Utils;
-    using Mapbox.Utils.JsonConverters;
+namespace Mapbox.MapMatching {
 
-    /// <summary>
-    /// A Waypoint from a Directions API call.
-    /// </summary>
-    public class Tracepoint: Waypoint
-	{
+	using Directions;
+	using Json;
+	using Utils;
+	using Utils.JsonConverters;
+
+	/// <summary>
+	/// A Waypoint from a Directions API call.
+	/// </summary>
+	public class Tracepoint : Waypoint {
+
 		/// <summary>
 		///  Index of the waypoint inside the matched route.
 		/// </summary>
@@ -34,6 +34,6 @@ namespace Mapbox.MapMatching
 		[JsonProperty("alternatives_count")]
 		public int AlternativesCount { get; set; }
 
-
 	}
+
 }

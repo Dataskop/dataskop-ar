@@ -3,49 +3,35 @@ using Mapbox.Unity.Map;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 
-namespace DataskopAR.Interaction {
+namespace Dataskop.Interaction {
 
 	/// <summary>
-	///     Responsible for aligning the AR Worlds y-Axis to the real worlds ground level.
+	/// Responsible for aligning the AR Worlds y-Axis to the real worlds ground level.
 	/// </summary>
 	public class GroundLevelCalibrator : MonoBehaviour, ICalibration {
 
-#region Constants
-
 		private const string PlaneTag = "ARPlane";
-
-#endregion
-
-#region Events
-
-		public event Action CalibrationCompleted;
-
-#endregion
-
-#region Fields
 
 		[Header("References")]
 		[SerializeField] private ARPlaneManager arPlaneManager;
 		[SerializeField] private AbstractMap map;
 		[SerializeField] private InputHandler inputHandler;
 
-#endregion
-
-#region Properties
-
 		public float GroundLevelYPosition { get; set; }
 
-		public bool IsEnabled { get; set; }
-
-#endregion
-
-#region Methods
-
 		private void OnEnable() {
-			arPlaneManager.planesChanged += OnArPlanesChanged;
 			map.OnUpdated += OnMapUpdated;
 			inputHandler.WorldPointerUpped += OnPointerInteractionReceived;
 		}
+
+		private void OnDisable() {
+			map.OnUpdated -= OnMapUpdated;
+			inputHandler.WorldPointerUpped -= OnPointerInteractionReceived;
+		}
+
+		public event Action CalibrationCompleted;
+
+		public bool IsEnabled { get; set; }
 
 		public ICalibration Enable() {
 
@@ -56,7 +42,15 @@ namespace DataskopAR.Interaction {
 
 		}
 
-		private void OnArPlanesChanged(ARPlanesChangedEventArgs e) {
+		public void Disable() {
+
+			IsEnabled = false;
+			TogglePlanes(IsEnabled);
+			arPlaneManager.enabled = IsEnabled;
+
+		}
+
+		public void OnArPlanesChanged(ARTrackablesChangedEventArgs<ARPlane> e) {
 
 			if (!IsEnabled) {
 				return;
@@ -131,24 +125,14 @@ namespace DataskopAR.Interaction {
 		}
 
 		private GameObject GetTappedPArPlane(GameObject pointedObject) {
-			return !pointedObject.CompareTag(PlaneTag) ? null : pointedObject;
-		}
 
-		public void Disable() {
+			if (pointedObject == null) {
+				return null;
+			}
 
-			IsEnabled = false;
-			TogglePlanes(IsEnabled);
-			arPlaneManager.enabled = IsEnabled;
+			return pointedObject.CompareTag(PlaneTag) ? pointedObject : null;
 
 		}
-
-		private void OnDisable() {
-			map.OnUpdated -= OnMapUpdated;
-			arPlaneManager.planesChanged -= OnArPlanesChanged;
-			inputHandler.WorldPointerUpped -= OnPointerInteractionReceived;
-		}
-
-#endregion
 
 	}
 

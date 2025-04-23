@@ -1,12 +1,12 @@
-namespace DataskopAR {
+using System.Globalization;
+
+namespace Dataskop {
 
 	public static class AppOptions {
 
-#region Fields
-
 		public static bool DemoMode;
 
-#endregion
+		public static readonly CultureInfo DateCulture = CultureInfo.CreateSpecificCulture("de-DE");
 
 	}
 

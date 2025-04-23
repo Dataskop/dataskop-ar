@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace DataskopAR.Interaction {
+namespace Dataskop.Interaction {
 
 	public class AREditorInputController : MonoBehaviour {
 
-#region Fields
+#if UNITY_EDITOR
 
 		[SerializeField] private Transform arCamera;
 		[SerializeField] private float speedModifier;
@@ -15,19 +15,9 @@ namespace DataskopAR.Interaction {
 		private float xRotation;
 		private float yRotation;
 
-#endregion
-
-#region Properties
-
 		private Vector3 MoveDirection { get; set; }
 
 		private Vector2 LookDelta { get; set; }
-
-#endregion
-
-#region Methods
-
-#if UNITY_EDITOR
 
 		private void Update() {
 			xRotation -= LookDelta.y * rotationSpeedModifier;
@@ -55,8 +45,6 @@ namespace DataskopAR.Interaction {
 		}
 
 #endif
-
-#endregion
 
 	}
 

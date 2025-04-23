@@ -3,11 +3,12 @@ using System.Collections;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace DataskopAR {
+namespace Dataskop {
 
 	public static class Lerper {
 
-		public static IEnumerator TransformLerp(Transform t, TransformValue tValue, Vector3 origin, Vector3 target, float duration,
+		public static IEnumerator TransformLerp(Transform t, TransformValue tValue, Vector3 origin, Vector3 target,
+			float duration,
 			[CanBeNull] Action callback) {
 
 			float current = 0f;
@@ -25,7 +26,10 @@ namespace DataskopAR {
 						t.localScale = Vector3.LerpUnclamped(origin, target, currentPercentage);
 						break;
 					case TransformValue.Rotation:
-						t.localRotation = Quaternion.LerpUnclamped(Quaternion.Euler(origin), Quaternion.Euler(target), currentPercentage);
+						t.localRotation = Quaternion.LerpUnclamped(
+							Quaternion.Euler(origin), Quaternion.Euler(target), currentPercentage
+						);
+
 						break;
 					default:
 						throw new ArgumentOutOfRangeException(nameof(tValue), tValue, null);
@@ -38,7 +42,8 @@ namespace DataskopAR {
 			callback?.Invoke();
 		}
 
-		public static IEnumerator TransformLerpOnCurve(Transform t, TransformValue tValue, Vector3 origin, Vector3 target, float duration,
+		public static IEnumerator TransformLerpOnCurve(Transform t, TransformValue tValue, Vector3 origin,
+			Vector3 target, float duration,
 			AnimationCurve curve,
 			[CanBeNull] Action callback) {
 
@@ -59,7 +64,10 @@ namespace DataskopAR {
 						t.localScale = Vector3.LerpUnclamped(origin, target, curvePercentage);
 						break;
 					case TransformValue.Rotation:
-						t.localRotation = Quaternion.LerpUnclamped(Quaternion.Euler(origin), Quaternion.Euler(target), curvePercentage);
+						t.localRotation = Quaternion.LerpUnclamped(
+							Quaternion.Euler(origin), Quaternion.Euler(target), curvePercentage
+						);
+
 						break;
 					default:
 						throw new ArgumentOutOfRangeException(nameof(tValue), tValue, null);

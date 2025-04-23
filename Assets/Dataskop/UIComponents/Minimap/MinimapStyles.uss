@@ -1,5 +1,5 @@
 .minimap-container {
-    background-image: url('project://database/Assets/DataskopAR/Materials/MinimapRenderTexture.renderTexture?fileID=8400000&guid=c08a303c35e70464a863f4aee1ef4f6e&type=2#MinimapRenderTexture');
+    background-image: url('project://database/Assets/Dataskop/Materials/MinimapRenderTexture.renderTexture?fileID=8400000&guid=c08a303c35e70464a863f4aee1ef4f6e&type=2#MinimapRenderTexture');
     width: 256px;
     height: 256px;
     border-left-color: rgb(41, 41, 41);

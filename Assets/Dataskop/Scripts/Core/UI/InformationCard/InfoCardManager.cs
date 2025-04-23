@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using DataskopAR.Data;
-using DataskopAR.Interaction;
+using Dataskop.Data;
+using Dataskop.Entities;
+using Dataskop.Interaction;
+using Dataskop.Utils;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public class InfoCardManager : MonoBehaviour {
-
-#region Fields
 
 		[Header("References")]
 		[SerializeField] private UIDocument informationCardUIDoc;
@@ -18,15 +18,13 @@ namespace DataskopAR.UI {
 		[SerializeField] private InfoCardLocatorUI infoCardLocatorUI;
 		[SerializeField] private InfoCardProjectDataUI infoCardProjectDataUI;
 		[SerializeField] private InfoCardDataUI infoCardDataUI;
+		[SerializeField] private InfoCardRefetchProgress infoCardRefetchProgress;
+		[SerializeField] private InfoCardProjectSummary infoCardProjectSummary;
 		[SerializeField] private InfoCardMap infoCardMap;
 		[SerializeField] private DataManager dataManager;
 		[SerializeField] private InputHandler inputHandler;
 
 		private Coroutine uiInteractionRoutine;
-
-#endregion
-
-#region Properties
 
 		private VisualElement InfoCard { get; set; }
 
@@ -38,11 +36,7 @@ namespace DataskopAR.UI {
 
 		private VisualElement MapTab { get; set; }
 
-		private Label CallToAction { get; set; }
-
-#endregion
-
-#region Methods
+		private VisualElement CallToAction { get; set; }
 
 		private void Awake() {
 
@@ -57,39 +51,51 @@ namespace DataskopAR.UI {
 			MapTab = InfoCard.Q<VisualElement>("MapTab");
 			MapTab.RegisterCallback<ClickEvent>(_ => OnMapTabPressed());
 
-			CallToAction = InfoCard.Q<Label>("CallToAction");
+			CallToAction = InfoCard.Q<VisualElement>("CTA");
 			CallToAction.visible = false;
 
 			infoCardStateManager.Init(InfoCard);
-			inputHandler.InfoCardPointerUpped += OnPointerInteraction;
-
-			dataManager.HasLoadedProjectData += OnProjectDataUpdated;
-			dataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
-			ErrorHandler.OnErrorReceived += OnErrorReceived;
 
 			infoCardNotificationUI.Init(InfoCard);
 			infoCardProjectDataUI.Init(InfoCard);
 			infoCardLocatorUI.Init(InfoCard);
 			infoCardDataUI.Init(InfoCard);
 			infoCardMap.Init(InfoCard);
+			infoCardRefetchProgress.Init(InfoCard);
+			infoCardProjectSummary.Init(InfoCard);
+
+			inputHandler.InfoCardPointerUpped += OnPointerInteraction;
+			dataManager.HasLoadedProjectData += OnProjectDataUpdated;
+			dataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
+			ErrorHandler.OnErrorReceived += OnErrorReceived;
+			dataManager.RefetchTimerProgressed += OnRefetchTimerProgressed;
+			dataManager.RefetchTimerElapsed += OnRefetchTimerElapsed;
 
 		}
 
-		public void OnProjectLoaded(Project _) {
-			infoCardProjectDataUI.UpdateVisibility();
+		public void OnProjectLoaded(Project project) {
+			infoCardProjectSummary.OnProjectLoaded(project);
+			infoCardProjectDataUI.ShowAll();
 		}
 
 		public void OnUserAreaLocated(LocationArea locationArea) {
 			infoCardLocatorUI.OnUserAreaLocated(locationArea);
 		}
 
-		public void OnProjectDataUpdated(Project selectedProject) {
-			infoCardProjectDataUI.UpdateProjectNameDisplay(selectedProject == null ? "N/A" : selectedProject.Information.Name);
+		private void OnProjectDataUpdated(Project selectedProject) {
+			infoCardProjectDataUI.UpdateProjectNameDisplay(
+				selectedProject == null ? "N/A" : selectedProject.Information.Name
+			);
+
 			infoCardProjectDataUI.UpdateLastUpdatedDisplay(selectedProject?.GetLastUpdatedTime() ?? new DateTime());
 		}
 
-		public void OnMeasurementResultsUpdated() {
-			infoCardProjectDataUI.UpdateLastUpdatedDisplay(dataManager.SelectedProject?.GetLastUpdatedTime() ?? new DateTime());
+		private void OnMeasurementResultsUpdated() {
+
+			infoCardProjectDataUI.UpdateLastUpdatedDisplay(
+				dataManager.SelectedProject?.GetLastUpdatedTime() ?? new DateTime()
+			);
+
 		}
 
 		public void OnSidePanelOpened() {
@@ -120,6 +126,14 @@ namespace DataskopAR.UI {
 				SetCallToActionState(false);
 			}
 
+		}
+
+		private void OnRefetchTimerProgressed(int refetchTimer, int currentProgress) {
+			infoCardRefetchProgress.OnNewValueReceived(MathExtensions.Map01(currentProgress, 0, refetchTimer));
+		}
+
+		private void OnRefetchTimerElapsed() {
+			infoCardProjectDataUI.OnRefetchTimerElapsed();
 		}
 
 		private void SetCallToActionState(bool newState) {
@@ -181,8 +195,6 @@ namespace DataskopAR.UI {
 			}
 
 		}
-
-#endregion
 
 	}
 

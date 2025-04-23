@@ -4,16 +4,16 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Directions
-{
-    using Mapbox.Json;
-    using Mapbox.Utils;
+namespace Mapbox.Directions {
 
-    /// <summary>
-    /// A Maneuver from a directions API call.
-    /// </summary>
-    public class Maneuver
-	{
+	using Json;
+	using Utils;
+
+	/// <summary>
+	/// A Maneuver from a directions API call.
+	/// </summary>
+	public class Maneuver {
+
 		/// <summary>
 		/// Gets or sets the bearing after.
 		/// </summary>
@@ -55,5 +55,7 @@ namespace Mapbox.Directions
 		/// <value>The instruction.</value>
 		[JsonProperty("instruction")]
 		public string Instruction { get; set; }
+
 	}
+
 }

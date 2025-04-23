@@ -1,22 +1,21 @@
-﻿namespace Mapbox.Unity.Utilities
-{
+﻿namespace Mapbox.Unity.Utilities {
+
 	using UnityEngine;
 	using UnityEngine.UI;
 
 	[RequireComponent(typeof(Button))]
-	public class OpenUrlOnButtonClick : MonoBehaviour
-	{
-		[SerializeField]
-		string _url;
+	public class OpenUrlOnButtonClick : MonoBehaviour {
 
-		protected virtual void Awake()
-		{
+		[SerializeField] private string _url;
+
+		protected virtual void Awake() {
 			GetComponent<Button>().onClick.AddListener(VisitUrl);
 		}
 
-		void VisitUrl()
-		{
+		private void VisitUrl() {
 			Application.OpenURL(_url);
 		}
+
 	}
+
 }

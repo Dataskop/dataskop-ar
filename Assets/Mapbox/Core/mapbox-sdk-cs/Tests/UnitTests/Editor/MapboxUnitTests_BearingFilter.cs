@@ -4,47 +4,41 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.MapboxSdkCs.UnitTest
-{
+namespace Mapbox.MapboxSdkCs.UnitTest {
+
 	using System;
 	using Mapbox;
 	using NUnit.Framework;
 	using Mapbox.Utils;
 
 	[TestFixture]
-	internal class BearingFilterTest
-	{
+	internal class BearingFilterTest {
+
 		private BearingFilter _bearingFilter;
 
 		[SetUp]
-		public void SetUp()
-		{
+		public void SetUp() {
 			_bearingFilter = new BearingFilter(10, 10);
 		}
 
-		public void BearingTooLarge()
-		{
+		public void BearingTooLarge() {
 			_bearingFilter = new BearingFilter(361, 10);
 		}
 
-		public void BearingTooSmall()
-		{
+		public void BearingTooSmall() {
 			_bearingFilter = new BearingFilter(-1, 10);
 		}
 
-		public void RangeTooLarge()
-		{
+		public void RangeTooLarge() {
 			_bearingFilter = new BearingFilter(10, 181);
 		}
 
-		public void RangeTooSmall()
-		{
+		public void RangeTooSmall() {
 			_bearingFilter = new BearingFilter(10, -1);
 		}
 
 		[Test]
-		public void InvalidValues()
-		{
+		public void InvalidValues() {
 			Assert.Throws<Exception>(BearingTooLarge);
 			Assert.Throws<Exception>(BearingTooSmall);
 			Assert.Throws<Exception>(RangeTooSmall);
@@ -52,12 +46,13 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 		}
 
 		[Test]
-		public void ToStringTest()
-		{
+		public void ToStringTest() {
 			Assert.AreEqual(_bearingFilter.ToString(), "10,10");
 
 			_bearingFilter = new BearingFilter(null, null);
 			Assert.AreEqual(_bearingFilter.ToString(), string.Empty);
 		}
+
 	}
+
 }

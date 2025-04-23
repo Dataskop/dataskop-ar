@@ -1,11 +1,9 @@
 using Mapbox.Unity.Map;
 using UnityEngine;
 
-namespace DataskopAR.Entities {
+namespace Dataskop.Entities {
 
 	public class BirdViewCamera : MonoBehaviour {
-
-#region Fields
 
 		[Header("References")]
 		[SerializeField] private AbstractMap map;
@@ -14,10 +12,6 @@ namespace DataskopAR.Entities {
 
 		[Header("Values")]
 		[SerializeField] private float defaultCameraSize = 20;
-
-#endregion
-
-#region Methods
 
 		private void Awake() {
 			SetCameraSize(defaultCameraSize);
@@ -54,8 +48,6 @@ namespace DataskopAR.Entities {
 		public void ResetCameraSize() {
 			birdViewCamera.orthographicSize = defaultCameraSize;
 		}
-
-#endregion
 
 	}
 

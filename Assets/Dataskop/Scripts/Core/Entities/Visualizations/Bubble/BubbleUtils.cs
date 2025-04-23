@@ -1,12 +1,13 @@
-using DataskopAR.Utils;
 using UnityEngine;
 
-namespace DataskopAR.Entities.Visualizations {
+namespace Dataskop.Entities.Visualizations {
 
 	public static class BubbleUtils {
 
+		private const float PI = Mathf.PI;
+
 		/// <summary>
-		///     Calculates the area based on a given value and maps it to a new radius based on it.
+		/// Calculates the area based on a given value and maps it to a new radius based on it.
 		/// </summary>
 		/// <param name="value">The given value for the mapping</param>
 		/// <param name="minValue">The lower limit of the value</param>
@@ -14,18 +15,19 @@ namespace DataskopAR.Entities.Visualizations {
 		/// <param name="minRadius">The lower radius limit of the </param>
 		/// <param name="maxRadius">The upper limit of the calculated radius</param>
 		/// <returns>Radius</returns>
-		public static float CalculateRadius(float value, float minValue, float maxValue, float minRadius, float maxRadius) {
+		public static float CalculateRadius(float value, float minValue, float maxValue, float minRadius,
+			float maxRadius) {
 			value = Mathf.Clamp(value, minValue, maxValue);
 
-			// calc min and max area out of desired min and max scale
-			float minArea = Mathf.PI * Mathf.Pow(minRadius, 2);
-			float maxArea = Mathf.PI * Mathf.Pow(maxRadius, 2);
+			float minArea = PI * minRadius * minRadius;
+			float maxArea = PI * maxRadius * maxRadius;
 
 			// calc mapped area from the value
-			float newArea = MathExtensions.Map(value, minValue, maxValue, minArea, maxArea);
+			float t = (value - minValue) / (maxValue - minValue);
+			float newArea = minArea + t * (maxArea - minArea);
 
 			// calc radius out of the area
-			return Mathf.Sqrt(newArea / Mathf.PI);
+			return Mathf.Sqrt(newArea / PI);
 		}
 
 	}

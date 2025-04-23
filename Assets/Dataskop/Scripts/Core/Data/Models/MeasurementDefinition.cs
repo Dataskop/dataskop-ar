@@ -1,22 +1,43 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	[UsedImplicitly]
 	public class MeasurementDefinition {
 
-#region Constructors
+		public int ID { get; }
+
+		public MeasurementType MeasurementType { get; }
+
+		public MeasurementDefinitionInformation MeasurementDefinitionInformation { get; }
+
+		public string DeviceId { get; }
+
+		public string AttributeId { get; }
+
+		public int MeasuringInterval { get; }
+
+		public int TotalMeasurements { get; set; }
+
+		public IReadOnlyList<MeasurementResultRange> MeasurementResults { get; private set; } =
+			new List<MeasurementResultRange>();
+
+		public MeasurementResult FirstMeasurementResult { get; set; }
+
+		public MeasurementResult LatestMeasurementResult => GetLatestMeasurementResult();
+
+		private float GapThreshold => MeasuringInterval / 2f;
 
 		public MeasurementDefinition(int id, MeasurementDefinitionInformation information, string additionalProperties,
 			int measurementInterval, int valueType, int downstreamType) {
 
 			ID = id;
 			MeasurementDefinitionInformation = information;
+			MeasuringInterval = measurementInterval / 10;
 
 			MeasurementType = valueType switch {
 				0 => MeasurementType.Float,
@@ -36,11 +57,13 @@ namespace DataskopAR.Data {
 			}
 			catch {
 
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Warning,
-					Text = $"Measurement Definition {ID} has no valid additional properties!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Warning,
+						Text = $"Measurement Definition {ID} has no valid additional properties!",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 
 				DeviceId = null;
 				AttributeId = null;
@@ -49,118 +72,131 @@ namespace DataskopAR.Data {
 
 		}
 
-#endregion
+		private MeasurementResult GetLatestMeasurementResult() {
+			return GetLatestRange().FirstOrDefault();
+		}
 
-#region Properties
-
-		public int ID { get; }
-
-		public MeasurementType MeasurementType { get; }
-
-		public MeasurementDefinitionInformation MeasurementDefinitionInformation { get; }
-
-		public string DeviceId { get; }
-
-		public string AttributeId { get; }
-
-		public ICollection<MeasurementResult> MeasurementResults { get; private set; }
-
-#endregion
-
-#region Methods
-
-		/// <summary>
-		///     Fetches a list of measurement results belonging to the measurement definition.
-		/// </summary>
-		public async Task UpdateMeasurementResults(int count) {
-
-			string countURL = $"https://backend.dataskop.at/api/measurementresult/query/{ID}/1/0";
-			string countResponse = await ApiRequestHandler.Instance.Get(countURL);
-			int totalCount;
-
-			try {
-				MeasurementResultsResponse response = JsonConvert.DeserializeObject<MeasurementResultsResponse>(countResponse);
-				totalCount = response.Count;
-			}
-			catch {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = $"Could not fetch Measurement Results for Definition {ID}!",
-					DisplayDuration = NotificationDuration.Medium
-				});
-				throw;
-			}
-
-			if (count > totalCount) {
-
-				count = totalCount;
-
-				NotificationHandler.AddUnique(new Notification {
-					Category = NotificationCategory.Warning,
-					Text = $"Amount fetched too high. Clamping to {totalCount}!",
-					DisplayDuration = NotificationDuration.Medium,
-					UniqueID = 2
-				});
-
-			}
-
-			string url = $"https://backend.dataskop.at/api/measurementresult/query/{ID}/{count}/{totalCount - count}";
-			string rawResponse = await ApiRequestHandler.Instance.Get(url);
-
-			try {
-				MeasurementResultsResponse response = JsonConvert.DeserializeObject<MeasurementResultsResponse>(rawResponse);
-				MeasurementResults = response?.MeasurementResults.OrderByDescending(x => x.Timestamp).ToList();
-			}
-			catch {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = $"Could not fetch Measurement Results for Definition {ID}!",
-					DisplayDuration = NotificationDuration.Medium
-				});
-				throw;
-			}
-
+		public MeasurementResultRange GetLatestRange() {
+			return MeasurementResults.First();
 		}
 
 		/// <summary>
-		///     Returns the most recent measurement result.
+		/// Creates a new range from the available ranges with their data.
 		/// </summary>
-		public MeasurementResult GetLatestMeasurementResult() {
-			return MeasurementResults?.FirstOrDefault();
+		/// <param name="timeRange">The given time range</param>
+		/// <returns>A MeasurementResultRange with the given time range and results.</returns>
+		public MeasurementResultRange GetRange(TimeRange timeRange) {
+
+			MeasurementResultRange foundRange = new(Array.Empty<MeasurementResult>());
+
+			foreach (MeasurementResultRange availableRange in MeasurementResults) {
+
+				if (!TimeRangeExtensions.Contains(timeRange, availableRange.GetTimeRange())) {
+					continue;
+				}
+
+				foundRange = availableRange;
+				break;
+			}
+
+			MeasurementResultRange dataRange =
+				new(
+					foundRange.Where(x => x.Timestamp >= timeRange.StartTime && x.Timestamp <= timeRange.EndTime)
+						.ToList()
+				);
+
+			dataRange.SetTimeRange(new TimeRange(timeRange.StartTime, timeRange.EndTime));
+			return dataRange;
 		}
 
-#endregion
-
-	}
-
-#region Sub-Classes
-
-	public class AdditionalMeasurementDefinitionProperties {
-
-		public AdditionalMeasurementDefinitionProperties(string deviceId, string attributeId) {
-			DeviceId = deviceId;
-			AttributeId = attributeId;
+		public bool IsDataGap(MeasurementResult result1, MeasurementResult result2) {
+			TimeSpan timeDiff = result1.Timestamp - result2.Timestamp;
+			TimeSpan interval = new(0, 0, MeasuringInterval);
+			return Math.Truncate(Math.Abs(timeDiff.TotalSeconds)) > interval.TotalSeconds + GapThreshold;
 		}
 
-		public string DeviceId { get; }
+		public void AddMeasurementResultRange(MeasurementResultRange newRange, TimeRange timeRange) {
 
-		public string AttributeId { get; }
+			List<MeasurementResultRange> currentRanges = MeasurementResults.ToList();
+			newRange.SetTimeRange(timeRange);
+			currentRanges.Add(newRange);
+			MeasurementResults = currentRanges;
+			SortRanges();
 
-	}
+			if (MeasurementResults.Count < 2) {
+				return;
+			}
 
-	public class MeasurementResultsResponse {
+			MeasurementResults = GetMergedRanges();
 
-		public MeasurementResultsResponse(int count, ICollection<MeasurementResult> measurementResults) {
-			Count = count;
-			MeasurementResults = measurementResults;
 		}
 
-		public int Count { get; set; }
+		private IReadOnlyList<MeasurementResultRange> GetMergedRanges() {
 
-		public ICollection<MeasurementResult> MeasurementResults { get; }
+			List<MeasurementResultRange> mergedRanges = MeasurementResults.ToList();
+
+			for (int i = 0; i < mergedRanges.Count - 1; i++) {
+				MeasurementResultRange firstRange = mergedRanges[i];
+				MeasurementResultRange secondRange = mergedRanges[i + 1];
+
+				TimeRange firstTime = firstRange.GetTimeRange();
+				TimeRange secondTime = secondRange.GetTimeRange();
+
+				TimeSpan timeDifference = secondTime.EndTime - firstTime.StartTime;
+				double totalSeconds = Math.Abs(timeDifference.TotalSeconds);
+				double diff = Math.Abs(totalSeconds - MeasuringInterval);
+
+				if (0 <= diff && diff <= MeasuringInterval) {
+
+					bool hasDuplicate = false;
+
+					if (firstRange.Any() && secondRange.Any()) {
+
+						if (firstRange.Last() == secondRange.First()) {
+							hasDuplicate = true;
+						}
+
+					}
+
+					mergedRanges[i] =
+						new MeasurementResultRange(
+							hasDuplicate ? firstRange.SkipLast(1).Concat(secondRange)
+								: firstRange.Concat(secondRange)
+						);
+
+					mergedRanges[i].SetTimeRange(
+						new TimeRange(secondRange.GetTimeRange().StartTime, firstRange.GetTimeRange().EndTime)
+					);
+
+					mergedRanges.RemoveAt(i + 1);
+					i--;
+
+				}
+
+			}
+
+			return mergedRanges;
+		}
+
+		public TimeRange[] GetAvailableTimeRanges() {
+			return MeasurementResults != null
+				? MeasurementResults.Select(it => it.GetTimeRange()).ToArray()
+				: Array.Empty<TimeRange>();
+		}
+
+		public void ReplaceMeasurementResultRange(int index, MeasurementResultRange newRange) {
+			List<MeasurementResultRange> currentRanges = MeasurementResults.ToList();
+			currentRanges[index] = newRange;
+			MeasurementResults = currentRanges;
+		}
+
+		private void SortRanges() {
+			MeasurementResults = MeasurementResults
+				.OrderByDescending(mrr => mrr.GetTimeRange().StartTime)
+				.ThenByDescending(mrr => mrr.GetTimeRange().EndTime)
+				.ToList();
+		}
 
 	}
-
-#endregion
 
 }

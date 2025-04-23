@@ -4,19 +4,19 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Map
-{
+namespace Mapbox.Map {
+
 	using System;
 	using System.Collections.Generic;
-	using Mapbox.Utils;
+	using Utils;
 	using UnityEngine;
 
 	/// <summary>
 	///     Helper funtions to get a tile cover, i.e. a set of tiles needed for
 	///     covering a bounding box.
 	/// </summary>
-	public static class TileCover
-	{
+	public static class TileCover {
+
 		/// <summary> Get a tile cover for the specified bounds and zoom. </summary>
 		/// <param name="bounds"> Geographic bounding box.</param>
 		/// <param name="zoom"> Zoom level. </param>
@@ -43,29 +43,26 @@ namespace Mapbox.Map
 		///	}
 		/// </code>
 		/// </example>
-		public static HashSet<CanonicalTileId> Get(Vector2dBounds bounds, int zoom)
-		{
-			var tiles = new HashSet<CanonicalTileId>();
+		public static HashSet<CanonicalTileId> Get(Vector2dBounds bounds, int zoom) {
+			HashSet<CanonicalTileId> tiles = new();
 
 			if (bounds.IsEmpty() ||
-				bounds.South > Constants.LatitudeMax ||
-				bounds.North < -Constants.LatitudeMax)
-			{
+			    bounds.South > Constants.LatitudeMax ||
+			    bounds.North < -Constants.LatitudeMax) {
 				return tiles;
 			}
 
-			var hull = Vector2dBounds.FromCoordinates(
+			Vector2dBounds hull = Vector2dBounds.FromCoordinates(
 				new Vector2d(Math.Max(bounds.South, -Constants.LatitudeMax), bounds.West),
-				new Vector2d(Math.Min(bounds.North, Constants.LatitudeMax), bounds.East));
+				new Vector2d(Math.Min(bounds.North, Constants.LatitudeMax), bounds.East)
+			);
 
-			var sw = CoordinateToTileId(hull.SouthWest, zoom);
-			var ne = CoordinateToTileId(hull.NorthEast, zoom);
+			UnwrappedTileId sw = CoordinateToTileId(hull.SouthWest, zoom);
+			UnwrappedTileId ne = CoordinateToTileId(hull.NorthEast, zoom);
 
 			// Scanlines.
-			for (var x = sw.X; x <= ne.X; ++x)
-			{
-				for (var y = ne.Y; y <= sw.Y; ++y)
-				{
+			for (int x = sw.X; x <= ne.X; ++x) {
+				for (int y = ne.Y; y <= sw.Y; ++y) {
 					tiles.Add(new UnwrappedTileId(zoom, x, y).Canonical);
 				}
 			}
@@ -73,30 +70,33 @@ namespace Mapbox.Map
 			return tiles;
 		}
 
+		public static HashSet<UnwrappedTileId> GetWithWebMerc(Vector2dBounds bounds, int zoom) {
+			HashSet<UnwrappedTileId> tiles = new();
+			HashSet<CanonicalTileId> canonicalTiles = new();
 
-		public static HashSet<UnwrappedTileId> GetWithWebMerc(Vector2dBounds bounds, int zoom)
-		{
-			HashSet<UnwrappedTileId> tiles = new HashSet<UnwrappedTileId>();
-			HashSet<CanonicalTileId> canonicalTiles = new HashSet<CanonicalTileId>();
-
-			if (bounds.IsEmpty()) { return tiles; }
+			if (bounds.IsEmpty()) {
+				return tiles;
+			}
 
 			//stay within WebMerc bounds
-			Vector2d swWebMerc = new Vector2d(Math.Max(bounds.SouthWest.x, -Constants.WebMercMax), Math.Max(bounds.SouthWest.y, -Constants.WebMercMax));
-			Vector2d neWebMerc = new Vector2d(Math.Min(bounds.NorthEast.x, Constants.WebMercMax), Math.Min(bounds.NorthEast.y, Constants.WebMercMax));
+			Vector2d swWebMerc = new(
+				Math.Max(bounds.SouthWest.x, -Constants.WebMercMax), Math.Max(bounds.SouthWest.y, -Constants.WebMercMax)
+			);
+
+			Vector2d neWebMerc = new(
+				Math.Min(bounds.NorthEast.x, Constants.WebMercMax), Math.Min(bounds.NorthEast.y, Constants.WebMercMax)
+			);
 
 			UnwrappedTileId swTile = WebMercatorToTileId(swWebMerc, zoom);
 			UnwrappedTileId neTile = WebMercatorToTileId(neWebMerc, zoom);
 
-			for (int x = swTile.X; x <= neTile.X; x++)
-			{
-				for (int y = neTile.Y; y <= swTile.Y; y++)
-				{
-					UnwrappedTileId uwtid = new UnwrappedTileId(zoom, x, y);
+			for (int x = swTile.X; x <= neTile.X; x++) {
+				for (int y = neTile.Y; y <= swTile.Y; y++) {
+					UnwrappedTileId uwtid = new(zoom, x, y);
+
 					//hack: currently too many tiles are created at lower zoom levels
 					//investigate formulas, this worked before
-					if (!canonicalTiles.Contains(uwtid.Canonical))
-					{
+					if (!canonicalTiles.Contains(uwtid.Canonical)) {
 						tiles.Add(uwtid);
 						canonicalTiles.Add(uwtid.Canonical);
 					}
@@ -105,7 +105,6 @@ namespace Mapbox.Map
 
 			return tiles;
 		}
-
 
 		/// <summary> Converts a coordinate to a tile identifier. </summary>
 		/// <param name="coord"> Geographic coordinate. </param>
@@ -118,20 +117,21 @@ namespace Mapbox.Map
 		/// Console.Write("UnwrappedTileId: " + unwrappedTileId.ToString());
 		/// </code>
 		/// </example>
-		public static UnwrappedTileId CoordinateToTileId(Vector2d coord, int zoom)
-		{
-			var lat = coord.x;
-			var lng = coord.y;
+		public static UnwrappedTileId CoordinateToTileId(Vector2d coord, int zoom) {
+			double lat = coord.x;
+			double lng = coord.y;
 
 			// See: http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
-			var x = (int)Math.Floor((lng + 180.0) / 360.0 * Math.Pow(2.0, zoom));
-			var y = (int)Math.Floor((1.0 - Math.Log(Math.Tan(lat * Math.PI / 180.0)
-					+ 1.0 / Math.Cos(lat * Math.PI / 180.0)) / Math.PI) / 2.0 * Math.Pow(2.0, zoom));
+			int x = (int)Math.Floor((lng + 180.0) / 360.0 * Math.Pow(2.0, zoom));
+			int y = (int)Math.Floor(
+				(1.0 - Math.Log(
+					Math.Tan(lat * Math.PI / 180.0)
+					+ 1.0 / Math.Cos(lat * Math.PI / 180.0)
+				) / Math.PI) / 2.0 * Math.Pow(2.0, zoom)
+			);
 
 			return new UnwrappedTileId(zoom, x, y);
 		}
-
-
 
 		/// <summary>
 		///  Converts a Web Mercator coordinate to a tile identifier. https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Derivation_of_tile_names
@@ -139,8 +139,7 @@ namespace Mapbox.Map
 		/// <param name="webMerc">Web Mercator coordinate</param>
 		/// <param name="zoom">Zoom level</param>
 		/// <returns>The to tile identifier.</returns>
-		public static UnwrappedTileId WebMercatorToTileId(Vector2d webMerc, int zoom)
-		{
+		public static UnwrappedTileId WebMercatorToTileId(Vector2d webMerc, int zoom) {
 			// See:  https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Derivation_of_tile_names
 			double tileCount = Math.Pow(2, zoom);
 
@@ -154,6 +153,6 @@ namespace Mapbox.Map
 			return new UnwrappedTileId(zoom, x, y);
 		}
 
-
 	}
+
 }

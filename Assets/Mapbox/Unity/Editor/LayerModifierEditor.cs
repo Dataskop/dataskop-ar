@@ -1,24 +1,22 @@
-﻿namespace Mapbox.Editor
-{
+﻿namespace Mapbox.Editor {
+
 	using UnityEngine;
 	using UnityEditor;
-	using Mapbox.Unity.MeshGeneration.Modifiers;
+	using Unity.MeshGeneration.Modifiers;
 
 	[CustomEditor(typeof(LayerModifier))]
-	public class LayerModifierEditor : Editor
-	{
+	public class LayerModifierEditor : Editor {
+
 		public SerializedProperty layerId_Prop;
 		private MonoScript script;
 
-		void OnEnable()
-		{
+		private void OnEnable() {
 			layerId_Prop = serializedObject.FindProperty("_layerId");
 
 			script = MonoScript.FromScriptableObject((LayerModifier)target);
 		}
 
-		public override void OnInspectorGUI()
-		{
+		public override void OnInspectorGUI() {
 			serializedObject.Update();
 
 			GUI.enabled = false;
@@ -29,5 +27,7 @@
 
 			serializedObject.ApplyModifiedProperties();
 		}
+
 	}
+
 }

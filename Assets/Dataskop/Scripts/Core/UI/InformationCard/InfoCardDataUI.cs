@@ -1,19 +1,15 @@
-using DataskopAR.Data;
+using System.Globalization;
+using Dataskop.Data;
+using Dataskop.Entities;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public class InfoCardDataUI : InfoCardComponent {
 
-#region Fields
-
 		[SerializeField] private AuthorRepository authorRepository;
-
-#endregion
-
-#region Properties
 
 		protected override VisualElement ComponentRoot { get; set; }
 
@@ -30,11 +26,17 @@ namespace DataskopAR.UI {
 
 		private Label TimeStampLabel { get; set; }
 
+		private Label MeasurementDefinitionLabel { get; set; }
+
+		private Label DeviceLabel { get; set; }
+
+		private Label TotalMeasurementsLabel { get; set; }
+
+		private Label FirstMeasurementLabel { get; set; }
+
+		private Label MeasurementIntervalLabel { get; set; }
+
 		private VisualElement AuthorIcon { get; set; }
-
-#endregion
-
-#region Methods
 
 		public override void Init(VisualElement infoCard) {
 			InfoCard = infoCard;
@@ -44,6 +46,11 @@ namespace DataskopAR.UI {
 			MeasurementLabel = ComponentRoot.Q<Label>("MeasurementResultValue");
 			LocationLabel = ComponentRoot.Q<Label>("LatLonValue");
 			TimeStampLabel = ComponentRoot.Q<Label>("TimeStampValue");
+			MeasurementDefinitionLabel = ComponentRoot.Q<Label>("MeasurementDefinitionValue");
+			DeviceLabel = ComponentRoot.Q<Label>("DeviceValue");
+			TotalMeasurementsLabel = ComponentRoot.Q<Label>("TotalMeasurementsValue");
+			FirstMeasurementLabel = ComponentRoot.Q<Label>("FirstMeasurementValue");
+			MeasurementIntervalLabel = ComponentRoot.Q<Label>("MeasurementIntervalValue");
 			AuthorIcon = ComponentRoot.Q<VisualElement>("AuthorIcon");
 
 		}
@@ -51,7 +58,7 @@ namespace DataskopAR.UI {
 		public void UpdateDataPointData(DataPoint dp) {
 
 			if (SelectedDataPoint != null) {
-				SelectedDataPoint.MeasurementResultChanged -= UpdateResultTextElements;
+				SelectedDataPoint.FocusedMeasurementResultChanged -= UpdateIndexTextElements;
 			}
 
 			SelectedDataPoint = dp;
@@ -61,32 +68,39 @@ namespace DataskopAR.UI {
 				MeasurementLabel.text = "-";
 				LocationLabel.text = "-";
 				TimeStampLabel.text = "-";
+				MeasurementDefinitionLabel.text = "-";
+				DeviceLabel.text = "-";
+				TotalMeasurementsLabel.text = "-";
+				FirstMeasurementLabel.text = "-";
+				MeasurementIntervalLabel.text = "-";
 				AuthorIcon.style.backgroundImage = new StyleBackground();
 			}
 			else {
-				SelectedDataPoint.MeasurementResultChanged += UpdateResultTextElements;
-				UpdateDefinitionTextElements(SelectedDataPoint.MeasurementDefinition);
-				UpdateResultTextElements(SelectedDataPoint.CurrentMeasurementResult);
+				SelectedDataPoint.FocusedMeasurementResultChanged += UpdateIndexTextElements;
+				UpdateIndexTextElements(SelectedDataPoint.FocusedMeasurement);
 			}
 
 		}
 
-		private void UpdateResultTextElements(MeasurementResult newResult) {
-			MeasurementLabel.text = newResult.Value;
-			LocationLabel.text = newResult.Position.GetLatLong();
-			TimeStampLabel.text = newResult.GetTime();
+		private void UpdateIndexTextElements(MeasurementResult focusedResult) {
 
-			AuthorIcon.style.backgroundImage = !string.IsNullOrEmpty(newResult.Author)
-				? new StyleBackground(authorRepository.AuthorSprites[newResult.Author])
+			IdLabel.text = focusedResult.MeasurementDefinition.ID.ToString();
+			MeasurementLabel.text =
+				$"{focusedResult.ReadAsFloat().ToString("00.00", CultureInfo.InvariantCulture)} {SelectedDataPoint!.Attribute.Unit}";
+
+			LocationLabel.text = focusedResult.Position.GetLatLong();
+			TimeStampLabel.text = focusedResult.GetDateText();
+			MeasurementDefinitionLabel.text = focusedResult.MeasurementDefinition.MeasurementDefinitionInformation.Name;
+			DeviceLabel.text = focusedResult.MeasurementDefinition.DeviceId;
+			TotalMeasurementsLabel.text = focusedResult.MeasurementDefinition.TotalMeasurements.ToString();
+			FirstMeasurementLabel.text = focusedResult.MeasurementDefinition.FirstMeasurementResult.GetDateText();
+			MeasurementIntervalLabel.text = $"{focusedResult.MeasurementDefinition.MeasuringInterval}s";
+
+			AuthorIcon.style.backgroundImage = !string.IsNullOrEmpty(focusedResult.Author)
+				? new StyleBackground(authorRepository.AuthorSprites[focusedResult.Author])
 				: new StyleBackground();
 
 		}
-
-		private void UpdateDefinitionTextElements(MeasurementDefinition newDefinition) {
-			IdLabel.text = newDefinition.ID.ToString();
-		}
-
-#endregion
 
 	}
 

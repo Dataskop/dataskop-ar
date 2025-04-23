@@ -1,10 +1,10 @@
 using System.Collections;
-using DataskopAR.Data;
+using Dataskop.Data;
+using Dataskop.Interaction;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 using UnityEngine.XR.ARFoundation;
-using Button = UnityEngine.UI.Button;
 
 #if UNITY_ANDROID
 using UnityEngine.Android;
@@ -14,82 +14,57 @@ using UnityEngine.Android;
 using UnityEngine.iOS;
 #endif
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public class MainMenuUI : MonoBehaviour {
 
-#region Fields
-
 		[Header("References")]
 		[SerializeField] private UIDocument mainMenuUIDoc;
-		[SerializeField] private Button closeBtn;
+		[SerializeField] private ArQrReader qrReader;
 		[SerializeField] private ARSession arSession;
 
 		[Header("Events")]
 		public UnityEvent<string> loginButtonPressed;
-		public UnityEvent scanButtonPressed;
 
+		private string defaultToken = string.Empty;
 		private string token = string.Empty;
 
-#endregion
-
-#region Properties
-
-		private VisualElement Root { get; set; }
+		private VisualElement Container { get; set; }
 
 		private TextField TokenTextField { get; set; }
 
-		private string Token {
+		private Button CloseButton { get; set; }
+
+		private Button DemoUserButton { get; set; }
+
+		private Label VersionLabel { get; set; }
+
+		private string Token
+		{
 			get => token;
 
-			set {
+			set
+			{
 				token = value;
 				TokenTextField.value = token;
 			}
 		}
 
-		private Label VersionLabel { get; set; }
-
 		private bool HasEnteredToken => TokenTextField?.value != string.Empty;
 
-#endregion
-
-#region Methods
-
-		public void OnEnable() {
-			Root = mainMenuUIDoc.rootVisualElement;
-
-			Root.Q<UnityEngine.UIElements.Button>("btnScan").RegisterCallback<ClickEvent>(_ => {
-				closeBtn.gameObject.SetActive(true);
-				scanButtonPressed?.Invoke();
-				ToggleMainMenuScreen(false);
-				ToggleCamera(true);
-			});
-
-			Root.Q<UnityEngine.UIElements.Button>("btnDemo")
-				.RegisterCallback<ClickEvent>(_ => { OnDemoButtonPressed(); });
-
-			Root.Q<UnityEngine.UIElements.Button>("btnLogin")
-				.RegisterCallback<ClickEvent>(_ => { OnLoginButtonPressed(); });
-
-			TokenTextField = Root.Q<TextField>("txtAPISecret");
-			TokenTextField.value = TokenTextField.text;
-
-			VersionLabel = Root.Q<Label>("footerCopyright");
-			VersionLabel.text = Version.ID + " ©FHSTP (2022-2024)";
-
-			AppOptions.DemoMode = false;
-		}
-
 		private IEnumerator Start() {
+
+			FPSManager.SetApplicationTargetFrameRate(30);
 
 #if UNITY_IOS
 			yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
 #elif UNITY_ANDROID
-			Permission.RequestUserPermissions(new[] {
-				Permission.Camera,
-				Permission.FineLocation
-			});
+			Permission.RequestUserPermissions(
+				new[] {
+					Permission.Camera, Permission.FineLocation
+				}
+			);
+
 			yield return Permission.HasUserAuthorizedPermission(Permission.Camera);
 #else
 			yield break;
@@ -97,29 +72,77 @@ namespace DataskopAR.UI {
 
 		}
 
-		public void ToggleMainMenuScreen(bool status) {
-			Root.style.visibility = new StyleEnum<Visibility>(status ? Visibility.Visible : Visibility.Hidden);
+		public void OnEnable() {
+
+			Container = mainMenuUIDoc.rootVisualElement.Q<VisualElement>("container");
+			CloseButton = mainMenuUIDoc.rootVisualElement.Q<Button>("closeButton");
+
+			Container.Q<Button>("btnScan").RegisterCallback<ClickEvent>(
+				_ =>
+				{
+					ToggleElement(CloseButton, true);
+					ToggleElement(Container, false);
+					ToggleCamera(true);
+					qrReader.SetQrScanStatus(true);
+				}
+			);
+
+			Container.Q<Button>("btnDemo")
+				.RegisterCallback<ClickEvent>(_ => { OnDemoButtonPressed(); });
+
+			Container.Q<Button>("btnLogin")
+				.RegisterCallback<ClickEvent>(_ => { OnLoginButtonPressed(); });
+
+			TokenTextField = Container.Q<TextField>("tokenInput");
+			defaultToken = TokenTextField.value;
+
+			DemoUserButton = Container.Q<Button>("demoUserButton");
+			DemoUserButton.RegisterCallback<ClickEvent>(_ => { TokenTextField.value = defaultToken; });
+
+			if (AccountManager.IsLoggedIn && AccountManager.TryGetLoginToken() != TokenTextField.value) {
+				TokenTextField.value = AccountManager.TryGetLoginToken();
+			}
+
+			VersionLabel = Container.Q<Label>("footerCopyright");
+			VersionLabel.text = Version.ID + " ©FHSTP (2022-2024)";
+
+			CloseButton.RegisterCallback<ClickEvent>(
+				_ =>
+				{
+					qrReader.SetQrScanStatus(false);
+					ToggleCamera(false);
+					ToggleElement(CloseButton, false);
+					ToggleElement(Container, true);
+				}
+			);
+
+			AppOptions.DemoMode = false;
 		}
 
-		public void ToggleCamera(bool status) {
+		private void ToggleElement(VisualElement element, bool status) {
+			element.style.display = new StyleEnum<DisplayStyle>(status ? DisplayStyle.Flex : DisplayStyle.None);
+		}
+
+		private void ToggleCamera(bool status) {
 			arSession.enabled = status;
-		}
-
-		public void DisableCloseButton() {
-			closeBtn.gameObject.SetActive(false);
 		}
 
 		public void OnQrCodeScanned(QrResult result) {
 
-			DisableCloseButton();
-			ToggleMainMenuScreen(true);
+			qrReader.SetQrScanStatus(false);
+			ToggleCamera(false);
+			ToggleElement(CloseButton, false);
+			ToggleElement(Container, true);
+
 			Token = result.Code;
 
-			NotificationHandler.Add(new Notification {
-				Category = NotificationCategory.Check,
-				Text = "Scanned QR successfully!",
-				DisplayDuration = NotificationDuration.Short
-			});
+			NotificationHandler.Add(
+				new Notification {
+					Category = NotificationCategory.Check,
+					Text = "Scanned QR successfully!",
+					DisplayDuration = NotificationDuration.Short
+				}
+			);
 
 		}
 
@@ -130,11 +153,13 @@ namespace DataskopAR.UI {
 				loginButtonPressed?.Invoke(Token);
 			}
 			else {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = "No token entered!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = "No token entered!",
+						DisplayDuration = NotificationDuration.Short
+					}
+				);
 			}
 
 		}
@@ -148,11 +173,13 @@ namespace DataskopAR.UI {
 				SceneHandler.LoadScene("World");
 			}
 			else {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = "The provided token is not valid!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = "The provided token is not valid!",
+						DisplayDuration = NotificationDuration.Short
+					}
+				);
 			}
 
 		}
@@ -163,19 +190,19 @@ namespace DataskopAR.UI {
 				Token = TokenTextField.value;
 			}
 			else {
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = "Please enter a Demo Token!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = "Please enter a Demo Token!",
+						DisplayDuration = NotificationDuration.Short
+					}
+				);
 			}
 
 			AppOptions.DemoMode = true;
 			AccountManager.Login(Token);
 			SceneHandler.LoadScene("World");
 		}
-
-#endregion
 
 	}
 

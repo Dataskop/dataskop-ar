@@ -2,28 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	public static class NotificationHandler {
 
-#region Events
-
 		public static Action notificationAdded;
-
-#endregion
-
-#region Properties
 
 		private static Queue<Notification> Notifications { get; } = new();
 
 		public static int QueueCount => Notifications.Count;
 
-#endregion
-
-#region Methods
-
 		/// <summary>
-		///     Adds a notification to the queue.
+		/// Adds a notification to the queue.
 		/// </summary>
 		/// <param name="notification">The notification to be added</param>
 		public static void Add(Notification notification) {
@@ -32,7 +22,7 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
-		///     Adds a notification only if a notification with the same UniqueID does not exist yet.
+		/// Adds a notification only if a notification with the same UniqueID does not exist yet.
 		/// </summary>
 		/// <param name="notification">The notification to be added</param>
 		public static void AddUnique(Notification notification) {
@@ -50,14 +40,12 @@ namespace DataskopAR.Data {
 		}
 
 		/// <summary>
-		///     Takes the upcoming notification in the queue.
+		/// Takes the upcoming notification in the queue.
 		/// </summary>
 		/// <returns></returns>
 		public static Notification Take() {
 			return Notifications.Dequeue();
 		}
-
-#endregion
 
 	}
 

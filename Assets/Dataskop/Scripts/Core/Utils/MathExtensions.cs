@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEngine;
 using static System.Math;
 
-namespace DataskopAR.Utils {
+namespace Dataskop.Utils {
 
 	public static class MathExtensions {
 
@@ -11,14 +11,16 @@ namespace DataskopAR.Utils {
 
 			(b * Quaternion.Inverse(a)).ToAngleAxis(out float angle, out Vector3 angleAxis);
 
-			if (Vector3.Angle(axis, angleAxis) > 90f) angle = -angle;
+			if (Vector3.Angle(axis, angleAxis) > 90f) {
+				angle = -angle;
+			}
 
 			return Mathf.DeltaAngle(0f, angle);
 
 		}
 
 		/// <summary>
-		///     Returns a projected Quaternion to a specific axis ignoring the other axes.
+		/// Returns a projected Quaternion to a specific axis ignoring the other axes.
 		/// </summary>
 		/// <param name="eulerRotation">The objects current euler rotation.</param>
 		/// <param name="axis">The axis the quaternion should be on.</param>
@@ -28,7 +30,7 @@ namespace DataskopAR.Utils {
 		}
 
 		/// <summary>
-		///     Gets the signed angle between two transforms on an axis.
+		/// Gets the signed angle between two transforms on an axis.
 		/// </summary>
 		/// <param name="a">Transform of the first object.</param>
 		/// <param name="b">Transform of the second object.</param>
@@ -42,7 +44,7 @@ namespace DataskopAR.Utils {
 
 		// https://rosettacode.org/wiki/Averages/Mean_angle#C.23
 		/// <summary>
-		///     Gets the mean of a set of angles.
+		/// Gets the mean of a set of angles.
 		/// </summary>
 		/// <param name="angles">Value set of angles.</param>
 		/// <returns>Mean angle</returns>
@@ -53,7 +55,7 @@ namespace DataskopAR.Utils {
 		}
 
 		/// <summary>
-		///     Maps a value from some arbitrary range to the 0 to 1 range
+		/// Maps a value from some arbitrary range to the 0 to 1 range
 		/// </summary>
 		/// <param name="value"></param>
 		/// <param name="min"></param>
@@ -64,7 +66,7 @@ namespace DataskopAR.Utils {
 		}
 
 		/// <summary>
-		///     Maps a value from ome arbitrary range (x1, x2) to another arbitrary range (y1, y2)
+		/// Maps a value from ome arbitrary range (x1, x2) to another arbitrary range (y1, y2)
 		/// </summary>
 		/// <param name="value">The value in the from range that will be mapped to range.</param>
 		/// <param name="x1">Min value from range </param>
@@ -77,8 +79,8 @@ namespace DataskopAR.Utils {
 		}
 
 		/// <summary>
-		///     Finds the closest point on a ray to a given point. If the point is
-		///     behind the ray's origin, the closest point will be the origin.
+		/// Finds the closest point on a ray to a given point. If the point is
+		/// behind the ray's origin, the closest point will be the origin.
 		/// </summary>
 		/// <param name="ray">The ray on which the closes point will be found.</param>
 		/// <param name="point">The given point.</param>

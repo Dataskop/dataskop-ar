@@ -5,13 +5,13 @@
 //-----------------------------------------------------------------------
 
 // TODO: figure out how run tests outside of Unity with .NET framework, something like '#if !UNITY'
+
 #if UNITY_5_6_OR_NEWER
 
-namespace Mapbox.MapboxSdkCs.UnitTest
-{
+namespace Mapbox.MapboxSdkCs.UnitTest {
 
-	using Mapbox.Map;
-	using Mapbox.Platform;
+	using Map;
+	using Platform;
 	using Mapbox.Utils;
 	using NUnit.Framework;
 #if UNITY_5_6_OR_NEWER
@@ -19,26 +19,23 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 	using UnityEngine.TestTools;
 #endif
 
-
 	[TestFixture]
-	internal class MapTest
-	{
+	internal class MapTest {
 
 		private FileSource _fs;
 
-
 		[SetUp]
-		public void SetUp()
-		{
+		public void SetUp() {
 #if UNITY_5_6_OR_NEWER
-			_fs = new FileSource(Unity.MapboxAccess.Instance.Configuration.GetMapsSkuToken, Unity.MapboxAccess.Instance.Configuration.AccessToken);
+			_fs = new FileSource(
+				Unity.MapboxAccess.Instance.Configuration.GetMapsSkuToken,
+				Unity.MapboxAccess.Instance.Configuration.AccessToken
+			);
 #else
 			// when run outside of Unity FileSource gets the access token from environment variable 'MAPBOX_ACCESS_TOKEN'
 			_fs = new FileSource();
 #endif
 		}
-
-
 
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]
@@ -48,18 +45,18 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 		public void World()
 #endif
 		{
-			var map = new Map<VectorTile>(_fs);
+			Map<VectorTile> map = new(_fs);
 
 			map.Vector2dBounds = Vector2dBounds.World();
 			map.Zoom = 3;
 
-			var mapObserver = new Utils.VectorMapObserver();
+			Utils.VectorMapObserver mapObserver = new();
 			map.Subscribe(mapObserver);
 			map.Update();
 
 #if UNITY_5_6_OR_NEWER
 			IEnumerator enumerator = _fs.WaitForAllRequests();
-			while (enumerator.MoveNext()) { yield return null; }
+			while (enumerator.MoveNext()) yield return null;
 #else
 			_fs.WaitForAllRequests();
 #endif
@@ -69,8 +66,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 			map.Unsubscribe(mapObserver);
 		}
 
-
-
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]
 		public IEnumerator RasterHelsinki()
@@ -79,18 +74,18 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 		public void RasterHelsinki()
 #endif
 		{
-			var map = new Map<RasterTile>(_fs);
+			Map<RasterTile> map = new(_fs);
 
 			map.Center = new Vector2d(60.163200, 24.937700);
 			map.Zoom = 13;
 
-			var mapObserver = new Utils.RasterMapObserver();
+			Utils.RasterMapObserver mapObserver = new();
 			map.Subscribe(mapObserver);
 			map.Update();
 
 #if UNITY_5_6_OR_NEWER
 			IEnumerator enumerator = _fs.WaitForAllRequests();
-			while (enumerator.MoveNext()) { yield return null; }
+			while (enumerator.MoveNext()) yield return null;
 #else
 			_fs.WaitForAllRequests();
 #endif
@@ -101,8 +96,6 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 			map.Unsubscribe(mapObserver);
 		}
 
-
-
 #if UNITY_5_6_OR_NEWER
 		[UnityTest]
 		public IEnumerator ChangeTilesetId()
@@ -111,9 +104,9 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 		public void ChangeTilesetId()
 #endif
 		{
-			var map = new Map<ClassicRasterTile>(_fs);
+			Map<ClassicRasterTile> map = new(_fs);
 
-			var mapObserver = new Utils.ClassicRasterMapObserver();
+			Utils.ClassicRasterMapObserver mapObserver = new();
 			map.Subscribe(mapObserver);
 
 			map.Center = new Vector2d(60.163200, 24.937700);
@@ -123,7 +116,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 
 #if UNITY_5_6_OR_NEWER
 			IEnumerator enumerator = _fs.WaitForAllRequests();
-			while (enumerator.MoveNext()) { yield return null; }
+			while (enumerator.MoveNext()) yield return null;
 #else
 			_fs.WaitForAllRequests();
 #endif
@@ -135,7 +128,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 
 #if UNITY_5_6_OR_NEWER
 			enumerator = _fs.WaitForAllRequests();
-			while (enumerator.MoveNext()) { yield return null; }
+			while (enumerator.MoveNext()) yield return null;
 #else
 			_fs.WaitForAllRequests();
 #endif
@@ -147,7 +140,7 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 
 #if UNITY_5_6_OR_NEWER
 			enumerator = _fs.WaitForAllRequests();
-			while (enumerator.MoveNext()) { yield return null; }
+			while (enumerator.MoveNext()) yield return null;
 #else
 			_fs.WaitForAllRequests();
 #endif
@@ -160,13 +153,10 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 			map.Unsubscribe(mapObserver);
 		}
 
-
-
 		[Test]
-		public void SetVector2dBoundsZoom()
-		{
-			var map1 = new Map<RasterTile>(_fs);
-			var map2 = new Map<RasterTile>(_fs);
+		public void SetVector2dBoundsZoom() {
+			Map<RasterTile> map1 = new(_fs);
+			Map<RasterTile> map2 = new(_fs);
 
 			map1.Zoom = 3;
 			map1.Vector2dBounds = Vector2dBounds.World();
@@ -176,12 +166,9 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 			Assert.AreEqual(map1.Tiles.Count, map2.Tiles.Count);
 		}
 
-
-
 		[Test]
-		public void TileMax()
-		{
-			var map = new Map<RasterTile>(_fs);
+		public void TileMax() {
+			Map<RasterTile> map = new(_fs);
 
 			map.SetVector2dBoundsZoom(Vector2dBounds.World(), 2);
 			map.Update();
@@ -193,12 +180,9 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 			Assert.AreEqual(16, map.Tiles.Count);
 		}
 
-
-
 		[Test]
-		public void Zoom()
-		{
-			var map = new Map<RasterTile>(_fs);
+		public void Zoom() {
+			Map<RasterTile> map = new(_fs);
 
 			map.Zoom = 50;
 			Assert.AreEqual(20, map.Zoom);
@@ -206,7 +190,9 @@ namespace Mapbox.MapboxSdkCs.UnitTest
 			map.Zoom = -50;
 			Assert.AreEqual(0, map.Zoom);
 		}
+
 	}
+
 }
 
 #endif

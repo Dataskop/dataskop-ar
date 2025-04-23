@@ -1,12 +1,10 @@
 using System.Collections.Generic;
-using DataskopAR.Interaction;
+using Dataskop.Interaction;
 
-namespace DataskopAR.UI {
+namespace Dataskop.UI {
 
 	public static class CalibratorTextRepository {
 
-#region Constants
-		
 		// @formatter:off
 
 		public static readonly Dictionary<CalibratorPhase, string> CalibratorGuideDict = new() {
@@ -40,8 +38,6 @@ namespace DataskopAR.UI {
 		};
 		
 		// @formatter:on
-
-#endregion
 
 	}
 

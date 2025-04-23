@@ -4,20 +4,14 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	public class TokenValidator : MonoBehaviour {
 
-#region Fields
+		private const string URL = "https://backend.dataskop.at/api/company/list";
 
 		[Header("Events")]
 		public UnityEvent<string, bool> tokenChecked;
-
-		private const string URL = "https://backend.dataskop.at/api/company/list";
-
-#endregion
-
-#region Methods
 
 		public void Validate(string token) {
 			StartCoroutine(CheckResponseStatus(token, status => { tokenChecked?.Invoke(token, status); }));
@@ -32,17 +26,17 @@ namespace DataskopAR.Data {
 
 			UnityWebRequestAsyncOperation op = request.SendWebRequest();
 
-			while (!op.isDone) {
-				yield return null;
-			}
+			while (!op.isDone) yield return null;
 
 			if (request.downloadHandler.error != string.Empty) {
 
-				NotificationHandler.Add(new Notification {
-					Category = NotificationCategory.Error,
-					Text = "Unauthorized Token!",
-					DisplayDuration = NotificationDuration.Medium
-				});
+				NotificationHandler.Add(
+					new Notification {
+						Category = NotificationCategory.Error,
+						Text = "Unauthorized Token!",
+						DisplayDuration = NotificationDuration.Medium
+					}
+				);
 
 				yield break;
 			}
@@ -54,8 +48,6 @@ namespace DataskopAR.Data {
 			callback(request.result == UnityWebRequest.Result.Success);
 
 		}
-
-#endregion
 
 	}
 

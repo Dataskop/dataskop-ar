@@ -4,11 +4,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Utils
-{
+namespace Mapbox.Utils {
+
 	/// <summary> Collection of constants used across the project. </summary>
-	public static class Constants
-	{
+	public static class Constants {
+
 		/// <summary> Base URL for all the Mapbox APIs. </summary>
 		public const string BaseAPI = "https://api.mapbox.com/";
 
@@ -27,4 +27,5 @@ namespace Mapbox.Utils
 		public const float EpsilonFloatingPoint = 1E-05f;
 
 	}
+
 }

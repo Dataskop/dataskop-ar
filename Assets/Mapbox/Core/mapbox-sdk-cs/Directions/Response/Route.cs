@@ -4,18 +4,18 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Directions
-{
-    using System.Collections.Generic;
-    using Mapbox.Json;
-    using Mapbox.Utils;
-    using Mapbox.Utils.JsonConverters;
+namespace Mapbox.Directions {
 
-    /// <summary>
-    /// A Route from a Directions API call.
-    /// </summary>
-    public class Route
-	{
+	using System.Collections.Generic;
+	using Json;
+	using Utils;
+	using Utils.JsonConverters;
+
+	/// <summary>
+	/// A Route from a Directions API call.
+	/// </summary>
+	public class Route {
+
 		/// <summary>
 		/// Gets or sets the legs.
 		/// </summary>
@@ -58,4 +58,5 @@ namespace Mapbox.Directions
 		public string WeightName { get; set; }
 
 	}
+
 }

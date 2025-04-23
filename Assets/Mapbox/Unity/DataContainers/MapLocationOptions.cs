@@ -1,11 +1,12 @@
-﻿namespace Mapbox.Unity.Map
-{
+﻿namespace Mapbox.Unity.Map {
+
 	using System;
 	using UnityEngine;
-	using Mapbox.Unity.Utilities;
+	using Utilities;
+
 	[Serializable]
-	public class MapLocationOptions : MapboxDataProperty
-	{
+	public class MapLocationOptions : MapboxDataProperty {
+
 		[Geocode]
 		[Tooltip("The coordinates to build a map around")]
 		public string latitudeLongitude = "0,0";
@@ -16,5 +17,7 @@
 		//TODO : Add Coordinate conversion class. 
 		[NonSerialized]
 		public MapCoordinateSystemType coordinateSystemType = MapCoordinateSystemType.WebMercator;
+
 	}
+
 }

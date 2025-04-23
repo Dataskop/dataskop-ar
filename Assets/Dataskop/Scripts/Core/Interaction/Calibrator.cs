@@ -1,26 +1,21 @@
 using System;
-using DataskopAR.Data;
+using System.Globalization;
+using Dataskop.Data;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.ARFoundation;
 
-namespace DataskopAR.Interaction {
+namespace Dataskop.Interaction {
 
 	public class Calibrator : MonoBehaviour {
-
-#region Events
 
 		[Header("UI Events")]
 		public UnityEvent calibrationInitialized;
 
 		public UnityEvent<CalibratorPhase> phaseChanged;
 		public UnityEvent calibrationFinished;
-
-#endregion
-
-#region Fields
 
 		[Header("References")]
 		[SerializeField] private GroundLevelCalibrator groundLevelCalibrator;
@@ -30,19 +25,17 @@ namespace DataskopAR.Interaction {
 
 		private CalibratorPhase currentPhase;
 
-#endregion
-
-#region Properties
-
 		[CanBeNull] public ICalibration ActiveCalibration { get; private set; }
 
 		/// <summary>
-		///     The current Calibration Phase.
+		/// The current Calibration Phase.
 		/// </summary>
-		public CalibratorPhase CurrentPhase {
+		public CalibratorPhase CurrentPhase
+		{
 			get => currentPhase;
 
-			private set {
+			private set
+			{
 				currentPhase = value;
 				phaseChanged?.Invoke(CurrentPhase);
 			}
@@ -50,28 +43,34 @@ namespace DataskopAR.Interaction {
 
 		public bool IsCalibrating { get; private set; }
 
-#endregion
-
-#region Methods
-
-		private void OnEnable() {
-			northAlignmentCalibrator.CalibrationCompleted += OnCalibratorContinued;
-			groundLevelCalibrator.CalibrationCompleted += OnCalibratorContinued;
-			roomCalibrator.CalibrationCompleted += OnCalibratorContinued;
-
-			FPSManager.SetApplicationTargetFrameRate(60);
+		private void Awake() {
+			CultureInfo.DefaultThreadCurrentCulture = AppOptions.DateCulture;
+			FPSManager.SetApplicationTargetFrameRate(30);
 		}
 
 		private void Start() {
 			Initialize();
 		}
 
+		private void OnEnable() {
+			northAlignmentCalibrator.CalibrationCompleted += OnCalibratorContinued;
+			groundLevelCalibrator.CalibrationCompleted += OnCalibratorContinued;
+			roomCalibrator.CalibrationCompleted += OnCalibratorContinued;
+
+		}
+
+		private void OnDisable() {
+			northAlignmentCalibrator.CalibrationCompleted -= OnCalibratorContinued;
+			groundLevelCalibrator.CalibrationCompleted -= OnCalibratorContinued;
+			roomCalibrator.CalibrationCompleted -= OnCalibratorContinued;
+		}
+
 		public void Initialize() {
 
 			if (AppOptions.DemoMode) {
-				ARTrackedImageManager arManager = (ARTrackedImageManager)FindObjectOfType(typeof(ARTrackedImageManager), true);
+				ARTrackedImageManager arManager = FindFirstObjectByType<ARTrackedImageManager>();
 				arManager.enabled = true;
-				DemoBoxHandler demoBoxHandler = (DemoBoxHandler)FindObjectOfType(typeof(DemoBoxHandler), true);
+				DemoBoxHandler demoBoxHandler = FindFirstObjectByType<DemoBoxHandler>();
 				demoBoxHandler.enabled = true;
 				calibrationFinished?.Invoke();
 				return;
@@ -168,14 +167,6 @@ namespace DataskopAR.Interaction {
 			}
 
 		}
-
-		private void OnDisable() {
-			northAlignmentCalibrator.CalibrationCompleted -= OnCalibratorContinued;
-			groundLevelCalibrator.CalibrationCompleted -= OnCalibratorContinued;
-			roomCalibrator.CalibrationCompleted -= OnCalibratorContinued;
-		}
-
-#endregion
 
 	}
 

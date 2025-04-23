@@ -5,9 +5,10 @@
 //-----------------------------------------------------------------------
 
 namespace Mapbox.Directions {
+
 	using System;
 	using System.Collections.Generic;
-	using Mapbox.Json;
+	using Json;
 
 	/// <summary>
 	/// Directions response.
@@ -17,6 +18,7 @@ namespace Mapbox.Directions {
 	[Serializable]
 #endif
 	public class DirectionsResponse {
+
 		/// <summary>
 		/// Gets or sets the routes.
 		/// </summary>
@@ -37,5 +39,7 @@ namespace Mapbox.Directions {
 		/// <value>The code.</value>
 		[JsonProperty("code")]
 		public string Code { get; set; }
+
 	}
+
 }

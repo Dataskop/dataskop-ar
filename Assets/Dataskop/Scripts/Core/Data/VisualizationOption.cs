@@ -2,20 +2,19 @@ using System;
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace DataskopAR.Data {
+namespace Dataskop.Data {
 
 	[UsedImplicitly]
 	public class VisualizationOption {
 
-#region Constructor
+		public string Type { get; set; }
+
+		public VisualizationStyle Style { get; set; }
 
 		public VisualizationOption(string type, VisualizationStyle style) {
 
 			string[] acceptedTypes = {
-				"dot",
-				"bubble",
-				"bar",
-				"box"
+				"dot", "bubble", "bar", "radialBar"
 			};
 
 			if (!acceptedTypes.Contains(type)) {
@@ -26,16 +25,6 @@ namespace DataskopAR.Data {
 			Style = style;
 
 		}
-
-#endregion
-
-#region Properties
-
-		public string Type { get; set; }
-
-		public VisualizationStyle Style { get; set; }
-
-#endregion
 
 	}
 

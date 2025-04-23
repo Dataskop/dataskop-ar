@@ -1,12 +1,11 @@
-﻿namespace Mapbox.Map
-{
+﻿namespace Mapbox.Map {
+
 	using System;
-	using Mapbox.Unity.MeshGeneration.Data;
+	using Unity.MeshGeneration.Data;
 	using System.Collections.Generic;
 	using System.Collections.ObjectModel;
 
-	public class TileErrorEventArgs : EventArgs
-	{
+	public class TileErrorEventArgs : EventArgs {
 
 		/// <summary>
 		/// The tile identifier.
@@ -32,8 +31,8 @@
 		/// <param name="TileType">Tile type.</param>
 		/// <param name="UnityTileInstance">Unity tile instance.</param>
 		/// <param name="Exceptions">Exceptions as a List</param>
-		public TileErrorEventArgs(CanonicalTileId TileId, Type TileType, UnityTile UnityTileInstance, List<System.Exception> Exceptions)
-		{
+		public TileErrorEventArgs(CanonicalTileId TileId, Type TileType, UnityTile UnityTileInstance,
+			List<Exception> Exceptions) {
 			this.TileId = TileId;
 			this.Exceptions = Exceptions;
 			this.UnityTileInstance = UnityTileInstance;
@@ -47,17 +46,20 @@
 		/// <param name="TileType">Tile type.</param>
 		/// <param name="UnityTileInstance">Unity tile instance.</param>
 		/// <param name="Exceptions">Exceptions as a ReadOnlyCollection</param>
-		public TileErrorEventArgs(CanonicalTileId TileId, Type TileType, UnityTile UnityTileInstance, ReadOnlyCollection<Exception> Exceptions)
-		{
+		public TileErrorEventArgs(CanonicalTileId TileId, Type TileType, UnityTile UnityTileInstance,
+			ReadOnlyCollection<Exception> Exceptions) {
 			this.TileId = TileId;
-			List<Exception> _exceptions = new List<Exception>();
-			foreach (var exception in Exceptions)
-			{
+			List<Exception> _exceptions = new();
+
+			foreach (Exception exception in Exceptions) {
 				_exceptions.Add(exception);
 			}
+
 			this.Exceptions = _exceptions;
 			this.UnityTileInstance = UnityTileInstance;
 			this.TileType = TileType;
 		}
+
 	}
+
 }

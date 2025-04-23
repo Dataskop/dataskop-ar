@@ -4,35 +4,29 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace Mapbox.Directions
-{
+namespace Mapbox.Directions {
+
 	using System.Collections.Generic;
-	using Mapbox.Json;
+	using Json;
 
 	/// <summary>
 	/// <para>An annotations object contains additional details about each line segment along the route geometry.</para>
 	/// <para></para>Each entry in an annotations field corresponds to a coordinate along the route geometry.
 	/// </summary>
-	public class Annotation
-	{
-
+	public class Annotation {
 
 		[JsonProperty("distance")]
 		public double[] Distance { get; set; }
 
-
 		[JsonProperty("duration")]
 		public double[] Duration { get; set; }
-
 
 		[JsonProperty("speed")]
 		public string[] Speed { get; set; }
 
-
 		[JsonProperty("congestion")]
 		public string[] Congestion { get; set; }
 
-
-
 	}
+
 }

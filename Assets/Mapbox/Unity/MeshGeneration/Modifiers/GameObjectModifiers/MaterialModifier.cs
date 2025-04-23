@@ -1,9 +1,9 @@
-namespace Mapbox.Unity.MeshGeneration.Modifiers
-{
+namespace Mapbox.Unity.MeshGeneration.Modifiers {
+
 	using UnityEngine;
-	using Mapbox.Unity.MeshGeneration.Components;
-	using Mapbox.Unity.MeshGeneration.Data;
-	using Mapbox.Unity.Map;
+	using Components;
+	using Data;
+	using Map;
 	using System;
 
 	/// <summary>
@@ -11,54 +11,48 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 	/// Logic is all pushed into this TextureSelector mono behaviour to make it's easier to change it in runtime.
 	/// </summary>
 	[CreateAssetMenu(menuName = "Mapbox/Modifiers/Material Modifier")]
-	public class MaterialModifier : GameObjectModifier
-	{
-		[SerializeField]
-		GeometryMaterialOptions _options;
+	public class MaterialModifier : GameObjectModifier {
 
-		public override void SetProperties(ModifierProperties properties)
-		{
+		[SerializeField] private GeometryMaterialOptions _options;
+
+		public override void SetProperties(ModifierProperties properties) {
 			_options = (GeometryMaterialOptions)properties;
 			_options.PropertyHasChanged += UpdateModifier;
 		}
 
-		public override void UnbindProperties()
-		{
+		public override void UnbindProperties() {
 			_options.PropertyHasChanged -= UpdateModifier;
 		}
 
-		private float GetRenderMode(float val)
-		{
+		private float GetRenderMode(float val) {
 			return Mathf.Approximately(val, 1.0f) ? 0f : 3f;
 		}
 
-		public override void Run(VectorEntity ve, UnityTile tile)
-		{
-			var min = Math.Min(_options.materials.Length, ve.MeshFilter.sharedMesh.subMeshCount);
-			var mats = new Material[min];
+		public override void Run(VectorEntity ve, UnityTile tile) {
+			int min = Math.Min(_options.materials.Length, ve.MeshFilter.sharedMesh.subMeshCount);
+			Material[] mats = new Material[min];
 
-			if (_options.style == StyleTypes.Custom)
-			{
-				for (int i = 0; i < min; i++)
-				{
-					mats[i] = _options.customStyleOptions.materials[i].Materials[UnityEngine.Random.Range(0, _options.customStyleOptions.materials[i].Materials.Length)];
+			if (_options.style == StyleTypes.Custom) {
+				for (int i = 0; i < min; i++) {
+					mats[i] = _options.customStyleOptions.materials[i].Materials[
+						UnityEngine.Random.Range(0, _options.customStyleOptions.materials[i].Materials.Length)];
 				}
 			}
-			else if (_options.style == StyleTypes.Satellite)
-			{
-				for (int i = 0; i < min; i++)
-				{
-					mats[i] = Instantiate(_options.materials[i].Materials[UnityEngine.Random.Range(0, _options.materials[i].Materials.Length)]);
+			else if (_options.style == StyleTypes.Satellite) {
+				for (int i = 0; i < min; i++) {
+					mats[i] = Instantiate(
+						_options.materials[i]
+							.Materials[UnityEngine.Random.Range(0, _options.materials[i].Materials.Length)]
+					);
 				}
 
 				mats[0].mainTexture = tile.GetRasterData();
 				mats[0].mainTextureScale = new Vector2(1f, 1f);
 			}
-			else
-			{
+			else {
 				float renderMode = 0.0f;
-				switch (_options.style)
-				{
+
+				switch (_options.style) {
 					case StyleTypes.Light:
 						renderMode = GetRenderMode(_options.lightStyleOpacity);
 						break;
@@ -71,36 +65,38 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 					default:
 						break;
 				}
-				for (int i = 0; i < min; i++)
-				{
-					mats[i] = _options.materials[i].Materials[UnityEngine.Random.Range(0, _options.materials[i].Materials.Length)];
+
+				for (int i = 0; i < min; i++) {
+					mats[i] = _options.materials[i]
+						.Materials[UnityEngine.Random.Range(0, _options.materials[i].Materials.Length)];
+
 					mats[i].SetFloat("_Mode", renderMode);
 				}
 			}
+
 			ve.MeshRenderer.materials = mats;
 		}
 
-		public override void OnPoolItem(VectorEntity vectorEntity)
-		{
-			if (_options.style == StyleTypes.Satellite)
-			{
-				foreach (var material in vectorEntity.MeshRenderer.sharedMaterials)
-				{
+		public override void OnPoolItem(VectorEntity vectorEntity) {
+			if (_options.style == StyleTypes.Satellite) {
+				foreach (Material material in vectorEntity.MeshRenderer.sharedMaterials) {
 					DestroyImmediate(material, true);
 				}
 			}
 		}
+
 	}
 
 	[Serializable]
-	public class MaterialList
-	{
+	public class MaterialList {
+
 		[SerializeField]
 		public Material[] Materials;
 
-		public MaterialList()
-		{
+		public MaterialList() {
 			Materials = new Material[1];
 		}
+
 	}
+
 }

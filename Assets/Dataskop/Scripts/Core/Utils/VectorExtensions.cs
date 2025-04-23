@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DataskopAR.Utils {
+namespace Dataskop.Utils {
 
 	public static class VectorExtensions {
 

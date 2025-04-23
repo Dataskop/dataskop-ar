@@ -1,26 +1,28 @@
 using Mapbox.Unity.Map.Interfaces;
+using Mapbox.Utils;
 
-namespace Mapbox.Unity.Map
-{
+namespace Mapbox.Unity.Map {
+
 	using UnityEngine;
-	using Mapbox.Unity.MeshGeneration.Data;
+	using MeshGeneration.Data;
 	using Mapbox.Map;
 
-	public enum ModuleState
-	{
+	public enum ModuleState {
+
 		Initialized,
 		Working,
 		Finished
+
 	}
 
-	public class AssignmentTypeAttribute : PropertyAttribute
-	{
+	public class AssignmentTypeAttribute : PropertyAttribute {
+
 		public System.Type Type;
 
-		public AssignmentTypeAttribute(System.Type t)
-		{
+		public AssignmentTypeAttribute(System.Type t) {
 			Type = t;
 		}
+
 	}
 
 	/// <summary>
@@ -31,21 +33,24 @@ namespace Mapbox.Unity.Map
 	/// (i.e.query all buildings x meters around any restaurant etc).
 	/// </summary>
 	[CreateAssetMenu(menuName = "Mapbox/MapVisualizer/BasicMapVisualizer")]
-	public class MapVisualizer : AbstractMapVisualizer
-	{
-		protected override void PlaceTile(UnwrappedTileId tileId, UnityTile tile, IMapReadable map)
-		{
-			var rect = tile.Rect;
+	public class MapVisualizer : AbstractMapVisualizer {
+
+		protected override void PlaceTile(UnwrappedTileId tileId, UnityTile tile, IMapReadable map) {
+			RectD rect = tile.Rect;
 
 			// TODO: this is constant for all tiles--cache.
-			var scale = tile.TileScale;
-			var scaleFactor = Mathf.Pow(2, (map.InitialZoom - map.AbsoluteZoom));
+			float scale = tile.TileScale;
+			float scaleFactor = Mathf.Pow(2, map.InitialZoom - map.AbsoluteZoom);
 
-			var position = new Vector3(
+			Vector3 position = new(
 				(float)(rect.Center.x - map.CenterMercator.x) * scale * scaleFactor,
 				0,
-				(float)(rect.Center.y - map.CenterMercator.y) * scale * scaleFactor);
+				(float)(rect.Center.y - map.CenterMercator.y) * scale * scaleFactor
+			);
+
 			tile.transform.localPosition = position;
 		}
+
 	}
+
 }

@@ -1,26 +1,25 @@
-namespace Mapbox.Unity.MeshGeneration.Filters
-{
+namespace Mapbox.Unity.MeshGeneration.Filters {
+
 	using UnityEngine;
-	using Mapbox.Unity.MeshGeneration.Data;
+	using Data;
 	using System;
 
-	public interface ILayerFeatureFilterComparer
-	{
+	public interface ILayerFeatureFilterComparer {
+
 		bool Try(VectorFeatureUnity feature);
+
 	}
 
-	public class FilterBase : ILayerFeatureFilterComparer
-	{
-		public virtual string Key { get { return ""; } }
+	public class FilterBase : ILayerFeatureFilterComparer {
 
-		public virtual bool Try(VectorFeatureUnity feature)
-		{
+		public virtual string Key => "";
+
+		public virtual bool Try(VectorFeatureUnity feature) {
 			return true;
 		}
 
-		public virtual void Initialize()
-		{
+		public virtual void Initialize() { }
 
-		}
 	}
+
 }

@@ -1,37 +1,36 @@
 ﻿using System;
-namespace Mapbox.Editor
-{
+
+namespace Mapbox.Editor {
+
 	using UnityEditor;
 	using UnityEditor.IMGUI.Controls;
 	using UnityEngine;
-	internal class FeatureSectionMultiColumnHeader : MultiColumnHeader
-	{
-		Mode m_Mode;
 
-		public enum Mode
-		{
+	internal class FeatureSectionMultiColumnHeader : MultiColumnHeader {
+
+		private Mode m_Mode;
+
+		public enum Mode {
+
 			LargeHeader,
 			DefaultHeader,
 			MinimumHeaderWithoutSorting
+
 		}
 
 		public FeatureSectionMultiColumnHeader(MultiColumnHeaderState state)
-			: base(state)
-		{
+			: base(state) {
 			mode = Mode.DefaultHeader;
 		}
 
 		public Mode mode
 		{
-			get
-			{
-				return m_Mode;
-			}
+			get => m_Mode;
 			set
 			{
 				m_Mode = value;
-				switch (m_Mode)
-				{
+
+				switch (m_Mode) {
 					case Mode.LargeHeader:
 						canSort = true;
 						height = 37f;
@@ -48,24 +47,24 @@ namespace Mapbox.Editor
 			}
 		}
 
-		protected override void ColumnHeaderGUI(MultiColumnHeaderState.Column column, Rect headerRect, int columnIndex)
-		{
+		protected override void ColumnHeaderGUI(MultiColumnHeaderState.Column column, Rect headerRect,
+			int columnIndex) {
 			// Default column header gui
 			base.ColumnHeaderGUI(column, headerRect, columnIndex);
 
 			// Add additional info for large header
-			if (mode == Mode.LargeHeader)
-			{
+			if (mode == Mode.LargeHeader) {
 				// Show example overlay stuff on some of the columns
-				if (columnIndex > 2)
-				{
+				if (columnIndex > 2) {
 					headerRect.xMax -= 3f;
-					var oldAlignment = EditorStyles.largeLabel.alignment;
+					TextAnchor oldAlignment = EditorStyles.largeLabel.alignment;
 					EditorStyles.largeLabel.alignment = TextAnchor.UpperRight;
 					GUI.Label(headerRect, 36 + columnIndex + "%", EditorStyles.largeLabel);
 					EditorStyles.largeLabel.alignment = oldAlignment;
 				}
 			}
 		}
+
 	}
+
 }
