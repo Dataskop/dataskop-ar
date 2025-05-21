@@ -13,7 +13,6 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private TextMeshProUGUI idTextMesh;
 		[SerializeField] private TextMeshProUGUI dateTextMesh;
 		[SerializeField] private TextMeshProUGUI minMaxTextMesh;
-		[SerializeField] private TextMeshProUGUI unitSymbol;
 		[SerializeField] private Image legendDots;
 		[SerializeField] private Image upArrow;
 		[SerializeField] private Image downArrow;
@@ -45,7 +44,7 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void OnSwipe(Vector2 direction) {
 
-			if (direction.y > 0) {
+			if (direction.x > 0) {
 
 				if (currentDataIndex == 0) {
 					return;
@@ -72,7 +71,6 @@ namespace Dataskop.Entities.Visualizations {
 			VisObjectData data = DataSet[index];
 			float receivedValue = data.Result.ReadAsFloat();
 			valueTextMesh.text = receivedValue.ToString("00.00", CultureInfo.InvariantCulture);
-			unitSymbol.text = data.Attribute.Unit;
 			dateTextMesh.text = data.Result.GetDateText();
 			legendDots.color = data.Color;
 			minMaxTextMesh.text =

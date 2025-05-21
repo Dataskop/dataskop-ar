@@ -50,6 +50,7 @@ MonoBehaviour:
   visRenderer: {fileID: 5583245377080150628}
   visCollider: {fileID: 982522895779388725}
   radialSegmentPrefab: {fileID: 1485807055806656404, guid: 184618dbeeaae99448ded49df5de1653, type: 3}
+  liveIndicator: {fileID: 0}
 --- !u!135 &982522895779388725
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -132,6 +133,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

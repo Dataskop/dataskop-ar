@@ -1,13 +1,11 @@
 using System;
-using System.Collections;
+using System.Linq;
 using Dataskop.Utils;
 using UnityEngine;
 
 namespace Dataskop.Entities.Visualizations {
 
 	public class RadialBarVisObject : MonoBehaviour, IVisObject {
-
-		private static readonly int Arc2 = Shader.PropertyToID("_Arc2");
 
 		[Header("References")]
 		[SerializeField] private SpriteRenderer visRenderer;
@@ -16,6 +14,7 @@ namespace Dataskop.Entities.Visualizations {
 		[SerializeField] private GameObject liveIndicator;
 
 		private bool isSelected;
+		private int currentDataIndex = 0;
 
 		public int Index { get; set; }
 
@@ -29,10 +28,10 @@ namespace Dataskop.Entities.Visualizations {
 
 		public VisObjectData CurrentData { get; private set; }
 
-		private GameObject[] RadialSegments { get; set; }
+		private RadialBarAttributeSegment[] RadialSegments { get; set; }
 
 		public event Action<int> HasHovered;
-
+		
 		public event Action<int> HasSelected;
 
 		public event Action<int> HasDeselected;
@@ -79,25 +78,43 @@ namespace Dataskop.Entities.Visualizations {
 		public void ApplyData(params VisObjectData[] data) {
 
 			if (RadialSegments?.Length > 0) {
-				foreach (GameObject r in RadialSegments) {
-					Destroy(r);
+				foreach (RadialBarAttributeSegment r in RadialSegments) {
+					Destroy(r.gameObject);
 				}
 			}
 
-			RadialSegments = new GameObject[data.Length];
+			RadialSegments = new RadialBarAttributeSegment[data.Length];
 
 			for (int i = 0; i < RadialSegments.Length; i++) {
-				RadialSegments[i] = Instantiate(radialSegmentPrefab, transform);
+				RadialSegments[i] = Instantiate(radialSegmentPrefab, transform)
+					.GetComponent<RadialBarAttributeSegment>();
 
 				RadialSegments[i].transform.localScale = new Vector2(1 + 0.1f * (i + 1), 1 + 0.1f * (i + 1));
-				SpriteRenderer sr = RadialSegments[i].GetComponent<SpriteRenderer>();
-				sr.color = data[i].Color;
-				sr.sortingOrder = (i + 1) * -1;
-				int angle = GetMappedAngle(
-					data[i].Result.ReadAsFloat(), data[i].Attribute.Minimum, data[i].Attribute.Maximum
-				);
 
-				sr.material.SetInt(Arc2, angle);
+				RadialSegments[i].SetColor(data[i].Color);
+				RadialSegments[i].SetSortingOrder((i + 1) * -1);
+
+				float min = Mathf.Abs(data[i].Attribute.Minimum);
+				float max = Mathf.Abs(data[i].Attribute.Maximum);
+				float mappedMax = min > max ? min : max;
+				float mappedMin = 0;
+
+				if (data[i].Attribute.Minimum >= 0 && data[i].Attribute.Maximum >= 0 ||
+				    data[i].Attribute.Minimum <= 0 && data[i].Attribute.Maximum <= 0) {
+					mappedMax = Mathf.Abs(data[i].Attribute.Maximum);
+					mappedMin = Mathf.Abs(data[i].Attribute.Minimum);
+				}
+
+				int angle = GetMappedAngle(Mathf.Abs(data[i].Result.ReadAsFloat()), mappedMin, mappedMax);
+				RadialSegments[i].SetAngle(360 - angle, data[i].Result.ReadAsFloat() < 0);
+
+				if (i == currentDataIndex) {
+					RadialSegments[i].Focus();
+				}
+				else {
+					RadialSegments[i].Unfocus();
+				}
+
 			}
 
 		}
@@ -114,8 +131,40 @@ namespace Dataskop.Entities.Visualizations {
 
 		public void SetNewState(bool state) { }
 
+		public void OnSwipe(Vector2 direction) {
+
+			if (direction.x > 0) {
+
+				if (currentDataIndex == 0) {
+					return;
+				}
+
+				currentDataIndex--;
+
+			}
+			else {
+
+				if (currentDataIndex == RadialSegments.Length - 1) {
+					return;
+				}
+
+				currentDataIndex++;
+
+			}
+
+			foreach (RadialBarAttributeSegment rs in RadialSegments) {
+				if (Array.IndexOf(RadialSegments, rs) == currentDataIndex) {
+					rs.Focus();
+				}
+				else {
+					rs.Unfocus();
+				}
+			}
+
+		}
+
 		private int GetMappedAngle(float value, float min, float max) {
-			return 360 - (int)MathExtensions.Map(value, min, max, 0, 360);
+			return (int)MathExtensions.Map(value, min, max, 0, 180);
 		}
 
 	}
