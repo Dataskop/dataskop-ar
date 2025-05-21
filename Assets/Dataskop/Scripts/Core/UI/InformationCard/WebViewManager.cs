@@ -93,7 +93,7 @@ namespace Dataskop.UI
 			}
             // var jsonData = JsonUtility.ToJson(new Serialization<object>(sensorData));       // TODO: FIX!!! 
             // Debug.Log($"FLO: Sending sensor data to WebView: {jsonData}");
-            // webViewObject.EvaluateJS($"updateSensorData('{jsonData}')");
+            webViewObject.EvaluateJS($"updateSensorData('{jsonData}')");
         }
 
         // Handle callback messages from JavaScript

@@ -8,15 +8,51 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 10px;
-            background: #f0f0f0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            background-color: white;
         }
-        #chart {
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
             width: 100%;
-            height: 300px;
+            max-width: 1200px;
+        }
+        .chart-title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .grid line {
+            stroke: #e0e0e0;
+            stroke-opacity: 0.7;
+            shape-rendering: crispEdges;
+        }
+        .line {
+            fill: none;
+            stroke: #2196F3;
+            stroke-width: 2;
+        }
+        .dot {
+            fill: #2196F3;
+            stroke: white;
+            stroke-width: 2;
+        }
+        .tooltip {
+            position: absolute;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 4px;
+            font-size: 12px;
+            pointer-events: none;
+            opacity: 0;
         }
         #interactionButton {
             margin-top: 20px;
@@ -31,115 +67,190 @@
             margin-top: 20px;
             font-weight: bold;
         }
+        svg {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/9;
+        }
     </style>
 </head>
 <body>
-<div id="chart"></div>
+    <div id="chart" class="chart-container"></div>
+    <button id="interactionButton">Send Message to Unity</button>
+    <div id="messageDisplay">No message sent yet</div>
 
-<button id="interactionButton">Send Message to Unity</button>
-<div id="messageDisplay">No message sent yet</div>
+    <script>
+        function generateFakeSensorData() {
+            const sensorTypes = ['Temperature', 'Humidity', 'Pressure', 'Light', 'Wind Speed'];
+            const selectedSensor = sensorTypes[Math.floor(Math.random() * sensorTypes.length)];
+            const dataPoints = 10; // Number of data points to generate
 
-<script>
-    // Function to generate fake sensor data
-    function generateFakeSensorData(count = 5) {
-        const sensorTypes = ['Temperature', 'Humidity', 'Pressure', 'Light', 'Wind Speed'];
-        return Array.from({ length: count }, (_, index) => ({
-            sensor: sensorTypes[index % sensorTypes.length],
-            value: Math.random() * 100, // Random value between 0 and 100
-            timestamp: new Date().toISOString()
-        }));
-    }
-
-    // Function to receive data from Unity
-    function updateSensorData(jsonData) {
-        let data;
-
-        try {
-            // Check if jsonData is undefined, null, or empty
-            if (!jsonData || jsonData === 'undefined' || jsonData === 'null') {
-                console.warn('No data received. Using fake data.');
-                data = generateFakeSensorData();
-            } else {
-                // Try to parse the JSON data
-                const parsedData = JSON.parse(jsonData);
-
-                // Check if parsed data has items and is not empty
-                if (parsedData && parsedData.items && parsedData.items.length > 0) {
-                    data = parsedData.items;
-                } else {
-                    console.warn('Received empty data. Using fake data.');
-                    data = generateFakeSensorData();
-                }
-            }
-
-            // Visualize data
-            visualizeSensorData(data);
-
-            // Send a message back to Unity
-            Unity.call('DATA:Visualization complete with ' + data.length + ' data points');
-        } catch (error) {
-            console.error('Error processing data:', error);
-
-            // Fallback to fake data if any error occurs
-            data = generateFakeSensorData();
-            visualizeSensorData(data);
-
-            Unity.call('DATA:Error processing data. Used fake data.');
+            return {
+                items: Array.from({ length: dataPoints }, (_, i) => ({
+                    attributeId: selectedSensor,
+                    time: i * 10, // Sequential time values
+                    value: Math.random() * 50
+                }))
+            };
         }
-    }
 
-    function visualizeSensorData(data) {
-        // Clear any existing chart
-        d3.select("#chart").selectAll("*").remove();
+        function createLineChart(data, attributeId) {
+            // Clear previous chart
+            d3.select("#chart").selectAll("*").remove();
 
-        // Create SVG
-        const svg = d3.select("#chart")
-            .append("svg")
-            .attr("width", "100%")
-            .attr("height", "300");
+            const container = document.querySelector('.chart-container');
+            const width = container.clientWidth - 60; // Adjust for padding
+            const height = (width * 9) / 16; // Maintain 16:9 aspect ratio
+            const margin = { top: 40, right: 30, bottom: 40, left: 60 };
+            const innerWidth = width - margin.left - margin.right;
+            const innerHeight = height - margin.top - margin.bottom;
 
-        // Create a color scale
-        const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+            // Add title
+            d3.select("#chart")
+                .append("div")
+                .attr("class", "chart-title")
+                .text(attributeId);
 
-        // Add data visualization
-        svg.selectAll("circle")
-            .data(data)
-            .enter()
-            .append("circle")
-            .attr("cx", (d, i) => (i * 70) + 50)
-            .attr("cy", 150)
-            .attr("r", d => Math.max(20, d.value))
-            .attr("fill", (d, i) => colorScale(i))
-            .append("title")  // Add tooltip
-            .text(d => `${d.sensor}: ${d.value.toFixed(2)}`);
+            // Create SVG
+            const svg = d3.select("#chart")
+                .append("svg")
+                .attr("viewBox", `0 0 ${width} ${height}`)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
 
-        // Add labels
-        svg.selectAll("text")
-            .data(data)
-            .enter()
-            .append("text")
-            .attr("x", (d, i) => (i * 70) + 50)
-            .attr("y", 250)
-            .attr("text-anchor", "middle")
-            .text(d => d.sensor)
-            .attr("fill", "black");
-    }
+            // Create scales
+            const x = d3.scaleLinear()
+                .domain(d3.extent(data, d => d.time))
+                .range([0, innerWidth]);
 
-    // Function to send a message to Unity
-    function sendMessageToUnity() {
-        // Send a message back to Unity
-        Unity.call('UserInteraction:ButtonClicked');
+            const y = d3.scaleLinear()
+                .domain([0, d3.max(data, d => d.value)])
+                .range([innerHeight, 0]);
 
-        // Update message display
-        document.getElementById('messageDisplay').textContent = 'Message sent to Unity!';
-    }
+            // Add grid lines
+            svg.append("g")
+                .attr("class", "grid")
+                .attr("transform", `translate(0,${innerHeight})`)
+                .call(d3.axisBottom(x)
+                    .tickSize(-innerHeight)
+                    .tickFormat("")
+                    .ticks(10)) // Explicitly set number of ticks
+                .call(g => g.select(".domain").remove());
 
-    // Add event listener to the button
-    document.getElementById('interactionButton').addEventListener('click', sendMessageToUnity);
 
-    window.addEventListener('load', () => {
-        updateSensorData(null);
-    });
-</script>
+            svg.append("g")
+                .attr("class", "grid")
+                .call(d3.axisLeft(y)
+                    .tickSize(-innerWidth)
+                    .tickFormat("")
+                    .ticks(10)) // Explicitly set number of ticks
+                .call(g => g.select(".domain").remove());
+
+            // Add the line
+            const line = d3.line()
+                .x(d => x(d.time))
+                .y(d => y(d.value));
+
+            svg.append("path")
+                .datum(data)
+                .attr("class", "line")
+                .attr("d", line);
+
+            // Add the dots
+            svg.selectAll(".dot")
+                .data(data)
+                .enter()
+                .append("circle")
+                .attr("class", "dot")
+                .attr("cx", d => x(d.time))
+                .attr("cy", d => y(d.value))
+                .attr("r", 5);
+
+            // Add axes
+            svg.append("g")
+                .attr("transform", `translate(0,${innerHeight})`)
+                .call(d3.axisBottom(x));
+
+            svg.append("g")
+                .call(d3.axisLeft(y));
+
+            // Create tooltip
+            const tooltip = d3.select("body")
+                .append("div")
+                .attr("class", "tooltip");
+
+            // Add tooltip interactions
+            svg.selectAll(".dot")
+                .on("mouseover touchstart", (event, d) => {
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    tooltip.html(`Time: ${d.time.toFixed(2)}<br/>Value: ${d.value.toFixed(2)}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout touchend", () => {
+                    tooltip.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
+        }
+
+        function updateSensorData(jsonData) {
+            let data;
+            document.getElementById('messageDisplay').textContent = 'Received JSON: ' + jsonData;
+            try {
+                if (!jsonData || jsonData === 'undefined' || jsonData === 'null') {
+                    console.warn('No data received. Using fake data.');
+                    data = generateFakeSensorData();
+                } else {
+                    const parsedData = JSON.parse(jsonData);
+                    if (parsedData && parsedData.items && parsedData.items.length > 0) {
+                        data = parsedData;
+                        document.getElementById('messageDisplay').textContent = 'First data point: Time - ' + data.items[0].time + ', Value - ' + data.items[0].value;
+                    } else {
+                        console.warn('Received empty data. Using fake data.');
+                        data = generateFakeSensorData();
+                    }
+                }
+
+                // Create chart with the first attributeId in the data
+                const attributeId = data.items[0].attributeId;
+                createLineChart(data.items, attributeId);
+
+                Unity.call('DATA:Visualization complete with ' + data.items.length + ' data points');
+            } catch (error) {
+                console.error('Error processing data:', error);
+                data = generateFakeSensorData();
+                const attributeId = data.items[0].attributeId;
+                createLineChart(data.items, attributeId);
+                document.getElementById('messageDisplay').textContent = 'Error in data processing. Showing fake data.';
+                Unity.call('DATA:Error processing data. Used fake data.');
+            }
+        }
+
+        function sendMessageToUnity() {
+            Unity.call('UserInteraction:ButtonClicked');
+            document.getElementById('messageDisplay').textContent = 'Message sent to Unity!';
+        }
+
+        document.getElementById('interactionButton').addEventListener('click', sendMessageToUnity);
+
+        // Add window resize handler
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                const data = d3.select("#chart svg").data();
+                if (data && data.length > 0) {
+                    createLineChart(data[0], data[0].attributeId);
+                }
+            }, 250);
+        });
+
+        window.addEventListener('load', () => {
+            updateSensorData(null);
+        });
+    </script>
 </body>
 </html>

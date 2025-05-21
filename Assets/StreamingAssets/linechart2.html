@@ -60,127 +60,166 @@
 
 <body>
     <script>
-        console.log('HELLLO FROM JS IN UNITY OR XCODE AM I HERE??????');
-        
-        // Generate some random data that is sorted by time
-        let dataset = Array.from({ length: 40 }, () => ({
-            time: Date.now() - Math.floor(Math.random() * 10000000000),
-            value: Math.floor(Math.random() * 80) + 20
-        })).sort((a, b) => a.time - b.time);
+        let dataset;
 
-        /**
-         * ===================================================
-         * Variables and Constants
-         * ===================================================
-        */
-        const scaleFactor = 0.95;          // Percentage of screen the visualiaztion should take
-        const margin = { top: 50, right: 50, bottom: 50, left: 90 };
-        let width = window.innerWidth * scaleFactor - margin.left - margin.right;
-        let height = window.innerHeight * scaleFactor - margin.top - margin.bottom;
+        function getUnityData(jsonData) {
+            try {
+                // Check if jsonData is undefined, null, or empty
+                if (!jsonData || jsonData === 'undefined' || jsonData === 'null') {
+                    console.warn('No data received. Using fake data.');
+                    dataset = generateFakeSensorData();
+                } else {
+                    // Try to parse the JSON data
+                    const parsedData = JSON.parse(jsonData);
 
-        /**
-         * ===================================================
-         * Preparation, Generators & Scales
-         * ===================================================
-        */
-        const svg = d3.select('body')
-            .append('svg')
-            .attr('width', width + margin.left + margin.right)
-            .attr('height', height + margin.top + margin.bottom);
+                    // Check if parsed data has items and is not empty
+                    if (parsedData && parsedData.items && parsedData.items.length > 0) {
+                        dataset = parsedData.items;
+                    } else {
+                        console.warn('Received empty data. Using fake data.');
+                        dataset = generateFakeSensorData();
+                    }
+                }
 
+                // Visualize data
+                visualizeSensorData(data);
 
-        // Add clip path in order to hide overlapping lines
-        svg.append("defs")
-            .append("clipPath")
-            .attr("id", "clip")
-            .append("rect")
-            .attr("width", width)
-            .attr("height", height);
+                // Send a message back to Unity
+                Unity.call('DATA:Visualization complete with ' + dataset.length + ' data points');
+            } catch (error) {
+                console.error('Error processing data:', error);
 
-        const g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
+                // Fallback to fake data if any error occurs
+                dataset = generateFakeSensorData();
+                visualizeSensorData(dataset);
 
-        const xScale = d3.scaleTime()
-            .domain(d3.extent(dataset, d => d.time))
-            .rangeRound([0, width])
-            .nice();
+                Unity.call('DATA:Error processing data. Used fake data.');
+            }
+        }
 
-        const yScale = d3.scaleLinear()
-            .domain([0, d3.max(dataset, d => d.value)])
-            .rangeRound([height, 0])
-            .nice();
+        function generateFakeSensorData() {
+            // Generate some random data that is sorted by time
+            return Array.from({ length: 40 }, () => ({
+                time: Date.now() - Math.floor(Math.random() * 10000000000),
+                value: Math.floor(Math.random() * 80) + 20
+            })).sort((a, b) => a.time - b.time);
+        }
 
-        const line = d3.line()
-            .x(d => xScale(d.time))
-            .y(d => yScale(d.value))
-            .curve(d3.curveCatmullRom);
+        function visualizeSensorData(data) {
 
-        const xGrid = d3.axisBottom(xScale).ticks(10).tickSize(-height).tickFormat('');
-        const yGrid = d3.axisLeft(yScale).ticks(10).tickSize(-width).tickFormat('');
+            /**
+             * ===================================================
+             * Variables and Constants
+             * ===================================================
+            */
+            const scaleFactor = 0.95;          // Percentage of screen the visualiaztion should take
+            const margin = { top: 50, right: 50, bottom: 50, left: 90 };
+            let width = window.innerWidth * scaleFactor - margin.left - margin.right;
+            let height = window.innerHeight * scaleFactor - margin.top - margin.bottom;
 
-        const brush = d3.brushX()
-            .extent([[0, 0], [width, height]])
-            .on('end', brushed);
-
-        /**
-         * ===================================================
-         * Drawing
-         * ===================================================
-        */
-        g.append('g')
-            .attr('class', 'grid x-grid')
-            .attr('transform', `translate(0, ${height})`)
-            .call(xGrid);
-
-        g.append('g')
-            .attr('class', 'grid y-grid')
-            .call(yGrid);
-
-        g.append('g')
-            .attr('transform', `translate(0, ${height})`)
-            .attr('class', 'x-axis')
-            .call(d3.axisBottom(xScale))
-            .selectAll('text')
-            .attr("transform", "rotate(-45)")
-            .style("text-anchor", "end");
-
-        g.append('g')
-            .attr('class', 'y-axis')
-            .call(d3.axisLeft(yScale));
-
-        g.append('path')
-            .datum(dataset)
-            .attr('class', 'line')
-            .attr('d', line)
-            .attr('clip-path', 'url(#clip)');
-
-        g.selectAll('.dot')
-            .data(dataset)
-            .enter().append('circle')
-            .attr('class', 'dot')
-            .attr('cx', d => xScale(d.time))
-            .attr('cy', d => yScale(d.value))
-            .attr('r', '0.18rem')
-            .attr('clip-path', 'url(#clip)');
-
-        // Append labels
-        svg.append('text')
-            .attr('text-anchor', 'middle')
-            .attr('transform', `translate(${(margin.left / 2) - 10}, ${(height / 2) + margin.top}) rotate(-90)`)
-            .text('Value')
-            .style('font-size', '1.5rem');
-
-        svg.append('text')
-            .attr('text-anchor', 'middle')
-            .attr('transform', `translate(${(width / 2) + margin.left}, ${height + margin.top + margin.bottom})`)
-            .text('Time')
-            .style('font-size', '1.5rem');
-
-        // Append brush component last to ensure overlaying
-        g.append('g')
-            .attr('class', 'brush')
-            .call(brush);
+            /**
+             * ===================================================
+             * Preparation, Generators & Scales
+             * ===================================================
+            */
+            const svg = d3.select('body')
+                .append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom);
 
 
+            // Add clip path in order to hide overlapping lines
+            svg.append("defs")
+                .append("clipPath")
+                .attr("id", "clip")
+                .append("rect")
+                .attr("width", width)
+                .attr("height", height);
+
+            const g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+            const xScale = d3.scaleTime()
+                .domain(d3.extent(dataset, d => d.time))
+                .rangeRound([0, width])
+                .nice();
+
+            const yScale = d3.scaleLinear()
+                .domain([0, d3.max(dataset, d => d.value)])
+                .rangeRound([height, 0])
+                .nice();
+
+            const line = d3.line()
+                .x(d => xScale(d.time))
+                .y(d => yScale(d.value))
+                .curve(d3.curveCatmullRom);
+
+            const xGrid = d3.axisBottom(xScale).ticks(10).tickSize(-height).tickFormat('');
+            const yGrid = d3.axisLeft(yScale).ticks(10).tickSize(-width).tickFormat('');
+
+            const brush = d3.brushX()
+                .extent([[0, 0], [width, height]])
+                .on('end', brushed);
+
+            /**
+             * ===================================================
+             * Drawing
+             * ===================================================
+            */
+            g.append('g')
+                .attr('class', 'grid x-grid')
+                .attr('transform', `translate(0, ${height})`)
+                .call(xGrid);
+
+            g.append('g')
+                .attr('class', 'grid y-grid')
+                .call(yGrid);
+
+            g.append('g')
+                .attr('transform', `translate(0, ${height})`)
+                .attr('class', 'x-axis')
+                .call(d3.axisBottom(xScale))
+                .selectAll('text')
+                .attr("transform", "rotate(-45)")
+                .style("text-anchor", "end");
+
+            g.append('g')
+                .attr('class', 'y-axis')
+                .call(d3.axisLeft(yScale));
+
+            g.append('path')
+                .datum(dataset)
+                .attr('class', 'line')
+                .attr('d', line)
+                .attr('clip-path', 'url(#clip)');
+
+            g.selectAll('.dot')
+                .data(dataset)
+                .enter().append('circle')
+                .attr('class', 'dot')
+                .attr('cx', d => xScale(d.time))
+                .attr('cy', d => yScale(d.value))
+                .attr('r', '0.18rem')
+                .attr('clip-path', 'url(#clip)');
+
+            // Append labels
+            svg.append('text')
+                .attr('text-anchor', 'middle')
+                .attr('transform', `translate(${(margin.left / 2) - 10}, ${(height / 2) + margin.top}) rotate(-90)`)
+                .text('Value')
+                .style('font-size', '1.5rem');
+
+            svg.append('text')
+                .attr('text-anchor', 'middle')
+                .attr('transform', `translate(${(width / 2) + margin.left}, ${height + margin.top + margin.bottom})`)
+                .text('Time')
+                .style('font-size', '1.5rem');
+
+            // Append brush component last to ensure overlaying
+            g.append('g')
+                .attr('class', 'brush')
+                .call(brush);
+
+        }
         /**
          * ===================================================
          * Other Functions
@@ -260,6 +299,10 @@
 
             // Redraw the chart
             redraw();
+        });
+
+        window.addEventListener('load', () => {
+            getUnityData(null);
         });
     </script>
 </body>
