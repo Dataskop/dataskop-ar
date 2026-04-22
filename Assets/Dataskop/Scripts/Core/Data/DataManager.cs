@@ -10,525 +10,541 @@ using UnityEngine.Events;
 
 namespace Dataskop.Data {
 
-	public class DataManager : MonoBehaviour {
+    public class DataManager : MonoBehaviour {
 
-		[Header("Events")]
-		public UnityEvent<IReadOnlyCollection<Company>> projectListLoaded;
-		public UnityEvent<Project> projectLoaded;
+        [Header("Events")]
+        public UnityEvent<IReadOnlyCollection<Company>> projectListLoaded;
 
-		[Header("References")]
-		[SerializeField] private LoadingIndicator loadingIndicator;
+        public UnityEvent<Project> projectLoaded;
 
-		[Header("Values")]
-		[SerializeField] private int fetchAmount;
-		[SerializeField] private int fetchInterval;
+        [Header("References")]
+        [SerializeField] private LoadingIndicator loadingIndicator;
 
-		private readonly ApiRequestHandler requestHandler = new();
-		private bool shouldRefetch;
+        [Header("Values")]
+        [SerializeField] private int fetchAmount;
 
-		private IReadOnlyCollection<Company> Companies { get; set; }
+        [SerializeField] private int fetchInterval;
 
-		public Project SelectedProject { get; private set; }
+        private readonly ApiRequestHandler requestHandler = new();
+        private bool shouldRefetch;
 
-		private int FetchAmount
-		{
-			get => fetchAmount;
-			set => fetchAmount = value;
-		}
+        private IReadOnlyCollection<Company> Companies { get; set; }
 
-		private LoadingIndicator LoadingIndicator => loadingIndicator;
+        public Project SelectedProject { get; private set; }
 
-		private Stopwatch FetchTimer { get; set; }
+        private int FetchAmount
+        {
+            get => fetchAmount;
+            set => fetchAmount = value;
+        }
 
-		private void Awake() {
-			FetchAmount = PlayerPrefs.HasKey("fetchAmount") ? PlayerPrefs.GetInt("fetchAmount") : 2000;
-			fetchInterval = PlayerPrefs.HasKey("fetchInterval") ? PlayerPrefs.GetInt("fetchInterval") : 10000;
-		}
+        private LoadingIndicator LoadingIndicator => loadingIndicator;
 
-		private void OnDisable() {
-			shouldRefetch = false;
-			FetchTimer?.Stop();
-		}
+        private Stopwatch FetchTimer { get; set; }
 
-		/// <summary>
-		/// Invoked once data for the selected project finished loading.
-		/// </summary>
-		public event Action<Project> HasLoadedProjectData;
+        private void Awake() {
+            FetchAmount = PlayerPrefs.HasKey("fetchAmount") ? PlayerPrefs.GetInt("fetchAmount") : 2000;
+            fetchInterval = PlayerPrefs.HasKey("fetchInterval") ? PlayerPrefs.GetInt("fetchInterval") : 10000;
+        }
 
-		/// <summary>
-		/// Invoked when measurement results has been updated.
-		/// </summary>
-		public event Action HasUpdatedMeasurementResults;
+        private void OnDisable() {
+            shouldRefetch = false;
+            FetchTimer?.Stop();
+        }
 
-		public event Action<TimeRange> HasDateFiltered;
+        /// <summary>
+        /// Invoked once data for the selected project finished loading.
+        /// </summary>
+        public event Action<Project> HasLoadedProjectData;
 
-		public event Action<int, int> RefetchTimerProgressed;
+        /// <summary>
+        /// Invoked when measurement results has been updated.
+        /// </summary>
+        public event Action HasUpdatedMeasurementResults;
 
-		public event Action RefetchTimerElapsed;
+        public event Action<TimeRange> HasDateFiltered;
 
-		public void Initialize() {
+        public event Action<int, int> RefetchTimerProgressed;
 
-			if (!AccountManager.IsLoggedIn) {
+        public event Action RefetchTimerElapsed;
 
-				NotificationHandler.Add(
-					new Notification {
-						Category = NotificationCategory.Error,
-						Text = "You are not logged in! Logout and enter a valid Token!",
-						DisplayDuration = NotificationDuration.Medium
-					}
-				);
+        public void Initialize() {
 
-				return;
-			}
+            if (!AccountManager.IsLoggedIn) {
 
-			UserData.Instance.Token = AccountManager.TryGetLoginToken();
+                NotificationHandler.Add(
+                    new Notification
+                    {
+                        Category = NotificationCategory.Error,
+                        Text = "You are not logged in! Logout and enter a valid Token!",
+                        DisplayDuration = NotificationDuration.Medium
+                    }
+                );
 
-			if (UserData.Instance.Token == null) {
+                return;
+            }
 
-				NotificationHandler.Add(
-					new Notification {
-						Category = NotificationCategory.Error,
-						Text = "Token was empty! Logout and enter a valid Token!",
-						DisplayDuration = NotificationDuration.Medium
-					}
-				);
+            UserData.Instance.Token = AccountManager.TryGetLoginToken();
 
-				return;
+            if (UserData.Instance.Token == null) {
 
-			}
+                NotificationHandler.Add(
+                    new Notification
+                    {
+                        Category = NotificationCategory.Error,
+                        Text = "Token was empty! Logout and enter a valid Token!",
+                        DisplayDuration = NotificationDuration.Medium
+                    }
+                );
 
-			LoadAppData();
+                return;
 
-		}
+            }
 
-		/// <summary>
-		/// Starts process of loading data for the application.
-		/// </summary>
-		private async void LoadAppData() {
+            LoadAppData();
 
-			LoadingIndicator.Show();
-			Companies = await requestHandler.GetCompanies();
+        }
 
-			if (Companies == null || Companies.Count == 0) {
+        /// <summary>
+        /// Starts process of loading data for the application.
+        /// </summary>
+        private async void LoadAppData() {
 
-				NotificationHandler.Add(
-					new Notification {
-						Category = NotificationCategory.Error,
-						Text = "No Companies available!",
-						DisplayDuration = NotificationDuration.Medium
-					}
-				);
-
-				LoadingIndicator.Hide();
-				return;
-
-			}
-
-			foreach (Company company in Companies) {
-				company.Projects = await requestHandler.GetProjects(company);
-			}
-
-			projectListLoaded?.Invoke(Companies);
-			LoadingIndicator.Hide();
-
-		}
-
-		/// <summary>
-		/// Loads a project based on its ID.
-		/// </summary>
-		/// <param name="projectId">The ID of the project to be loaded.</param>
-		public async void LoadProject(int projectId) {
-
-			// If project is already selected do not load again.
-			if (SelectedProject?.ID == projectId) {
-				return;
-			}
-
-			shouldRefetch = false;
-			LoadingIndicator.Show();
-
-			SelectedProject = GetAvailableProjects(Companies).FirstOrDefault(project => project.ID == projectId);
-
-			if (SelectedProject == null) {
-				NotificationHandler.Add(
-					new Notification {
-						Category = NotificationCategory.Error,
-						Text = $"No Project with ID {projectId} found!",
-						DisplayDuration = NotificationDuration.Medium
-					}
-				);
-
-				LoadingIndicator.Hide();
-				return;
-			}
-
-			SelectedProject.Devices = await requestHandler.GetDevices(SelectedProject);
-
-			if (SelectedProject.Devices?.Count == 0) {
-				NotificationHandler.Add(
-					new Notification {
-						Category = NotificationCategory.Warning,
-						Text = $"No Devices found in Project {SelectedProject.ID}!",
-						DisplayDuration = NotificationDuration.Medium
-					}
-				);
-
-				LoadingIndicator.Hide();
-				OnProjectDataLoaded(SelectedProject);
-				return;
-			}
-
-			//TODO: This currently creates a fake DataAttribute for the "All" Variant.
-			List<DataAttribute> availableAttributes = SelectedProject.Properties.Attributes.ToList();
-
-			if (SelectedProject.Devices != null) {
-				foreach (Device device in SelectedProject.Devices) {
-					device.Attributes = SelectedProject.Properties.Attributes.ToArray();
-				}
-			}
-
-			availableAttributes.Insert(
-				0,
-				new DataAttribute(
-					"all", "All", "", "continuous", "", "",
-					new[] {
-						new VisualizationOption("radialBar", new VisualizationStyle(false, false, false))
-					}
-				)
-			);
-
-			SelectedProject.Properties = new AdditionalProperties(
-				availableAttributes, SelectedProject.Properties.IsDemo
-			);
-
-			LoadingIndicator.Hide();
-			await GetInitialProjectMeasurements();
-			OnProjectDataLoaded(SelectedProject);
-
-		}
-
-		/// <summary>
-		/// Loads a project based on a given QR-Code-Result
-		/// </summary>
-		/// <param name="result">A QrResult</param>
-		[UsedImplicitly]
-		public async void LoadProject(QrResult result) {
-
-			if (!result.Code.Contains('@')) {
-				return;
-			}
-
-			string[] splitResult = result.Code.Split('@', 2);
-			string projectName = splitResult[0];
-
-			// If project is already selected do not load again.
-			if (SelectedProject?.Information.Name == projectName) {
-				return;
-			}
-
-			NotificationHandler.Add(
-				new Notification {
-					Category = NotificationCategory.Check,
-					Text = "Project Code scanned!",
-					DisplayDuration = NotificationDuration.Flash
-				}
-			);
-
-			if (!LoadingIndicator.IsLoading) {
-				LoadingIndicator.Show();
-				shouldRefetch = false;
-			}
-
-			SelectedProject = GetAvailableProjects(Companies)
-				.FirstOrDefault(project => project.Information.Name == projectName);
-
-			if (SelectedProject != null) {
-
-				if (AppOptions.DemoMode && !SelectedProject.Properties.IsDemo) {
-					NotificationHandler.Add(
-						new Notification {
-							Category = NotificationCategory.Error,
-							Text = $"Can not load '{projectName}'! Project is not a demo project.",
-							DisplayDuration = NotificationDuration.Medium
-						}
-					);
-
-					LoadingIndicator.Hide();
-					return;
-				}
-
-			}
-			else {
-				NotificationHandler.Add(
-					new Notification {
-						Category = NotificationCategory.Error,
-						Text = $"No Project with name '{projectName}' found!",
-						DisplayDuration = NotificationDuration.Medium
-					}
-				);
-
-				LoadingIndicator.Hide();
-				return;
-			}
-
-			SelectedProject.Devices = await requestHandler.GetDevices(SelectedProject);
-
-			if (SelectedProject.Devices?.Count == 0) {
-				NotificationHandler.Add(
-					new Notification {
-						Category = NotificationCategory.Warning,
-						Text = $"No Devices found in Project {SelectedProject.ID}!",
-						DisplayDuration = NotificationDuration.Medium
-					}
-				);
-
-				OnProjectDataLoaded(SelectedProject);
-				return;
-			}
-
-			await GetInitialProjectMeasurements();
-			OnProjectDataLoaded(SelectedProject);
-
-		}
-
-		/// <summary>
-		/// Gets available Projects from a set of Companies.
-		/// </summary>
-		/// <param name="userCompanies">A collection of companies</param>
-		/// <returns>A collection of available projects for the given companies.</returns>
-		private static IEnumerable<Project> GetAvailableProjects(IEnumerable<Company> userCompanies) {
-
-			List<Project> availableProjects = new();
-
-			foreach (Company c in userCompanies) {
-				if (c.Projects != null) {
-					availableProjects.AddRange(c.Projects);
-				}
-			}
-
-			return availableProjects;
-		}
-
-		/// <summary>
-		/// Triggers events when loading of the project is done.
-		/// </summary>
-		/// <param name="selectedProject">The whole project to be sent in the event when done loading.</param>
-		private void OnProjectDataLoaded(Project selectedProject) {
-
-			HasLoadedProjectData?.Invoke(selectedProject);
-			projectLoaded?.Invoke(selectedProject);
-
-			NotificationHandler.Add(
-				new Notification {
-					Category = NotificationCategory.Check,
-					Text = "Project loaded!",
-					DisplayDuration = NotificationDuration.Short
-				}
-			);
-
-			shouldRefetch = true;
-			FetchTimer = new Stopwatch();
-			FetchTimer.Start();
-			RefetchDataTimer();
-
-		}
-
-		private async Task GetInitialProjectMeasurements() {
-
-			LoadingIndicator.Show();
-
-			foreach (Device d in SelectedProject.Devices) {
-				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
-					md.FirstMeasurementResult = await requestHandler.GetFirstMeasurementResult(md);
-					int? count = await requestHandler.GetCount(md);
-					md.TotalMeasurements = count ?? -1;
-					MeasurementResultRange newResults =
-						await requestHandler.GetMeasurementResults(md, FetchAmount, null, null);
-
-					md.AddMeasurementResultRange(
-						newResults, new TimeRange(newResults.Last().Timestamp, newResults.First().Timestamp)
-					);
-				}
-			}
-
-			HasUpdatedMeasurementResults?.Invoke();
-			LoadingIndicator.Hide();
-
-		}
-
-		private async Task UpdateDeviceMeasurements() {
-
-			foreach (Device d in SelectedProject.Devices) {
-
-				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
-
-					MeasurementResult latestResult = md.LatestMeasurementResult;
-
-					MeasurementResultRange newResults =
-						await requestHandler.GetMeasurementResults(
-							md, FetchAmount, latestResult.Timestamp, DateTime.Now
-						);
+            LoadingIndicator.Show();
+            Companies = await requestHandler.GetCompanies();
+
+            if (Companies == null || Companies.Count == 0) {
+
+                NotificationHandler.Add(
+                    new Notification
+                    {
+                        Category = NotificationCategory.Error,
+                        Text = "No Companies available!",
+                        DisplayDuration = NotificationDuration.Medium
+                    }
+                );
+
+                LoadingIndicator.Hide();
+                return;
+
+            }
+
+            foreach (Company company in Companies) {
+                company.Projects = await requestHandler.GetProjects(company);
+            }
+
+            projectListLoaded?.Invoke(Companies);
+            LoadingIndicator.Hide();
+
+        }
+
+        /// <summary>
+        /// Loads a project based on its ID.
+        /// </summary>
+        /// <param name="projectId">The ID of the project to be loaded.</param>
+        public async void LoadProject(int projectId) {
+
+            // If project is already selected do not load again.
+            if (SelectedProject?.ID == projectId) {
+                return;
+            }
+
+            shouldRefetch = false;
+            LoadingIndicator.Show();
+
+            SelectedProject = GetAvailableProjects(Companies).FirstOrDefault(project => project.ID == projectId);
+
+            if (SelectedProject == null) {
+                NotificationHandler.Add(
+                    new Notification
+                    {
+                        Category = NotificationCategory.Error,
+                        Text = $"No Project with ID {projectId} found!",
+                        DisplayDuration = NotificationDuration.Medium
+                    }
+                );
+
+                LoadingIndicator.Hide();
+                return;
+            }
+
+            SelectedProject.Devices = await requestHandler.GetDevices(SelectedProject);
+
+            if (SelectedProject.Devices?.Count == 0) {
+                NotificationHandler.Add(
+                    new Notification
+                    {
+                        Category = NotificationCategory.Warning,
+                        Text = $"No Devices found in Project {SelectedProject.ID}!",
+                        DisplayDuration = NotificationDuration.Medium
+                    }
+                );
+
+                LoadingIndicator.Hide();
+                OnProjectDataLoaded(SelectedProject);
+                return;
+            }
+
+            //TODO: This currently creates a fake DataAttribute for the "All" Variant.
+            List<DataAttribute> availableAttributes = SelectedProject.Properties.Attributes.ToList();
+
+            if (SelectedProject.Devices != null) {
+                foreach (Device device in SelectedProject.Devices) {
+                    device.Attributes = SelectedProject.Properties.Attributes.ToArray();
+                }
+            }
+
+            if (!AppOptions.DemoMode) {
+                availableAttributes.Insert(
+                    0,
+                    new DataAttribute(
+                        "all", "All", "", "continuous", "", "",
+                        new[]
+                        {
+                            new VisualizationOption("radialBar", new VisualizationStyle(false, false, false))
+                        }
+                    )
+                );
+            }
+
+            SelectedProject.Properties = new AdditionalProperties(
+                availableAttributes, SelectedProject.Properties.IsDemo
+            );
+
+            LoadingIndicator.Hide();
+            await GetInitialProjectMeasurements();
+            OnProjectDataLoaded(SelectedProject);
+
+        }
+
+        /// <summary>
+        /// Loads a project based on a given QR-Code-Result
+        /// </summary>
+        /// <param name="result">A QrResult</param>
+        [UsedImplicitly]
+        public async void LoadProject(QrResult result) {
+
+            if (!result.Code.Contains('@')) {
+                return;
+            }
+
+            string[] splitResult = result.Code.Split('@', 2);
+            string projectName = splitResult[0];
+
+            // If project is already selected do not load again.
+            if (SelectedProject?.Information.Name == projectName) {
+                return;
+            }
+
+            NotificationHandler.Add(
+                new Notification
+                {
+                    Category = NotificationCategory.Check,
+                    Text = "Project Code scanned!",
+                    DisplayDuration = NotificationDuration.Flash
+                }
+            );
+
+            if (!LoadingIndicator.IsLoading) {
+                LoadingIndicator.Show();
+                shouldRefetch = false;
+            }
+
+            SelectedProject = GetAvailableProjects(Companies)
+                .FirstOrDefault(project => project.Information.Name == projectName);
+
+            if (SelectedProject != null) {
+
+                if (AppOptions.DemoMode && !SelectedProject.Properties.IsDemo) {
+                    NotificationHandler.Add(
+                        new Notification
+                        {
+                            Category = NotificationCategory.Error,
+                            Text = $"Can not load '{projectName}'! Project is not a demo project.",
+                            DisplayDuration = NotificationDuration.Medium
+                        }
+                    );
+
+                    LoadingIndicator.Hide();
+                    return;
+                }
+
+            }
+            else {
+                NotificationHandler.Add(
+                    new Notification
+                    {
+                        Category = NotificationCategory.Error,
+                        Text = $"No Project with name '{projectName}' found!",
+                        DisplayDuration = NotificationDuration.Medium
+                    }
+                );
+
+                LoadingIndicator.Hide();
+                return;
+            }
+
+            SelectedProject.Devices = await requestHandler.GetDevices(SelectedProject);
+
+            if (SelectedProject.Devices?.Count == 0) {
+                NotificationHandler.Add(
+                    new Notification
+                    {
+                        Category = NotificationCategory.Warning,
+                        Text = $"No Devices found in Project {SelectedProject.ID}!",
+                        DisplayDuration = NotificationDuration.Medium
+                    }
+                );
+
+                OnProjectDataLoaded(SelectedProject);
+                return;
+            }
+
+            await GetInitialProjectMeasurements();
+            OnProjectDataLoaded(SelectedProject);
+
+        }
+
+        /// <summary>
+        /// Gets available Projects from a set of Companies.
+        /// </summary>
+        /// <param name="userCompanies">A collection of companies</param>
+        /// <returns>A collection of available projects for the given companies.</returns>
+        private static IEnumerable<Project> GetAvailableProjects(IEnumerable<Company> userCompanies) {
+
+            List<Project> availableProjects = new();
+
+            foreach (Company c in userCompanies) {
+                if (c.Projects != null) {
+                    availableProjects.AddRange(c.Projects);
+                }
+            }
+
+            return availableProjects;
+        }
+
+        /// <summary>
+        /// Triggers events when loading of the project is done.
+        /// </summary>
+        /// <param name="selectedProject">The whole project to be sent in the event when done loading.</param>
+        private void OnProjectDataLoaded(Project selectedProject) {
+
+            HasLoadedProjectData?.Invoke(selectedProject);
+            projectLoaded?.Invoke(selectedProject);
+
+            NotificationHandler.Add(
+                new Notification
+                {
+                    Category = NotificationCategory.Check,
+                    Text = "Project loaded!",
+                    DisplayDuration = NotificationDuration.Short
+                }
+            );
+
+            shouldRefetch = true;
+            FetchTimer = new Stopwatch();
+            FetchTimer.Start();
+            RefetchDataTimer();
+
+        }
+
+        private async Task GetInitialProjectMeasurements() {
+
+            LoadingIndicator.Show();
+
+            foreach (Device d in SelectedProject.Devices) {
+                foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
+                    md.FirstMeasurementResult = await requestHandler.GetFirstMeasurementResult(md);
+                    int? count = await requestHandler.GetCount(md);
+                    md.TotalMeasurements = count ?? -1;
+                    MeasurementResultRange newResults =
+                        await requestHandler.GetMeasurementResults(md, FetchAmount, null, null);
+
+                    md.AddMeasurementResultRange(
+                        newResults, new TimeRange(newResults.Last().Timestamp, newResults.First().Timestamp)
+                    );
+                }
+            }
+
+            HasUpdatedMeasurementResults?.Invoke();
+            LoadingIndicator.Hide();
+
+        }
+
+        private async Task UpdateDeviceMeasurements() {
+
+            foreach (Device d in SelectedProject.Devices) {
+
+                foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
+
+                    MeasurementResult latestResult = md.LatestMeasurementResult;
+
+                    MeasurementResultRange newResults =
+                        await requestHandler.GetMeasurementResults(
+                            md, FetchAmount, latestResult.Timestamp, DateTime.Now
+                        );
+
+                    if (newResults == null || !newResults.SkipLast(1).Any()) {
+                        continue;
+                    }
+
+                    MeasurementResultRange allResults = new(newResults.SkipLast(1).Concat(md.GetLatestRange()));
+                    md.ReplaceMeasurementResultRange(0, allResults);
+
+                }
+
+            }
+
+        }
+
+        private async Task UpdateProjectMeasurements() {
+
+            LoadingIndicator.Show();
+            await UpdateDeviceMeasurements();
+            HasUpdatedMeasurementResults?.Invoke();
+            LoadingIndicator.Hide();
+
+        }
+
+        private async Task FilterByDate(TimeRange timeRange) {
+
+            LoadingIndicator.Show();
+            await UpdateDeviceMeasurements();
 
-					if (newResults == null || !newResults.SkipLast(1).Any()) {
-						continue;
-					}
+            foreach (Device d in SelectedProject.Devices) {
 
-					MeasurementResultRange allResults = new(newResults.SkipLast(1).Concat(md.GetLatestRange()));
-					md.ReplaceMeasurementResultRange(0, allResults);
+                foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
 
-				}
+                    TimeRange[] missingRanges = TimeRangeExtensions.GetTimeRangeGaps(
+                        timeRange, md.GetAvailableTimeRanges()
+                    );
 
-			}
+                    if (missingRanges.Length < 1) {
+                        continue;
+                    }
 
-		}
+                    foreach (TimeRange t in missingRanges) {
 
-		private async Task UpdateProjectMeasurements() {
+                        DateTime dynamicStartTime = t.StartTime;
+                        DateTime dynamicEndTime = t.EndTime;
+                        bool firstCheck = true;
+                        int fetchingCount = FetchAmount < 200 ? 200 : FetchAmount;
 
-			LoadingIndicator.Show();
-			await UpdateDeviceMeasurements();
-			HasUpdatedMeasurementResults?.Invoke();
-			LoadingIndicator.Hide();
+                        do {
+                            destroyCancellationToken.ThrowIfCancellationRequested();
 
-		}
+                            MeasurementResultRange results =
+                                await requestHandler.GetMeasurementResults(
+                                    md, fetchingCount, dynamicStartTime,
+                                    dynamicEndTime
+                                );
 
-		private async Task FilterByDate(TimeRange timeRange) {
+                            if (results.Count > 0 && results.Count < fetchingCount) {
+                                md.AddMeasurementResultRange(results, new TimeRange(dynamicStartTime, dynamicEndTime));
+                                dynamicEndTime = dynamicStartTime;
+                                continue;
+                            }
 
-			LoadingIndicator.Show();
-			await UpdateDeviceMeasurements();
+                            if (firstCheck) {
+                                firstCheck = false;
+                            }
+                            else {
+                                dynamicEndTime = results.Count > 0 ? results.First().Timestamp : dynamicEndTime;
+                            }
 
-			foreach (Device d in SelectedProject.Devices) {
+                            dynamicStartTime = results.Count > 0 ? results.Last().Timestamp : dynamicStartTime;
 
-				foreach (MeasurementDefinition md in d.MeasurementDefinitions) {
+                            md.AddMeasurementResultRange(results, new TimeRange(dynamicStartTime, dynamicEndTime));
 
-					TimeRange[] missingRanges = TimeRangeExtensions.GetTimeRangeGaps(
-						timeRange, md.GetAvailableTimeRanges()
-					);
+                            dynamicStartTime = t.StartTime;
+                            dynamicEndTime = results.Count > 0
+                                ? results.Last().Timestamp - TimeSpan.FromSeconds(1)
+                                : dynamicStartTime;
 
-					if (missingRanges.Length < 1) {
-						continue;
-					}
+                        } while (dynamicEndTime > t.StartTime + TimeSpan.FromSeconds(1));
 
-					foreach (TimeRange t in missingRanges) {
+                    }
 
-						DateTime dynamicStartTime = t.StartTime;
-						DateTime dynamicEndTime = t.EndTime;
-						bool firstCheck = true;
-						int fetchingCount = FetchAmount < 200 ? 200 : FetchAmount;
+                    /*
+                    Debug.Log($"Result Ranges in {md.DeviceId} - {md.AttributeId} ({md.ID}):");
 
-						do {
-							destroyCancellationToken.ThrowIfCancellationRequested();
+                    foreach (MeasurementResultRange m in md.MeasurementResults) {
+                        Debug.Log(
+                            $"from {m.GetTimeRange().StartTime} to {m.GetTimeRange().EndTime} with {m.Count} results"
+                        );
+                    }
 
-							MeasurementResultRange results =
-								await requestHandler.GetMeasurementResults(
-									md, fetchingCount, dynamicStartTime,
-									dynamicEndTime
-								);
+                    Debug.Log(" ----- ");
+                    */
 
-							if (results.Count > 0 && results.Count < fetchingCount) {
-								md.AddMeasurementResultRange(results, new TimeRange(dynamicStartTime, dynamicEndTime));
-								dynamicEndTime = dynamicStartTime;
-								continue;
-							}
+                }
 
-							if (firstCheck) {
-								firstCheck = false;
-							}
-							else {
-								dynamicEndTime = results.Count > 0 ? results.First().Timestamp : dynamicEndTime;
-							}
+            }
 
-							dynamicStartTime = results.Count > 0 ? results.Last().Timestamp : dynamicStartTime;
+            HasDateFiltered?.Invoke(timeRange);
+            LoadingIndicator.Hide();
 
-							md.AddMeasurementResultRange(results, new TimeRange(dynamicStartTime, dynamicEndTime));
+        }
 
-							dynamicStartTime = t.StartTime;
-							dynamicEndTime = results.Count > 0 ? results.Last().Timestamp - TimeSpan.FromSeconds(1)
-								: dynamicStartTime;
+        private async void RefetchDataTimer() {
 
-						} while (dynamicEndTime > t.StartTime + TimeSpan.FromSeconds(1));
+            while (true) {
 
-					}
+                if (shouldRefetch) {
 
-					/*
-					Debug.Log($"Result Ranges in {md.DeviceId} - {md.AttributeId} ({md.ID}):");
+                    if (FetchTimer?.ElapsedMilliseconds > fetchInterval) {
+                        RefetchTimerElapsed?.Invoke();
+                        OnRefetchTimerElapsed();
+                        FetchTimer?.Restart();
+                    }
 
-					foreach (MeasurementResultRange m in md.MeasurementResults) {
-						Debug.Log(
-							$"from {m.GetTimeRange().StartTime} to {m.GetTimeRange().EndTime} with {m.Count} results"
-						);
-					}
+                    if (FetchTimer != null) {
+                        RefetchTimerProgressed?.Invoke(fetchInterval, (int)FetchTimer.Elapsed.TotalMilliseconds);
+                    }
 
-					Debug.Log(" ----- ");
-					*/
+                }
 
-				}
+                await Task.Yield();
 
-			}
+            }
 
-			HasDateFiltered?.Invoke(timeRange);
-			LoadingIndicator.Hide();
+        }
 
-		}
+        private async void OnRefetchTimerElapsed() {
+            await UpdateProjectMeasurements();
+        }
 
-		private async void RefetchDataTimer() {
+        public async void OnRefetchButtonPressed() {
+            FetchTimer.Restart();
+            await UpdateProjectMeasurements();
+        }
 
-			while (true) {
+        public void OnCooldownInputChanged(int milliseconds) {
+            fetchInterval = milliseconds;
+        }
 
-				if (shouldRefetch) {
+        public void OnAmountInputChanged(int amount) {
+            FetchAmount = amount;
+        }
 
-					if (FetchTimer?.ElapsedMilliseconds > fetchInterval) {
-						RefetchTimerElapsed?.Invoke();
-						OnRefetchTimerElapsed();
-						FetchTimer?.Restart();
-					}
+        public async void OnDateFilterPressed(TimeRange timeRange) {
+            shouldRefetch = false;
+            await FilterByDate(timeRange);
+        }
 
-					if (FetchTimer != null) {
-						RefetchTimerProgressed?.Invoke(fetchInterval, (int)FetchTimer.Elapsed.TotalMilliseconds);
-					}
+        public void OnHistoryButtonPressed(bool enable) {
 
-				}
+            shouldRefetch = !enable;
 
-				await Task.Yield();
+            if (shouldRefetch == false) {
+                FetchTimer.Stop();
+            }
+            else {
+                FetchTimer.Start();
+            }
 
-			}
+        }
 
-		}
-
-		private async void OnRefetchTimerElapsed() {
-			await UpdateProjectMeasurements();
-		}
-
-		public async void OnRefetchButtonPressed() {
-			FetchTimer.Restart();
-			await UpdateProjectMeasurements();
-		}
-
-		public void OnCooldownInputChanged(int milliseconds) {
-			fetchInterval = milliseconds;
-		}
-
-		public void OnAmountInputChanged(int amount) {
-			FetchAmount = amount;
-		}
-
-		public async void OnDateFilterPressed(TimeRange timeRange) {
-			shouldRefetch = false;
-			await FilterByDate(timeRange);
-		}
-
-		public void OnHistoryButtonPressed(bool enable) {
-
-			shouldRefetch = !enable;
-
-			if (shouldRefetch == false) {
-				FetchTimer.Stop();
-			}
-			else {
-				FetchTimer.Start();
-			}
-
-		}
-
-	}
+    }
 
 }

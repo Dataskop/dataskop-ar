@@ -255,7 +255,7 @@ namespace Dataskop.Data {
 
 							// Subtract Offset to place the Vis on top of the found images
 							PlaceDataPoint(
-								GetLastKnownDevicePosition(projectDevices[i]) - dataPointInstance.Vis.Offset,
+								GetLastKnownDevicePosition(projectDevices[i]),
 								dataPointInstance.transform
 							);
 
