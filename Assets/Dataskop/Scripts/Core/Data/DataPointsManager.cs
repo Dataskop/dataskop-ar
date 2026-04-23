@@ -12,443 +12,453 @@ using UnityEngine.Events;
 
 namespace Dataskop.Data {
 
-	public class DataPointsManager : MonoBehaviour {
+    public class DataPointsManager : MonoBehaviour {
 
-		[Header("Events")]
-		public UnityEvent<VisualizationOption> onVisualizationChanged;
-		public UnityEvent<int> dataPointHistorySwiped;
-		public UnityEvent<int> nearbyDevicesUpdated;
-		public UnityEvent hasFilteredByDate;
+        [Header("Events")]
+        public UnityEvent<VisualizationOption> onVisualizationChanged;
 
-		[Header("References")]
-		[SerializeField] private DataManager dataManager;
-		[SerializeField] private InputHandler inputHandler;
-		[SerializeField] private AbstractMap map;
-		[SerializeField] private GameObject dataPointPrefab;
-		[SerializeField] private Transform dataPointsContainer;
-		[SerializeField] private VisualizationRepository visRepository;
-		[SerializeField] private DataAttributeManager dataAttrRepo;
-		[SerializeField] private AuthorRepository authorRepository;
+        public UnityEvent<int> dataPointHistorySwiped;
+        public UnityEvent<int> nearbyDevicesUpdated;
+        public UnityEvent hasFilteredByDate;
 
-		[Header("Values")]
-		[SerializeField] private float nearbyDevicesDistance;
-		[SerializeField] private float nearbyDevicesScanInterval;
+        [Header("References")]
+        [SerializeField] private DataManager dataManager;
 
-		private bool hasHistoryEnabled;
+        [SerializeField] private InputHandler inputHandler;
+        [SerializeField] private AbstractMap map;
+        [SerializeField] private GameObject dataPointPrefab;
+        [SerializeField] private Transform dataPointsContainer;
+        [SerializeField] private VisualizationRepository visRepository;
+        [SerializeField] private DataAttributeManager dataAttrRepo;
+        [SerializeField] private AuthorRepository authorRepository;
 
-		public float NearbyDevicesDistance => nearbyDevicesDistance;
+        [Header("Values")]
+        [SerializeField] private float nearbyDevicesDistance;
 
-		/// <summary>
-		/// List of currently placed markers in the AR world.
-		/// </summary>
-		public IList<DataPoint> DataPoints { get; private set; }
+        [SerializeField] private float nearbyDevicesScanInterval;
 
-		public Dictionary<Device, Vector3> LastKnownDevicePositions { get; private set; }
+        private bool hasHistoryEnabled;
 
-		/// <summary>
-		/// Array of precise marker locations in the AR world.
-		/// </summary>
-		private Vector2d[] DataPointsLocations { get; set; }
+        public float NearbyDevicesDistance => nearbyDevicesDistance;
 
-		private DataAttributeManager DataAttributeManager => dataAttrRepo;
+        /// <summary>
+        /// List of currently placed markers in the AR world.
+        /// </summary>
+        public IList<DataPoint> DataPoints { get; private set; }
 
-		private VisualizationRepository VisualizationRepository => visRepository;
+        public Dictionary<Device, Vector3> LastKnownDevicePositions { get; private set; }
 
-		private AuthorRepository AuthorRepository => authorRepository;
+        /// <summary>
+        /// Array of precise marker locations in the AR world.
+        /// </summary>
+        private Vector2d[] DataPointsLocations { get; set; }
 
-		private bool HasLoadedDataPoints { get; set; }
+        private DataAttributeManager DataAttributeManager => dataAttrRepo;
 
-		private DataManager DataManager => dataManager;
+        private VisualizationRepository VisualizationRepository => visRepository;
 
-		private TimeRange? TimeRangeFilter { get; set; }
+        private AuthorRepository AuthorRepository => authorRepository;
 
-		private void Awake() {
+        private bool HasLoadedDataPoints { get; set; }
 
-			DataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
-			DataManager.HasDateFiltered += OnDataFiltered;
+        private DataManager DataManager => dataManager;
 
-		}
+        private TimeRange? TimeRangeFilter { get; set; }
 
-		private void Start() {
+        private void Awake() {
 
-			inputHandler.WorldPointerUpped += OnSwiped;
-			LastKnownDevicePositions = new Dictionary<Device, Vector3>();
+            DataManager.HasUpdatedMeasurementResults += OnMeasurementResultsUpdated;
+            DataManager.HasDateFiltered += OnDataFiltered;
 
-		}
+        }
 
-		private void FixedUpdate() {
+        private void Start() {
 
-			if (!HasLoadedDataPoints) {
-				return;
-			}
+            inputHandler.WorldPointerUpped += OnSwiped;
+            LastKnownDevicePositions = new Dictionary<Device, Vector3>();
 
-			if (AppOptions.DemoMode) {
-				return;
-			}
+        }
 
-			for (int i = 0; i < DataPoints.Count; i++) {
-				DataPoints[i].transform.localPosition = map.GeoToWorldPosition(DataPointsLocations[i]);
-			}
+        private void FixedUpdate() {
 
-		}
+            if (!HasLoadedDataPoints) {
+                return;
+            }
 
-		public void OnProjectSelected() {
+            if (AppOptions.DemoMode) {
+                return;
+            }
 
-			if (!HasLoadedDataPoints) {
-				return;
-			}
+            for (int i = 0; i < DataPoints.Count; i++) {
+                DataPoints[i].transform.localPosition = map.GeoToWorldPosition(DataPointsLocations[i]);
+            }
 
-			ClearDataPoints();
-			hasHistoryEnabled = false;
-		}
+        }
 
-		public void OnHistoryButtonPressed(bool enable) {
+        public void OnProjectSelected() {
 
-			hasHistoryEnabled = enable;
+            if (!HasLoadedDataPoints) {
+                return;
+            }
 
-			foreach (DataPoint dp in DataPoints) {
-				dp.ToggleHistory(enable);
-			}
+            ClearDataPoints();
+            hasHistoryEnabled = false;
+        }
 
-		}
+        public void OnHistoryButtonPressed(bool enable) {
 
-		public void OnHistorySliderMoved(int newCount, int prevCount) {
+            hasHistoryEnabled = enable;
 
-			if (!HasLoadedDataPoints) {
-				return;
-			}
+            foreach (DataPoint dp in DataPoints) {
+                dp.ToggleHistory(enable);
+            }
 
-			foreach (DataPoint dp in DataPoints) {
-				dp.SetIndex(newCount);
-			}
+        }
 
-		}
+        public void OnHistorySliderMoved(int newCount, int prevCount) {
 
-		public void OnAttributesInitialized(Project projectData) {
+            if (!HasLoadedDataPoints) {
+                return;
+            }
 
-			if (projectData.Devices == null) {
-				return;
-			}
+            foreach (DataPoint dp in DataPoints) {
+                dp.SetIndex(newCount);
+            }
 
-			if (HasLoadedDataPoints) {
-				ClearDataPoints();
-			}
+        }
 
-			DataPointsLocations = new Vector2d[projectData.Devices.Count];
-			InitializeDataPoints();
+        public void OnAttributesInitialized(Project projectData) {
 
-			HasLoadedDataPoints = true;
-			StartCoroutine(GetNearbyDevicesTask(nearbyDevicesScanInterval));
+            if (projectData.Devices == null) {
+                return;
+            }
 
-		}
+            if (HasLoadedDataPoints) {
+                ClearDataPoints();
+            }
 
-		public void OnVisualizationSelected(VisualizationOption visOpt) {
+            DataPointsLocations = new Vector2d[projectData.Devices.Count];
+            InitializeDataPoints();
 
-			foreach (DataPoint dp in DataPoints) {
-				SetDataPointVisualization(dp, visOpt);
-				dp.ToggleHistory(hasHistoryEnabled);
-			}
+            HasLoadedDataPoints = true;
+            StartCoroutine(GetNearbyDevicesTask(nearbyDevicesScanInterval));
 
-			onVisualizationChanged?.Invoke(visOpt);
+        }
 
-		}
+        public void OnVisualizationSelected(VisualizationOption visOpt) {
 
-		public void OnAttributeChanged(DataAttribute attribute) {
+            foreach (DataPoint dp in DataPoints) {
+                SetDataPointVisualization(dp, visOpt);
+                dp.ToggleHistory(hasHistoryEnabled);
+            }
 
-			if (HasLoadedDataPoints) {
-				ClearDataPoints();
-			}
+            onVisualizationChanged?.Invoke(visOpt);
 
-			InitializeDataPoints();
+        }
 
-			if (hasHistoryEnabled) {
-				foreach (DataPoint dp in DataPoints) {
-					dp.ToggleHistory(true);
-				}
-			}
+        public void OnAttributeChanged(DataAttribute attribute) {
 
-			HasLoadedDataPoints = true;
-			StartCoroutine(GetNearbyDevicesTask(nearbyDevicesScanInterval));
+            if (HasLoadedDataPoints) {
+                ClearDataPoints();
+            }
 
-		}
+            InitializeDataPoints();
 
-		private void InitializeDataPoints() {
+            if (hasHistoryEnabled) {
+                foreach (DataPoint dp in DataPoints) {
+                    dp.ToggleHistory(true);
+                }
+            }
 
-			DataPoints = new List<DataPoint>();
+            HasLoadedDataPoints = true;
+            StartCoroutine(GetNearbyDevicesTask(nearbyDevicesScanInterval));
 
-			Device[] projectDevices = DataManager.SelectedProject.Devices.ToArray();
+        }
 
-			for (int i = 0; i < projectDevices.Length; i++) {
+        private void InitializeDataPoints() {
 
-				if (projectDevices[i].Position == null) {
-					continue;
-				}
+            DataPoints = new List<DataPoint>();
 
-				if (DataAttributeManager.SelectedAttribute.ID == "all") {
+            Device[] projectDevices = DataManager.SelectedProject.Devices.ToArray();
 
-					//If it is the same, create a datapoint instance
-					DataPoint dataPointInstance =
-						Instantiate(dataPointPrefab, dataPointsContainer).GetComponent<DataPoint>();
+            for (int i = 0; i < projectDevices.Length; i++) {
 
-					dataPointInstance.Attribute = DataAttributeManager.SelectedAttribute;
-					dataPointInstance.MeasurementDefinition = projectDevices[i].MeasurementDefinitions.First();
-					dataPointInstance.Device = projectDevices[i];
-					dataPointInstance.AuthorRepository = AuthorRepository;
-					dataPointInstance.FocusedIndexChangedByTap += OnIndexChangeRequested;
-					dataPointInstance.FocusedMeasurement =
-						dataPointInstance.MeasurementDefinition.LatestMeasurementResult;
+                if (projectDevices[i].Position == null) {
+                    continue;
+                }
 
-					//Move the DataPoint to its location
-					if (AppOptions.DemoMode) {
+                if (DataAttributeManager.SelectedAttribute.ID == "all") {
 
-						Vector3 GetLastKnownDevicePosition(Device device) {
-							return LastKnownDevicePositions.TryGetValue(device, out Vector3 position) ? position
-								: new Vector3(-1000, -1000, -1000);
-						}
+                    //If it is the same, create a datapoint instance
+                    DataPoint dataPointInstance =
+                        Instantiate(dataPointPrefab, dataPointsContainer).GetComponent<DataPoint>();
 
-						// Subtract Offset to place the Vis on top of the found images
-						PlaceDataPoint(
-							GetLastKnownDevicePosition(projectDevices[i]) - dataPointInstance.Vis.Offset,
-							dataPointInstance.transform
-						);
+                    dataPointInstance.Attribute = DataAttributeManager.SelectedAttribute;
+                    dataPointInstance.MeasurementDefinition = projectDevices[i].MeasurementDefinitions.First();
+                    dataPointInstance.Device = projectDevices[i];
+                    dataPointInstance.AuthorRepository = AuthorRepository;
+                    dataPointInstance.FocusedIndexChangedByTap += OnIndexChangeRequested;
+                    dataPointInstance.FocusedMeasurement =
+                        dataPointInstance.MeasurementDefinition.LatestMeasurementResult;
 
-					}
-					else {
-						DataPointsLocations[i] = Conversions.StringToLatLon(projectDevices[i].Position.GetLatLong());
-						PlaceDataPoint(DataPointsLocations[i], dataPointInstance.transform);
-					}
+                    //Move the DataPoint to its location
+                    if (AppOptions.DemoMode) {
 
-					DataPoints.Add(dataPointInstance);
-					SetDataPointVisualization(
-						dataPointInstance, DataAttributeManager.SelectedAttribute.VisOptions.First()
-					);
+                        Vector3 GetLastKnownDevicePosition(Device device) {
+                            return LastKnownDevicePositions.TryGetValue(device, out Vector3 position)
+                                ? position
+                                : new Vector3(-1000, -1000, -1000);
+                        }
 
-				}
-				else {
+                        PlaceDataPoint(
+                            GetLastKnownDevicePosition(projectDevices[i]),
+                            dataPointInstance.transform
+                        );
 
-					foreach (MeasurementDefinition definition in projectDevices[i].MeasurementDefinitions) {
+                    }
+                    else {
+                        DataPointsLocations[i] = Conversions.StringToLatLon(projectDevices[i].Position.GetLatLong());
+                        PlaceDataPointOnMap(DataPointsLocations[i], dataPointInstance.transform);
+                    }
 
-						//Check if the definition in the device has the same attribute as the currently selected attribute
-						if (definition.AttributeId != DataAttributeManager.SelectedAttribute.ID) {
-							continue;
-						}
+                    DataPoints.Add(dataPointInstance);
+                    SetDataPointVisualization(
+                        dataPointInstance, DataAttributeManager.SelectedAttribute.VisOptions.First()
+                    );
 
-						//If it is the same, create a datapoint instance
-						DataPoint dataPointInstance =
-							Instantiate(dataPointPrefab, dataPointsContainer).GetComponent<DataPoint>();
+                }
+                else {
 
-						dataPointInstance.Attribute = DataAttributeManager.SelectedAttribute;
-						dataPointInstance.MeasurementDefinition = definition;
-						dataPointInstance.Device = projectDevices[i];
-						dataPointInstance.AuthorRepository = AuthorRepository;
-						dataPointInstance.FocusedIndexChangedByTap += OnIndexChangeRequested;
-						dataPointInstance.FocusedMeasurement = definition.LatestMeasurementResult;
-						dataPointInstance.SetLatestResultTimes();
+                    foreach (MeasurementDefinition definition in projectDevices[i].MeasurementDefinitions) {
 
-						//Move the DataPoint to its location
-						if (AppOptions.DemoMode) {
+                        //Check if the definition in the device has the same attribute as the currently selected attribute
+                        if (definition.AttributeId != DataAttributeManager.SelectedAttribute.ID) {
+                            continue;
+                        }
 
-							Vector3 GetLastKnownDevicePosition(Device device) {
-								return LastKnownDevicePositions.TryGetValue(device, out Vector3 position) ? position
-									: new Vector3(-1000, -1000, -1000);
-							}
+                        //If it is the same, create a datapoint instance
+                        DataPoint dataPointInstance =
+                            Instantiate(dataPointPrefab, dataPointsContainer).GetComponent<DataPoint>();
 
-							// Subtract Offset to place the Vis on top of the found images
-							PlaceDataPoint(
-								GetLastKnownDevicePosition(projectDevices[i]),
-								dataPointInstance.transform
-							);
+                        dataPointInstance.Attribute = DataAttributeManager.SelectedAttribute;
+                        dataPointInstance.MeasurementDefinition = definition;
+                        dataPointInstance.Device = projectDevices[i];
+                        dataPointInstance.AuthorRepository = AuthorRepository;
+                        dataPointInstance.FocusedIndexChangedByTap += OnIndexChangeRequested;
+                        dataPointInstance.FocusedMeasurement = definition.LatestMeasurementResult;
+                        dataPointInstance.SetLatestResultTimes();
 
-						}
-						else {
-							DataPointsLocations[i] =
-								Conversions.StringToLatLon(projectDevices[i].Position.GetLatLong());
+                        //Move the DataPoint to its location
+                        if (AppOptions.DemoMode) {
 
-							PlaceDataPoint(DataPointsLocations[i], dataPointInstance.transform);
-						}
+                            Vector3 GetLastKnownDevicePosition(Device device) {
+                                return LastKnownDevicePositions.TryGetValue(device, out Vector3 position)
+                                    ? position
+                                    : new Vector3(-1000, -1000, -1000);
+                            }
 
-						DataPoints.Add(dataPointInstance);
-						SetDataPointVisualization(
-							dataPointInstance, DataAttributeManager.SelectedAttribute.VisOptions.First()
-						);
+                            PlaceDataPoint(
+                                GetLastKnownDevicePosition(projectDevices[i]),
+                                dataPointInstance.transform
+                            );
 
-					}
+                        }
+                        else {
+                            DataPointsLocations[i] =
+                                Conversions.StringToLatLon(projectDevices[i].Position.GetLatLong());
 
-				}
+                            PlaceDataPointOnMap(DataPointsLocations[i], dataPointInstance.transform);
+                        }
 
-			}
+                        DataPoints.Add(dataPointInstance);
+                        SetDataPointVisualization(
+                            dataPointInstance, DataAttributeManager.SelectedAttribute.VisOptions.First()
+                        );
 
-		}
+                        if (AppOptions.DemoMode) {
+                            foreach (DataPoint dp in DataPoints) {
+                                dp.transform.position -= dp.Vis.Offset;
+                            }
+                        }
 
-		private void PlaceDataPoint(Vector2d newPosition, Transform dataPointTransform) {
-			dataPointTransform.localPosition = map.GeoToWorldPosition(newPosition);
-		}
+                    }
 
-		public void PlaceDataPoint(Vector3 newPosition, Transform dataPointTransform) {
-			dataPointTransform.localPosition = newPosition;
-		}
+                }
 
-		public MeasurementResult GetLatestResult() {
+            }
 
-			MeasurementResult latestResult = null;
+        }
 
-			DateTime latestDate = new(1900, 1, 1);
+        private void PlaceDataPointOnMap(Vector2d newPosition, Transform dataPointTransform) {
+            dataPointTransform.localPosition = map.GeoToWorldPosition(newPosition);
+        }
 
-			foreach (DataPoint dp in DataPoints) {
-				foreach (MeasurementDefinition md in dp.Device.MeasurementDefinitions) {
-					if (md.LatestMeasurementResult.Timestamp > latestDate) {
-						latestDate = md.LatestMeasurementResult.Timestamp;
-						latestResult = md.LatestMeasurementResult;
-					}
-				}
-			}
+        public void PlaceDataPoint(Vector3 newPosition, Transform dataPointTransform) {
+            dataPointTransform.localPosition = newPosition;
+        }
 
-			return latestResult;
-		}
+        public MeasurementResult GetLatestResult() {
 
-		public MeasurementResult GetEarliestResult() {
+            MeasurementResult latestResult = null;
 
-			MeasurementResult earliestResult = null;
-			DateTime earliestDate = DateTime.Now;
+            DateTime latestDate = new(1900, 1, 1);
 
-			foreach (DataPoint dp in DataPoints) {
-				foreach (MeasurementDefinition md in dp.Device.MeasurementDefinitions) {
-					if (md.LatestMeasurementResult.Timestamp < earliestDate) {
-						earliestDate = md.FirstMeasurementResult.Timestamp;
-						earliestResult = md.FirstMeasurementResult;
-					}
-				}
-			}
+            foreach (DataPoint dp in DataPoints) {
+                foreach (MeasurementDefinition md in dp.Device.MeasurementDefinitions) {
+                    if (md.LatestMeasurementResult.Timestamp > latestDate) {
+                        latestDate = md.LatestMeasurementResult.Timestamp;
+                        latestResult = md.LatestMeasurementResult;
+                    }
+                }
+            }
 
-			return earliestResult;
-		}
+            return latestResult;
+        }
 
-		private void ClearDataPoints() {
+        public MeasurementResult GetEarliestResult() {
 
-			HasLoadedDataPoints = false;
+            MeasurementResult earliestResult = null;
+            DateTime earliestDate = DateTime.Now;
 
-			foreach (DataPoint dp in DataPoints) {
-				dp.FocusedIndexChangedByTap -= OnIndexChangeRequested;
-				dp.RemoveVisualization();
-				Destroy(dp.gameObject);
-			}
+            foreach (DataPoint dp in DataPoints) {
+                foreach (MeasurementDefinition md in dp.Device.MeasurementDefinitions) {
+                    if (md.LatestMeasurementResult.Timestamp < earliestDate) {
+                        earliestDate = md.FirstMeasurementResult.Timestamp;
+                        earliestResult = md.FirstMeasurementResult;
+                    }
+                }
+            }
 
-			DataPoints.Clear();
+            return earliestResult;
+        }
 
-		}
+        private void ClearDataPoints() {
 
-		private void SetDataPointVisualization(DataPoint dp, VisualizationOption visOpt) {
+            HasLoadedDataPoints = false;
 
-			if (VisualizationRepository.IsAvailable(visOpt.Type.FirstCharToUpper())) {
+            foreach (DataPoint dp in DataPoints) {
+                dp.FocusedIndexChangedByTap -= OnIndexChangeRequested;
+                dp.RemoveVisualization();
+                Destroy(dp.gameObject);
+            }
 
-				GameObject vis = VisualizationRepository.GetVisualization(visOpt.Type.FirstCharToUpper());
-				dp.RemoveVisualization();
-				dp.Visualize(vis, TimeRangeFilter);
-				dp.Vis.VisOption = visOpt;
-				dp.Vis.ApplyStyle(dp.Vis.VisOption.Style);
+            DataPoints.Clear();
 
-			}
-			else {
-				NotificationHandler.Add(
-					new Notification {
-						Category = NotificationCategory.Info,
-						Text = $"Could not find {visOpt.Type} Vis.",
-						DisplayDuration = NotificationDuration.Medium
-					}
-				);
-			}
+        }
 
-		}
+        private void SetDataPointVisualization(DataPoint dp, VisualizationOption visOpt) {
 
-		private void OnIndexChangeRequested(int index) {
+            if (VisualizationRepository.IsAvailable(visOpt.Type.FirstCharToUpper())) {
 
-			if (!HasLoadedDataPoints) {
-				return;
-			}
+                GameObject vis = VisualizationRepository.GetVisualization(visOpt.Type.FirstCharToUpper());
+                dp.RemoveVisualization();
+                dp.Visualize(vis, TimeRangeFilter);
+                dp.Vis.VisOption = visOpt;
+                dp.Vis.ApplyStyle(dp.Vis.VisOption.Style);
 
-			foreach (DataPoint dp in DataPoints) {
-				dp.SetIndex(index);
-			}
+            }
+            else {
+                NotificationHandler.Add(
+                    new Notification
+                    {
+                        Category = NotificationCategory.Info,
+                        Text = $"Could not find {visOpt.Type} Vis.",
+                        DisplayDuration = NotificationDuration.Medium
+                    }
+                );
+            }
 
-			dataPointHistorySwiped?.Invoke(index);
+        }
 
-		}
+        private void OnIndexChangeRequested(int index) {
 
-		private void OnMeasurementResultsUpdated() {
+            if (!HasLoadedDataPoints) {
+                return;
+            }
 
-			if (!HasLoadedDataPoints) {
-				return;
-			}
+            foreach (DataPoint dp in DataPoints) {
+                dp.SetIndex(index);
+            }
 
-			foreach (DataPoint dp in DataPoints) {
-				dp.OnMeasurementResultsUpdated();
-			}
+            dataPointHistorySwiped?.Invoke(index);
 
-		}
+        }
 
-		private void OnDataFiltered(TimeRange timeRange) {
+        private void OnMeasurementResultsUpdated() {
 
-			if (!HasLoadedDataPoints) {
-				return;
-			}
+            if (!HasLoadedDataPoints) {
+                return;
+            }
 
-			TimeRangeFilter = timeRange;
+            foreach (DataPoint dp in DataPoints) {
+                dp.OnMeasurementResultsUpdated();
+            }
 
-			foreach (DataPoint dp in DataPoints) {
-				dp.UpdateWithTimeRange(TimeRangeFilter.Value);
-			}
+        }
 
-			hasHistoryEnabled = true;
-			hasFilteredByDate?.Invoke();
+        private void OnDataFiltered(TimeRange timeRange) {
 
-		}
+            if (!HasLoadedDataPoints) {
+                return;
+            }
 
-		private void OnSwiped(PointerInteraction pointerInteraction) {
+            TimeRangeFilter = timeRange;
 
-			if (!pointerInteraction.isSwipe) {
-				return;
-			}
+            foreach (DataPoint dp in DataPoints) {
+                dp.UpdateWithTimeRange(TimeRangeFilter.Value);
+            }
 
-			if (pointerInteraction.startingGameObject == null) {
-				return;
-			}
+            hasHistoryEnabled = true;
+            hasFilteredByDate?.Invoke();
 
-			if (!HasLoadedDataPoints) {
-				return;
-			}
+        }
 
-			if (DataPoints.Count < 1) {
-				return;
-			}
+        private void OnSwiped(PointerInteraction pointerInteraction) {
 
-			if (!pointerInteraction.startingGameObject.CompareTag("VisObject")) {
-				return;
-			}
+            if (!pointerInteraction.isSwipe) {
+                return;
+            }
 
-			foreach (DataPoint dp in DataPoints) {
-				dp.Vis.OnSwipeInteraction(pointerInteraction);
-			}
+            if (pointerInteraction.startingGameObject == null) {
+                return;
+            }
 
-			dataPointHistorySwiped?.Invoke(DataPoints[0].FocusedIndex);
+            if (!HasLoadedDataPoints) {
+                return;
+            }
 
-		}
+            if (DataPoints.Count < 1) {
+                return;
+            }
 
-		private IEnumerator GetNearbyDevicesTask(float seconds) {
+            if (!pointerInteraction.startingGameObject.CompareTag("VisObject")) {
+                return;
+            }
 
-			while (HasLoadedDataPoints) {
-				int count = GetDevicesNearPosition(inputHandler.MainCamera.transform.position);
-				nearbyDevicesUpdated?.Invoke(count);
-				yield return new WaitForSeconds(seconds);
-			}
+            foreach (DataPoint dp in DataPoints) {
+                dp.Vis.OnSwipeInteraction(pointerInteraction);
+            }
 
-		}
+            dataPointHistorySwiped?.Invoke(DataPoints[0].FocusedIndex);
 
-		private int GetDevicesNearPosition(Vector3 position) {
+        }
 
-			return DataPoints.Count(dp => Vector3.Distance(dp.transform.position, position) <= nearbyDevicesDistance);
+        private IEnumerator GetNearbyDevicesTask(float seconds) {
 
-		}
+            while (HasLoadedDataPoints) {
+                int count = GetDevicesNearPosition(inputHandler.MainCamera.transform.position);
+                nearbyDevicesUpdated?.Invoke(count);
+                yield return new WaitForSeconds(seconds);
+            }
 
-	}
+        }
+
+        private int GetDevicesNearPosition(Vector3 position) {
+
+            return DataPoints.Count(dp => Vector3.Distance(dp.transform.position, position) <= nearbyDevicesDistance);
+
+        }
+
+    }
 
 }
